@@ -12,7 +12,7 @@
 /build
 
 # IDE
-.idea
+/.idea
 
 # misc
 /front-end/.DS_Store
