@@ -11,7 +11,7 @@
 	<groupId>com.khabu</groupId>
 	<artifactId>cardgame</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>KhabuCardgane</name>
+	<name>KhabuCardgame</name>
 	<description>An online version of the exciting cardgame Khabu</description>
 
 	<properties>
