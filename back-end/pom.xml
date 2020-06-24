@@ -44,44 +44,20 @@
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>com.github.eirslett</groupId>
-				<artifactId>frontend-maven-plugin</artifactId>
-				<version>1.10.0</version>
-				<configuration>
-					<workingDirectory>../front-end</workingDirectory>
-					<installDirectory>src</installDirectory>
-				</configuration>
+				<artifactId>maven-antrun-plugin</artifactId>
 				<executions>
 					<execution>
-						<id>yarn install</id>
-						<goals>
-							<goal>yarn</goal>
-						</goals>
+						<phase>generate-resources</phase>
 						<configuration>
-							<arguments>install</arguments>
+							<target>
+								<copy todir="${project.build.directory}/classes/public">
+									<fileset dir="${project.basedir}/../front-end/build"/>
+								</copy>
+							</target>
 						</configuration>
-					</execution>
-					<execution>
-						<id>yarn run tests</id>
 						<goals>
-							<goal>yarn</goal>
+							<goal>run</goal>
 						</goals>
-						<configuration>
-							<arguments>test --watchAll=false</arguments>
-						</configuration>
-					</execution>
-					<execution>
-						<id>yarn run build</id>
-						<goals>
-							<goal>yarn</goal>
-						</goals>
-						<configuration>
-							<arguments>yarn build</arguments>
-						</configuration>
 					</execution>
 				</executions>
 			</plugin>
