@@ -1,13 +1,19 @@
-import React from "react";
-import ReactDOM from "react-dom";
+import React, { useState, useEffect } from 'react';
+import ReactDOM from 'react-dom';
+import Server from './api/Server';
 
 const App = () => {
-    return (
-        <div>React App</div>
-    );
-}
+  const [message, setMessage] = useState('');
+  useEffect(() => {
+    const fetchMessage = async () => {
+      const result = await Server.get('/api/hello');
+      console.log(result);
+      setMessage(result.data);
+    };
+    fetchMessage();
+  });
 
-ReactDOM.render(
-    <App />,
-    document.querySelector("#root")
-)
+  return <div>{message}</div>;
+};
+
+ReactDOM.render(<App />, document.querySelector('#root'));

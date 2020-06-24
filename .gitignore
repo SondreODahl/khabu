@@ -9,7 +9,8 @@
 /coverage
 
 # production
-/build
+front-end/build
+
 
 # IDE
 /.idea
@@ -24,3 +25,7 @@
 /front-end/npm-debug.log*
 /front-end/yarn-debug.log*
 /front-end/yarn-error.log*
+
+
+# back-end
+/back-end/target
