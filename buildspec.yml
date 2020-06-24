@@ -24,7 +24,7 @@ phases:
   build:
     commands:
       - echo Testing...
-      - cd front-end
+      - ls
       - yarn test --watchAll=false --passWithNoTests # NB NEED TO HAVE WATCHALL
       - echo Building...
       - yarn build
