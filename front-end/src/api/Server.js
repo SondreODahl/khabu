@@ -1,5 +1,6 @@
 import Axios from "axios";
+import { config } from "./Constants";
 
 export default Axios.create({
-  baseURL: "http://localhost:8080", // TODO: Add production URL
+  baseURL: config.url, // TODO: Add production URL
 });
