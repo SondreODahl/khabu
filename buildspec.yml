@@ -19,13 +19,16 @@ phases:
   pre_build:
     commands:
       - echo Installing dependencies...
+      - cd front-end
       - yarn
   build:
     commands:
       - echo Testing...
-      - yarn test --watchAll=false # NB NEED TO HAVE WATCHALL
+      - cd front-end
+      - yarn test --watchAll=false --passWithNoTests # NB NEED TO HAVE WATCHALL
       - echo Building...
       - yarn build
+      - cd ../back-end
       - echo Running Mvn clean install
       - mvn clean install
   post_build:
