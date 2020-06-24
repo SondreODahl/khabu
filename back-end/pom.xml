@@ -52,16 +52,10 @@
 				<artifactId>frontend-maven-plugin</artifactId>
 				<version>1.10.0</version>
 				<configuration>
-					<workingDirectory>frontend</workingDirectory>
-					<installDirectory>target</installDirectory>
+					<workingDirectory>../front-end</workingDirectory>
+					<installDirectory>src</installDirectory>
 				</configuration>
 				<executions>
-					<execution>
-						<id>yarn install</id>
-						<goals>
-							<goal>yarn</goal>
-						</goals>
-					</execution>
 					<execution>
 						<id>yarn install</id>
 						<goals>
