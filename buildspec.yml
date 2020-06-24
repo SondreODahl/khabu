@@ -2,7 +2,11 @@ version: 0.2
 
 phases:
   install:
+    runtime-versions:
+      java: openjdk8
     commands:
+      - echo Updating with apt...
+      - apt update -y
       - echo Installing Node 12...
       - curl -sL https://deb.nodesource.com/setup_12.x | bash -
       - apt install -y nodejs
@@ -10,21 +14,28 @@ phases:
       - curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
       - echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
       - apt install --no-install-recommends yarn
+      - echo Installing maven...
+      - apt install -y maven
   pre_build:
     commands:
       - echo Installing dependencies...
+      - cd front-end
       - yarn
   build:
     commands:
       - echo Testing...
-      - yarn test --watchAll=false # NB NEED TO HAVE WATCHALL
+      - ls
+      - yarn test --watchAll=false --passWithNoTests # NB NEED TO HAVE WATCHALL
       - echo Building...
       - yarn build
+      - cd ../back-end
+      - echo Running Mvn clean install
+      - mvn clean install
   post_build:
     commands:
       - echo entering post-build
 artifacts:
   files:
-    - "**/*"
+    - "cardgame-0.0.1-SNAPSHOT.jar"
   discard-paths: no
-  base-directory: build
+  base-directory: back-end/target/
