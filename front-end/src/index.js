@@ -1,19 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
-import Server from './api/Server';
+import RESTServer from './api/RESTServer';
+import GreetButton from './components/GreetButton';
 
 const App = () => {
   const [message, setMessage] = useState('');
   useEffect(() => {
-    const fetchMessage = async () => {
-      const result = await Server.get('/api/hello');
+    (async () => {
+      const result = await RESTServer.get('/api/hello');
       console.log(result);
       setMessage(result.data);
-    };
-    fetchMessage();
+    })();
   });
-
-  return <div>{message}</div>;
+  return (
+    <div>
+      {message}
+      <GreetButton />
+    </div>
+  );
 };
 
 ReactDOM.render(<App />, document.querySelector('#root'));
