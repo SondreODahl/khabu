@@ -28,7 +28,7 @@ public class HelloController {
     public void greet(String greeting) {
         String time = new SimpleDateFormat("HH:mm").format(new Date());
         String text = "[" + time + "]" + "Hello" + greeting;
-        this.simpMessagingTemplate.convertAndSend("/greeting", text);
+        this.simpMessagingTemplate.convertAndSend("/message/greeting", text);
     }
 
 }
