@@ -1,4 +1,4 @@
-package com.khabu.cardgame;
+package com.khabu.cardgame.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
