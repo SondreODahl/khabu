@@ -1,21 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import RESTServer from './api/RESTServer';
-import GreetButton from './components/GreetButton';
+import GreetButton from './api/STOMPClient';
+import STOMPClient from './api/STOMPClient';
 
 const App = () => {
-  const [message, setMessage] = useState('');
-  useEffect(() => {
-    (async () => {
-      const result = await RESTServer.get('/api/hello');
-      console.log(result);
-      setMessage(result.data);
-    })();
-  });
+  // const [restMsg, setRestMsg] = useState('');
+  // useEffect(() => {
+  //   (async () => {
+  //     const result = await RESTServer.get('/api/hello');
+  //     console.log(result);
+  //     setRestMsg(result.data);
+  //   })();
+  // });
   return (
     <div>
-      {message}
-      <GreetButton />
+      <STOMPClient />
     </div>
   );
 };

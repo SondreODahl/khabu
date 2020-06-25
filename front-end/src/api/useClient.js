@@ -1,19 +1,27 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Client } from '@stomp/stompjs';
 
-export default (brokerURL) => {
-  const [client, setClient] = useState(new Client({}));
+const stompclient = new Client({
+  brokerURL: 'ws://localhost:8080/ws',
+  onStompError: (frame) => {
+    console.log('Broker reported error: ' + frame.headers['message']);
+    console.log('Additional details: ' + frame.body);
+  },
+});
 
-  useEffect(() => {
-    client.brokerURL = brokerURL;
-    client.onConnect = () => {
-      console.log('connected to STOMPserver');
-    };
-    client.onStompError = (frame) => {
-      console.log('Broker reported error: ' + frame.headers['message']);
-      console.log('Additional details: ' + frame.body);
-    };
-    setClient(client);
-  }, [client]);
+export default () => {
+  const [connected, setConnected] = useState(false);
+  const [client, setClient] = useState(stompclient);
+  client.onConnect = () => {
+    console.log('connected to STOMPserver');
+    client.subscribe('/message/greeting', ({ body }) => console.log(body));
+    setConnected(true);
+  };
+  // TODO: Implement onDisconnect
+
+  if (!client.active) {
+    client.activate(); // Apparent fix
+  }
+
   return client;
 };

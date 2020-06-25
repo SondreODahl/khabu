@@ -9,15 +9,18 @@ export default (destination) => {
     client.subscribe(destination, ({ body }) => {
       setMessage(body);
     });
-  }, [client, destination]);
+    console.log('Subscribed');
+  }, [client.connected, destination]);
 
   const unsubscribe = useCallback(() => {
     client.unsubscribe(destination);
-  }, [client, destination]);
+  }, [client.connected, destination]);
 
   useEffect(() => {
-    subscribe();
-    return unsubscribe;
+    if (client.connected) {
+      subscribe();
+      return unsubscribe;
+    }
   }, [subscribe, unsubscribe]);
 
   return message;
