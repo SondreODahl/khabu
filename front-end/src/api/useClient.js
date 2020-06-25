@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Client } from '@stomp/stompjs';
 
-export default () => {
+export default (brokerURL) => {
   const [client, setClient] = useState(new Client({}));
 
   useEffect(() => {
-    client.brokerURL = 'ws://localhost:8080/ws';
+    client.brokerURL = brokerURL;
     client.onConnect = () => {
       console.log('connected to STOMPserver');
     };
