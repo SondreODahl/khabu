@@ -1,10 +1,18 @@
 package com.khabu.cardgame.controllers;
 
 
+import com.khabu.cardgame.event.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
+import org.springframework.messaging.simp.SimpMessageType;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.web.bind.annotation.*;
 
+import java.awt.print.PrinterIOException;
+import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -15,8 +23,12 @@ public class HelloController {
 
     private final SimpMessagingTemplate simpMessagingTemplate;
 
-    public HelloController(SimpMessagingTemplate simpMessagingTemplate) {
+    private UserRepository userRepository;
+
+    @Autowired
+    public HelloController(SimpMessagingTemplate simpMessagingTemplate, UserRepository userRepository) {
         this.simpMessagingTemplate = simpMessagingTemplate;
+        this.userRepository = userRepository;
     }
 
     @RequestMapping(value="/api/hello", method = RequestMethod.GET, produces = "application/json")
@@ -32,11 +44,21 @@ public class HelloController {
     }
 
     @MessageMapping("/great")
-    public void great(String text) {
+    @SendToUser("/queue/great")
+    public String great(String text, Principal principal) {
+        String user = principal.getName();
+        System.out.println(user);
         String time = new SimpleDateFormat("HH:mm:ss").format(new Date());
-        String message = "[" + time + "]" + "Hello" + text;
-        this.simpMessagingTemplate.convertAndSend("/queue/great", message);
+        return "[" + time + "]" + "Hello" + text;
     }
+
+//    private MessageHeaders createHeaders(String sessionId) {
+//        SimpMessageHeaderAccessor headers = SimpMessageHeaderAccessor.create(SimpMessageType.MESSAGE);
+//        headers.setSessionId(sessionId);
+//        headers.setLeaveMutable(true);
+//        return headers.getMessageHeaders();
+//    }
+
 
 
 }

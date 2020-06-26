@@ -3,7 +3,7 @@ import usePublish from '../api/usePublish';
 import React from 'react';
 
 export default (props) => {
-  const greatSubscribe = useSubscribe(props.client, '/queue/great');
+  const greatSubscribe = useSubscribe(props.client, '/user/queue/great');
 
   const greatPublish = usePublish(props.client, {
     destination: '/app/great',

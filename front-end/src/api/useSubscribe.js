@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState } from 'react';
-import useClient from './useClient';
 
 export default (client, destination) => {
   const [message, setMessage] = useState('');

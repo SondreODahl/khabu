@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
-import RESTServer from './api/RESTServer';
-import GreetButton from './api/STOMPClient';
 import STOMPClient from './api/STOMPClient';
 
 const App = () => {

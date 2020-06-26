@@ -10,7 +10,7 @@ const STOMPClient = (props) => {
 
   return (
     <div className={'client body'}>
-      <GreetButtons client={client} />
+      {/*       <GreetButtons client={client} /> */}
       <GreatButton client={client} />
     </div>
   );

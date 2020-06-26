@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Client } from '@stomp/stompjs';
 import { config } from './Constants';
 
