@@ -2,9 +2,11 @@ package com.khabu.cardgame.controllers;
 
 
 import com.khabu.cardgame.event.UserRepository;
+import com.khabu.cardgame.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessageType;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -50,6 +52,20 @@ public class HelloController {
         System.out.println(user);
         String time = new SimpleDateFormat("HH:mm:ss").format(new Date());
         return "[" + time + "]" + "Hello" + text;
+    }
+
+    @MessageMapping("/ready")
+    public void userReady(@Payload String message, Principal principal) {
+        User user = userRepository.getParticipantByName(principal.getName());
+        if (message.equals("true")) {
+            user.setReady(true);
+            userRepository.addReadyPlayer(user);
+        } else {
+            user.setReady(false);
+            userRepository.removeUnreadiedPlayer(user);
+        }
+        this.simpMessagingTemplate.convertAndSend("/topic/ready",
+                Integer.toString(userRepository.getNumberOfPlayersReadiedUp()));
     }
 
 //    private MessageHeaders createHeaders(String sessionId) {

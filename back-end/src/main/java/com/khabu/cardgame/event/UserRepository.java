@@ -1,5 +1,6 @@
 package com.khabu.cardgame.event;
 
+import com.khabu.cardgame.model.User;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -10,28 +11,51 @@ import java.util.concurrent.ConcurrentHashMap;
 @Component
 public class UserRepository {
 
-    private List<String> activeUserSessions = new ArrayList<>();
+    private List<User> activeUserSessions = new ArrayList<>();
+    private List<User> playersReadiedUp = new ArrayList<>();
 
-    public void add(String sessionId) {
-        activeUserSessions.add(sessionId);
+    public void add(User user) {
+        activeUserSessions.add(user);
     }
 
-    public String getParticipant(String sessionId) {
-        return activeUserSessions.get(activeUserSessions.indexOf(sessionId));
+    public User getParticipant(User user) {
+        return activeUserSessions.get(activeUserSessions.indexOf(user));
     }
-    public String getParticipantByIndex(int index) {
+
+    public User getParticipantByIndex(int index) {
         return activeUserSessions.get(index);
     }
 
-    public void removeParticipant(String sessionId) {
-        activeUserSessions.remove(sessionId);
+    public User getParticipantByName(String userName) {
+        return activeUserSessions.stream().filter(u -> u.getName().equals(userName)).findFirst().get();
     }
 
-    public List<String> getActiveUserSessions() {
+
+    public void removeParticipant(User user) {
+        activeUserSessions.remove(user);
+    }
+
+    public void removeParticipantByName(String userName) {
+        activeUserSessions.removeIf(user -> user.getName().equals(userName));
+    }
+
+    public List<User> getActiveUserSessions() {
         return activeUserSessions;
     }
 
-    public void setActiveUserSessions(List<String> activeUserSessions) {
+    public void setActiveUserSessions(List<User> activeUserSessions) {
         this.activeUserSessions = activeUserSessions;
+    }
+
+    public void addReadyPlayer(User user) {
+        playersReadiedUp.add(user);
+    }
+
+    public void removeUnreadiedPlayer(User user) {
+        playersReadiedUp.remove(user);
+    }
+
+    public int getNumberOfPlayersReadiedUp() {
+        return playersReadiedUp.size();
     }
 }
