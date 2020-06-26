@@ -38,4 +38,5 @@ public class HelloController {
         this.simpMessagingTemplate.convertAndSend("/queue/great", message);
     }
 
+
 }
