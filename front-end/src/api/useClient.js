@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Client } from '@stomp/stompjs';
 import { config } from './Constants';
 
@@ -15,7 +15,6 @@ export default () => {
   const [client, setClient] = useState(stompclient);
   client.onConnect = () => {
     console.log('connected to STOMPserver');
-    client.subscribe('/topic/greeting', ({ body }) => console.log(body));
     setConnected(true);
   };
   // TODO: Implement onDisconnect

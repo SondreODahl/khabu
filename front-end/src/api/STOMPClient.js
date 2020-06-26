@@ -1,18 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import { Client } from '@stomp/stompjs';
-import GreetButton from '../components/GreetButton';
+import React from 'react';
 import useSubscribe from './useSubscribe';
 import usePublish from './usePublish';
 
 const STOMPClient = (props) => {
-  const parameters = { destination: '/app/greeting', body: 'hello' };
-  const publish = usePublish(parameters);
-  const subscribe = useSubscribe('/message/greeting');
+  const greetParameters = { destination: '/app/greeting', body: 'hello' };
+  const greatPublish = usePublish({ destination: '/app/great', body: 'Yo' });
+  const greetPublish = usePublish(greetParameters);
+  const greetingSubscribe = useSubscribe('/topic/greeting');
+  const greatSubscribe = useSubscribe('/queue/great');
 
   return (
     <div className={'client body'}>
       <div>
-        <button onClick={publish}>Publish</button>
+        <button onClick={greetPublish}>Publish greet</button>
+        <button onClick={greatPublish}>Publish great</button>
+        {greetingSubscribe}
+        {greatSubscribe}
       </div>
     </div>
   );

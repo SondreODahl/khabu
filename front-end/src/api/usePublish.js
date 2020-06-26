@@ -1,5 +1,4 @@
 import useClient from './useClient';
-import { useEffect, useState } from 'react';
 
 export default (parameters) => {
   const client = useClient();
