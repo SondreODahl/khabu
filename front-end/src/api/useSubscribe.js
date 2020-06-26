@@ -1,32 +1,33 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import useClient from './useClient';
 
-export default (destination) => {
-  const [message, setMessage] = useState({});
-  const client = useClient();
+export default (client, destination) => {
+  const [message, setMessage] = useState('');
+
+  console.log('Running', destination);
 
   const subscribe = useCallback(() => {
     client.subscribe(destination, ({ body }) => {
-      setMessage({ ...message, [destination]: body });
+      console.log(body);
+      setMessage(body);
     });
     console.log('Subscribed to', destination);
-  }, [client.connected, destination]);
+  }, [client, destination]);
 
   const unsubscribe = useCallback(() => {
     client.unsubscribe(destination);
-    console.log('Unsubbed');
-  }, [client.connected, destination]);
+    console.log('Unsubscribed from', destination);
+  }, [client, destination]);
 
   useEffect(() => {
     if (client.connected) {
       subscribe();
       return unsubscribe;
     }
-  }, [subscribe, unsubscribe]); // TODO: Add client.connected
+  }, [client.connected, subscribe, unsubscribe]);
 
-  console.log(message);
-  if (!message[destination]) {
+  if (!message) {
     return 'No message yet';
   }
-  return message[destination];
+  return message;
 };

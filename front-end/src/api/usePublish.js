@@ -1,8 +1,6 @@
 import useClient from './useClient';
 
-export default (parameters) => {
-  const client = useClient();
-
+export default (client, parameters) => {
   if (!parameters.destination || !parameters.body) {
     console.warn('Publish is missing destination or body');
   }

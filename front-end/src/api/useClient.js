@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Client } from '@stomp/stompjs';
 import { config } from './Constants';
 
-const stompclient = new Client({
+const stompClient = new Client({
   brokerURL: config.url.WEB_SOCKET_URL,
   onStompError: (frame) => {
     console.log('Broker reported error: ' + frame.headers['message']);
@@ -12,16 +12,20 @@ const stompclient = new Client({
 
 export default () => {
   const [connected, setConnected] = useState(false);
-  const [client, setClient] = useState(stompclient);
-  client.onConnect = () => {
-    console.log('connected to STOMPserver');
-    setConnected(true);
-  };
-  // TODO: Implement onDisconnect
 
-  if (!client.active) {
-    client.activate(); // Apparent fix
+  useEffect(() => {
+    stompClient.onConnect = () => {
+      setConnected(true);
+    };
+    stompClient.onDisconnect = () => {
+      setConnected(false);
+    };
+  }, [stompClient]);
+
+  console.log('Client');
+
+  if (!stompClient.active) {
+    stompClient.activate();
   }
-
-  return client;
+  return stompClient;
 };
