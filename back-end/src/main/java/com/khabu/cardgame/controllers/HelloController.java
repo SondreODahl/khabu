@@ -26,14 +26,14 @@ public class HelloController {
 
     @MessageMapping("/greeting")
     public void greet(String greeting) {
-        String time = new SimpleDateFormat("HH:mm").format(new Date());
+        String time = new SimpleDateFormat("HH:mm:ss").format(new Date());
         String text = "[" + time + "]" + "Hello" + greeting;
         this.simpMessagingTemplate.convertAndSend("/topic/greeting", text);
     }
 
     @MessageMapping("/great")
     public void great(String text) {
-        String time = new SimpleDateFormat("HH:mm").format(new Date());
+        String time = new SimpleDateFormat("HH:mm:ss").format(new Date());
         String message = "[" + time + "]" + "Hello" + text;
         this.simpMessagingTemplate.convertAndSend("/queue/great", message);
     }
