@@ -35,6 +35,7 @@ public class PresenceEventListener {
     private void handleSessionDisconnected(SessionDisconnectEvent event) {
         StompHeaderAccessor headers = StompHeaderAccessor.wrap(event.getMessage());
         String userName = headers.getUser().getName();
+        userRepository.removeUnreadiedPlayer(userRepository.getParticipantByName(userName));
         userRepository.removeParticipantByName(userName);
     }
 
