@@ -7,13 +7,14 @@ export default (destination) => {
 
   const subscribe = useCallback(() => {
     client.subscribe(destination, ({ body }) => {
-      setMessage({ ...message, destination: body });
+      setMessage({ ...message, [destination]: body });
     });
     console.log('Subscribed to', destination);
   }, [client.connected, destination]);
 
   const unsubscribe = useCallback(() => {
     client.unsubscribe(destination);
+    console.log('Unsubbed');
   }, [client.connected, destination]);
 
   useEffect(() => {
@@ -23,8 +24,9 @@ export default (destination) => {
     }
   }, [subscribe, unsubscribe]); // TODO: Add client.connected
 
-  if (!message.destination) {
+  console.log(message);
+  if (!message[destination]) {
     return 'No message yet';
   }
-  return message.destination;
+  return message[destination];
 };
