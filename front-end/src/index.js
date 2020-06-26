@@ -1,19 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
-import Server from './api/Server';
+import STOMPClient from './api/STOMPClient';
 
 const App = () => {
-  const [message, setMessage] = useState('');
-  useEffect(() => {
-    const fetchMessage = async () => {
-      const result = await Server.get('/api/hello');
-      console.log(result);
-      setMessage(result.data);
-    };
-    fetchMessage();
-  });
-
-  return <div>{message}</div>;
+  // const [restMsg, setRestMsg] = useState('');
+  // useEffect(() => {
+  //   (async () => {
+  //     const result = await RESTServer.get('/api/hello');
+  //     console.log(result);
+  //     setRestMsg(result.data);
+  //   })();
+  // });
+  return (
+    <div>
+      <STOMPClient />
+    </div>
+  );
 };
 
 ReactDOM.render(<App />, document.querySelector('#root'));
