@@ -11,17 +11,14 @@ class GreetButton extends React.Component {
     this.client = new Client({
       brokerURL: 'ws://localhost:8080/ws',
       onConnect: () => {
-        const subscription = this.client.subscribe(
-          '/message/greeting',
-          (message) => {
-            console.log('Greeting received');
-            console.log(message);
-          }
-        );
+        const subscription = this.client.subscribe('/message/greeting', message => {
+          console.log('Greeting received');
+          console.log(message.body);
+        });
       },
     });
 
-    this.client.onStompError = function (frame) {
+    this.client.onStompError = function(frame) {
       console.log('Broker reported error: ' + frame.headers['message']);
       console.log('Additional details: ' + frame.body);
     };
@@ -33,7 +30,7 @@ class GreetButton extends React.Component {
     this.client.publish({ destination: '/app/greeting', body: 'Sup' });
   };
 
-  onNotifiedSubscription = (message) => {
+  onNotifiedSubscription = message => {
     console.log('message');
   };
 
