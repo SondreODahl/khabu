@@ -1,6 +1,17 @@
 import Axios from 'axios';
 import { config } from './Constants';
+import { useDispatch } from 'react-redux';
+import { setData } from '../actions';
 
-export default Axios.create({
-  baseURL: config.url.API_URL, // TODO: Add production URL
+const axiosREST = Axios.create({
+  baseURL: config.url.API_URL,
 });
+
+export const useRESTServer = () => {
+  const dispatch = useDispatch();
+  const getRESTData = (url) => {
+    axiosREST.get(url).then((data) => dispatch(setData(data)));
+  };
+
+  return { getRESTData };
+};

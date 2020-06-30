@@ -1,17 +1,18 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { addSubMessage } from '../actions';
 
-export default (client, destination) => {
-  const [message, setMessage] = useState('');
-
-  console.log('Running', destination);
-
+export default (destination) => {
+  const dispatch = useDispatch();
+  const client = useSelector((state) => state.client);
+  const connected = useSelector((state) => state.connected);
   const subscribe = useCallback(() => {
     client.subscribe(destination, ({ body }) => {
       console.log(body);
-      setMessage(body);
+      dispatch(addSubMessage(destination, body));
     });
     console.log('Subscribed to', destination);
-  }, [client, destination]);
+  }, [client, destination, dispatch]);
 
   const unsubscribe = useCallback(() => {
     client.unsubscribe(destination);
@@ -19,14 +20,9 @@ export default (client, destination) => {
   }, [client, destination]);
 
   useEffect(() => {
-    if (client.connected) {
+    if (connected) {
       subscribe();
       return unsubscribe;
     }
-  }, [client.connected, subscribe, unsubscribe]);
-
-  if (!message) {
-    return 'No message yet';
-  }
-  return message;
+  }, [connected, subscribe, unsubscribe]);
 };

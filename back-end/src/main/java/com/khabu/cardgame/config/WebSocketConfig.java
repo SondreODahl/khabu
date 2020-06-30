@@ -1,20 +1,28 @@
 package com.khabu.cardgame.config;
 
 
+import com.khabu.cardgame.websocketutil.CustomHandshakeHandler;
+import com.khabu.cardgame.websocketutil.HttpHandshakeInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 
+// Sets up websocket endpoint on /ws.
+// /topic is used for all channels that broadcast to all users
+// /queue is used to target single users
+// /app is used for the frontend to publish messages through the server
+
 @Configuration
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer{
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        AssignPrincipalHandshakeHandler assignPrincipalHandshakeHandler = new AssignPrincipalHandshakeHandler();
-        registry.addEndpoint("/ws").setHandshakeHandler(assignPrincipalHandshakeHandler).setAllowedOrigins("*");
-        registry.addEndpoint("/ws").setHandshakeHandler(assignPrincipalHandshakeHandler).setAllowedOrigins("*").withSockJS(); // TODO: Edit *
+        registry.addEndpoint("/ws").addInterceptors(new HttpHandshakeInterceptor())
+                .setHandshakeHandler(new CustomHandshakeHandler()).setAllowedOrigins("*");
+        registry.addEndpoint("/ws").addInterceptors(new HttpHandshakeInterceptor())
+                .setHandshakeHandler(new CustomHandshakeHandler()).setAllowedOrigins("*").withSockJS();
     }
 
     @Override

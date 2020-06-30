@@ -8,7 +8,10 @@ import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.socket.messaging.SessionConnectedEvent;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
+import org.springframework.web.socket.messaging.SessionSubscribeEvent;
 
+
+// Handles connection and disconnection events.
 
 @Service
 public class PresenceEventListener {
@@ -23,6 +26,7 @@ public class PresenceEventListener {
     }
 
 
+    // TODO: Create user from cookie/prev session
     @EventListener
     private void handleSessionConnected(SessionConnectedEvent event) {
         StompHeaderAccessor headers = StompHeaderAccessor.wrap(event.getMessage());
@@ -37,6 +41,12 @@ public class PresenceEventListener {
         String userName = headers.getUser().getName();
         userRepository.removeUnreadiedPlayer(userRepository.getParticipantByName(userName));
         userRepository.removeParticipantByName(userName);
+    }
+
+    @EventListener
+    private void handleSessionSubscribe(SessionSubscribeEvent event) {
+        StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());
+        System.out.println(headerAccessor.getSessionAttributes().get("sessionId").toString());
     }
 
 

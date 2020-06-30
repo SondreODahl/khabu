@@ -5,6 +5,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+// Only for development. Necessary to allow connection between port 3000 and 8000
+
 @Configuration
 public class CorsConfig
 {

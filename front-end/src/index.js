@@ -1,21 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import STOMPClient from './api/STOMPClient';
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
 
-const App = () => {
-  // const [restMsg, setRestMsg] = useState('');
-  // useEffect(() => {
-  //   (async () => {
-  //     const result = await RESTServer.get('/api/hello');
-  //     console.log(result);
-  //     setRestMsg(result.data);
-  //   })();
-  // });
-  return (
-    <div>
-      <STOMPClient />
-    </div>
-  );
-};
+import App from './components/App';
+import reducers from './reducers';
 
-ReactDOM.render(<App />, document.querySelector('#root'));
+const store = createStore(
+  reducers,
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+);
+
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.querySelector('#root')
+);

@@ -1,21 +1,20 @@
 import React from 'react';
 import usePublish from '../api/usePublish';
 import useSubscribe from '../api/useSubscribe';
+import { useSelector } from 'react-redux';
 
 export default (props) => {
-  const greetingSubscribe = useSubscribe(props.client, '/topic/greeting');
-
-  const greetPublish = usePublish(props.client, {
+  useSubscribe('/topic/greeting');
+  const message = useSelector((state) => state.subscription['/topic/greeting']);
+  const greetPublish = usePublish({
     destination: '/app/greeting',
-    body: 'hello',
+    body: 'Greet',
   });
 
   return (
-    <div className={'props.client body'}>
-      <div>
-        <button onClick={greetPublish}>Publish greet</button>
-        {greetingSubscribe}
-      </div>
+    <div>
+      <button onClick={greetPublish}>Publish</button>
+      {message}
     </div>
   );
 };
