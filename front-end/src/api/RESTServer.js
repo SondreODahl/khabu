@@ -7,11 +7,18 @@ const axiosREST = Axios.create({
   baseURL: config.url.API_URL,
 });
 
-export const useRESTServer = () => {
+export const useRESTGet = () => {
   const dispatch = useDispatch();
   const getRESTData = (url) => {
     axiosREST.get(url).then((data) => dispatch(setData(data)));
   };
 
   return { getRESTData };
+};
+
+export const useRESTPost = () => {
+  const postRESTData = async (url, data) => {
+    await axiosREST.post(url, data);
+  };
+  return { postRESTData };
 };
