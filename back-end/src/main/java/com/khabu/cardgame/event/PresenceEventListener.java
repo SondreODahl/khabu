@@ -63,6 +63,8 @@ public class PresenceEventListener {
         sessionRepository.removeSession(sessionId);
     }
 
+
+    // TODO: Send a message to /topic/ready updating ready player count
     @EventListener
     public void handleSessionUnsubscribe(SessionUnsubscribeEvent event) {
         StompHeaderAccessor headers = StompHeaderAccessor.wrap(event.getMessage());
