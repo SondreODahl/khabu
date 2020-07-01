@@ -6,10 +6,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.socket.messaging.SessionConnectedEvent;
-import org.springframework.web.socket.messaging.SessionDisconnectEvent;
-import org.springframework.web.socket.messaging.SessionSubscribeEvent;
-import org.springframework.web.socket.messaging.SessionUnsubscribeEvent;
+import org.springframework.web.socket.messaging.*;
 
 
 // Handles connection and disconnection events.
@@ -31,12 +28,14 @@ public class PresenceEventListener {
 
     // TODO: Create user from cookie/prev session
     @EventListener
-    public void handleSessionConnected(SessionConnectedEvent event) {
+    public void handleSessionConnected(SessionConnectEvent event) {
         StompHeaderAccessor headers = StompHeaderAccessor.wrap(event.getMessage());
 
         // Retrieve session variables
         String sessionId = headers.getSessionId();
         String userName = headers.getUser().getName();
+
+        System.out.println(userName);
 
         // Create new user and add user + session
         User user = new User(userName);
