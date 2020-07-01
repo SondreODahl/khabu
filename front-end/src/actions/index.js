@@ -3,6 +3,7 @@ import {
   SET_CLIENT,
   SET_CONNECTED,
   SET_DATA,
+  SUBMIT_JOIN_GAME,
   SUBSCRIPTION_MESSAGE,
 } from './types';
 
@@ -36,4 +37,11 @@ export const addSubMessage = (destination, message) => {
 
 export const toggleReady = () => {
   return { type: READY };
+};
+
+export const joinSubmit = (username) => {
+  return {
+    type: SUBMIT_JOIN_GAME,
+    payload: { username },
+  };
 };
