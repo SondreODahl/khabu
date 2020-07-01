@@ -6,23 +6,30 @@ export default (destination) => {
   const dispatch = useDispatch();
   const client = useSelector((state) => state.client);
   const connected = useSelector((state) => state.connected);
+
   const subscribe = useCallback(() => {
-    client.subscribe(destination, ({ body }) => {
+    console.log('Subscribed to', destination);
+    const sub = client.subscribe(destination, ({ body }) => {
+      // Below happens every time message is received
       console.log(body);
+      console.log(sub);
       dispatch(addSubMessage(destination, body));
     });
-    console.log('Subscribed to', destination);
+    return sub;
   }, [client, destination, dispatch]);
 
-  const unsubscribe = useCallback(() => {
-    client.unsubscribe(destination);
-    console.log('Unsubscribed from', destination);
-  }, [client, destination]);
+  const unsubscribe = useCallback(
+    (sub) => {
+      sub.unsubscribe();
+      console.log('Unsubscribed from', destination);
+    },
+    [destination]
+  );
 
   useEffect(() => {
     if (connected) {
-      subscribe();
-      return unsubscribe;
+      const sub = subscribe();
+      return () => unsubscribe(sub);
     }
   }, [connected, subscribe, unsubscribe]);
 };

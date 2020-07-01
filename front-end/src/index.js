@@ -5,6 +5,8 @@ import { createStore } from 'redux';
 
 import App from './components/App';
 import reducers from './reducers';
+import { BrowserRouter, Route } from 'react-router-dom';
+import Testing from './components/Testing';
 
 const store = createStore(
   reducers,
@@ -13,7 +15,9 @@ const store = createStore(
 
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
   </Provider>,
   document.querySelector('#root')
 );

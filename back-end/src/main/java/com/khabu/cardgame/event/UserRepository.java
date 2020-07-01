@@ -17,39 +17,25 @@ public class UserRepository {
     private List<User> activeUserSessions = new ArrayList<>();
     private List<User> playersReadiedUp = new ArrayList<>();
 
+
+    // ---------------------------------------------
+    // THIS SECTION HANDLES THE ACTIVE USER SESSIONS
+    // ---------------------------------------------
     public void add(User user) {
         activeUserSessions.add(user);
-    }
-
-    public User getParticipant(User user) {
-        return activeUserSessions.get(activeUserSessions.indexOf(user));
-    }
-
-    public User getParticipantByIndex(int index) {
-        return activeUserSessions.get(index);
     }
 
     public User getParticipantByName(String userName) {
         return activeUserSessions.stream().filter(u -> u.getName().equals(userName)).findFirst().get();
     }
 
-
-    public void removeParticipant(User user) {
-        activeUserSessions.remove(user);
-    }
-
     public void removeParticipantByName(String userName) {
         activeUserSessions.removeIf(user -> user.getName().equals(userName));
     }
-
-    public List<User> getActiveUserSessions() {
-        return activeUserSessions;
-    }
-
-    public void setActiveUserSessions(List<User> activeUserSessions) {
-        this.activeUserSessions = activeUserSessions;
-    }
-
+    
+    // ---------------------------------
+    // HANDLES THE LIST OF READY PLAYERS
+    // ---------------------------------
     public void addReadyPlayer(User user) {
         playersReadiedUp.add(user);
     }
@@ -60,5 +46,9 @@ public class UserRepository {
 
     public int getNumberOfPlayersReadiedUp() {
         return playersReadiedUp.size();
+    }
+
+    public boolean isPlayerReady(User user) {
+        return playersReadiedUp.contains(user);
     }
 }

@@ -22,5 +22,11 @@ public class SessionRepository {
         return activeSessions.get(sessionId);
     }
 
+    public Map<String, User> getActiveSessions() {
+        return activeSessions;
+    }
 
+    public boolean containsSession(String sessionId) {
+        return activeSessions.containsKey(sessionId);
+    }
 }

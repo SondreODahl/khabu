@@ -46,6 +46,7 @@ public class GameStartController {
     @MessageMapping("/ready")
     public void userReady(@Payload String message, Principal principal) {
         User user = userRepository.getParticipantByName(principal.getName());
+        System.out.println("\n ---Sending data to user .... ----\n");
         if (message.equals("true")) {
             user.setReady(true);
             userRepository.addReadyPlayer(user);

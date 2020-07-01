@@ -2,6 +2,7 @@ import React from 'react';
 import usePublish from '../api/usePublish';
 import useSubscribe from '../api/useSubscribe';
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 export default (props) => {
   useSubscribe('/topic/greeting');

@@ -1,25 +1,22 @@
 import React, { useEffect } from 'react';
-import { useRESTServer } from '../api/RESTServer';
 import { useSelector } from 'react-redux';
+import { Router, Route, Link, BrowserRouter } from 'react-router-dom';
 import useClient from '../api/useSTOMPClient';
-import GreetButton from './GreetButton';
-import ReadyUpButton from './ReadyUpButton';
+import Testing from './Testing';
+import JoinGame from './pre-game/JoinGame';
 
-const App = () => {
-  const url = '/api/hello';
+const App = (props) => {
   useClient();
-  const { getRESTData } = useRESTServer();
-  const data = useSelector((state) => state.data);
-
-  useEffect(() => {
-    getRESTData(url);
-  }, [getRESTData]);
-
   return (
     <div>
-      {data}
-      <GreetButton />
-      <ReadyUpButton />
+      <Link to={'/join'}>
+        <button>Join</button>
+      </Link>
+      <Link to={'/test'}>
+        <button>Test</button>
+      </Link>
+      <Route path={'/test'} component={Testing} />
+      <Route path={'/join'} component={JoinGame} />
     </div>
   );
 };
