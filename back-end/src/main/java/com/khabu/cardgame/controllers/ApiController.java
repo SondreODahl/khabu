@@ -41,7 +41,7 @@ public class ApiController {
 
     @RequestMapping(value="/api/player", method=RequestMethod.POST)
     public ResponseEntity<String> createPlayer(@RequestBody Map<String, Object> player) {
-        String playerName = (String) player.get("player");
+        String playerName = (String) player.get("username");
         Player newPlayer = new Player(playerName);
         playerRepository.addPlayer(newPlayer);
         return ResponseEntity.status(HttpStatus.CREATED).build();
