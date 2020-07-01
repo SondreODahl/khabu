@@ -3,6 +3,7 @@ package com.khabu.cardgame.controllers;
 import com.khabu.cardgame.event.UserRepository;
 import com.khabu.cardgame.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -15,6 +16,7 @@ import java.util.Date;
 
 // Handles websocket interaction
 
+@Order(1)
 @RestController
 public class GameStartController {
 
