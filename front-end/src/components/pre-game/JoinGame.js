@@ -11,7 +11,7 @@ export default (props) => {
   const { postRESTData } = useRESTPost();
 
   const onSubmit = (data) => {
-    postRESTData('/api/player', { player: data });
+    postRESTData('/api/player', { username: data.username });
     dispatch(joinSubmit(data));
   };
 
@@ -23,7 +23,7 @@ export default (props) => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <h3>Enter username:</h3>
         <input
-          name={'userName'}
+          name={'username'}
           type={'text'}
           ref={register({
             required: { value: true, message: 'You must input a username' },
@@ -41,16 +41,16 @@ export default (props) => {
             },
           })}
         />
-        {errors?.userName && errors?.userName?.types?.pattern && (
+        {errors?.username && errors?.username?.types?.pattern && (
           <div>Username must be only letters and numbers</div>
         )}
-        {errors?.userName && errors?.userName?.types?.maxLength && (
+        {errors?.username && errors?.username?.types?.maxLength && (
           <div>Username must be maximum 20 characters</div>
         )}
-        {errors?.userName && errors?.userName?.types?.minLength && (
+        {errors?.username && errors?.username?.types?.minLength && (
           <div>Username must be minimum 5 characters</div>
         )}
-        {errors?.userName && errors?.userName?.types?.required && (
+        {errors?.username && errors?.username?.types?.required && (
           <div>Username must be minimum 5 characters</div>
         )}
       </form>
