@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { Router, Route, Link, BrowserRouter } from 'react-router-dom';
 
 import useClient from '../api/useSTOMPClient';
-import Testing from './Testing';
+import Testing from './testing/Testing';
 import JoinGame from './pre-game/JoinGame';
 import StartPage from './pre-game/StartPage';
 import GamePage from './in-game/GamePage';
