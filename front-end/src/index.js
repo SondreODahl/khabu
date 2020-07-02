@@ -6,7 +6,7 @@ import { createStore } from 'redux';
 import App from './components/App';
 import reducers from './reducers';
 import { BrowserRouter, Route } from 'react-router-dom';
-import Testing from './components/Testing';
+import Testing from './components/testing/Testing';
 
 const store = createStore(
   reducers,

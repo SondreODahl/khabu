@@ -1,5 +1,6 @@
 package com.khabu.cardgame.event;
 
+import com.khabu.cardgame.model.PlayerRepository;
 import com.khabu.cardgame.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
@@ -15,14 +16,19 @@ import org.springframework.web.socket.messaging.*;
 public class PresenceEventListener {
 
     private SimpMessagingTemplate messagingTemplate;
+    private PlayerRepository playerRepository;
     private UserRepository userRepository;
     private SessionRepository sessionRepository;
 
     @Autowired
-    public PresenceEventListener(SimpMessagingTemplate messagingTemplate, UserRepository userRepository, SessionRepository sessionRepository) {
+    public PresenceEventListener(SimpMessagingTemplate messagingTemplate,
+                                 UserRepository userRepository,
+                                 SessionRepository sessionRepository,
+                                 PlayerRepository playerRepository) {
         this.messagingTemplate = messagingTemplate;
         this.userRepository = userRepository;
         this.sessionRepository = sessionRepository;
+        this.playerRepository = playerRepository;
     }
 
 
@@ -53,9 +59,12 @@ public class PresenceEventListener {
         String userName = headers.getUser().getName();
         User user = userRepository.getParticipantByName(userName);
 
-        // Remove from ready players on disconnect
+        // Remove from ready/active players on disconnect
         if (userRepository.isPlayerReady(user)) {
             userRepository.removeUnreadiedPlayer(user);
+        }
+        if (playerRepository.getPlayers().stream().anyMatch(p -> p.getSessionId().equals(sessionId))) {
+            playerRepository.removePlayerBySessionId(sessionId);
         }
 
         // Remove session

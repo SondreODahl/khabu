@@ -1,9 +1,10 @@
 import Axios from 'axios';
 import { config } from './Constants';
 import { useDispatch } from 'react-redux';
-import { setData } from '../actions';
+import { formError, formValid, setData } from '../actions';
+import { POST_DATA } from '../actions/types';
 
-const axiosREST = Axios.create({
+export const axiosREST = Axios.create({
   baseURL: config.url.API_URL,
 });
 
@@ -14,11 +15,4 @@ export const useRESTGet = () => {
   };
 
   return { getRESTData };
-};
-
-export const useRESTPost = () => {
-  const postRESTData = async (url, data) => {
-    await axiosREST.post(url, data);
-  };
-  return { postRESTData };
 };

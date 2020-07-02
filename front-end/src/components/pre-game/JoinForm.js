@@ -1,17 +1,17 @@
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
-import { useRESTPost } from '../../api/RESTServer';
-import { joinSubmit } from '../../actions';
+import { useDispatch, useSelector } from 'react-redux';
+import { useRESTPostUserName } from '../../api/RESTServer';
+import { formError, formSubmit, formValid } from '../../actions';
+import { RESET_FORM } from '../../actions/types';
 
 export default (props) => {
   const { register, errors, handleSubmit } = useForm({ criteriaMode: 'all' });
   const dispatch = useDispatch();
-  const { postRESTData } = useRESTPost();
 
   const onSubmit = (data) => {
-    postRESTData('/api/player', { username: data.username });
-    dispatch(joinSubmit(data));
+    // Username will be validated. Not certain that it has been already taken though
+    dispatch(formSubmit(data.username));
   };
 
   return (

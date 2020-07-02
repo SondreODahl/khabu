@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
-import usePublish from '../api/usePublish';
-import useSubscribe from '../api/useSubscribe';
+import usePublish from '../../api/usePublish';
+import useSubscribe from '../../api/useSubscribe';
 import { useSelector, useDispatch } from 'react-redux';
-import { toggleReady } from '../actions';
+import { toggleReady } from '../../actions';
 
 export default (props) => {
   const dispatch = useDispatch();

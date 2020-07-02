@@ -1,14 +1,14 @@
 import React, { useEffect } from 'react';
 import GreetButton from './GreetButton';
 import ReadyUpButton from './ReadyUpButton';
-import { useRESTGet } from '../api/RESTServer';
+import { useRESTGet } from '../../api/RESTServer';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 export default (props) => {
   const url = '/api/hello';
   const { getRESTData } = useRESTGet();
-  const data = useSelector((state) => state.data);
+  const data = useSelector((state) => state.get_data);
 
   useEffect(() => {
     getRESTData(url);
