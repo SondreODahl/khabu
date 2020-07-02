@@ -43,9 +43,13 @@ public class ApiController {
 
     @RequestMapping(value="/api/player", method=RequestMethod.POST)
     public ResponseEntity<String> createPlayer(@RequestBody Map<String, Object> player, HttpServletRequest req) {
+        // GET ATTRIBUTES
         String sessionId = req.getSession().getId();
         String playerName = (String) player.get("username");
-        if (playerRepository.getPlayers().stream().anyMatch(p -> p.getName().equals(playerName))) {
+        System.out.println(playerRepository.getPlayers().size());
+
+        // VALIDATE AND CREATE
+        if (playerRepository.IsPlayerInListByName(playerName)) {
             return ResponseEntity.status(HttpStatus.IM_USED).build();
         }
         if (playerRepository.getPlayers().size() <= 2) {
@@ -53,6 +57,8 @@ public class ApiController {
             playerRepository.addPlayer(newPlayer);
             return ResponseEntity.status(HttpStatus.CREATED).build();
         }
+
+        // ERROR
         return ResponseEntity.status(HttpStatus.CONFLICT).build();
     }
 

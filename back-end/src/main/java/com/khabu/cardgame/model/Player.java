@@ -3,14 +3,10 @@ package com.khabu.cardgame.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.stereotype.Component;
 
-@Component
 public class Player {
 
     private String name;
     private String sessionId;
-
-    public Player() {
-    }
 
     public Player(String name, String sessionid) {
         this.sessionId = sessionid;
