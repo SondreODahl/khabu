@@ -59,9 +59,12 @@ public class PresenceEventListener {
         String userName = headers.getUser().getName();
         User user = userRepository.getParticipantByName(userName);
 
-        // Remove from ready players on disconnect
+        // Remove from ready/active players on disconnect
         if (userRepository.isPlayerReady(user)) {
             userRepository.removeUnreadiedPlayer(user);
+        }
+        if (playerRepository.getPlayers().stream().anyMatch(p -> p.getSessionId().equals(sessionId))) {
+            playerRepository.removePlayerBySessionId(sessionId);
         }
 
         // Remove session

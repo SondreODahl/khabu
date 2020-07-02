@@ -20,6 +20,10 @@ public class PlayerRepository {
         players.remove(player);
     }
 
+    public void removePlayerBySessionId(String sessionId) {
+        players.removeIf(p -> p.getSessionId().equals(sessionId));
+    }
+
     public List<Player> getPlayers() {
         return players;
     }

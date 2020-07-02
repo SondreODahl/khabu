@@ -10,7 +10,8 @@ public class Player {
     public Player() {
     }
 
-    public Player(String name) {
+    public Player(String name, String sessionid) {
+        this.sessionId = sessionid;
         this.name = name;
     }
 

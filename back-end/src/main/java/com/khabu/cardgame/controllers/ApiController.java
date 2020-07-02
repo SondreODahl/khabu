@@ -15,8 +15,10 @@ import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessageType;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.annotation.SendToUser;
+import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.awt.print.PrinterIOException;
 import java.security.Principal;
 import java.text.SimpleDateFormat;
@@ -40,10 +42,11 @@ public class ApiController {
     }
 
     @RequestMapping(value="/api/player", method=RequestMethod.POST)
-    public ResponseEntity<String> createPlayer(@RequestBody Map<String, Object> player) {
+    public ResponseEntity<String> createPlayer(@RequestBody Map<String, Object> player, HttpServletRequest req) {
+        String sessionId = req.getSession().getId();
         if (playerRepository.getPlayers().size() <= 2) {
             String playerName = (String) player.get("username");
-            Player newPlayer = new Player(playerName);
+            Player newPlayer = new Player(playerName, sessionId);
             playerRepository.addPlayer(newPlayer);
             return ResponseEntity.status(HttpStatus.CREATED).build();
         }
