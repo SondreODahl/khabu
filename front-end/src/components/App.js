@@ -6,6 +6,7 @@ import useClient from '../api/useSTOMPClient';
 import Testing from './Testing';
 import JoinGame from './pre-game/JoinGame';
 import StartPage from './pre-game/StartPage';
+import GamePage from './in-game/GamePage';
 
 const App = (props) => {
   useClient();
@@ -14,6 +15,7 @@ const App = (props) => {
       <Route path={'/'} exact component={StartPage} />
       <Route path={'/test'} component={Testing} />
       <Route path={'/join'} component={JoinGame} />
+      <Route path={'/game'} component={GamePage} />
     </div>
   );
 };
