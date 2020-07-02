@@ -5,7 +5,7 @@ export const POST_DATA = 'POST_DATA';
 // Forms
 export const FORM_SUBMIT = 'FORM_SUBMIT';
 export const FORM_VALID = 'FORM_VALID';
-export const FORM_INVALID = 'FORM_INVALID';
+export const FORM_ERROR = 'FORM_ERROR';
 export const RESET_FORM = 'RESET_FORM';
 
 // -------------- For STOMPjs -----------------

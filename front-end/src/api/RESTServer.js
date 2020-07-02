@@ -1,7 +1,7 @@
 import Axios from 'axios';
 import { config } from './Constants';
 import { useDispatch } from 'react-redux';
-import { formInvalid, formValid, setData } from '../actions';
+import { formError, formValid, setData } from '../actions';
 import { POST_DATA } from '../actions/types';
 
 export const axiosREST = Axios.create({

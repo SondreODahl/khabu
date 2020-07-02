@@ -2,7 +2,7 @@ import React, { useCallback, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRESTPostUserName } from '../../api/RESTServer';
-import { formInvalid, formSubmit, formValid } from '../../actions';
+import { formError, formSubmit, formValid } from '../../actions';
 import { RESET_FORM } from '../../actions/types';
 
 export default (props) => {

@@ -1,4 +1,4 @@
-import { FORM_VALID, FORM_SUBMIT, FORM_INVALID, RESET_FORM } from '../actions/types';
+import { FORM_VALID, FORM_SUBMIT, FORM_ERROR, RESET_FORM } from '../actions/types';
 
 export default (state = {}, { type, payload }) => {
   switch (type) {
@@ -6,10 +6,10 @@ export default (state = {}, { type, payload }) => {
       return { ...state, data: payload, submitted: true };
     case FORM_VALID:
       return { ...state, valid: true };
-    case FORM_INVALID:
-      return { ...state, valid: false };
+    case FORM_ERROR:
+      return { ...state, valid: false, error: payload };
     case RESET_FORM:
-      return { ...state, valid: false, submitted: false };
+      return { ...state, valid: false, submitted: false, error: null };
     default:
       return state;
   }
