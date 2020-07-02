@@ -1,9 +1,11 @@
 import {
+  FORM_INVALID,
+  FORM_SUBMIT,
+  FORM_VALID,
   READY,
   SET_CLIENT,
   SET_CONNECTED,
   SET_DATA,
-  SUBMIT_JOIN_GAME,
   SUBSCRIPTION_MESSAGE,
 } from './types';
 
@@ -39,9 +41,17 @@ export const toggleReady = () => {
   return { type: READY };
 };
 
-export const joinSubmit = (username) => {
+export const formInvalid = () => {
+  return { type: FORM_INVALID };
+};
+
+export const formValid = (username) => {
   return {
-    type: SUBMIT_JOIN_GAME,
-    payload: { username },
+    type: FORM_VALID,
+    payload: username,
   };
+};
+
+export const formSubmit = (payload) => {
+  return { type: FORM_SUBMIT, payload };
 };

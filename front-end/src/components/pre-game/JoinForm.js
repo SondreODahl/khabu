@@ -1,18 +1,24 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useRESTPost } from '../../api/RESTServer';
-import { joinSubmit } from '../../actions';
+import { formInvalid, formSubmit, formValid } from '../../actions';
 
 export default (props) => {
   const { register, errors, handleSubmit } = useForm({ criteriaMode: 'all' });
   const dispatch = useDispatch();
+  const formData = useSelector((state) => state.form.data);
   const { postRESTData } = useRESTPost();
 
   const onSubmit = (data) => {
-    postRESTData('/api/player', { username: data.username });
-    dispatch(joinSubmit(data));
+    dispatch(formSubmit(data.username));
   };
+
+  useEffect(() => {
+    const response = postRESTData('/api/player', { username: formData });
+    if (response.status === 201) dispatch(formValid(formData));
+    else if (response.status === 409) dispatch(formInvalid());
+  }, [formData]);
 
   return (
     <div>
