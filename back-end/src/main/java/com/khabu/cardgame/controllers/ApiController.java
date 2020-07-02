@@ -41,10 +41,13 @@ public class ApiController {
 
     @RequestMapping(value="/api/player", method=RequestMethod.POST)
     public ResponseEntity<String> createPlayer(@RequestBody Map<String, Object> player) {
-        String playerName = (String) player.get("username");
-        Player newPlayer = new Player(playerName);
-        playerRepository.addPlayer(newPlayer);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        if (playerRepository.getPlayers().size() <= 2) {
+            String playerName = (String) player.get("username");
+            Player newPlayer = new Player(playerName);
+            playerRepository.addPlayer(newPlayer);
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        }
+        return ResponseEntity.status(HttpStatus.CONFLICT).build();
     }
 
 }
