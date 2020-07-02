@@ -23,7 +23,6 @@ export default (props) => {
           if (response.status === 201) dispatch(formValid(data));
           else dispatch(formError('Username taken')); // TODO: Message for full game
         } catch (err) {
-          alert(err);
           dispatch(formError(err.message));
         }
       };
