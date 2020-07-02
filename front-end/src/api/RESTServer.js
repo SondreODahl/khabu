@@ -16,10 +16,3 @@ export const useRESTGet = () => {
 
   return { getRESTData };
 };
-
-export const useRESTPost = () => {
-  const postRESTData = async (url, data) => {
-    await axiosREST.post(url, data);
-  };
-  return { postRESTData };
-};
