@@ -2,8 +2,8 @@ import React, { useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { formSubmit, joinSubmit } from '../../actions';
-import { useRESTPost, useRESTPostUserName } from '../../api/RESTServer';
+import { formInvalid, formSubmit, formValid, joinSubmit } from '../../actions';
+import { axiosREST, useRESTPostUserName } from '../../api/RESTServer';
 import JoinForm from './JoinForm';
 import { FORM_INVALID, RESET_FORM } from '../../actions/types';
 
@@ -18,7 +18,12 @@ export default (props) => {
 
   useEffect(() => {
     if (submitted) {
-      postRESTData('/api/player', { username: formData });
+      const post = async (url, data) => {
+        const response = await axiosREST.post(url, data);
+        if (response.status === 201) dispatch(formValid(data));
+        else dispatch(formInvalid());
+      };
+      post('/api/player', { username: formData });
     }
   }, [formData, submitted]);
 

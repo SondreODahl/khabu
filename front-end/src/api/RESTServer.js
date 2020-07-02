@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { formInvalid, formValid, setData } from '../actions';
 import { POST_DATA } from '../actions/types';
 
-const axiosREST = Axios.create({
+export const axiosREST = Axios.create({
   baseURL: config.url.API_URL,
 });
 
