@@ -16,13 +16,3 @@ export const useRESTGet = () => {
 
   return { getRESTData };
 };
-
-export const useRESTPostUserName = () => {
-  const dispatch = useDispatch();
-  const postRESTData = async (url, data) => {
-    const response = await axiosREST.post(url, data);
-    if (response.status === 201) dispatch(formValid(data));
-    else dispatch(formInvalid());
-  };
-  return { postRESTData };
-};
