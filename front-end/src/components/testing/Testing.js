@@ -20,7 +20,7 @@ export default (props) => {
       <GreetButton />
       <ReadyUpButton />
       <Link to={'/'}>
-        <button>Home</button>
+        <button className={'ui blue button'}>Home</button>
       </Link>
     </div>
   );

@@ -16,7 +16,8 @@ export default (props) => {
 
   useSubscribe(subDest);
 
-  const buttonMsg = ready ? 'Not Ready' : 'Ready';
+  // const buttonMsg = ready ? 'Not Ready' : 'Ready';
+  const buttonClassName = ready ? 'active' : 'inactive';
   const readyMsg = `${playersReady} players ready`;
 
   useEffect(() => {
@@ -27,7 +28,12 @@ export default (props) => {
   return (
     <div>
       {readyMsg}
-      <button onClick={() => dispatch(toggleReady())}>{buttonMsg}</button>
+      <button
+        className={`ui toggle button ${buttonClassName}`}
+        onClick={() => dispatch(toggleReady())}
+      >
+        Ready
+      </button>
     </div>
   );
 };

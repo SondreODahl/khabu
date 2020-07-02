@@ -5,10 +5,10 @@ export default () => {
   return (
     <div>
       <Link to={'/join'}>
-        <button>Join</button>
+        <button className={'ui teal button'}>Join</button>
       </Link>
       <Link to={'/test'}>
-        <button>Test</button>
+        <button className={'ui teal button'}>Test</button>
       </Link>
     </div>
   );
