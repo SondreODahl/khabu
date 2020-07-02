@@ -1,9 +1,12 @@
-import { SET_DATA } from '../actions/types';
+import { GET_DATA, POST_DATA } from '../actions/types';
 
-export default (state = 'No data', action) => {
+export default (state = { get_data: {}, post_data: { response: '' } }, action) => {
+  // TODO: Change class to specific for submitting form
   switch (action.type) {
-    case SET_DATA:
-      return action.payload.data;
+    case GET_DATA:
+      return { ...state, get_data: action.payload.data };
+    case POST_DATA:
+      return { ...state, post_data: action.payload.data };
     default:
       return state;
   }

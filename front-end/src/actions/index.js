@@ -5,13 +5,13 @@ import {
   READY,
   SET_CLIENT,
   SET_CONNECTED,
-  SET_DATA,
+  GET_DATA,
   SUBSCRIPTION_MESSAGE,
 } from './types';
 
 export const setData = (data) => {
   return {
-    type: SET_DATA,
+    type: GET_DATA,
     payload: data,
   };
 };
