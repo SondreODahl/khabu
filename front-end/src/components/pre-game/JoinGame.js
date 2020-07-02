@@ -9,12 +9,10 @@ import { FORM_INVALID, RESET_FORM } from '../../actions/types';
 
 export default (props) => {
   const history = useHistory();
-  const { postRESTData } = useRESTPostUserName();
   const dispatch = useDispatch();
   const formData = useSelector((state) => state.form.data);
   const submitted = useSelector((state) => state.form.submitted);
   const validForm = useSelector((state) => state.form.valid);
-  const response = useSelector((state) => state.data.post_data);
 
   useEffect(() => {
     if (submitted) {
@@ -40,6 +38,7 @@ export default (props) => {
         <button>Home</button>
       </Link>
       <JoinForm />
+      {!validForm && submitted && <div>Username taken</div>}
     </div>
   );
 };
