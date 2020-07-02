@@ -44,8 +44,11 @@ public class ApiController {
     @RequestMapping(value="/api/player", method=RequestMethod.POST)
     public ResponseEntity<String> createPlayer(@RequestBody Map<String, Object> player, HttpServletRequest req) {
         String sessionId = req.getSession().getId();
+        String playerName = (String) player.get("username");
+        if (playerRepository.getPlayers().stream().anyMatch(p -> p.getName().equals(playerName))) {
+            return ResponseEntity.status(HttpStatus.IM_USED).build();
+        }
         if (playerRepository.getPlayers().size() <= 2) {
-            String playerName = (String) player.get("username");
             Player newPlayer = new Player(playerName, sessionId);
             playerRepository.addPlayer(newPlayer);
             return ResponseEntity.status(HttpStatus.CREATED).build();
