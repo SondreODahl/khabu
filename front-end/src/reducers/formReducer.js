@@ -1,6 +1,6 @@
 import { FORM_VALID, FORM_SUBMIT, FORM_INVALID } from '../actions/types';
 
-export default (state = { submitted: 0 }, { type, payload }) => {
+export default (state = {}, { type, payload }) => {
   switch (type) {
     case FORM_SUBMIT:
       return { ...state, data: payload };
