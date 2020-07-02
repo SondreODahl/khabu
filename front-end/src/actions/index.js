@@ -1,5 +1,5 @@
 import {
-  FORM_INVALID,
+  FORM_ERROR,
   FORM_SUBMIT,
   FORM_VALID,
   READY,
@@ -41,8 +41,8 @@ export const toggleReady = () => {
   return { type: READY };
 };
 
-export const formInvalid = () => {
-  return { type: FORM_INVALID };
+export const formError = (error) => {
+  return { type: FORM_ERROR, payload: error };
 };
 
 export const formValid = (username) => {
