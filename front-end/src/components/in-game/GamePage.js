@@ -1,5 +1,8 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 
 export default () => {
-  return <div>Game</div>;
+  const username = useSelector((state) => state.form.data);
+
+  return <div>{username}</div>;
 };
