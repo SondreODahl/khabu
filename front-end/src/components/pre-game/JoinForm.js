@@ -7,23 +7,12 @@ import { RESET_FORM } from '../../actions/types';
 
 export default (props) => {
   const { register, errors, handleSubmit } = useForm({ criteriaMode: 'all' });
-  const { postRESTData } = useRESTPostUserName();
   const dispatch = useDispatch();
-  const formData = useSelector((state) => state.form.data);
-  const submitted = useSelector((state) => state.form.submitted);
-  const response = useSelector((state) => state.data.post_data);
 
   const onSubmit = (data) => {
     // Username will be validated. Not certain that it has been already taken though
-    console.log('Submitted');
     dispatch(formSubmit(data.username));
   };
-
-  useEffect(() => {
-    if (formData && submitted) {
-      postRESTData('/api/player', { username: formData });
-    }
-  }, [formData, submitted]);
 
   return (
     <div>
