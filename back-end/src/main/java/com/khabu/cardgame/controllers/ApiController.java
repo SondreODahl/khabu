@@ -46,10 +46,9 @@ public class ApiController {
         // GET ATTRIBUTES
         String sessionId = req.getSession().getId();
         String playerName = (String) player.get("username");
-        System.out.println(playerRepository.getPlayers().size());
 
         // VALIDATE AND CREATE
-        if (playerRepository.IsPlayerInListByName(playerName)) {
+        if (playerRepository.getPlayers().stream().anyMatch(p -> p.getName().equals(playerName))) {
             return ResponseEntity.status(HttpStatus.IM_USED).build();
         }
         if (playerRepository.getPlayers().size() <= 2) {

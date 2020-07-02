@@ -63,7 +63,7 @@ public class PresenceEventListener {
         if (userRepository.isPlayerReady(user)) {
             userRepository.removeUnreadiedPlayer(user);
         }
-        if (playerRepository.IsPlayerInListBySessionId(sessionId)) {
+        if (playerRepository.getPlayers().stream().anyMatch(p -> p.getSessionId().equals(sessionId))) {
             playerRepository.removePlayerBySessionId(sessionId);
         }
 
