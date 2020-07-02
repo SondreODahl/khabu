@@ -1,5 +1,6 @@
 package com.khabu.cardgame.event;
 
+import com.khabu.cardgame.model.PlayerRepository;
 import com.khabu.cardgame.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
@@ -15,14 +16,19 @@ import org.springframework.web.socket.messaging.*;
 public class PresenceEventListener {
 
     private SimpMessagingTemplate messagingTemplate;
+    private PlayerRepository playerRepository;
     private UserRepository userRepository;
     private SessionRepository sessionRepository;
 
     @Autowired
-    public PresenceEventListener(SimpMessagingTemplate messagingTemplate, UserRepository userRepository, SessionRepository sessionRepository) {
+    public PresenceEventListener(SimpMessagingTemplate messagingTemplate,
+                                 UserRepository userRepository,
+                                 SessionRepository sessionRepository,
+                                 PlayerRepository playerRepository) {
         this.messagingTemplate = messagingTemplate;
         this.userRepository = userRepository;
         this.sessionRepository = sessionRepository;
+        this.playerRepository = playerRepository;
     }
 
 
