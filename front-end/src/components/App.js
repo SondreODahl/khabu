@@ -11,7 +11,7 @@ import GamePage from './in-game/GamePage';
 const App = (props) => {
   useClient();
   return (
-    <div>
+    <div className={'ui centered container'}>
       <Route path={'/'} exact component={StartPage} />
       <Route path={'/test'} component={Testing} />
       <Route path={'/join'} component={JoinGame} />
