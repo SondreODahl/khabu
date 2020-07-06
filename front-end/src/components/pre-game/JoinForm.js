@@ -6,7 +6,10 @@ import { formError, formSubmit, formValid } from '../../actions';
 import { RESET_FORM } from '../../actions/types';
 
 export default (props) => {
-  const { register, errors, handleSubmit } = useForm({ criteriaMode: 'all' });
+  const { register, errors, handleSubmit } = useForm({
+    criteriaMode: 'all',
+    reValidateMode: 'onSubmit',
+  });
   const dispatch = useDispatch();
 
   const onSubmit = (data) => {
@@ -16,39 +19,49 @@ export default (props) => {
 
   return (
     <div>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)} className={'ui error form'}>
         <h3>Enter username:</h3>
-        <input
-          name={'username'}
-          type={'text'}
-          ref={register({
-            required: { value: true, message: 'You must input a username' },
-            minLength: {
-              value: 5,
-              message: 'Username must be minimum 5 characters',
-            },
-            maxLength: {
-              value: 20,
-              message: 'Username must be maximum 20 characters',
-            },
-            pattern: {
-              value: /^[A-Za-z0-9]+$/,
-              message: 'Username must be only letters/numbers',
-            },
-          })}
-        />
-        <input type={'submit'} />
-        {errors?.username && errors?.username?.types?.pattern && (
-          <div>Username must be only letters and numbers</div>
-        )}
-        {errors?.username && errors?.username?.types?.maxLength && (
-          <div>Username must be maximum 20 characters</div>
-        )}
-        {errors?.username && errors?.username?.types?.minLength && (
-          <div>Username must be minimum 5 characters</div>
-        )}
-        {errors?.username && errors?.username?.types?.required && (
-          <div>Username must be minimum 5 characters</div>
+        <div className={'ui action input '}>
+          <input
+            name={'username'}
+            type={'text'}
+            ref={register({
+              required: { value: true, message: 'You must input a username' },
+              minLength: {
+                value: 5,
+                message: 'Username must be minimum 5 characters',
+              },
+              maxLength: {
+                value: 20,
+                message: 'Username must be maximum 20 characters',
+              },
+              pattern: {
+                value: /^[A-Za-z0-9]+$/,
+                message: 'Username must be only letters/numbers',
+              },
+            })}
+          />
+          <input type={'submit'} className={'ui teal button'} value={'Submit'} />
+        </div>
+        <br />
+        {(errors.username || props.formError) && (
+          <div className={'ui error message compact'}>
+            <ul className={'list'}>
+              {errors?.username && errors?.username?.types?.pattern && (
+                <li>Username must be only letters and numbers</li>
+              )}
+              {errors?.username && errors?.username?.types?.maxLength && (
+                <li>Username must be maximum 20 characters</li>
+              )}
+              {errors?.username && errors?.username?.types?.minLength && (
+                <li>Username must be minimum 5 characters</li>
+              )}
+              {errors?.username && errors?.username?.types?.required && (
+                <li>Username must be minimum 5 characters</li>
+              )}
+              {props.formError && <li>{props.formError}</li>}
+            </ul>
+          </div>
         )}
       </form>
     </div>

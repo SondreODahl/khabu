@@ -16,12 +16,19 @@ export default (props) => {
 
   return (
     <div>
-      {data}
-      <GreetButton />
-      <ReadyUpButton />
       <Link to={'/'}>
-        <button>Home</button>
+        <button className={'ui blue button'}>Home</button>
       </Link>
+      <div className={'ui hidden divider'} />
+      <div className={'ui two column relaxed grid'}>
+        <div className={'column'}>
+          <GreetButton />
+          {data}
+        </div>
+        <div className={'column'}>
+          <ReadyUpButton />
+        </div>
+      </div>
     </div>
   );
 };

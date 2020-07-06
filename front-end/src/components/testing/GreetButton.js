@@ -14,7 +14,9 @@ export default (props) => {
 
   return (
     <div>
-      <button onClick={greetPublish}>Publish</button>
+      <button className={'ui teal button'} onClick={greetPublish}>
+        Publish
+      </button>
       {message}
     </div>
   );

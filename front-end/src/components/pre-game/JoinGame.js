@@ -43,10 +43,10 @@ export default (props) => {
   return (
     <div>
       <Link to={'/'}>
-        <button>Home</button>
+        <button className={'ui blue button'}>Home</button>
       </Link>
-      <JoinForm />
-      {error}
+      <div className={'ui hidden divider'} />
+      <JoinForm formError={error} />
     </div>
   );
 };
