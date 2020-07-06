@@ -45,8 +45,7 @@ export default (props) => {
       <Link to={'/'}>
         <button className={'ui blue button'}>Home</button>
       </Link>
-      <JoinForm />
-      {error}
+      <JoinForm formError={error} />
     </div>
   );
 };
