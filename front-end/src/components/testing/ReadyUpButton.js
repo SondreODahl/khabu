@@ -27,13 +27,13 @@ export default (props) => {
 
   return (
     <div>
-      {readyMsg}
       <button
         className={`ui toggle button ${buttonClassName}`}
         onClick={() => dispatch(toggleReady())}
       >
         Ready
       </button>
+      {readyMsg}
     </div>
   );
 };
