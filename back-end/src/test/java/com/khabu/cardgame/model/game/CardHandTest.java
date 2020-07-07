@@ -1,35 +1,24 @@
 package com.khabu.cardgame.model.game;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class CardHandTest {
 
-    @BeforeEach
-    public void setUp() {
-        CardHand cardHand = new CardHand();
-        Card cardOne = new Card(11, 'D');
-        Card cardTwo = new Card(12, 'S');
-        Card cardThree = new Card(7, 'C');
-        Card cardFour = new Card(2, 'H');
-    }
-
-    @AfterEach
-    public void tearDown() {
-        cardHand.getCards().clear();
-    }
-
     @Test
     public void addCardToHand() {
+        CardHand cardHand = new CardHand();
+        Card cardOne = new Card(11, "D");
         cardHand.addCard(cardOne);
         assertEquals(cardOne, cardHand.getCard(1));
     }
 
     @Test
     public void removeCardFromHand() {
+        CardHand cardHand = new CardHand();
+        Card cardOne = new Card(11, "D");
+        Card cardTwo = new Card(11, "D");
         cardHand.addCard(cardOne);
         cardHand.addCard(cardTwo);
         assertEquals(2, cardHand.getCards().size());
@@ -39,7 +28,25 @@ class CardHandTest {
 
     @Test
     public void getCardFromHand() {
+        CardHand cardHand = new CardHand();
+        Card cardOne = new Card(11, "D");
         cardHand.addCard(cardOne);
-        assertEquals(cardOne, cardHand.get(1));
+        assertEquals(cardOne, cardHand.getCard(1));
+    }
+
+    @Test
+    public void addCardToSmallestAvailableKeyAfterRemovingCard() {
+        CardHand cardHand = new CardHand();
+        Card cardOne = new Card(11, "D");
+        Card cardTwo = new Card(7, "H");
+        Card cardThree = new Card(3, "S");
+        Card cardFour = new Card( 13, "D");
+        cardHand.addCard(cardOne);
+        cardHand.addCard(cardTwo);
+        cardHand.addCard(cardThree);
+        cardHand.removeCard(2);
+        cardHand.addCard(cardFour);
+
+        assertEquals(cardFour, cardHand.getCard(2));
     }
 }

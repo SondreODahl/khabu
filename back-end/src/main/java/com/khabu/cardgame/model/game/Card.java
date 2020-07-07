@@ -2,26 +2,33 @@ package com.khabu.cardgame.model.game;
 
 public class Card {
     private int value;
-    private char face;
+    private String face;
 
-    public Card(int value, char face) {
-        this.value = value;
-        this.face = face;
+    public Card(int value, String face) {
+        if (isValidCardValue(value)) this.value = value;
+        if (isValidFaceValue(face)) this.face = face;
     }
 
     public int getValue() {
         return value;
     }
 
-    public void setValue(int value) {
-        this.value = value;
-    }
-
-    public char getFace() {
+    public String getFace() {
         return face;
     }
 
-    public void setFace(char face) {
-        this.face = face;
+    private boolean isValidCardValue(int value) {
+        if (value <= 13 && value >= 1) {
+            return true;
+        }
+        throw new IllegalArgumentException("Invalid card value");
     }
+
+    private boolean isValidFaceValue(String face) {
+        if (face.equals("H") || face.equals("S") || face.equals("C") || face.equals("D")) {
+            return true;
+        }
+        throw new IllegalArgumentException("Invalid face value");
+    }
+
 }
