@@ -3,15 +3,18 @@ package com.khabu.cardgame.model.game;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 class DiscardPileTest {
 
     private DiscardPile discardPile;
+    private Card card;
 
     @BeforeEach
     void setUp() {
         discardPile = new DiscardPile();
+        card = card = new Card(1, 'H');
     }
 
     @Test
@@ -20,8 +23,7 @@ class DiscardPileTest {
     }
 
     @Test
-    void testAddCard() {
-        Card card = new Card(1, 'H');
+    void testPutCard() {
         discardPile.put(card);
         assertEquals(1, discardPile.getSize());
         Card drawnCard = discardPile.draw();
@@ -33,8 +35,26 @@ class DiscardPileTest {
         try {
             discardPile.draw();
             fail();
+        } catch (IllegalMoveException e) {
         }
-        catch (IllegalMoveException e) {
+    }
+
+    @Test
+    void testSwapEmpty() {
+        try {
+            discardPile.swap(card);
+            fail();
+        } catch (IllegaMoveException e) {
         }
+    }
+
+    @Test
+    void testSwapCard() {
+        Card cardTwo = new Card(2, 'H');
+        discardPile.put(card);
+        Card swappedCard = discardPile.swap(cardTwo);
+        assertEquals(card, swappedCard);
+        assertEquals(1, discardPile.getSize());
+        assertEquals(cardTwo, discardPile.draw());
     }
 }
