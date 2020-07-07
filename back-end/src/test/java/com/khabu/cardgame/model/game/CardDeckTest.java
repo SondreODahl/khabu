@@ -29,7 +29,7 @@ class CardDeckTest {
     @Test
     public void testDrawCard() {
         Card firstCard = deck.drawCard();
-        assertTrue(deck.drawCard() instanceof Card);
+        assertNotNull(firstCard);
         List<Card> cards = deck.getCards();
         assertFalse(cards.contains(firstCard));
     }
@@ -42,13 +42,6 @@ class CardDeckTest {
         }
         deck.drawCard(); // Deck is empty. Attempts draw.
         assertEquals(CARD_SIZE, deck.getSize()); // Discard pile should be shuffled back in to deck
-    }
-
-    @Test
-    public void testShowCard() {
-        Card shownCard = deck.showCard();
-        assertNotNull(shownCard);
-        assertEquals(shownCard, deck.drawCard());
     }
 
     @Test

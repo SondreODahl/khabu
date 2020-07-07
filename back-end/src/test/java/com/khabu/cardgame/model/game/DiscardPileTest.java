@@ -3,8 +3,7 @@ package com.khabu.cardgame.model.game;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 class DiscardPileTest {
 
@@ -56,5 +55,12 @@ class DiscardPileTest {
         assertEquals(card, swappedCard);
         assertEquals(1, discardPile.getSize());
         assertEquals(cardTwo, discardPile.draw());
+    }
+
+    @Test
+    public void testShowCard() {
+        Card shownCard = discardPile.showCard();
+        assertNotNull(shownCard);
+        assertEquals(shownCard, discardPile.draw());
     }
 }
