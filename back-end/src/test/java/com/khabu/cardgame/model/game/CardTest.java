@@ -7,20 +7,20 @@ import static org.junit.jupiter.api.Assertions.*;
 class CardTest {
     @Test
     public void getFace() {
-        Card card = new Card(10, "S");
+        Card card = new Card(10, 'S');
         assertEquals("S", card.getFace());
     }
 
     @Test
     public void getValue() {
-        Card card = new Card(13, "H");
+        Card card = new Card(13, 'H');
         assertEquals(13, card.getValue());
     }
 
     @Test
     public void createInvalidCardValueThrowsException() {
         IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class,
-                () -> new Card(14, "H"),
+                () -> new Card(14, 'H'),
                 "Expected card value to be rejected, but it wasn't"
         );
 
@@ -30,7 +30,7 @@ class CardTest {
     @Test
     public void createInvalidCardFaceThrowsException() {
         IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class,
-                () -> new Card(11, "A"),
+                () -> new Card(11, 'A'),
                 "Expected card face to be rejected, but it wasn't"
         );
 

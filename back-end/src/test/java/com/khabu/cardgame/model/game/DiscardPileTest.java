@@ -1,5 +1,6 @@
 package com.khabu.cardgame.model.game;
 
+import com.khabu.cardgame.util.IllegalMoveException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -34,7 +35,7 @@ class DiscardPileTest {
         try {
             discardPile.draw();
             fail();
-        } catch (IllegalMoveException e) {
+        } catch (IllegalStateException ignored) {
         }
     }
 
@@ -43,7 +44,7 @@ class DiscardPileTest {
         try {
             discardPile.swap(card);
             fail();
-        } catch (IllegaMoveException e) {
+        } catch (IllegalStateException ignored) {
         }
     }
 
@@ -59,7 +60,7 @@ class DiscardPileTest {
 
     @Test
     public void testShowCard() {
-        Card shownCard = discardPile.showCard();
+        Card shownCard = discardPile.showTopCard();
         assertNotNull(shownCard);
         assertEquals(shownCard, discardPile.draw());
     }

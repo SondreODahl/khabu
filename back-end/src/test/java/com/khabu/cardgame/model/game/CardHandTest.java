@@ -9,7 +9,7 @@ class CardHandTest {
     @Test
     public void addCardToHand() {
         CardHand cardHand = new CardHand();
-        Card cardOne = new Card(11, "D");
+        Card cardOne = new Card(11, 'D');
         cardHand.addCard(cardOne);
         assertEquals(cardOne, cardHand.getCard(1));
     }
@@ -17,8 +17,8 @@ class CardHandTest {
     @Test
     public void removeCardFromHand() {
         CardHand cardHand = new CardHand();
-        Card cardOne = new Card(11, "D");
-        Card cardTwo = new Card(11, "D");
+        Card cardOne = new Card(11, 'D');
+        Card cardTwo = new Card(11, 'D');
         cardHand.addCard(cardOne);
         cardHand.addCard(cardTwo);
         assertEquals(2, cardHand.getCards().size());
@@ -29,7 +29,7 @@ class CardHandTest {
     @Test
     public void getCardFromHand() {
         CardHand cardHand = new CardHand();
-        Card cardOne = new Card(11, "D");
+        Card cardOne = new Card(11, 'D');
         cardHand.addCard(cardOne);
         assertEquals(cardOne, cardHand.getCard(1));
     }
@@ -37,10 +37,10 @@ class CardHandTest {
     @Test
     public void addCardToSmallestAvailableKeyAfterRemovingCard() {
         CardHand cardHand = new CardHand();
-        Card cardOne = new Card(11, "D");
-        Card cardTwo = new Card(7, "H");
-        Card cardThree = new Card(3, "S");
-        Card cardFour = new Card( 13, "D");
+        Card cardOne = new Card(11, 'D');
+        Card cardTwo = new Card(7, 'H');
+        Card cardThree = new Card(3, 'S');
+        Card cardFour = new Card( 13, 'D');
         cardHand.addCard(cardOne);
         cardHand.addCard(cardTwo);
         cardHand.addCard(cardThree);
