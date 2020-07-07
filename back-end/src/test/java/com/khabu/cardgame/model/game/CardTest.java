@@ -1,6 +1,5 @@
 package com.khabu.cardgame.model.game;
 
-import net.bytebuddy.pool.TypePool;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
