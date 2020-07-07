@@ -18,7 +18,7 @@ public class Card {
     }
 
     private boolean isValidCardValue(int value) {
-        if (value <= 13 && value >= 1) {
+        if (value <= 12 && value >= 0) {
             return true;
         }
         throw new IllegalArgumentException("Invalid card value");

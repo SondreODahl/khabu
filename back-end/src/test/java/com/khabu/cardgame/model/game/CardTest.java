@@ -13,14 +13,14 @@ class CardTest {
 
     @Test
     public void getValue() {
-        Card card = new Card(13, 'H');
-        assertEquals(13, card.getValue());
+        Card card = new Card(12, 'H');
+        assertEquals(12, card.getValue());
     }
 
     @Test
     public void createInvalidCardValueThrowsException() {
         IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class,
-                () -> new Card(14, 'H'),
+                () -> new Card(13, 'H'),
                 "Expected card value to be rejected, but it wasn't"
         );
 
