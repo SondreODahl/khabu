@@ -2,9 +2,9 @@ package com.khabu.cardgame.model.game;
 
 public class Card {
     private int value;
-    private String face;
+    private char face;
 
-    public Card(int value, String face) {
+    public Card(int value, char face) {
         if (isValidCardValue(value)) this.value = value;
         if (isValidFaceValue(face)) this.face = face;
     }
@@ -13,7 +13,7 @@ public class Card {
         return value;
     }
 
-    public String getFace() {
+    public char getFace() {
         return face;
     }
 
@@ -24,11 +24,10 @@ public class Card {
         throw new IllegalArgumentException("Invalid card value");
     }
 
-    private boolean isValidFaceValue(String face) {
-        if (face.equals("H") || face.equals("S") || face.equals("C") || face.equals("D")) {
+    private boolean isValidFaceValue(char face) {
+        if (face == 'H' || face == 'S' || face == 'C' || face == 'D') {
             return true;
         }
         throw new IllegalArgumentException("Invalid face value");
     }
-
 }
