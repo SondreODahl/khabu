@@ -14,12 +14,20 @@ class DiscardPileTest {
     @BeforeEach
     void setUp() {
         discardPile = new DiscardPile();
-        card = card = new Card(1, 'H');
+        card = new Card(1, 'H');
     }
 
     @Test
     void testConstructor() {
         assertEquals(0, discardPile.getSize());
+    }
+
+    @Test
+    void testGetSize() {
+        for (int i = 0; i < 13; i++) {
+            discardPile.put(new Card(i, 'H'));
+        }
+        assertEquals(13, discardPile.getSize());
     }
 
     @Test
@@ -61,7 +69,9 @@ class DiscardPileTest {
     @Test
     public void testShowCard() {
         Card shownCard = discardPile.showTopCard();
-        assertNotNull(shownCard);
+        assertNull(shownCard);
+        discardPile.put(new Card(1, 'H'));
+        shownCard = discardPile.showTopCard();
         assertEquals(shownCard, discardPile.draw());
     }
 }

@@ -3,13 +3,14 @@ package com.khabu.cardgame.model.game;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.sql.SQLOutput;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class CardDeckTest {
 
-    private final int CARD_SIZE = 52;
+    private final int DECK_SIZE = 52;
     private CardDeck deck;
     private DiscardPile discardPile;
 
@@ -32,21 +33,22 @@ class CardDeckTest {
         assertNotNull(firstCard);
         List<Card> cards = deck.getCards();
         assertFalse(cards.contains(firstCard));
+        assertEquals(DECK_SIZE-1, deck.getSize());
     }
 
     @Test
     public void testDrawCardEmptyDeck() {
-        for (int i = 0; i < CARD_SIZE; i++) {
+        for (int i = 0; i < DECK_SIZE; i++) {
             Card card = deck.drawCard();
             discardPile.put(card);
         }
         deck.drawCard(); // Deck is empty. Attempts draw.
-        assertEquals(CARD_SIZE, deck.getSize()); // Discard pile should be shuffled back in to deck
+        assertEquals(DECK_SIZE-1, deck.getSize()); // Discard pile should be shuffled back in to deck
     }
 
     @Test
     public void testConstructor() {
-        assertEquals(CARD_SIZE, deck.getCards().size());
+        assertEquals(DECK_SIZE, deck.getSize());
         assertEquals(discardPile, deck.getPile()); // TODO: Reconsider getting pile
     }
 
@@ -68,5 +70,6 @@ class CardDeckTest {
             deck.shuffle();
         }
         assertNotEquals(deck.getCards(), preShuffle);
+        assertEquals(DECK_SIZE, deck.getSize());
     }
 }
