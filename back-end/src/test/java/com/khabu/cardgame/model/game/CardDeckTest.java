@@ -20,7 +20,7 @@ class CardDeckTest {
     }
 
     @Test
-    public void testGetCards() {
+    public void testGetCardsEncapsulation() {
         List<Card> cards1 = deck.getCards();
         List<Card> cards2 = deck.getCards();
         assertNotSame(cards1, cards2);
@@ -32,6 +32,16 @@ class CardDeckTest {
         assertTrue(deck.drawCard() instanceof Card);
         List<Card> cards = deck.getCards();
         assertFalse(cards.contains(firstCard));
+    }
+
+    @Test
+    public void testDrawCardEmptyDeck() {
+        for (int i = 0; i < CARD_SIZE; i++) {
+            Card card = deck.drawCard();
+            discardPile.put(card);
+        }
+        deck.drawCard(); // Deck is empty. Attempts draw.
+        assertEquals(CARD_SIZE, deck.getSize()); // Discard pile should be shuffled back in to deck
     }
 
     @Test
