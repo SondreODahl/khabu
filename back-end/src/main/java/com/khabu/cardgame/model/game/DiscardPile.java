@@ -38,6 +38,9 @@ public class DiscardPile {
     }
 
     public Card showTopCard() {
+        if (pile.size() == 0) {
+            return null;
+        }
         return pile.peek();
     }
 }
