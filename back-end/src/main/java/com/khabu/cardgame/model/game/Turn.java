@@ -24,7 +24,7 @@ public class Turn {
         this.gameState = gameState;
     }
 
-    public boolean isValidMoveInCurrentState(Player attemptingPlayer, String action) {
+    public boolean isValidMoveInCurrentState(Player attemptingPlayer, Actions action) {
         return false;
     }
 
