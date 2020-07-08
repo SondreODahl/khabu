@@ -30,4 +30,7 @@ public class Player {
     void setReady(boolean ready) {
         this.ready = ready;
     }
+
+    public void addCard(Card h) {
+    }
 }

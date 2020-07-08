@@ -72,4 +72,9 @@ class CardDeckTest {
         assertNotEquals(deck.getCards(), preShuffle);
         assertEquals(DECK_SIZE, deck.getSize());
     }
+
+    @Test
+    public void testInitialDeal() {
+        // TODO: Implement
+    }
 }

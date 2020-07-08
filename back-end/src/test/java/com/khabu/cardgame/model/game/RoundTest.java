@@ -1,5 +1,6 @@
 package com.khabu.cardgame.model.game;
 
+import com.khabu.cardgame.model.game.action.Actions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -14,9 +15,9 @@ class RoundTest {
 
     @BeforeEach
     void setUp() {
-        turn = new Turn();
         player1 = new Player("Player 1", 1);
         player1 = new Player("Player 2", 2);
+        turn = new Turn(new Player[]{player1, player2});
         round = new Round(2) ;
     }
 
@@ -50,7 +51,7 @@ class RoundTest {
     void testEndOfRoundKhabu() {
         beginGame();
         round.performAction(player1, Actions.CALL_KHABU);
-        round.performAction(player2, Actions.DRAW_DECK);
+        round.performAction(player2, Actions.DRAW_FROM_DECK);
         round.performAction(player2, Actions.DISCARD);
         boolean started = round.getStarted();
         assertTrue(started);

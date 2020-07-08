@@ -16,6 +16,13 @@ public class ActionPerformer {
         this.players = players;
     }
 
+    public void putSelf(Player player1, int i) {
+    }
+
+    public void endTurn(Player player1) {
+    }
+
+    /*
     public endTurn(Player player) {
         validateStateMove(player, Actions.END_TURN);
     }
@@ -31,6 +38,7 @@ public class ActionPerformer {
     private boolean validateStateMove(Player player, Actions action) {
         return ActionValidator.isValidMoveInCurrentState(player, action, turn);
     }
+    */
 
 }
 

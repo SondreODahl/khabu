@@ -17,17 +17,40 @@ class ActionPerformerTest {
 
     @BeforeEach
     void setUp() {
-        turn = new Turn();
+        player1 = new Player("Player1", 1);
+        player2 = new Player("Player2", 1);
+        turn = new Turn(new Player[]{player1, player2});
         actionPerformer = new ActionPerformer(turn);
-        player1 = new Player("Player1", 1);
-        player1 = new Player("Player1", 1);
     }
 
     @Test
-    void testValidPut() {
-        turn.setGameState(Gamestate.FRENZY);
-        turn.updateCurrentPlayer(player1);
-        actionPerformer.put(player1, new Card(1, 'H'));
+    void testValidPutSelf() {
+        frenzySetup();
+        actionPerformer.putSelf(player1, 1);
+        assertEquals(Gamestate.PUT, turn.getGameState());
+        assertEquals(player1, turn.getCurrentPlayer());
+        actionPerformer.endTurn(player1);
+        assertEquals(player2, turn.getCurrentPlayer());
+    }
+
+    @Test
+    void testInvalidPutSelf() {
+        frenzySetup();
+        actionPerformer.putSelf(player1, );
+    }
+
+    @Test
+    void testCardGetters() {
 
     }
+
+    @Test
+    void test
+
+    void frenzySetup() {
+        turn.setGameState(Gamestate.FRENZY);
+        turn.setCurrentPlayer(player1);
+        player1.addCard(new Card(1, 'H'));
+    }
+
 }
