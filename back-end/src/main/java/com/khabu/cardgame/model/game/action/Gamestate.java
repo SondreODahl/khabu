@@ -4,7 +4,8 @@ public enum Gamestate {
     DRAW,
     CARD_DRAWN,
     PUT,
-    KHABU,
+    PUT_OTHER_TRANSFER,
+    DISCARD,
     FRENZY,
     FIRST_TURN,
     START
