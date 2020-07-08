@@ -9,6 +9,8 @@ public class Card {
         if (isValidFaceValue(face)) this.face = face;
     }
 
+    // TODO: Add comparable
+
     public int getValue() {
         return value;
     }
