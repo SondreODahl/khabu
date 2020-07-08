@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class TurnTest {
 
+    // TEST PUTTING ----------------------
     @Test
     public void putOwnCardInDrawingState() {
         Turn turn = new Turn();
@@ -39,6 +40,8 @@ class TurnTest {
                 thrown.getMessage());
     }
 
+    // TEST DRAWING --------------------------
+
     @Test
     public void drawOnOpponentTurn() {
         Turn turn = new Turn();
@@ -62,8 +65,20 @@ class TurnTest {
         Player currentPlayer = new Player("John", 1);
         turn.updateCurrentPlayer(currentPlayer);
 
-        assertTrue(turn.isValidMoveInCurrentState(currentPlayer, Actions.DRAW));
+        assertTrue(turn.isValidMoveInCurrentState(currentPlayer, Actions.DRAW_FROM_DECK));
     }
+
+    @Test
+    public void illegalToDrawOutsideOfDrawState() {
+
+    }
+
+    @Test
+    public void illegalToDrawFromDiscardPileOnFirstTurn() {
+
+    }
+
+    // TEST DISCARD ------------------
 
     @Test
     public void discardAfterDrawingCard() {
@@ -74,4 +89,7 @@ class TurnTest {
 
         assertTrue(turn.isValidMoveInCurrentState(currentPlayer, Actions.DISCARD));
     }
+
+    @Test
+    public void
 }
