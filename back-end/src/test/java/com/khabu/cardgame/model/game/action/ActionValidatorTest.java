@@ -20,7 +20,7 @@ class ActionValidatorTest {
     // TEST PUTTING ----------------------
     @Test
     public void putOwnCardInDrawingState() {
-        turn.setGameState(Gamestate.DRAW);
+        turn.setGameState(Gamestate.CARD_DRAWN);
         Player player = new Player("John", 1);
 
         assertFalse(ActionValidator.isValidMoveInCurrentState(player, Actions.PUT_SELF, turn));
@@ -87,7 +87,7 @@ class ActionValidatorTest {
 
     @Test
     public void illegalToDrawFromDiscardPileOnFirstTurn() {
-        turn.setGameState(Gamestate.DRAW);
+        turn.setGameState(Gamestate.FIRST_TURN);
         Player player = new Player("John", 1);
         turn.updateCurrentPlayer(player);
 
@@ -206,14 +206,23 @@ class ActionValidatorTest {
         assertFalse(ActionValidator.isValidMoveInCurrentState(player, Actions.CALL_KHABU, turn));
     }
 
+    // TEST TRANSFER -------------------
 
+    @Test
+    public void transferAfterPuttingOpponentCard() {
+        turn.setGameState(Gamestate.PUT_OTHER_TRANSFER);
+        Player player = new Player("John", 1);
+        turn.updateCurrentPlayer(player);
 
+        assertTrue(ActionValidator.isValidMoveInCurrentState(player, Actions.TRANSFER, turn));
+    }
 
+    @Test
+    public void illegalToTransferOutsideOfPutOtherTransferState() {
+        turn.setGameState(Gamestate.PUT);
+        Player player = new Player("John", 1);
+        turn.updateCurrentPlayer(player);
 
-
-
-
-
-
-
+        assertFalse(ActionValidator.isValidMoveInCurrentState(player, Actions.TRANSFER, turn));
+    }
 }
