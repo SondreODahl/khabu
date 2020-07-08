@@ -13,9 +13,9 @@ public class ActionValidator {
             case END_TURN:
                 return isValidEndTurn(attemptingPlayer, turn);
             case PUT_SELF:
-                return isValidPutSelf(attemptingPlayer, turn);
+                return isValidPut(attemptingPlayer, turn);
             case PUT_OTHER:
-                return isValidPutOther(attemptingPlayer, turn);
+                return isValidPut(attemptingPlayer, turn);
             case SWAP:
                 return isValidSwap(attemptingPlayer, turn);
             case TRANSFER:
@@ -27,11 +27,42 @@ public class ActionValidator {
             default:
                 return false;
         }
-        return false;
     }
 
-    private static boolean isValidPutSelf(Player attemptingPlayer, Turn turn) {
-        if (turn.getCurrentPuttingPlayer().equals());
+    private static boolean isValidDrawFromDiscard(Player attemptingPlayer, Turn turn) {
+        return (!turn.getGameState().equals(Gamestate.FIRST_TURN) &&
+                turn.getGameState().equals(Gamestate.DRAW)) &&
+                isPlayerCurrentPlayer(attemptingPlayer, turn);
+    }
+
+    private static boolean isValidKhabuCall(Player attemptingPlayer, Turn turn) {
+        return turn.getGameState().equals(Gamestate.DRAW) &&
+                isPlayerCurrentPlayer(attemptingPlayer, turn);
+    }
+
+    private static boolean isValidTransfer(Player attemptingPlayer, Turn turn) {
+        Player puttingPlayer = turn.getCurrentPuttingPlayer();
+        if (turn.getGameState().equals(Gamestate.PUT_OTHER_TRANSFER)
+                && !puttingPlayer.equals(attemptingPlayer)) {
+            return false;
+        }
+        return turn.getGameState().equals(Gamestate.PUT_OTHER_TRANSFER);
+    }
+
+    private static boolean isValidSwap(Player attemptingPlayer, Turn turn) {
+        return turn.getGameState().equals(Gamestate.CARD_DRAWN) &&
+        isPlayerCurrentPlayer(attemptingPlayer, turn);
+    }
+
+
+    private static boolean isValidPut(Player attemptingPlayer, Turn turn) {
+        Player puttingPlayer = turn.getCurrentPuttingPlayer();
+        if (turn.getGameState().equals(Gamestate.PUT) && !puttingPlayer.equals(attemptingPlayer)) {
+            return false;
+        }
+        return (turn.getGameState().equals(Gamestate.PUT) ||
+                turn.getGameState().equals(Gamestate.DISCARD) ||
+                turn.getGameState().equals(Gamestate.FRENZY));
     }
 
     private static boolean isValidEndTurn(Player attemptingPlayer, Turn turn) {
