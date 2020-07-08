@@ -22,6 +22,14 @@ public class Turn {
         this.currentPuttingPlayer = puttingPlayer;
     }
 
+    public Player getCurrentPlayer() {
+        return currentPlayer;
+    }
+
+    public Player getCurrentPuttingPlayer() {
+        return currentPuttingPlayer;
+    }
+
     public Gamestate getGameState() {
         return this.gameState;
     }
