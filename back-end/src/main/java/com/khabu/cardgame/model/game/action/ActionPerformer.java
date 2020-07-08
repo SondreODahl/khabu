@@ -1,12 +1,6 @@
 package com.khabu.cardgame.model.game.action;
 
-import com.khabu.cardgame.model.game.CardDeck;
-import com.khabu.cardgame.model.game.DiscardPile;
-import com.khabu.cardgame.model.game.Player;
-import com.khabu.cardgame.model.game.Turn;
-import com.khabu.cardgame.util.IllegalMoveException;
-
-import java.util.ArrayList;
+import com.khabu.cardgame.model.game.*;
 
 public class ActionPerformer {
 
@@ -15,21 +9,33 @@ public class ActionPerformer {
     public ActionPerformer(Turn turn, CardDeck cardDeck, DiscardPile discardPile) {
     }
 
-    public void putSelf(Player player1, int i) {
+    public void putSelf(Player player, int i) {
     }
 
-    public void endTurn(Player player1) {
+    public void endTurn(Player player) {
     }
 
-    public void drawFromDeck(Player player1) {
+    public Card drawFromDeck(Player player) {
+        return null;
     }
 
-    public void callKhabu(Player player1) {
+    public Card drawFromDisc(Player player) {
+        return null;
+    }
+
+    public void callKhabu(Player player) {
     }
 
 
-    public void putOther(Player player1, Player player2, int i) {
+    public void putOther(Player player1, Player player2, int index) {
     }
+
+    public void swapDrawnCard(Player player, int index) {
+    }
+
+    public void discardCard(Player player, int index) {}
+
+    public void giveCardToPlayer(Player player1, Player player2,)
 
     /*
     public endTurn(Player player) {

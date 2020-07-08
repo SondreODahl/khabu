@@ -33,4 +33,7 @@ public class Player {
 
     public void addCard(Card h) {
     }
+
+    public Card getCard(int i) {
+    }
 }

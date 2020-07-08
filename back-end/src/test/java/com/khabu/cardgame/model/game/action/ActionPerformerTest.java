@@ -61,12 +61,12 @@ class ActionPerformerTest {
         try {
             actionPerformer.putSelf(player1, 2);
             fail();
-        } catch (IllegalMoveException ignored) {}
+        } catch (IllegalMoveException ignored) {} // TODO: Replace with another exception
         assertEquals(Gamestate.FRENZY, turn.getGameState());
     }
 
     @Test
-    void testPutOtherCardCorrect() {
+    void testPutOtherCardCorrectTopCard() {
         setupState(Gamestate.FRENZY, player1);
         Card player2Card = new Card(1, 'H');
         player2.addCard(player2Card);
@@ -90,11 +90,17 @@ class ActionPerformerTest {
     @Test
     void testStateChangesOnDrawAndSwap() {
         setupState(Gamestate.START, player1);
-        actionPerformer.drawFromDeck(player1);
-        assertEquals(Gamestate.DRAW, turn.getGameState());
+        Card cardDrawn = actionPerformer.drawFromDeck(player1);
+        Card prevTopCard = discardPile.showTopCard();
+        assertEquals(Gamestate.CARD_DRAWN, turn.getGameState()); // TODO: Remove DRAWN state
         assertEquals(player1, turn.getCurrentPlayer());
+        actionPerformer.swapDrawnCard(player1, 0);
+        assertEquals(cardDrawn, discardPile.showTopCard());
+        assertEquals(prevTopCard, player1.getCard(0));
         // TODO: SWAP-method
     }
+
+
 
     @Test
     void testKhabuCalls() {
@@ -103,7 +109,7 @@ class ActionPerformerTest {
         try {
             actionPerformer.callKhabu(player2);
         } catch (IllegalMoveException ignored) {}
-
+        // TODO: Try to manipulate Khabu-caller's cards
     }
 
     @Test
