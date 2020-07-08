@@ -10,12 +10,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ActionValidatorTest {
 
-    /*
     private Turn turn;
 
     @BeforeAll
     public void setup() {
-        turn = new Turn();
+        Player player = new Player("Sandy", 10);
+        Player[] players = {player};
+        turn = new Turn(players);
     }
 
 
@@ -34,7 +35,7 @@ class ActionValidatorTest {
         Player player = new Player("John", 1);
         Player opponent = new Player("Sam", 2);
         turn.updateCurrentPuttingPlayer(opponent);
-        turn.updateCurrentPlayer(player);
+        turn.setCurrentPlayer(player);
 
         assertFalse(ActionValidator.isValidMoveInCurrentState(player, Actions.PUT_OTHER, turn));
     }
@@ -46,7 +47,7 @@ class ActionValidatorTest {
         turn.setGameState(Gamestate.FRENZY);
         Player player = new Player("John", 1);
         Player opponent = new Player("James", 2);
-        turn.updateCurrentPlayer(opponent);
+        turn.setCurrentPlayer(opponent);
 
         assertFalse(ActionValidator.isValidMoveInCurrentState(player, Actions.DRAW_FROM_DECK, turn));
     }
@@ -55,7 +56,7 @@ class ActionValidatorTest {
     public void drawingFromDeckOnYourOwnTurn() {
         turn.setGameState(Gamestate.DRAW);
         Player currentPlayer = new Player("John", 1);
-        turn.updateCurrentPlayer(currentPlayer);
+        turn.setCurrentPlayer(currentPlayer);
 
         assertTrue(ActionValidator.isValidMoveInCurrentState(currentPlayer, Actions.DRAW_FROM_DECK, turn));
     }
@@ -64,7 +65,7 @@ class ActionValidatorTest {
     public void drawingFromDiscardPileOnYourOwnTurn() {
         turn.setGameState(Gamestate.DRAW);
         Player player = new Player("Jon", 1);
-        turn.updateCurrentPlayer(player);
+        turn.setCurrentPlayer(player);
 
         assertTrue(ActionValidator.isValidMoveInCurrentState(player, Actions.DRAW_FROM_DISC, turn));
     }
@@ -73,7 +74,7 @@ class ActionValidatorTest {
     public void illegalToDrawFromDeckOutsideOfDrawState() {
         turn.setGameState(Gamestate.CARD_DRAWN);
         Player player = new Player("Mika", 1);
-        turn.updateCurrentPlayer(player);
+        turn.setCurrentPlayer(player);
 
         assertFalse(ActionValidator.isValidMoveInCurrentState(player, Actions.DRAW_FROM_DECK, turn));
     }
@@ -82,7 +83,7 @@ class ActionValidatorTest {
     public void illegalToDrawFromDiscardOutsideOfDrawState() {
         turn.setGameState(Gamestate.CARD_DRAWN);
         Player player = new Player("Mika", 1);
-        turn.updateCurrentPlayer(player);
+        turn.setCurrentPlayer(player);
 
         assertFalse(ActionValidator.isValidMoveInCurrentState(player, Actions.DRAW_FROM_DISC, turn));
     }
@@ -91,7 +92,7 @@ class ActionValidatorTest {
     public void illegalToDrawFromDiscardPileOnFirstTurn() {
         turn.setGameState(Gamestate.FIRST_TURN);
         Player player = new Player("John", 1);
-        turn.updateCurrentPlayer(player);
+        turn.setCurrentPlayer(player);
 
         assertFalse(ActionValidator.isValidMoveInCurrentState(player, Actions.DRAW_FROM_DISC, turn));
     }
@@ -102,7 +103,7 @@ class ActionValidatorTest {
     public void discardAfterDrawingCard() {
         turn.setGameState(Gamestate.CARD_DRAWN);
         Player player = new Player("John", 1);
-        turn.updateCurrentPlayer(player);
+        turn.setCurrentPlayer(player);
 
         assertTrue(ActionValidator.isValidMoveInCurrentState(player, Actions.DISCARD, turn));
     }
@@ -111,7 +112,7 @@ class ActionValidatorTest {
     public void illegalToDiscardBeforeDrawing() {
         turn.setGameState(Gamestate.DRAW);
         Player player = new Player("John", 1);
-        turn.updateCurrentPlayer(player);
+        turn.setCurrentPlayer(player);
 
         assertFalse(ActionValidator.isValidMoveInCurrentState(player, Actions.DISCARD, turn));
     }
@@ -121,7 +122,7 @@ class ActionValidatorTest {
         turn.setGameState(Gamestate.FRENZY);
         Player player = new Player("John", 1);
         Player opponent = new Player("Sam", 2);
-        turn.updateCurrentPlayer(opponent);
+        turn.setCurrentPlayer(opponent);
 
         assertFalse(ActionValidator.isValidMoveInCurrentState(player, Actions.DISCARD, turn));
     }
@@ -132,7 +133,7 @@ class ActionValidatorTest {
     public void swapDrawnCard() {
         turn.setGameState(Gamestate.CARD_DRAWN);
         Player player = new Player("John", 1);
-        turn.updateCurrentPlayer(player);
+        turn.setCurrentPlayer(player);
 
         assertTrue(ActionValidator.isValidMoveInCurrentState(player, Actions.SWAP, turn));
     }
@@ -142,7 +143,7 @@ class ActionValidatorTest {
     public void illegalToSwapBeforeDrawing() {
         turn.setGameState(Gamestate.DRAW);
         Player player = new Player("John", 1);
-        turn.updateCurrentPlayer(player);
+        turn.setCurrentPlayer(player);
 
         assertFalse(ActionValidator.isValidMoveInCurrentState(player, Actions.SWAP, turn));
     }
@@ -152,7 +153,7 @@ class ActionValidatorTest {
         turn.setGameState(Gamestate.CARD_DRAWN);
         Player player = new Player("John", 1);
         Player opponent = new Player("Sam", 2);
-        turn.updateCurrentPlayer(opponent);
+        turn.setCurrentPlayer(opponent);
 
         assertFalse(ActionValidator.isValidMoveInCurrentState(player, Actions.SWAP, turn));
     }
@@ -163,7 +164,7 @@ class ActionValidatorTest {
     public void endTurnInLegalState() {
         turn.setGameState(Gamestate.DISCARD);
         Player player = new Player("John", 1);
-        turn.updateCurrentPlayer(player);
+        turn.setCurrentPlayer(player);
 
         assertTrue(ActionValidator.isValidMoveInCurrentState(player, Actions.END_TURN, turn));
     }
@@ -173,7 +174,7 @@ class ActionValidatorTest {
         turn.setGameState(Gamestate.FRENZY);
         Player player = new Player("John", 1);
         Player opponent = new Player("James", 2);
-        turn.updateCurrentPlayer(opponent);
+        turn.setCurrentPlayer(opponent);
 
         assertFalse(ActionValidator.isValidMoveInCurrentState(player, Actions.END_TURN, turn));
     }
@@ -184,7 +185,7 @@ class ActionValidatorTest {
     public void callKhabuAtStartOfTurn() {
         turn.setGameState(Gamestate.DRAW);
         Player player = new Player("John", 1);
-        turn.updateCurrentPlayer(player);
+        turn.setCurrentPlayer(player);
 
         assertTrue(ActionValidator.isValidMoveInCurrentState(player, Actions.CALL_KHABU, turn));
     }
@@ -193,7 +194,7 @@ class ActionValidatorTest {
     public void illegalToCallKhabuOutsideOfDrawState() {
         turn.setGameState(Gamestate.CARD_DRAWN);
         Player player = new Player("John", 1);
-        turn.updateCurrentPlayer(player);
+        turn.setCurrentPlayer(player);
 
         assertFalse(ActionValidator.isValidMoveInCurrentState(player, Actions.CALL_KHABU, turn));
     }
@@ -203,7 +204,7 @@ class ActionValidatorTest {
         turn.setGameState(Gamestate.DRAW);
         Player player = new Player("John", 1);
         Player opponent = new Player("James", 2);
-        turn.updateCurrentPlayer(opponent);
+        turn.setCurrentPlayer(opponent);
 
         assertFalse(ActionValidator.isValidMoveInCurrentState(player, Actions.CALL_KHABU, turn));
     }
@@ -214,7 +215,7 @@ class ActionValidatorTest {
     public void transferAfterPuttingOpponentCard() {
         turn.setGameState(Gamestate.PUT_OTHER_TRANSFER);
         Player player = new Player("John", 1);
-        turn.updateCurrentPlayer(player);
+        turn.setCurrentPlayer(player);
 
         assertTrue(ActionValidator.isValidMoveInCurrentState(player, Actions.TRANSFER, turn));
     }
@@ -223,8 +224,8 @@ class ActionValidatorTest {
     public void illegalToTransferOutsideOfPutOtherTransferState() {
         turn.setGameState(Gamestate.PUT);
         Player player = new Player("John", 1);
-        turn.updateCurrentPlayer(player);
+        turn.setCurrentPlayer(player);
 
         assertFalse(ActionValidator.isValidMoveInCurrentState(player, Actions.TRANSFER, turn));
-    }*/
+    }
 }
