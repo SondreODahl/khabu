@@ -1,5 +1,7 @@
 package com.khabu.cardgame.model.game;
 
+import com.khabu.cardgame.model.game.action.Actions;
+import com.khabu.cardgame.model.game.action.Gamestate;
 import com.khabu.cardgame.util.IllegalMoveException;
 import org.junit.jupiter.api.Test;
 
@@ -51,7 +53,7 @@ class TurnTest {
         turn.updateCurrentPlayer(currentPlayer);
 
         IllegalMoveException thrown = assertThrows(IllegalMoveException.class,
-                () -> turn.isValidMoveInCurrentState(illegalMovePlayer, Actions.DRAW),
+                () -> turn.isValidMoveInCurrentState(illegalMovePlayer, Actions.DRAW_FROM_DECK),
                 "Expected action to be rejected, but it wasn't"
         );
 
@@ -90,6 +92,4 @@ class TurnTest {
         assertTrue(turn.isValidMoveInCurrentState(currentPlayer, Actions.DISCARD));
     }
 
-    @Test
-    public void
 }

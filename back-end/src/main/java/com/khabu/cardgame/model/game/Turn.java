@@ -1,5 +1,7 @@
 package com.khabu.cardgame.model.game;
 
+import com.khabu.cardgame.model.game.action.Actions;
+import com.khabu.cardgame.model.game.action.Gamestate;
 import com.khabu.cardgame.util.IllegalMoveException;
 import com.khabu.cardgame.util.NotYourTurnException;
 

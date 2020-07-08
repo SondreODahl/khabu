@@ -1,4 +1,4 @@
-package com.khabu.cardgame.model.game;
+package com.khabu.cardgame.model.game.action;
 
 public enum Actions {
     DRAW_FROM_DISC,
