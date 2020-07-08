@@ -24,6 +24,9 @@ public class ActionPerformer {
     public void drawFromDeck(Player player1) {
     }
 
+    public void callKhabu(Player player1) {
+    }
+
     /*
     public endTurn(Player player) {
         validateStateMove(player, Actions.END_TURN);

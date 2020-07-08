@@ -28,13 +28,30 @@ class ActionPerformerTest {
     }
 
     @Test
+    void testEndTurnCurrentPlayerChange() {
+        setupState(Gamestate.FRENZY, player1);
+        actionPerformer.endTurn(player1);
+        assertEquals(Gamestate.START, turn.getGameState());
+        assertEquals(player2, turn.getCurrentPlayer());
+    }
+
+    @Test
+    void testEndTurnBeforePossible() {
+        setupState(Gamestate.START, player1);
+        try {
+            actionPerformer.endTurn(player1);
+            fail();
+        } catch (IllegalMoveException ignored) {}
+        assertEquals(Gamestate.START, turn.getGameState());
+        assertEquals(player1, turn.getCurrentPlayer());
+    }
+
+    @Test
     void testPutSelfCausingCorrectTurnUpdate() {
         setupState(Gamestate.FRENZY, player1);
         actionPerformer.putSelf(player1, 1);
         assertEquals(Gamestate.PUT, turn.getGameState());
         assertEquals(player1, turn.getCurrentPlayer());
-        actionPerformer.endTurn(player1);
-        assertEquals(player2, turn.getCurrentPlayer());
     }
 
     @Test
@@ -54,25 +71,30 @@ class ActionPerformerTest {
         actionPerformer.drawFromDeck(player1);
         assertEquals(Gamestate.DRAW, turn.getGameState());
         assertEquals(player1, turn.getCurrentPlayer());
-
     }
 
     @Test
     void testKhabuCalls() {
         setupState(Gamestate.FIRST_TURN, player1);
-        
+        actionPerformer.callKhabu(player1);
+        try {
+            actionPerformer.callKhabu(player2);
+        } catch (IllegalMoveException ignored) {}
+
     }
 
     @Test
     void testAutomaticKhabuAfterEmptyHand() {
-
+        setupState(Gamestate.START, player1);
+        actionPerformer.callKhabu(player1);
+        assertEquals(player2, turn.getCurrentPlayer());
     }
 
 
     @Test
     void testInvalidActionsThrowException() {
         setupState(Gamestate.START, player1);
-        // TODO: Implement for the actions performed
+        // TODO: Implement for the actions performed. Catch Not your turn exception
     }
 
 
