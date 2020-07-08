@@ -47,22 +47,44 @@ class ActionPerformerTest {
     }
 
     @Test
-    void testPutSelfCausingCorrectTurnUpdate() {
+    void testPutSelfCausingCorrectStateUpdate() {
         setupState(Gamestate.FRENZY, player1);
         actionPerformer.putSelf(player1, 1);
         assertEquals(Gamestate.PUT, turn.getGameState());
         assertEquals(player1, turn.getCurrentPlayer());
+        assertEquals(player1, turn.getCurrentPuttingPlayer());
     }
 
     @Test
-    void testInvalidPutSelf() {
+    void testInvalidCardPutSelf() {
         setupState(Gamestate.FRENZY, player1);
         try {
             actionPerformer.putSelf(player1, 2);
             fail();
-        } catch (IllegalMoveException ignored) {
-        }
+        } catch (IllegalMoveException ignored) {}
         assertEquals(Gamestate.FRENZY, turn.getGameState());
+    }
+
+    @Test
+    void testPutOtherCardCorrect() {
+        setupState(Gamestate.FRENZY, player1);
+        Card player2Card = new Card(1, 'H');
+        player2.addCard(player2Card);
+        actionPerformer.putOther(player1, player2, 0);
+        assertEquals(player2Card, discardPile.showTopCard());
+        assertEquals(player1, turn.getCurrentPuttingPlayer());
+    }
+
+    @Test
+    void testPutOtherCardIncorrect() {
+        setupState(Gamestate.FRENZY, player1);
+        try{
+            actionPerformer.putOther(player1, player2, 0);
+            fail();
+        } catch (IllegalArgumentException ignored) {} // Player 2 doesn't have any cards
+        Card player2Card = new Card(2, 'H');
+        player2.addCard(player2Card);
+        // TODO: Add Exception for legal move but incorrect value
     }
 
     @Test
@@ -71,6 +93,7 @@ class ActionPerformerTest {
         actionPerformer.drawFromDeck(player1);
         assertEquals(Gamestate.DRAW, turn.getGameState());
         assertEquals(player1, turn.getCurrentPlayer());
+        // TODO: SWAP-method
     }
 
     @Test

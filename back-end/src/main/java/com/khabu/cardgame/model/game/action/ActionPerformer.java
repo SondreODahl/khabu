@@ -27,6 +27,10 @@ public class ActionPerformer {
     public void callKhabu(Player player1) {
     }
 
+
+    public void putOther(Player player1, Player player2, int i) {
+    }
+
     /*
     public endTurn(Player player) {
         validateStateMove(player, Actions.END_TURN);
