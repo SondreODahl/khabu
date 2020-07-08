@@ -4,16 +4,20 @@ import com.khabu.cardgame.util.IllegalMoveException;
 import com.khabu.cardgame.util.NotYourTurnException;
 
 public class Turn {
-    private Player currentPlayer;
-    private Player currentPuttingPlayer;
+    private Player currentPlayer = null;
+    private Player currentPuttingPlayer = null;
     private Gamestate gameState;
 
     public void endTurn() throws NotYourTurnException, IllegalMoveException {
 
     }
 
-    public void updateCurrentPlayer() {
+    public void updateCurrentPlayer(Player newCurrentPlayer) {
+        this.currentPlayer = newCurrentPlayer;
+    }
 
+    public void updateCurrentPuttingPlayer(Player puttingPlayer) {
+        this.currentPuttingPlayer = puttingPlayer;
     }
 
     public Gamestate getGameState() {
