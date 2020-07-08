@@ -10,6 +10,7 @@ public class Turn {
     private Player[] players;
     private int currentPlayer;
     private Gamestate gameState;
+    private Player khabuPlayer;
 
     public Turn(Player[] players) {
         this.players = players;
@@ -19,6 +20,10 @@ public class Turn {
     public void nextPlayer() {
         currentPlayer = (currentPlayer + 1) % players.length;
         currentPuttingPlayer = null;
+    }
+
+    private void checkPlayerForNull(Player player) {
+        if (player == null) throw new IllegalArgumentException("Player cannot be null");
     }
 
     public void setCurrentPlayer(Player newCurrentPlayer) {
@@ -31,8 +36,19 @@ public class Turn {
         throw new IllegalArgumentException("Player not in list of players");
     }
 
-    public void updateCurrentPuttingPlayer(Player puttingPlayer) {
+    public void setCurrentPuttingPlayer(Player puttingPlayer) {
+        checkPlayerForNull(puttingPlayer);
         this.currentPuttingPlayer = puttingPlayer;
+    }
+
+    public void setKhabuPlayer(Player khabuPlayer) {
+        checkPlayerForNull(khabuPlayer);
+        if (this.khabuPlayer != null) {throw new IllegalMoveException("Khabu player is already set");}
+        this.khabuPlayer = khabuPlayer;
+    }
+
+    public Player getKhabuPlayer() {
+        return this.khabuPlayer;
     }
 
     public Player getCurrentPlayer() {

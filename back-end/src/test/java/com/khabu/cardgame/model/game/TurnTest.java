@@ -1,5 +1,6 @@
 package com.khabu.cardgame.model.game;
 
+import com.khabu.cardgame.util.IllegalMoveException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -7,9 +8,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class TurnTest {
 
-    private Turn turn;
-
     Player[] players = {new Player("player1", 1), new Player("player", 2)};
+    private Turn turn;
 
     @BeforeEach
     void setUp() {
@@ -32,8 +32,8 @@ class TurnTest {
         try {
             turn.setCurrentPlayer(new Player("rwrwe", 2));
             fail();
+        } catch (IllegalArgumentException ignored) {
         }
-        catch (IllegalArgumentException ignored) {}
     }
 
     @Test
@@ -43,8 +43,18 @@ class TurnTest {
     }
 
     @Test
+    void testSettingKhabuPlayerTwice() {
+        turn.setKhabuPlayer(players[0]);
+        try {
+            turn.setKhabuPlayer(players[0]);
+            fail();
+        } catch (IllegalMoveException ignored) {
+        }
+    }
+
+    @Test
     void testCurrentPuttingPlayerResetOnNextTurn() {
-        turn.updateCurrentPuttingPlayer(players[0]);
+        turn.setCurrentPuttingPlayer(players[0]);
         assertEquals(players[0], turn.getCurrentPuttingPlayer());
         turn.nextPlayer();
         assertNull(turn.getCurrentPuttingPlayer());
