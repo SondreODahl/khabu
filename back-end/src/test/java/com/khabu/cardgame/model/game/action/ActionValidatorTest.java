@@ -2,7 +2,7 @@ package com.khabu.cardgame.model.game.action;
 
 import com.khabu.cardgame.model.game.Player;
 import com.khabu.cardgame.model.game.Turn;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 
@@ -12,7 +12,7 @@ class ActionValidatorTest {
 
     private Turn turn;
 
-    @BeforeAll
+    @BeforeEach
     public void setup() {
         Player player = new Player("Sandy", 10);
         Player[] players = {player};
@@ -34,7 +34,7 @@ class ActionValidatorTest {
         turn.setGameState(Gamestate.PUT);
         Player player = new Player("John", 1);
         Player opponent = new Player("Sam", 2);
-        turn.updateCurrentPuttingPlayer(opponent);
+        turn.setCurrentPuttingPlayer(opponent);
         turn.setCurrentPlayer(player);
 
         assertFalse(ActionValidator.isValidMoveInCurrentState(player, Actions.PUT_OTHER, turn));
