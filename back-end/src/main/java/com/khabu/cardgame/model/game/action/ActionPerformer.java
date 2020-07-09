@@ -20,7 +20,8 @@ public class ActionPerformer {
 
     private void validateAction(Player player, Actions action, Turn turn) {
         if (!ActionValidator.isValidMoveInCurrentState(player, action, turn)) {
-            throw new IllegalMoveException("IllegalMove, tried to %s")
+            String errorMessage = String.format("Tried to perform action %s with player %s on turn %s", action.toString(), player.toString(), turn.toString());
+            throw new IllegalMoveException(errorMessage);
         }
     }
 

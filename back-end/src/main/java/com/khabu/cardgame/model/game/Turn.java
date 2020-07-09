@@ -1,9 +1,7 @@
 package com.khabu.cardgame.model.game;
 
-import com.khabu.cardgame.model.game.action.Actions;
 import com.khabu.cardgame.model.game.action.Gamestate;
 import com.khabu.cardgame.util.IllegalMoveException;
-import com.khabu.cardgame.util.NotYourTurnException;
 
 public class Turn {
     private Player currentPuttingPlayer;
@@ -26,6 +24,22 @@ public class Turn {
         if (player == null) throw new IllegalArgumentException("Player cannot be null");
     }
 
+    public Player getKhabuPlayer() {
+        return this.khabuPlayer;
+    }
+
+    public void setKhabuPlayer(Player khabuPlayer) {
+        checkPlayerForNull(khabuPlayer);
+        if (this.khabuPlayer != null) {
+            throw new IllegalMoveException("Khabu player is already set");
+        }
+        this.khabuPlayer = khabuPlayer;
+    }
+
+    public Player getCurrentPlayer() {
+        return players[currentPlayer];
+    }
+
     public void setCurrentPlayer(Player newCurrentPlayer) {
         for (int i = 0; i < players.length; i++) {
             if (players[i] == newCurrentPlayer) {
@@ -36,27 +50,13 @@ public class Turn {
         throw new IllegalArgumentException("Player not in list of players");
     }
 
+    public Player getCurrentPuttingPlayer() {
+        return currentPuttingPlayer;
+    }
+
     public void setCurrentPuttingPlayer(Player puttingPlayer) {
         checkPlayerForNull(puttingPlayer);
         this.currentPuttingPlayer = puttingPlayer;
-    }
-
-    public void setKhabuPlayer(Player khabuPlayer) {
-        checkPlayerForNull(khabuPlayer);
-        if (this.khabuPlayer != null) {throw new IllegalMoveException("Khabu player is already set");}
-        this.khabuPlayer = khabuPlayer;
-    }
-
-    public Player getKhabuPlayer() {
-        return this.khabuPlayer;
-    }
-
-    public Player getCurrentPlayer() {
-        return players[currentPlayer];
-    }
-
-    public Player getCurrentPuttingPlayer() {
-        return currentPuttingPlayer;
     }
 
     public Gamestate getGameState() {
@@ -67,4 +67,9 @@ public class Turn {
         this.gameState = gameState;
     }
 
+    @Override
+    public String toString() {
+        return String.format("[Turn CurrentPlayer: %s, CurrentPuttingPlayer: %s, KhabuPlayer: %s, State: %s]",
+                getCurrentPlayer(), currentPuttingPlayer, khabuPlayer, gameState.toString());
+    }
 }

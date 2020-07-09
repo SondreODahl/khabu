@@ -43,4 +43,8 @@ public class Player {
     public boolean hasCard(Card checkCard) {
         return cardHand.getCards().values().stream().anyMatch(card -> card.equals(checkCard));
     }
+
+    public String toString() {
+        return String.format("[Player: %s, PlayerId: %d]", name, playerId);
+    }
 }
