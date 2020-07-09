@@ -28,35 +28,15 @@ class ActionPerformerTest {
     }
 
     @Test
-    void testEndTurnCurrentPlayerChange() {
-        setupState(Gamestate.FRENZY, player1);
-        actionPerformer.endTurn(player1);
-        assertEquals(Gamestate.START, turn.getGameState());
-        assertEquals(player2, turn.getCurrentPlayer());
-    }
-
-    @Test
-    void testEndTurnBeforePossible() {
-        setupState(Gamestate.START, player1);
-        try {
-            actionPerformer.endTurn(player1);
-            fail();
-        } catch (IllegalMoveException ignored) {}
-        assertEquals(Gamestate.START, turn.getGameState());
-        assertEquals(player1, turn.getCurrentPlayer());
-    }
-
-    @Test
     void testPutSelfCausingCorrectStateUpdate() {
         setupState(Gamestate.FRENZY, player1);
         actionPerformer.putSelf(player1, 1);
         assertEquals(Gamestate.PUT, turn.getGameState());
-        assertEquals(player1, turn.getCurrentPlayer());
         assertEquals(player1, turn.getCurrentPuttingPlayer());
     }
 
     @Test
-    void testInvalidCardPutSelf() {
+    void testFailedCardPutSelf() {
         setupState(Gamestate.FRENZY, player1);
         try {
             actionPerformer.putSelf(player1, 2);
@@ -89,7 +69,7 @@ class ActionPerformerTest {
 
     @Test
     void testStateChangesOnDrawAndSwap() {
-        setupState(Gamestate.START, player1);
+        setupState(Gamestate.DRAW, player1);
         Card cardDrawn = actionPerformer.drawFromDeck(player1);
         Card prevTopCard = discardPile.showTopCard();
         assertEquals(Gamestate.CARD_DRAWN, turn.getGameState()); // TODO: Remove DRAWN state
@@ -100,30 +80,48 @@ class ActionPerformerTest {
         // TODO: SWAP-method
     }
 
-
-
     @Test
     void testKhabuCalls() {
         setupState(Gamestate.FIRST_TURN, player1);
         actionPerformer.callKhabu(player1);
         try {
             actionPerformer.callKhabu(player2);
+            fail();
         } catch (IllegalMoveException ignored) {}
         // TODO: Try to manipulate Khabu-caller's cards
     }
 
     @Test
     void testAutomaticKhabuAfterEmptyHand() {
-        setupState(Gamestate.START, player1);
+        setupState(Gamestate.DRAW, player1);
         actionPerformer.callKhabu(player1);
         assertEquals(player2, turn.getCurrentPlayer());
     }
 
+    // TODO: Methods for DrawFromDisc, Discard Card, SwapCard and GiveCardToPlayer
+
 
     @Test
     void testInvalidActionsThrowException() {
-        setupState(Gamestate.START, player1);
+        setupState(Gamestate.DRAW, player1);
         // TODO: Implement for the actions performed. Catch Not your turn exception
+    }
+
+    @Test
+    void testEndTurnCurrentPlayerAndStateChange() {
+        setupState(Gamestate.FRENZY, player1);
+        actionPerformer.endTurn(player1);
+        assertEquals(Gamestate.DRAW, turn.getGameState());
+        assertEquals(player2, turn.getCurrentPlayer());
+    }
+
+    @Test
+    void testEndTurnEndsGameOnNextPlayerBeingKhabuPlayer() {
+        setupState(Gamestate.FIRST_TURN, player1);
+        actionPerformer.callKhabu(player1);
+        turn.setGameState(Gamestate.FRENZY);
+        actionPerformer.endTurn(player2);
+        // TODO: Lines for checking that the game has ended
     }
 
 

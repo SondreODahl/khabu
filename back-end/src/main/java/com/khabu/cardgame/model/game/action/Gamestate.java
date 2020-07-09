@@ -8,5 +8,4 @@ public enum Gamestate {
     DISCARD,
     FRENZY,
     FIRST_TURN,
-    START
 }
