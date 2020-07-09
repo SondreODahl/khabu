@@ -145,26 +145,25 @@ class ActionPerformerTest {
     @Test
     void testStateChangeOnDrawFromDisc() {
         setupState(Gamestate.DRAW, player1);
-        actionPerformer.drawFromDisc(player1);
-        assertEquals(Gamestate.CARD_DRAWN, turn.getGameState()); // TODO: Reevaluate state
+        actionPerformer.drawFromDisc(player1, 0);
+        assertEquals(Gamestate.FRENZY, turn.getGameState()); // TODO: Reevaluate state
     }
 
     @Test
     void testCorrectCardReceivedOnDrawFromDisc() {
         setupState(Gamestate.DRAW, player1);
         Card topCard = discardPile.showTopCard();
-        Card cardDrawn = actionPerformer.drawFromDisc(player1);
-        assertEquals(topCard, cardDrawn);
+        actionPerformer.drawFromDisc(player1, 0);
         assertTrue(player1.hasCard(topCard));
-        assertEquals(0, discardPile.getSize());
+        assertEquals(1, discardPile.getSize());
     }
 
     @Test
     void testDrawFromDiscEmpty() {
         setupState(Gamestate.DRAW, player1);
         discardPile.draw(); // Now the pile should be empty
-        Card drawnCard = actionPerformer.drawFromDisc(player1);
-        assertNull(drawnCard);
+        try {actionPerformer.drawFromDisc(player1, 0);}
+        catch (IllegalMoveException ignored) {}
         assertEquals(Gamestate.DRAW, turn.getGameState());
     }
 

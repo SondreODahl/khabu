@@ -64,10 +64,10 @@ public class ActionPerformer {
         return temporaryCard;
     }
 
-    public Card drawFromDisc(Player player) {
+    public void drawFromDisc(Player player, int index) {
         validateAction(player, Actions.DRAW_FROM_DISC);
-        // TODO: Re-evaluate. DrawFromDisc should be Swap?
-        return null;
+        this.temporaryCard = discardPile.draw();
+        swapDrawnCard(player, index);
     }
 
     public void callKhabu(Player player) {
@@ -75,7 +75,10 @@ public class ActionPerformer {
 
     public void swapDrawnCard(Player player, int index) {
         validateAction(player, Actions.SWAP);
-        
+        Card cardToBeSwapped = player.removeCard(index);
+        player.addCard(temporaryCard);
+        discardPile.put(cardToBeSwapped);
+        turn.setGameState(Gamestate.FRENZY);
     }
 
     public void discardCard(Player player) {
