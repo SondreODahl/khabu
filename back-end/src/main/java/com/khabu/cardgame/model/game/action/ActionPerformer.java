@@ -33,7 +33,7 @@ public class ActionPerformer {
     public void swapDrawnCard(Player player, int index) {
     }
 
-    public void discardCard(Player player, int index) {}
+    public void discardCard(Player player) {}
 
     public void giveCardToPlayer(Player player1, Player player2) {}
 

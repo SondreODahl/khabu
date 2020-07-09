@@ -132,6 +132,21 @@ class ActionPerformerTest {
     }
 
     @Test
+    void testDiscardStateChange() {
+        setupState(Gamestate.CARD_DRAWN, player1);
+        actionPerformer.discardCard(player1);
+        assertEquals(Gamestate.FRENZY, turn.getGameState());
+    }
+
+    @Test
+    void testCardDiscardedIsTheOneDrawn() {
+        setupState(Gamestate.DRAW, player1);
+        Card drawnCard = actionPerformer.drawFromDeck(player1);
+        actionPerformer.discardCard(player1);
+        assertEquals(drawnCard, discardPile.showTopCard());
+    }
+
+    @Test
     void testTurnAndStateChangeOnKhabu() {
         setupState(Gamestate.DRAW, player1);
         actionPerformer.callKhabu(player1);
