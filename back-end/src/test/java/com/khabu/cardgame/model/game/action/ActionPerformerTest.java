@@ -41,7 +41,7 @@ class ActionPerformerTest {
     void testPutOtherNotYourTurn() {
         setupState(Gamestate.FRENZY, player1);
         actionPerformer.putOther(player2, player1, 0);
-        assertEquals(Gamestate.PUT, turn.getGameState());
+        assertEquals(Gamestate.PUT_OTHER_TRANSFER, turn.getGameState());
         assertEquals(player2, turn.getCurrentPuttingPlayer());
     }
 
@@ -92,6 +92,34 @@ class ActionPerformerTest {
             actionPerformer.putSelf(player1, 0);
             fail();
         } catch (IllegalMoveException ignored) {}
+    }
+
+    // ---------------TRANSFER------------------
+
+    @Test
+    void checkCorrectStateUpdateOnTransfer() {
+        setupState(Gamestate.PUT_OTHER_TRANSFER, player1);
+        actionPerformer.transferCard(player1, player2, 0);
+        assertEquals(Gamestate.PUT, turn.getGameState());
+    }
+
+    @Test
+    void checkCorrectCardIsSentOnTransfer() {
+        setupState(Gamestate.PUT_OTHER_TRANSFER, player1);
+        Card transferCard = player1.getCard(0);
+        actionPerformer.transferCard(player1, player2, 0);
+        assertFalse(player1.hasCard(transferCard));
+        assertEquals(transferCard, player2.getCard(0));
+    }
+    
+    @Test
+    void testCannotTransferToYourself() {
+        setupState(Gamestate.PUT_OTHER_TRANSFER, player1);
+        try {
+            actionPerformer.transferCard(player1, player1, 0);
+            fail();
+        }
+        catch (IllegalMoveException ignored) {}
     }
 
     // -----------------DRAW---------------------

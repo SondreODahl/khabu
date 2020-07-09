@@ -35,7 +35,7 @@ public class ActionPerformer {
 
     public void discardCard(Player player) {}
 
-    public void giveCardToPlayer(Player player1, Player player2) {}
+    public void transferCard(Player player1, Player player2, int cardIndex) {}
 
     /*
     public endTurn(Player player) {
