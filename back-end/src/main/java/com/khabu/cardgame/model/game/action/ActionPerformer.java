@@ -30,15 +30,19 @@ public class ActionPerformer {
         Card card = player2.getCard(index);
         if (discardPile.showTopCard().isSameValue(card)) {
             discardPile.put(card);
-            return player2.removeCard(index);
+            Gamestate nextState = action == Actions.PUT_OTHER ? Gamestate.PUT_OTHER_TRANSFER : Gamestate.PUT;
+            turn.setGameState(nextState);
+            turn.setCurrentPuttingPlayer(player1);
         }
         return null;
     }
 
-    public void putSelf(Player player, int index) throws IllegalArgumentException, IllegalMoveException{
-        putExecutor(player, player, index, Actions.PUT_SELF);
-        turn.setGameState(Gamestate.PUT);
-        turn.setCurrentPuttingPlayer(player);
+    public Card putSelf(Player player, int index) throws IllegalArgumentException, IllegalMoveException{
+        return putExecutor(player, player, index, Actions.PUT_SELF);
+    }
+    
+    public Card putOther(Player player1, Player player2, int index) throws  IllegalArgumentException, IllegalMoveException {
+        return putExecutor(player1, player2, index, Actions.PUT_OTHER);
     }
 
     public void endTurn(Player player) {
@@ -64,10 +68,6 @@ public class ActionPerformer {
     public void callKhabu(Player player) {
     }
 
-
-    public void putOther(Player player1, Player player2, int index) {
-    }
-
     public void swapDrawnCard(Player player, int index) {
     }
 
@@ -76,24 +76,6 @@ public class ActionPerformer {
 
     public void transferCard(Player player1, Player player2, int cardIndex) {
     }
-
-    /*
-    public endTurn(Player player) {
-        validateStateMove(player, Actions.END_TURN);
-    }
-
-    public khabu(Player player) {
-        if (turn.getKhabuPlayer() == player) {
-            throw new IllegalMoveException();
-        }
-        turn.setKhabuPlayer(player);
-        endTurn();
-    }
-
-    private boolean validateStateMove(Player player, Actions action) {
-        return ActionValidator.isValidMoveInCurrentState(player, action, turn);
-    }
-    */
 
 }
 
