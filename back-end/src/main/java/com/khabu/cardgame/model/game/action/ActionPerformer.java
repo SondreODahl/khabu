@@ -18,7 +18,7 @@ public class ActionPerformer {
         this.discardPile = discardPile;
     }
 
-    private void validateAction(Player player, Actions action, Turn turn) {
+    private void validateAction(Player player, Actions action) {
         if (!ActionValidator.isValidMoveInCurrentState(player, action, turn)) {
             String errorMessage = String.format("Tried to perform action %s with player %s on turn %s", action.toString(), player.toString(), turn.toString());
             throw new IllegalMoveException(errorMessage);
@@ -26,7 +26,7 @@ public class ActionPerformer {
     }
 
     private Card putExecutor(Player player1, Player player2, int index, Actions action) throws IllegalArgumentException, IllegalMoveException {
-        validateAction(player1, action, turn);
+        validateAction(player1, action);
         Card card = player2.getCard(index);
         if (discardPile.showTopCard().isSameValue(card)) {
             discardPile.put(card);
@@ -40,25 +40,25 @@ public class ActionPerformer {
     public Card putSelf(Player player, int index) throws IllegalArgumentException, IllegalMoveException{
         return putExecutor(player, player, index, Actions.PUT_SELF);
     }
-    
+
     public Card putOther(Player player1, Player player2, int index) throws  IllegalArgumentException, IllegalMoveException {
         return putExecutor(player1, player2, index, Actions.PUT_OTHER);
     }
 
     public void endTurn(Player player) {
-        validateAction(player, Actions.END_TURN, turn);
+        validateAction(player, Actions.END_TURN);
         turn.nextPlayer();
         Gamestate nextState;
         if (turn.getCurrentPlayer() == turn.getKhabuPlayer()) {
             nextState = Gamestate.ENDED;
-            Round.endRound(); // TODO: Replace
+            // TODO: Add round.endRound method
         } else
             nextState = Gamestate.DRAW;
         turn.setGameState(nextState);
     }
 
     public Card drawFromDeck(Player player) {
-        return null;
+        validateAction(player, Actions.DRAW_FROM_DECK);
     }
 
     public Card drawFromDisc(Player player) {
