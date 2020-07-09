@@ -35,6 +35,15 @@ class ActionPerformerTest {
         assertEquals(player1, turn.getCurrentPuttingPlayer());
     }
 
+
+    @Test
+    void testPutOtherNotYourTurn() {
+        setupState(Gamestate.FRENZY, player1);
+        actionPerformer.putOther(player2, player1, 0);
+        assertEquals(Gamestate.PUT, turn.getGameState());
+        assertEquals(player2, turn.getCurrentPuttingPlayer());
+    }
+
     @Test
     void testPutOtherCardCorrectTopCard() {
         setupState(Gamestate.FRENZY, player1);
@@ -68,6 +77,20 @@ class ActionPerformerTest {
         } catch (IllegalMoveException ignored) {} // TODO: Replace with another exception
         assertEquals(initialState, turn.getGameState());
         assertNull(turn.getCurrentPuttingPlayer());
+    }
+
+    @Test // TODO: Implement
+    void testCannotPutOnKhabuPlayer() {
+        setupState(Gamestate.FIRST_TURN, player1);
+        actionPerformer.callKhabu(player1);
+        try {
+            actionPerformer.putOther(player2, player1, 0);
+            fail();
+        } catch (IllegalMoveException ignored) {}
+        try {
+            actionPerformer.putSelf(player1, 0);
+            fail();
+        } catch (IllegalMoveException ignored) {}
     }
 
     @Test
