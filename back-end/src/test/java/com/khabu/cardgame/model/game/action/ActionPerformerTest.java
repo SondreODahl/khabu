@@ -58,23 +58,56 @@ class ActionPerformerTest {
 
     @Test
     void testPutOtherFailedCardValue() {
-        setupState(Gamestate.FRENZY, player1);
+        Gamestate initialState = Gamestate.FRENZY;
+        setupState(initialState, player1);
         Card player2Card = new Card(2, 'H');
         player2.addCard(player2Card);
         try {
             actionPerformer.putOther(player1, player2, 0);
             fail();
         } catch (IllegalMoveException ignored) {} // TODO: Replace with another exception
-        assertEquals(Gamestate.FRENZY, turn.getGameState());
+        assertEquals(initialState, turn.getGameState());
         assertNull(turn.getCurrentPuttingPlayer());
     }
 
     @Test
-    void testStateChangesOnDrawAndSwap() {
+    void testStateChangeOnDrawFromDeck(){
         setupState(Gamestate.DRAW, player1);
-        Card cardDrawn = actionPerformer.drawFromDeck(player1);
-        Card prevTopCard = discardPile.showTopCard();
+        actionPerformer.drawFromDeck(player1);
         assertEquals(Gamestate.CARD_DRAWN, turn.getGameState());
+    }
+
+    @Test
+    void testStateChangeOnDrawFromDisc() {
+        setupState(Gamestate.DRAW, player1);
+        actionPerformer.drawFromDisc(player1);
+        assertEquals(Gamestate.CARD_DRAWN, turn.getGameState()); // TODO: Reevaluate state
+    }
+
+    @Test
+    void testCorrectCardReceivedOnDrawFromDisc() {
+        setupState(Gamestate.DRAW, player1);
+        Card topCard = discardPile.showTopCard();
+        Card cardDrawn = actionPerformer.drawFromDisc(player1);
+        assertEquals(topCard, cardDrawn);
+        assertTrue(player1.hasCard(topCard));
+        assertEquals(0, discardPile.getSize());
+    }
+
+    @Test
+    void testDrawFromDiscEmpty() {
+        setupState(Gamestate.DRAW, player1);
+        discardPile.draw(); // Now the pile should be empty
+        Card drawnCard = actionPerformer.drawFromDisc(player1);
+        assertNull(drawnCard);
+        assertEquals(Gamestate.DRAW, turn.getGameState());
+    }
+
+    @Test
+    void testStateChangesOnSwap() {
+        setupState(Gamestate.DRAW, player1);
+        Card prevTopCard = discardPile.showTopCard();
+        Card cardDrawn = actionPerformer.drawFromDeck(player1);
         actionPerformer.swapDrawnCard(player1, 0);
         assertEquals(cardDrawn, discardPile.showTopCard());
         assertEquals(prevTopCard, player1.getCard(0));
