@@ -111,7 +111,7 @@ class ActionPerformerTest {
         assertFalse(player1.hasCard(transferCard));
         assertEquals(transferCard, player2.getCard(0));
     }
-    
+
     @Test
     void testCannotTransferToYourself() {
         setupState(Gamestate.PUT_OTHER_TRANSFER, player1);

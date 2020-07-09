@@ -32,4 +32,8 @@ public class Card {
         }
         throw new IllegalArgumentException("Invalid face value");
     }
+
+    public boolean isSameValue(Card card2) { // To be used for putting
+        return this.value == card2.value;
+    }
 }
