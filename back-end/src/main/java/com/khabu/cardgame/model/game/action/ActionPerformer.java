@@ -59,9 +59,14 @@ public class ActionPerformer {
 
     public Card drawFromDeck(Player player) {
         validateAction(player, Actions.DRAW_FROM_DECK);
+        this.temporaryCard = cardDeck.drawCard();
+        turn.setGameState(Gamestate.CARD_DRAWN);
+        return temporaryCard;
     }
 
     public Card drawFromDisc(Player player) {
+        validateAction(player, Actions.DRAW_FROM_DISC);
+        // TODO: Re-evaluate. DrawFromDisc should be Swap?
         return null;
     }
 
@@ -69,9 +74,20 @@ public class ActionPerformer {
     }
 
     public void swapDrawnCard(Player player, int index) {
+        validateAction(player, Actions.SWAP);
+        
     }
 
     public void discardCard(Player player) {
+        validateAction(player, Actions.DISCARD);
+        if (temporaryCard != null) {
+            discardPile.put(temporaryCard);
+            temporaryCard = null;
+            turn.setGameState(Gamestate.DISCARD);
+        }
+        else {
+            throw new IllegalMoveException("TemporaryCard is null");
+        }
     }
 
     public void transferCard(Player player1, Player player2, int cardIndex) {

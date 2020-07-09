@@ -193,7 +193,7 @@ class ActionPerformerTest {
     void testDiscardStateChange() {
         setupState(Gamestate.CARD_DRAWN, player1);
         actionPerformer.discardCard(player1);
-        assertEquals(Gamestate.FRENZY, turn.getGameState());
+        assertEquals(Gamestate.DISCARD, turn.getGameState());
     }
 
     @Test
