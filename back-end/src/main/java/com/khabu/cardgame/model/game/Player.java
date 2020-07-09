@@ -38,6 +38,8 @@ public class Player {
         return cardHand.getCard(i);
     }
 
+    public Card removeCard(int i) { return cardHand.removeCard(i);}
+
     public boolean hasCard(Card checkCard) {
         return cardHand.getCards().values().stream().anyMatch(card -> card.equals(checkCard));
     }

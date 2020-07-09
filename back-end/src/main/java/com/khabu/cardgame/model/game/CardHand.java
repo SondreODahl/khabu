@@ -10,6 +10,8 @@ public class CardHand {
     }
 
     public Card getCard(int key) {
+        if (! cards.containsKey(key))
+            throw new IllegalArgumentException("Card key does not exist");
         return cards.get(key);
     }
 
