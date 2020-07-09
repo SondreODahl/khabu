@@ -36,17 +36,17 @@ public class ActionValidator {
     }
 
     private static boolean isValidKhabuCall(Player attemptingPlayer, Turn turn) {
-        return turn.getGameState().equals(Gamestate.DRAW) &&
-                isPlayerCurrentPlayer(attemptingPlayer, turn);
+        return (turn.getGameState().equals(Gamestate.DRAW) ||
+                turn.getGameState().equals(Gamestate.FIRST_TURN)) &&
+                isPlayerCurrentPlayer(attemptingPlayer, turn) &&
+                turn.getKhabuPlayer() == null;
     }
 
     private static boolean isValidTransfer(Player attemptingPlayer, Turn turn) {
-        Player puttingPlayer = turn.getCurrentPuttingPlayer();
-        if (turn.getGameState().equals(Gamestate.PUT_OTHER_TRANSFER)
-                && !puttingPlayer.equals(attemptingPlayer)) {
-            return false;
+        if (turn.getGameState().equals(Gamestate.PUT_OTHER_TRANSFER)) {
+            return turn.getCurrentPuttingPlayer().equals(attemptingPlayer);
         }
-        return turn.getGameState().equals(Gamestate.PUT_OTHER_TRANSFER);
+        return false;
     }
 
     private static boolean isValidSwap(Player attemptingPlayer, Turn turn) {
@@ -56,11 +56,9 @@ public class ActionValidator {
 
 
     private static boolean isValidPut(Player attemptingPlayer, Turn turn) {
-        Player puttingPlayer = turn.getCurrentPuttingPlayer();
-        if (turn.getGameState().equals(Gamestate.PUT) && !puttingPlayer.equals(attemptingPlayer)) {
-            return false;
-        }
-        return (turn.getGameState().equals(Gamestate.PUT) ||
+        return ((turn.getGameState().equals(Gamestate.PUT) &&
+                turn.getCurrentPuttingPlayer().equals(attemptingPlayer))
+                ||
                 turn.getGameState().equals(Gamestate.DISCARD) ||
                 turn.getGameState().equals(Gamestate.FRENZY));
     }

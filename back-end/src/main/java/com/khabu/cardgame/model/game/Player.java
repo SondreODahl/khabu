@@ -35,5 +35,6 @@ public class Player {
     }
 
     public Card getCard(int i) {
+        return cardHand.getCard(i);
     }
 }
