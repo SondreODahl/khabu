@@ -27,6 +27,8 @@ class ActionPerformerTest {
         actionPerformer = new ActionPerformer(turn, cardDeck, discardPile);
     }
 
+    // -----------------PUTS---------------------
+
     @Test
     void testPutSelfCorrectStateUpdate() {
         setupState(Gamestate.FRENZY, player1);
@@ -34,7 +36,6 @@ class ActionPerformerTest {
         assertEquals(Gamestate.PUT, turn.getGameState());
         assertEquals(player1, turn.getCurrentPuttingPlayer());
     }
-
 
     @Test
     void testPutOtherNotYourTurn() {
@@ -79,7 +80,7 @@ class ActionPerformerTest {
         assertNull(turn.getCurrentPuttingPlayer());
     }
 
-    @Test // TODO: Implement
+    @Test
     void testCannotPutOnKhabuPlayer() {
         setupState(Gamestate.FIRST_TURN, player1);
         actionPerformer.callKhabu(player1);
@@ -92,6 +93,8 @@ class ActionPerformerTest {
             fail();
         } catch (IllegalMoveException ignored) {}
     }
+
+    // -----------------DRAW---------------------
 
     @Test
     void testStateChangeOnDrawFromDeck(){
@@ -137,6 +140,8 @@ class ActionPerformerTest {
         assertEquals(Gamestate.DRAW, turn.getGameState());
     }
 
+    // -----------------SWAP---------------------
+
     @Test
     void testStateChangeOnSwap() {
         setupState(Gamestate.CARD_DRAWN, player1);
@@ -154,6 +159,8 @@ class ActionPerformerTest {
         assertEquals(prevTopCard, player1.getCard(0));
     }
 
+    // -----------------DISCARD---------------------
+
     @Test
     void testDiscardStateChange() {
         setupState(Gamestate.CARD_DRAWN, player1);
@@ -168,6 +175,8 @@ class ActionPerformerTest {
         actionPerformer.discardCard(player1);
         assertEquals(drawnCard, discardPile.showTopCard());
     }
+
+    // -----------------KHABU----------------------------
 
     @Test
     void testTurnAndStateChangeOnKhabu() {
@@ -186,11 +195,7 @@ class ActionPerformerTest {
         assertEquals(player2, turn.getCurrentPlayer());
     }
 
-    @Test
-    void testInvalidActionsThrowException() {
-        setupState(Gamestate.DRAW, player1);
-        // TODO: Implement for the actions performed. Catch Not your turn exception
-    }
+    // -----------------END TURN---------------------------
 
     @Test
     void testEndTurnCurrentPlayerAndStateChange() {
@@ -210,6 +215,13 @@ class ActionPerformerTest {
         // TODO: Check that Round is notified somehow?
     }
 
+    // --------------------MISC------------------------------
+
+    @Test
+    void testInvalidActionsThrowException() {
+        setupState(Gamestate.DRAW, player1);
+        // TODO: Implement for the actions performed. Catch Not your turn exception
+    }
 
     void setupState(Gamestate state, Player currentPlayer) {
         turn.setGameState(state);
