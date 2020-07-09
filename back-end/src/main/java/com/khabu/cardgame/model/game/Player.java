@@ -37,4 +37,8 @@ public class Player {
     public Card getCard(int i) {
         return cardHand.getCard(i);
     }
+
+    public boolean hasCard(Card checkCard) {
+        return cardHand.getCards().values().stream().anyMatch(card -> card.equals(checkCard));
+    }
 }
