@@ -36,16 +36,6 @@ class ActionPerformerTest {
     }
 
     @Test
-    void testFailedCardPutSelf() {
-        setupState(Gamestate.FRENZY, player1);
-        try {
-            actionPerformer.putSelf(player1, 2);
-            fail();
-        } catch (IllegalMoveException ignored) {} // TODO: Replace with another exception
-        assertEquals(Gamestate.FRENZY, turn.getGameState());
-    }
-
-    @Test
     void testPutOtherCardCorrectTopCard() {
         setupState(Gamestate.FRENZY, player1);
         Card player2Card = new Card(1, 'H');
@@ -56,15 +46,27 @@ class ActionPerformerTest {
     }
 
     @Test
-    void testPutOtherCardIncorrect() {
-        setupState(Gamestate.FRENZY, player1);
+    void testPutOtherNonExistentCard() {
+        Gamestate initialState = Gamestate.FRENZY;
+        setupState(initialState, player1);
         try{
             actionPerformer.putOther(player1, player2, 0);
             fail();
         } catch (IllegalArgumentException ignored) {} // Player 2 doesn't have any cards
+        assertEquals(initialState, turn.getGameState());
+    }
+
+    @Test
+    void testPutOtherFailedCardValue() {
+        setupState(Gamestate.FRENZY, player1);
         Card player2Card = new Card(2, 'H');
         player2.addCard(player2Card);
-        // TODO: Add Exception for legal move but incorrect value
+        try {
+            actionPerformer.putOther(player1, player2, 0);
+            fail();
+        } catch (IllegalMoveException ignored) {} // TODO: Replace with another exception
+        assertEquals(Gamestate.FRENZY, turn.getGameState());
+        assertNull(turn.getCurrentPuttingPlayer());
     }
 
     @Test
@@ -72,8 +74,7 @@ class ActionPerformerTest {
         setupState(Gamestate.DRAW, player1);
         Card cardDrawn = actionPerformer.drawFromDeck(player1);
         Card prevTopCard = discardPile.showTopCard();
-        assertEquals(Gamestate.CARD_DRAWN, turn.getGameState()); // TODO: Remove DRAWN state
-        assertEquals(player1, turn.getCurrentPlayer());
+        assertEquals(Gamestate.CARD_DRAWN, turn.getGameState());
         actionPerformer.swapDrawnCard(player1, 0);
         assertEquals(cardDrawn, discardPile.showTopCard());
         assertEquals(prevTopCard, player1.getCard(0));
@@ -81,14 +82,13 @@ class ActionPerformerTest {
     }
 
     @Test
-    void testKhabuCalls() {
+    void testCallKhabuAfterAnotherPlayer() {
         setupState(Gamestate.FIRST_TURN, player1);
         actionPerformer.callKhabu(player1);
         try {
             actionPerformer.callKhabu(player2);
             fail();
         } catch (IllegalMoveException ignored) {}
-        // TODO: Try to manipulate Khabu-caller's cards
     }
 
     @Test
