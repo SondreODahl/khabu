@@ -44,7 +44,8 @@ public class ActionValidator {
 
     private static boolean isValidTransfer(Player attemptingPlayer, Turn turn) {
         if (turn.getGameState().equals(Gamestate.PUT_OTHER_TRANSFER)) {
-            return turn.getCurrentPuttingPlayer().equals(attemptingPlayer);
+            Player CPP = turn.getCurrentPuttingPlayer();
+            return CPP != null && CPP == attemptingPlayer;
         }
         return false;
     }

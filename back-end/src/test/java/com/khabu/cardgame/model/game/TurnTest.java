@@ -43,6 +43,11 @@ class TurnTest {
     }
 
     @Test
+    void testGetCurrentPuttingPlayer() {
+        assertNull(turn.getCurrentPuttingPlayer());
+    }
+
+    @Test
     void testSettingKhabuPlayerTwice() {
         turn.setKhabuPlayer(players[0]);
         try {

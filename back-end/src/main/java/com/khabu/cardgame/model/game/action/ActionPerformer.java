@@ -110,6 +110,10 @@ public class ActionPerformer {
         player2.addCard(card);
         turn.setGameState(Gamestate.PUT);
     }
+
+    public Card getTemporaryCard() {
+        return temporaryCard;
+    }
 }
 
 

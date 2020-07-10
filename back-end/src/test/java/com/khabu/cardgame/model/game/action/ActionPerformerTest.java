@@ -102,13 +102,15 @@ class ActionPerformerTest {
     @Test
     void checkCorrectStateUpdateOnTransfer() {
         setupState(Gamestate.PUT_OTHER_TRANSFER, player1);
-        actionPerformer.transferCard(player1, player2, 0);
+        turn.setCurrentPuttingPlayer(player1);
+        actionPerformer.transferCard(player1, player2, 1); // TODO: Update Card Index
         assertEquals(Gamestate.PUT, turn.getGameState());
     }
 
     @Test
     void checkCorrectCardIsSentOnTransfer() {
         setupState(Gamestate.PUT_OTHER_TRANSFER, player1);
+        turn.setCurrentPuttingPlayer(player1);
         Card transferCard = player1.getCard(0);
         actionPerformer.transferCard(player1, player2, 0);
         assertFalse(player1.hasCard(transferCard));
@@ -142,7 +144,7 @@ class ActionPerformerTest {
         Card drawnCard = actionPerformer.drawFromDeck(player1);
         assertEquals(topCard, drawnCard);
         assertEquals(initialDeckSize-1, cardDeck.getSize());
-        assertTrue(player1.hasCard(drawnCard));
+        assertEquals(drawnCard, actionPerformer.getTemporaryCard());
     }
 
     @Test
