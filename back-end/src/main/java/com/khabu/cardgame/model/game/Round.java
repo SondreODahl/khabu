@@ -10,7 +10,7 @@ public class Round {
         // This is the logic before first player's turn
         // TODO: Deal cards (separate method)
         // TODO: Reveal cards (separate method ?)
-        // TODO: Set a starting player (conneced to turn, currentPlayer?)
+        // TODO: Set a starting player (connected to turn, currentPlayer?)
     }
 
     public boolean getStarted() {

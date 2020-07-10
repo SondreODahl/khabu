@@ -30,7 +30,7 @@ class CardTest {
     @Test
     public void createInvalidCardValueThrowsException() {
         IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class,
-                () -> new Card(14, 'H'),
+                () -> new Card(13, 'H'),
                 "Expected card value to be rejected, but it wasn't"
         );
 

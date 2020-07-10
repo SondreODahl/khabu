@@ -67,13 +67,13 @@ class CardHandTest {
         Card cardOne = new Card(11, 'D');
         Card cardTwo = new Card(7, 'H');
         Card cardThree = new Card(3, 'S');
-        Card cardFour = new Card( 12, 'D');
+        Card cardFour = new Card( 11, 'D');
         cardHand.addCard(cardOne);
         cardHand.addCard(cardTwo);
         cardHand.addCard(cardThree);
         cardHand.addCard(cardFour);
 
-        assertEquals(33, cardHand.calculateHandScore());
+        assertEquals(32, cardHand.calculateHandScore());
     }
 
     @Test
@@ -81,7 +81,7 @@ class CardHandTest {
         Card cardOne = new Card(11, 'D');
         Card cardTwo = new Card(7, 'H');
         Card cardThree = new Card(3, 'S');
-        Card cardFour = new Card( 13, 'D');
+        Card cardFour = new Card( 12, 'D');
         cardHand.addCard(cardOne);
         cardHand.addCard(cardTwo);
         cardHand.addCard(cardThree);
