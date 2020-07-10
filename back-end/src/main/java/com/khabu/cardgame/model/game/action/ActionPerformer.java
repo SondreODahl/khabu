@@ -1,6 +1,9 @@
 package com.khabu.cardgame.model.game.action;
 
 import com.khabu.cardgame.model.game.*;
+import com.khabu.cardgame.model.game.card.Card;
+import com.khabu.cardgame.model.game.card.CardDeck;
+import com.khabu.cardgame.model.game.card.DiscardPile;
 import com.khabu.cardgame.util.IllegalMoveException;
 
 public class ActionPerformer {

@@ -1,6 +1,7 @@
-package com.khabu.cardgame.model.game;
+package com.khabu.cardgame.model.game.card;
 
-import com.khabu.cardgame.util.IllegalMoveException;
+import com.khabu.cardgame.model.game.card.Card;
+import com.khabu.cardgame.model.game.card.DiscardPile;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

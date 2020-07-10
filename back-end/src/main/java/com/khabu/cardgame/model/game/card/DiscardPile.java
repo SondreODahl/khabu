@@ -1,6 +1,6 @@
-package com.khabu.cardgame.model.game;
+package com.khabu.cardgame.model.game.card;
 
-import com.khabu.cardgame.util.IllegalMoveException;
+import com.khabu.cardgame.model.game.card.Card;
 
 import java.util.Stack;
 

@@ -1,5 +1,8 @@
 package com.khabu.cardgame.model.game;
 
+import com.khabu.cardgame.model.game.card.Card;
+import com.khabu.cardgame.model.game.card.CardHand;
+
 public class Player {
     private String name;
     private int playerId;

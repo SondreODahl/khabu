@@ -1,5 +1,6 @@
-package com.khabu.cardgame.model.game;
+package com.khabu.cardgame.model.game.card;
 
+import com.khabu.cardgame.model.game.card.Card;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
