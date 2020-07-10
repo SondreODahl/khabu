@@ -8,9 +8,9 @@ public class Round {
 
     public void beginRound() {
         // This is the logic before first player's turn
-        // TODO: Deal cards
-        // TODO: Reveal cards
-        // TODO: Set a starting player
+        // TODO: Deal cards (separate method)
+        // TODO: Reveal cards (separate method ?)
+        // TODO: Set a starting player (conneced to turn, currentPlayer?)
     }
 
     public boolean getStarted() {

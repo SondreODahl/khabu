@@ -47,6 +47,10 @@ public class Player {
         return cardHand.getCards().values().stream().anyMatch(card -> card.equals(checkCard));
     }
 
+    public int calculateScore() {
+        return cardHand.calculateHandScore();
+    }
+
     public String toString() {
         return String.format("[Player: %s, PlayerId: %d]", name, playerId);
     }
