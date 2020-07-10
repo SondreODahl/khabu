@@ -36,6 +36,7 @@ public class Player {
     }
 
     public void addCard(Card h) {
+        cardHand.addCard(h);
     }
 
     public Card getCard(int i) {
