@@ -36,4 +36,9 @@ public class Card {
     public boolean isSameValue(Card card2) { // To be used for putting
         return this.value == card2.value;
     }
+
+    @Override
+    public String toString() {
+        return String.format("[CARD, Value:%d Face:%c ]", getValue(), getFace());
+    }
 }
