@@ -19,6 +19,7 @@ public class CardHand {
 
     public Card removeCard(int id) {
         Card removedCard = cards.get(id);
+        if (removedCard == null) throw new IllegalArgumentException("Illegal Id for card in cardhand");
         cards.remove(id);
         return removedCard;
     }
