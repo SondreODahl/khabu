@@ -56,4 +56,8 @@ public class Player {
     public String toString() {
         return String.format("[Player: %s, PlayerId: %d]", name, playerId);
     }
+
+    public int getHandSize() {
+        return cardHand.getSize();
+    }
 }

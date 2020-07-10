@@ -57,4 +57,8 @@ public class CardHand {
         }
         return sum;
     }
+
+    public int getSize() {
+        return cards.size();
+    }
 }
