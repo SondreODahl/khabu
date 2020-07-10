@@ -33,9 +33,15 @@ public class ActionPerformer {
         Card card = player2.getCard(index);
         if (discardPile.showTopCard().isSameValue(card)) {
             discardPile.put(card);
-            Gamestate nextState = action == Actions.PUT_OTHER ? Gamestate.PUT_OTHER_TRANSFER : Gamestate.PUT;
-            turn.setGameState(nextState);
-            turn.setCurrentPuttingPlayer(player1);
+            player2.removeCard(index);
+            // Check for if player's hand is empty on their turn --> Automatic khabu
+            if (checkForAutomaticKhabu(player1))
+                khabu(player1);
+            else {
+                Gamestate nextState = action == Actions.PUT_OTHER ? Gamestate.PUT_OTHER_TRANSFER : Gamestate.PUT;
+                turn.setGameState(nextState);
+                turn.setCurrentPuttingPlayer(player1);
+            }
         }
         return null;
     }
@@ -77,6 +83,11 @@ public class ActionPerformer {
 
     public void callKhabu(Player player) {
         validateAction(player, Actions.CALL_KHABU);
+        khabu(player);
+    }
+
+    private void khabu(Player player) {
+        turn.setGameState(Gamestate.FRENZY);
         endTurn(player);
         turn.setKhabuPlayer(player);
     }
@@ -108,7 +119,14 @@ public class ActionPerformer {
         }
         Card card = player1.removeCard(cardIndex);
         player2.addCard(card);
-        turn.setGameState(Gamestate.PUT);
+        if (checkForAutomaticKhabu(player1))
+            khabu(player1);
+        else
+            turn.setGameState(Gamestate.PUT);
+    }
+
+    private boolean checkForAutomaticKhabu(Player player) {
+        return turn.getCurrentPlayer() == player && player.getHandSize() == 0;
     }
 
     public Card getTemporaryCard() {

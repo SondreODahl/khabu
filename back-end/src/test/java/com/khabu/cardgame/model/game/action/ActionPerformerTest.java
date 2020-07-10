@@ -1,6 +1,7 @@
 package com.khabu.cardgame.model.game.action;
 
-import com.khabu.cardgame.model.game.*;
+import com.khabu.cardgame.model.game.Player;
+import com.khabu.cardgame.model.game.Turn;
 import com.khabu.cardgame.model.game.card.Card;
 import com.khabu.cardgame.model.game.card.CardDeck;
 import com.khabu.cardgame.model.game.card.DiscardPile;
@@ -103,16 +104,14 @@ class ActionPerformerTest {
 
     @Test
     void checkCorrectStateUpdateOnTransfer() {
-        setupState(Gamestate.PUT_OTHER_TRANSFER, player1);
-        turn.setCurrentPuttingPlayer(player1);
+        setupPlayer1Transfer();
         actionPerformer.transferCard(player1, player2, firstCardIndex); // TODO: Update Card Index
         assertEquals(Gamestate.PUT, turn.getGameState());
     }
 
     @Test
     void checkCorrectCardIsSentOnTransfer() {
-        setupState(Gamestate.PUT_OTHER_TRANSFER, player1);
-        turn.setCurrentPuttingPlayer(player1);
+        setupPlayer1Transfer();
         Card transferCard = player1.getCard(firstCardIndex);
         actionPerformer.transferCard(player1, player2, firstCardIndex);
         assertFalse(player1.hasCard(transferCard));
@@ -121,12 +120,18 @@ class ActionPerformerTest {
 
     @Test
     void testCannotTransferToYourself() {
-        setupState(Gamestate.PUT_OTHER_TRANSFER, player1);
+        setupPlayer1Transfer();
         try {
             actionPerformer.transferCard(player1, player1, firstCardIndex);
             fail();
         }
         catch (IllegalMoveException ignored) {}
+    }
+
+    private void setupPlayer1Transfer() {
+        setupState(Gamestate.PUT_OTHER_TRANSFER, player1);
+        turn.setCurrentPuttingPlayer(player1);
+
     }
 
     // -----------------DRAW---------------------
@@ -221,10 +226,19 @@ class ActionPerformerTest {
     }
 
     @Test
-    void testAutomaticKhabuOnEmptyHand() {
+    void testAutomaticKhabuOnEmptyHandAfterPutSelf() {
         setupState(Gamestate.FRENZY, player1);
         player1.getCardHand().removeCard(secondCardIndex);
         actionPerformer.putSelf(player1, firstCardIndex);
+        assertEquals(Gamestate.DRAW, turn.getGameState());
+        assertEquals(player2, turn.getCurrentPlayer());
+    }
+
+    @Test
+    void testAutomaticKhabuOnEmptyHandAfterTransferOther() {
+        setupPlayer1Transfer();
+        player1.getCardHand().removeCard(secondCardIndex);
+        actionPerformer.transferCard(player1, player2, firstCardIndex);
         assertEquals(Gamestate.DRAW, turn.getGameState());
         assertEquals(player2, turn.getCurrentPlayer());
     }
