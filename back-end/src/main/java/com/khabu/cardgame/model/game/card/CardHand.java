@@ -43,4 +43,17 @@ public class CardHand {
         // Increases largest current key by 1
         return cards.size()+1;
     }
+
+    public int calculateHandScore() {
+        int sum = 0;
+        for (Card card : cards.values()) {
+            if ((card.getFace() == 'D' || card.getFace() == 'H')
+            && card.getValue() == 13) {
+                sum -= 1;
+            } else {
+                sum += card.getValue();
+            }
+        }
+        return sum;
+    }
 }
