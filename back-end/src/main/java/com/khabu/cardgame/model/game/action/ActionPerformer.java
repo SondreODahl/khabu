@@ -42,6 +42,7 @@ public class ActionPerformer {
                 turn.setGameState(nextState);
                 turn.setCurrentPuttingPlayer(player1);
             }
+            return card;
         }
         return null;
     }
@@ -76,7 +77,10 @@ public class ActionPerformer {
 
     public void drawFromDisc(Player player, int index) {
         validateAction(player, Actions.DRAW_FROM_DISC);
-        this.temporaryCard = discardPile.draw();
+        try {this.temporaryCard = discardPile.draw();}
+        catch (IllegalStateException e) { // TODO: Rethink
+            throw new IllegalMoveException(e);
+        };
         turn.setGameState(Gamestate.CARD_DRAWN);
         swapDrawnCard(player, index);
     }
@@ -96,6 +100,7 @@ public class ActionPerformer {
         validateAction(player, Actions.SWAP);
         Card cardToBeSwapped = player.removeCard(index);
         player.addCard(temporaryCard);
+        temporaryCard = null;
         discardPile.put(cardToBeSwapped);
         turn.setGameState(Gamestate.FRENZY);
     }
@@ -131,6 +136,10 @@ public class ActionPerformer {
 
     public Card getTemporaryCard() {
         return temporaryCard;
+    }
+
+    public void setTemporaryCard(Card temporaryCard) {
+        this.temporaryCard = temporaryCard;
     }
 }
 
