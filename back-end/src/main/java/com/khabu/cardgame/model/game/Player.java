@@ -9,6 +9,7 @@ public class Player {
     public Player(String name, int playerId) {
         this.name = name;
         this.playerId = playerId;
+        this.cardHand = new CardHand();
     }
 
     public String getName() {

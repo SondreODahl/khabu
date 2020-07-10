@@ -45,10 +45,11 @@ public class ActionPerformer {
         return putExecutor(player1, player2, index, Actions.PUT_OTHER);
     }
 
-    public void endTurn(Player player) {
+    public void endTurn(Player player) throws IllegalMoveException {
         validateAction(player, Actions.END_TURN);
         turn.nextPlayer();
         Gamestate nextState;
+        temporaryCard = null;
         if (turn.getCurrentPlayer() == turn.getKhabuPlayer()) {
             nextState = Gamestate.ENDED;
             // TODO: Add round.endRound method
@@ -67,10 +68,14 @@ public class ActionPerformer {
     public void drawFromDisc(Player player, int index) {
         validateAction(player, Actions.DRAW_FROM_DISC);
         this.temporaryCard = discardPile.draw();
+        turn.setGameState(Gamestate.CARD_DRAWN);
         swapDrawnCard(player, index);
     }
 
     public void callKhabu(Player player) {
+        validateAction(player, Actions.CALL_KHABU);
+        endTurn(player);
+        turn.setKhabuPlayer(player);
     }
 
     public void swapDrawnCard(Player player, int index) {
@@ -94,8 +99,14 @@ public class ActionPerformer {
     }
 
     public void transferCard(Player player1, Player player2, int cardIndex) {
+        validateAction(player1, Actions.TRANSFER);
+        if (player1 == player2) {
+            throw new IllegalMoveException("Cannot transfer to yourself");
+        }
+        Card card = player1.removeCard(cardIndex);
+        player2.addCard(card);
+        turn.setGameState(Gamestate.PUT);
     }
-
 }
 
 
