@@ -18,6 +18,8 @@ class ActionPerformerTest {
     Player player2;
     DiscardPile discardPile;
     CardDeck cardDeck;
+    final int firstCardIndex = 1;
+    final int secondCardIndex = 2;
 
 
     @BeforeEach
@@ -35,7 +37,7 @@ class ActionPerformerTest {
     @Test
     void testPutSelfCorrectStateUpdate() {
         setupState(Gamestate.FRENZY, player1);
-        actionPerformer.putSelf(player1, 1);
+        actionPerformer.putSelf(player1, firstCardIndex);
         assertEquals(Gamestate.PUT, turn.getGameState());
         assertEquals(player1, turn.getCurrentPuttingPlayer());
     }
@@ -43,7 +45,7 @@ class ActionPerformerTest {
     @Test
     void testPutOtherNotYourTurn() {
         setupState(Gamestate.FRENZY, player1);
-        actionPerformer.putOther(player2, player1, 0);
+        actionPerformer.putOther(player2, player1, firstCardIndex);
         assertEquals(Gamestate.PUT_OTHER_TRANSFER, turn.getGameState());
         assertEquals(player2, turn.getCurrentPuttingPlayer());
     }
@@ -53,7 +55,7 @@ class ActionPerformerTest {
         setupState(Gamestate.FRENZY, player1);
         Card player2Card = new Card(1, 'H');
         player2.addCard(player2Card);
-        actionPerformer.putOther(player1, player2, 0);
+        actionPerformer.putOther(player1, player2, firstCardIndex);
         assertEquals(player2Card, discardPile.showTopCard());
         assertEquals(player1, turn.getCurrentPuttingPlayer());
     }
@@ -63,7 +65,7 @@ class ActionPerformerTest {
         Gamestate initialState = Gamestate.FRENZY;
         setupState(initialState, player1);
         try{
-            actionPerformer.putOther(player1, player2, 0);
+            actionPerformer.putOther(player1, player2, firstCardIndex);
             fail();
         } catch (IllegalArgumentException ignored) {} // Player 2 doesn't have any cards
         assertEquals(initialState, turn.getGameState());
@@ -76,7 +78,7 @@ class ActionPerformerTest {
         Card player2Card = new Card(2, 'H');
         player2.addCard(player2Card);
         try {
-            actionPerformer.putOther(player1, player2, 0);
+            actionPerformer.putOther(player1, player2, firstCardIndex);
             fail();
         } catch (IllegalMoveException ignored) {} // TODO: Replace with another exception
         assertEquals(initialState, turn.getGameState());
@@ -88,11 +90,11 @@ class ActionPerformerTest {
         setupState(Gamestate.FIRST_TURN, player1);
         actionPerformer.callKhabu(player1);
         try {
-            actionPerformer.putOther(player2, player1, 0);
+            actionPerformer.putOther(player2, player1, firstCardIndex);
             fail();
         } catch (IllegalMoveException ignored) {}
         try {
-            actionPerformer.putSelf(player1, 0);
+            actionPerformer.putSelf(player1, firstCardIndex);
             fail();
         } catch (IllegalMoveException ignored) {}
     }
@@ -103,7 +105,7 @@ class ActionPerformerTest {
     void checkCorrectStateUpdateOnTransfer() {
         setupState(Gamestate.PUT_OTHER_TRANSFER, player1);
         turn.setCurrentPuttingPlayer(player1);
-        actionPerformer.transferCard(player1, player2, 1); // TODO: Update Card Index
+        actionPerformer.transferCard(player1, player2, firstCardIndex); // TODO: Update Card Index
         assertEquals(Gamestate.PUT, turn.getGameState());
     }
 
@@ -111,17 +113,17 @@ class ActionPerformerTest {
     void checkCorrectCardIsSentOnTransfer() {
         setupState(Gamestate.PUT_OTHER_TRANSFER, player1);
         turn.setCurrentPuttingPlayer(player1);
-        Card transferCard = player1.getCard(0);
-        actionPerformer.transferCard(player1, player2, 0);
+        Card transferCard = player1.getCard(firstCardIndex);
+        actionPerformer.transferCard(player1, player2, firstCardIndex);
         assertFalse(player1.hasCard(transferCard));
-        assertEquals(transferCard, player2.getCard(0));
+        assertEquals(transferCard, player2.getCard(firstCardIndex));
     }
 
     @Test
     void testCannotTransferToYourself() {
         setupState(Gamestate.PUT_OTHER_TRANSFER, player1);
         try {
-            actionPerformer.transferCard(player1, player1, 0);
+            actionPerformer.transferCard(player1, player1, firstCardIndex);
             fail();
         }
         catch (IllegalMoveException ignored) {}
@@ -150,7 +152,7 @@ class ActionPerformerTest {
     @Test
     void testStateChangeOnDrawFromDisc() {
         setupState(Gamestate.DRAW, player1);
-        actionPerformer.drawFromDisc(player1, 0);
+        actionPerformer.drawFromDisc(player1, firstCardIndex);
         assertEquals(Gamestate.FRENZY, turn.getGameState()); // TODO: Reevaluate state
     }
 
@@ -158,7 +160,7 @@ class ActionPerformerTest {
     void testCorrectCardReceivedOnDrawFromDisc() {
         setupState(Gamestate.DRAW, player1);
         Card topCard = discardPile.showTopCard();
-        actionPerformer.drawFromDisc(player1, 0);
+        actionPerformer.drawFromDisc(player1, firstCardIndex);
         assertTrue(player1.hasCard(topCard));
         assertEquals(1, discardPile.getSize());
     }
@@ -167,7 +169,7 @@ class ActionPerformerTest {
     void testDrawFromDiscEmpty() {
         setupState(Gamestate.DRAW, player1);
         discardPile.draw(); // Now the pile should be empty
-        try {actionPerformer.drawFromDisc(player1, 0);}
+        try {actionPerformer.drawFromDisc(player1, firstCardIndex);}
         catch (IllegalMoveException ignored) {}
         assertEquals(Gamestate.DRAW, turn.getGameState());
     }
@@ -177,7 +179,7 @@ class ActionPerformerTest {
     @Test
     void testStateChangeOnSwap() {
         setupState(Gamestate.CARD_DRAWN, player1);
-        actionPerformer.swapDrawnCard(player1, 0);
+        actionPerformer.swapDrawnCard(player1, firstCardIndex);
         assertEquals(Gamestate.FRENZY, turn.getGameState());
     }
 
@@ -186,9 +188,9 @@ class ActionPerformerTest {
         setupState(Gamestate.DRAW, player1);
         Card prevTopCard = discardPile.showTopCard();
         Card cardDrawn = actionPerformer.drawFromDeck(player1);
-        actionPerformer.swapDrawnCard(player1, 0);
+        actionPerformer.swapDrawnCard(player1, firstCardIndex);
         assertEquals(cardDrawn, discardPile.showTopCard());
-        assertEquals(prevTopCard, player1.getCard(0));
+        assertEquals(prevTopCard, player1.getCard(firstCardIndex));
     }
 
     // -----------------DISCARD---------------------
@@ -221,8 +223,8 @@ class ActionPerformerTest {
     @Test
     void testAutomaticKhabuOnEmptyHand() {
         setupState(Gamestate.FRENZY, player1);
-        player1.getCardHand().removeCard(1);
-        actionPerformer.putSelf(player1, 0);
+        player1.getCardHand().removeCard(secondCardIndex);
+        actionPerformer.putSelf(player1, firstCardIndex);
         assertEquals(Gamestate.DRAW, turn.getGameState());
         assertEquals(player2, turn.getCurrentPlayer());
     }
