@@ -72,6 +72,18 @@ class CardHandTest {
     }
 
     @Test
+    public void addCardOnFirstIdAfterRemovingFirstCard(){
+        Card cardOne = new Card(11, 'D');
+        Card cardTwo = new Card(7, 'H');
+        Card cardThree = new Card(3, 'S');
+        cardHand.addCard(cardOne);
+        cardHand.addCard(cardTwo);
+        cardHand.removeCard(1);
+        cardHand.addCard(cardThree);
+        assertEquals(cardThree, cardHand.getCard(1));
+    }
+
+    @Test
     public void calculateHandWithoutRedKings() {
         Card cardOne = new Card(11, 'D');
         Card cardTwo = new Card(7, 'H');
