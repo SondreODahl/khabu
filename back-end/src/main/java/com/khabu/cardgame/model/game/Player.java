@@ -1,5 +1,8 @@
 package com.khabu.cardgame.model.game;
 
+import com.khabu.cardgame.model.game.card.Card;
+import com.khabu.cardgame.model.game.card.CardHand;
+
 public class Player {
     private String name;
     private int playerId;
@@ -43,6 +46,10 @@ public class Player {
 
     public boolean hasCard(Card checkCard) {
         return cardHand.getCards().values().stream().anyMatch(card -> card.equals(checkCard));
+    }
+
+    public int calculateScore() {
+        return cardHand.calculateHandScore();
     }
 
     public String toString() {

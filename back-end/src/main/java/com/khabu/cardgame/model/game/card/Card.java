@@ -1,4 +1,4 @@
-package com.khabu.cardgame.model.game;
+package com.khabu.cardgame.model.game.card;
 
 public class Card {
     private int value;

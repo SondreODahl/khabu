@@ -1,4 +1,4 @@
-package com.khabu.cardgame.model.game;
+package com.khabu.cardgame.model.game.card;
 
 import java.util.ArrayList;
 import java.util.Collections;

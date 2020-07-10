@@ -1,4 +1,6 @@
-package com.khabu.cardgame.model.game;
+package com.khabu.cardgame.model.game.card;
+
+import com.khabu.cardgame.model.game.card.Card;
 
 import java.util.*;
 
@@ -40,5 +42,18 @@ public class CardHand {
         }
         // Increases largest current key by 1
         return cards.size()+1;
+    }
+
+    public int calculateHandScore() {
+        int sum = 0;
+        for (Card card : cards.values()) {
+            if ((card.getFace() == 'D' || card.getFace() == 'H')
+            && card.getValue() == 12) {
+                sum -= 1;
+            } else {
+                sum += (card.getValue() + 1);
+            }
+        }
+        return sum;
     }
 }
