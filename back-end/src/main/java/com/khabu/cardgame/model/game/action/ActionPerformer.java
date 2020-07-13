@@ -58,14 +58,17 @@ public class ActionPerformer {
     public void endTurn(Player player) throws IllegalMoveException {
         validateAction(player, Actions.END_TURN);
         turn.nextPlayer();
-        Gamestate nextState;
         temporaryCard = null;
-        if (turn.getCurrentPlayer() == turn.getKhabuPlayer()) {
-            nextState = Gamestate.ENDED;
+        Player nextPlayer = turn.getCurrentPlayer();
+        if (nextPlayer == turn.getKhabuPlayer()) {
+            turn.setGameState(Gamestate.ENDED);;
             // TODO: Add round.endRound method
-        } else
-            nextState = Gamestate.DRAW;
-        turn.setGameState(nextState);
+        }
+        else if (checkForAutomaticKhabu(nextPlayer)) {
+            khabu(nextPlayer);
+        }
+        else
+            turn.setGameState(Gamestate.DRAW);
     }
 
     public Card drawFromDeck(Player player) {
@@ -92,8 +95,8 @@ public class ActionPerformer {
 
     private void khabu(Player player) {
         turn.setGameState(Gamestate.FRENZY);
-        endTurn(player);
         turn.setKhabuPlayer(player);
+        endTurn(player);
     }
 
     public void swapDrawnCard(Player player, int index) {
@@ -131,7 +134,7 @@ public class ActionPerformer {
     }
 
     private boolean checkForAutomaticKhabu(Player player) {
-        return turn.getCurrentPlayer() == player && player.getHandSize() == 0;
+        return turn.getCurrentPlayer() == player && player.getHandSize() == 0 && turn.getKhabuPlayer() == null;
     }
 
     public Card getTemporaryCard() {
