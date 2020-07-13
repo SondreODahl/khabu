@@ -83,21 +83,16 @@ class RoundTest {
         }
     }
 
-
     @Test
-    void testRevealCardDuringBeginning() {
-        round.readyUp(player1);
-        round.readyUp(player2);
-        round.revealCard(player1, 1);
-        round.revealCard(player1, 2);
-        try {
-            round.revealCard(player1, 3);
-            fail();
-        } catch (IllegalMoveException ignored) {}
+    void testReadyingUpAfterEndStartsNewRound() {
+        round.endRound();
+        beginGame();
+        boolean started = round.getStarted();
+        assertTrue(started);
     }
 
     @Test
-    void testEndOfRoundKhabu() {
+    void testRoundEndsOnReachingKhabuPlayer() {
         beginGame();
         round.performAction(player1, Actions.CALL_KHABU);
         round.performAction(player2, Actions.DRAW_FROM_DECK);
@@ -110,11 +105,15 @@ class RoundTest {
     }
 
     @Test
-    void testReadyingUpAfterEndStartsNewRound() {
-        round.endRound();
-        beginGame();
-        boolean started = round.getStarted();
-        assertTrue(started);
+    void testRevealCardDuringBeginning() {
+        round.readyUp(player1);
+        round.readyUp(player2);
+        round.revealCard(player1, 1);
+        round.revealCard(player1, 2);
+        try {
+            round.revealCard(player1, 3);
+            fail();
+        } catch (IllegalMoveException ignored) {}
     }
 
     @Test
@@ -134,6 +133,15 @@ class RoundTest {
             round.revealHands();
             fail();
         } catch (IllegalStateException ignored) {}
+    }
+
+    @Test
+    void testRevealHandsReturnCorrectValues() {
+        Map<Player, CardHand> receivedHands = round.revealHands();
+        for (Player player: receivedHands.keySet()) {
+            CardHand receivedHand = receivedHands.get(player);
+            assertEquals(player.getCardHand(), receivedHand);
+        }
     }
 
     private void beginGame() {

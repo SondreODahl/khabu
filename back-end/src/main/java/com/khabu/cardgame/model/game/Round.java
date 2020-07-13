@@ -157,9 +157,13 @@ public class Round {
     public Map<Player, CardHand> revealHands() {
         if (this.roundStarted)
             throw new IllegalStateException("Game already begun. Cannot reveal hands now");
-        return new HashMap<>();  // TODO: Change
+        Map<Player, CardHand> hands = new HashMap<>(); // TODO: Improve encapsulation
+        for (Player player : players) {
+            CardHand receivedHand = player.getCardHand();
+            hands.put(player, receivedHand);
+        }
+        return hands;
     }
-
 
     public void setStarted(boolean started) {
         this.roundStarted = started;
