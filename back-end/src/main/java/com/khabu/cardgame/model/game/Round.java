@@ -2,6 +2,7 @@ package com.khabu.cardgame.model.game;
 
 import com.khabu.cardgame.model.game.action.ActionPerformer;
 import com.khabu.cardgame.model.game.action.Actions;
+import com.khabu.cardgame.model.game.action.Gamestate;
 import com.khabu.cardgame.model.game.card.Card;
 import com.khabu.cardgame.model.game.card.CardDeck;
 import com.khabu.cardgame.model.game.card.CardHand;
@@ -38,16 +39,16 @@ public class Round {
             this.revealedCard.put(player, 0);
         }
     }
-
     public static Round Constructor(Player[] players, int INIT_HAND_SIZE, int REVEAL_TIME) { // TODO: Change this implementation
         Round round = new Round(players, INIT_HAND_SIZE, REVEAL_TIME);
         round.actionPerformer = new ActionPerformer(round.turn, round.cardDeck, round.discardPile, round);
         return round;
     }
-
-    public static Round DummyConstructor() {
+    public static Round DummyConstructor() { // TODO: Change?
         return new Round(new Player[]{}, 4, 500);
     }
+
+    // ------------------------------ METHODS ------------------------------------------
 
     private void validateHandSize(int initialHandSize) {
         if (initialHandSize < MIN_INIT_HAND_SIZE || initialHandSize > MAX_INIT_HAND_SIZE )
@@ -67,6 +68,7 @@ public class Round {
             }
         };
         timer.schedule(task, this.REVEAL_TIME);
+        this.turn.setGameState(Gamestate.DRAW);
     }
 
     public void endRound() {
@@ -89,16 +91,50 @@ public class Round {
     }
 
     public void performAction(Player player, Actions action) {
-        performAction(player, null, action, -1);
+        performAction(player, player, action, -1);
     }
     public void performAction(Player player, Actions action, int index) {
         performAction(player, null, action, index);
     }
     public void performAction(Player player1, Player player2, Actions action, int index) {
-
+        switch (action) {
+            case SWAP:
+                actionPerformer.swapDrawnCard(player1, index);
+                break;
+            case DISCARD:
+                actionPerformer.discardCard(player1);
+                break;
+            case END_TURN:
+                actionPerformer.endTurn(player1);
+                break;
+            case PUT_SELF:
+                actionPerformer.putSelf(player1, index);
+                break;
+            case TRANSFER:
+                actionPerformer.transferCard(player1, player2, index);
+                break;
+            case PUT_OTHER:
+                actionPerformer.putOther(player1, player2, index);
+                break;
+            case CALL_KHABU:
+                actionPerformer.callKhabu(player1);
+                break;
+            case DRAW_FROM_DECK:
+                actionPerformer.drawFromDeck(player1);
+                break;
+            case DRAW_FROM_DISC:
+                actionPerformer.drawFromDisc(player1, index);
+                break;
+            default:
+                throw new IllegalMoveException(String.format(
+                        "Tried to perform move which is not legal with %s, %s , %s, %d",
+                        player1, player2, action, index));
+        }
     }
 
     public boolean readyUp(Player player) {
+        if (this.roundStarted)
+            throw new IllegalStateException("Game has already started. Cannot ready up");
         boolean readiedUp = playersReady.get(player);
         playersReady.put(player, !readiedUp);
         if (getPlayersReady() == players.length) {
@@ -110,14 +146,17 @@ public class Round {
     public Card revealCard(Player player, int index) {
         if (this.roundStarted) {throw new IllegalStateException("Round has already begun");}
         int alreadyRevealed = this.revealedCard.get(player);
-        int maxReveal = INIT_HAND_SIZE/2;
+        int maxReveal = this.INIT_HAND_SIZE/2;
         if (alreadyRevealed == maxReveal) {
             throw new IllegalMoveException(String.format("Already shown %d cards", maxReveal));
         }
+        this.revealedCard.put(player, alreadyRevealed+1);
         return player.getCard(index);
     }
 
     public Map<Player, CardHand> revealHands() {
+        if (this.roundStarted)
+            throw new IllegalStateException("Game already begun. Cannot reveal hands now");
         return new HashMap<>();  // TODO: Change
     }
 
