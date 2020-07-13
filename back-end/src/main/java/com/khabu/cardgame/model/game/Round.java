@@ -1,6 +1,11 @@
 package com.khabu.cardgame.model.game;
 
 import com.khabu.cardgame.model.game.action.Actions;
+import com.khabu.cardgame.model.game.card.Card;
+import com.khabu.cardgame.model.game.card.CardHand;
+
+import java.util.List;
+import java.util.Map;
 
 public class Round {
 
@@ -17,7 +22,16 @@ public class Round {
         return true;
     }
 
-    public void performAction(Player player2, Actions discard) {
+    public void performAction(Player player, Actions action) {
+        performAction(player, null, action, -1);
+    }
+
+    public void performAction(Player player, Actions action, int index) {
+        performAction(player, null, action, index);
+    }
+
+    public void performAction(Player player1, Player player2, Actions action, int index) {
+
     }
 
     public boolean readyUp(Player player1) {
@@ -26,5 +40,14 @@ public class Round {
 
     public int getPlayersReady() {
         return 0;
+    }
+
+    public boolean getEnded() {
+    }
+
+    public Map<Player, CardHand> revealHands() {
+    }
+
+    public void endRound() {
     }
 }

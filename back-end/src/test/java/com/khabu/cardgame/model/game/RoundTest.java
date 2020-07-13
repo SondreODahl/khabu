@@ -1,8 +1,14 @@
 package com.khabu.cardgame.model.game;
 
 import com.khabu.cardgame.model.game.action.Actions;
+import com.khabu.cardgame.model.game.card.Card;
+import com.khabu.cardgame.model.game.card.CardHand;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -55,6 +61,28 @@ class RoundTest {
         round.performAction(player2, Actions.DISCARD);
         boolean started = round.getStarted();
         assertTrue(started);
+        round.performAction(player2, Actions.END_TURN);
+        boolean ended = round.getEnded();
+        assertTrue(ended);
+    }
+
+    @Test
+    void testRevealHandAfterEndRound() {
+        round.endRound();
+        Map<Player, CardHand> cards = round.revealHands();
+        for (Player player: cards.keySet()) {
+            CardHand revealedHand = cards.get(player);
+            assertEquals(revealedHand, player.getCardHand());
+        }
+    }
+
+    @Test
+    void revealHandsDuringGame() {
+        beginGame();
+        try {
+            round.revealHands();
+            fail();
+        } catch (IllegalStateException ignored) {}
     }
 
     private void beginGame() {
