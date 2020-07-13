@@ -4,6 +4,8 @@ import com.khabu.cardgame.model.game.action.Actions;
 import com.khabu.cardgame.model.game.card.Card;
 import com.khabu.cardgame.model.game.card.CardDeck;
 import com.khabu.cardgame.model.game.card.CardHand;
+import com.khabu.cardgame.util.IllegalMoveException;
+import org.apache.tomcat.jni.Time;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -20,12 +22,13 @@ class RoundTest {
     private Player player2;
     private final int DECK_SIZE = 52;
     private final int initialHandSize = 4;
+    private final int revealTime = 500;
 
     @BeforeEach
     void setUp() {
         player1 = new Player("Player 1", 1);
         player2 = new Player("Player 2", 2);
-        round = new Round(new Player[]{player1, player2}, initialHandSize);
+        round = new Round(new Player[]{player1, player2}, initialHandSize, revealTime);
     }
 
     @Test
@@ -78,6 +81,27 @@ class RoundTest {
     }
 
     @Test
+    void testTimerDuringBeginningOfGame() throws InterruptedException {
+        round.readyUp(player1);
+        round.readyUp(player2);
+        assertFalse(round.getStarted());
+        Thread.sleep(revealTime+10);
+        assertTrue(round.getStarted());
+    }
+
+    @Test
+    void testRevealCardDuringBeginning() {
+        round.readyUp(player1);
+        round.readyUp(player2);
+        round.revealCard(player1, 1);
+        round.revealCard(player1, 2);
+        try {
+            round.revealCard(player1, 3);
+            fail();
+        } catch (IllegalMoveException ignored) {}
+    }
+
+    @Test
     void testEndOfRoundKhabu() {
         beginGame();
         round.performAction(player1, Actions.CALL_KHABU);
@@ -86,8 +110,8 @@ class RoundTest {
         boolean started = round.getStarted();
         assertTrue(started);
         round.performAction(player2, Actions.END_TURN);
-        boolean ended = round.getEnded();
-        assertTrue(ended);
+        started = round.getStarted();
+        assertFalse(started);
     }
 
     @Test
@@ -120,5 +144,6 @@ class RoundTest {
     private void beginGame() {
         round.readyUp(player1);
         round.readyUp(player2);
+        round.setStarted(true);
     }
 }

@@ -5,15 +5,17 @@ import java.util.*;
 public class Game {
     private String roomId;
     private List<Player> players;
-    static private final int NUM_OF_PLAYERS = 4;
+    static private final int NUM_OF_PLAYERS = 2;
+    private final int INIT_STARTING_HAND = 4;
+    private final int REVEAL_TIME = 10*1000;
     private Map<Player, Integer> playerTotalScores;
     private Round currentRound;
 
-    public Game(String roomId) {
+    public Game(String roomId, Player[] players) {
         this.roomId = roomId;
         this.players = new ArrayList<>();
         this.playerTotalScores = new HashMap<>();
-        this.currentRound = new Round(NUM_OF_PLAYERS, new Player[]{player1, player2});
+        this.currentRound = new Round(players, INIT_STARTING_HAND, REVEAL_TIME);
     }
 
     public String getRoomId() {
