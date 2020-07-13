@@ -1,15 +1,15 @@
 package com.khabu.cardgame.model.game;
 
 import com.khabu.cardgame.model.game.action.Actions;
-import com.khabu.cardgame.model.game.card.Card;
+import com.khabu.cardgame.model.game.card.CardDeck;
 import com.khabu.cardgame.model.game.card.CardHand;
 
-import java.util.List;
 import java.util.Map;
 
 public class Round {
 
-    public Round(int numOfPlayers) {}
+    public Round(Player[] players, int initialHandSize) {
+    }
 
     public void beginRound() {
         // This is the logic before first player's turn
@@ -49,5 +49,14 @@ public class Round {
     }
 
     public void endRound() {
+    }
+
+    public Turn getTurn() {
+    }
+
+    public CardDeck getCardDeck() {
+    }
+
+    public Player[] getPlayers() {
     }
 }

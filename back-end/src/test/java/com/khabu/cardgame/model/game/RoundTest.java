@@ -2,6 +2,7 @@ package com.khabu.cardgame.model.game;
 
 import com.khabu.cardgame.model.game.action.Actions;
 import com.khabu.cardgame.model.game.card.Card;
+import com.khabu.cardgame.model.game.card.CardDeck;
 import com.khabu.cardgame.model.game.card.CardHand;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,16 +16,39 @@ import static org.junit.jupiter.api.Assertions.*;
 class RoundTest {
 
     private Round round;
-    private Turn turn;
     private Player player1;
     private Player player2;
+    private final int DECK_SIZE = 52;
+    private final int initialHandSize = 4;
 
     @BeforeEach
     void setUp() {
         player1 = new Player("Player 1", 1);
-        player1 = new Player("Player 2", 2);
-        turn = new Turn(new Player[]{player1, player2});
-        round = new Round(2) ;
+        player2 = new Player("Player 2", 2);
+        round = new Round(new Player[]{player1, player2}, initialHandSize);
+    }
+
+    @Test
+    void testGetters() {
+        Turn turn = round.getTurn();
+        assertNotNull(turn);
+        CardDeck cardDeck = round.getCardDeck();
+        assertEquals(DECK_SIZE, cardDeck.getSize());
+        assertEquals(0, round.getPlayersReady());
+        assertFalse(round.getStarted());
+    }
+
+    @Test
+    void testDealCards() {
+        for (Player player: round.getPlayers()) {
+            assertEquals(0, player.getHandSize());
+        }
+        beginGame();
+        for (Player player: round.getPlayers()) {
+            assertEquals(initialHandSize, player.getHandSize());
+        }
+        int NoOfPlayers = 2;
+        assertEquals(DECK_SIZE-NoOfPlayers*initialHandSize,round.getCardDeck().getSize());
     }
 
     @Test
@@ -64,6 +88,14 @@ class RoundTest {
         round.performAction(player2, Actions.END_TURN);
         boolean ended = round.getEnded();
         assertTrue(ended);
+    }
+
+    @Test
+    void testReadyingUpAfterEndStartsNewRound() {
+        round.endRound();
+        beginGame();
+        boolean started = round.getStarted();
+        assertTrue(started);
     }
 
     @Test

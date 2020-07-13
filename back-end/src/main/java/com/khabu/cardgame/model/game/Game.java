@@ -13,7 +13,7 @@ public class Game {
         this.roomId = roomId;
         this.players = new ArrayList<>();
         this.playerTotalScores = new HashMap<>();
-        this.currentRound = new Round(NUM_OF_PLAYERS);
+        this.currentRound = new Round(NUM_OF_PLAYERS, new Player[]{player1, player2});
     }
 
     public String getRoomId() {
