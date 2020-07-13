@@ -15,7 +15,7 @@ public class Game {
         this.roomId = roomId;
         this.players = new ArrayList<>();
         this.playerTotalScores = new HashMap<>();
-        this.currentRound = new Round(players, INIT_STARTING_HAND, REVEAL_TIME);
+        this.currentRound = Round.Constructor(players, INIT_STARTING_HAND, REVEAL_TIME);
     }
 
     public String getRoomId() {

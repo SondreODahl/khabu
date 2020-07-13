@@ -27,17 +27,26 @@ public class Round {
     private final int INIT_HAND_SIZE;
     private final int REVEAL_TIME;
 
-    public Round(Player[] players, int INIT_HAND_SIZE, int REVEAL_TIME) {
+    private Round(Player[] players, int INIT_HAND_SIZE, int REVEAL_TIME) {
         validateHandSize(INIT_HAND_SIZE);
         this.INIT_HAND_SIZE = INIT_HAND_SIZE;
         this.REVEAL_TIME = REVEAL_TIME;
         this.turn = new Turn(players);
-        this.actionPerformer = new ActionPerformer(turn, cardDeck, discardPile);
         this.players = players;
         for (Player player : players) {
             this.playersReady.put(player, false);
             this.revealedCard.put(player, 0);
         }
+    }
+
+    public static Round Constructor(Player[] players, int INIT_HAND_SIZE, int REVEAL_TIME) { // TODO: Change this implementation
+        Round round = new Round(players, INIT_HAND_SIZE, REVEAL_TIME);
+        round.actionPerformer = new ActionPerformer(round.turn, round.cardDeck, round.discardPile, round);
+        return round;
+    }
+
+    public static Round DummyConstructor() {
+        return new Round(new Player[]{}, 4, 500);
     }
 
     private void validateHandSize(int initialHandSize) {
@@ -60,8 +69,13 @@ public class Round {
         timer.schedule(task, this.REVEAL_TIME);
     }
 
-    public void setStarted(boolean started) {
-        this.roundStarted = started;
+    public void endRound() {
+        setStarted(false);
+        // TODO: Methods for revealing the cards and calculating scores
+        for (Player player : players) {
+            this.playersReady.put(player, false);
+            this.revealedCard.put(player, 0);
+        }
     }
 
     private void dealCards() {
@@ -107,13 +121,15 @@ public class Round {
         return new HashMap<>();  // TODO: Change
     }
 
+
+    public void setStarted(boolean started) {
+        this.roundStarted = started;
+    }
+
     // ------------------------------ GETTERS ---------------------------------
 
     public int getPlayersReady() {
         return (int) playersReady.values().stream().filter(Boolean::booleanValue).count();
-    }
-
-    public void endRound() {
     }
 
     public Turn getTurn() {

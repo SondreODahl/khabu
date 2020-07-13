@@ -2,6 +2,7 @@ package com.khabu.cardgame.model.game.action;
 
 import com.khabu.cardgame.model.game.Game;
 import com.khabu.cardgame.model.game.Player;
+import com.khabu.cardgame.model.game.Round;
 import com.khabu.cardgame.model.game.Turn;
 import com.khabu.cardgame.model.game.card.Card;
 import com.khabu.cardgame.model.game.card.CardDeck;
@@ -28,10 +29,11 @@ class ActionPerformerTest {
     void setUp() {
         player1 = new Player("Player1", 1);
         player2 = new Player("Player2", 1);
-        turn = new Turn(new Player[]{player1, player2});
+        Player[] players = new Player[]{player1, player2};
+        turn = new Turn(players);
         discardPile = new DiscardPile();
         cardDeck = new CardDeck(discardPile);
-        actionPerformer = new ActionPerformer(turn, cardDeck, discardPile);
+        actionPerformer = new ActionPerformer(turn, cardDeck, discardPile, Round.DummyConstructor());
     }
 
     // -----------------PUTS---------------------

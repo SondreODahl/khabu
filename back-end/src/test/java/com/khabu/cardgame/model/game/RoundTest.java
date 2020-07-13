@@ -28,7 +28,7 @@ class RoundTest {
     void setUp() {
         player1 = new Player("Player 1", 1);
         player2 = new Player("Player 2", 2);
-        round = new Round(new Player[]{player1, player2}, initialHandSize, revealTime);
+        round = Round.Constructor(new Player[]{player1, player2}, initialHandSize, revealTime);
     }
 
     @Test

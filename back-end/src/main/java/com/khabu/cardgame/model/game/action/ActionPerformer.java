@@ -11,14 +11,17 @@ public class ActionPerformer {
     private final Turn turn;
     private final CardDeck cardDeck;
     private final DiscardPile discardPile;
+    private final Round round;
+
     private Card temporaryCard;
 
-    public ActionPerformer(Turn turn, CardDeck cardDeck, DiscardPile discardPile) {
-        if (turn == null || cardDeck == null || discardPile == null)
+    public ActionPerformer(Turn turn, CardDeck cardDeck, DiscardPile discardPile, Round round) {
+        if (turn == null || cardDeck == null || discardPile == null || round == null)
             throw new IllegalArgumentException("Argument cannot be null");
         this.turn = turn;
         this.cardDeck = cardDeck;
         this.discardPile = discardPile;
+        this.round = round;
     }
 
     private void validateAction(Player player, Actions action) {
@@ -62,7 +65,7 @@ public class ActionPerformer {
         Player nextPlayer = turn.getCurrentPlayer();
         if (nextPlayer == turn.getKhabuPlayer()) {
             turn.setGameState(Gamestate.ENDED);;
-            // TODO: Add round.endRound method
+            round.endRound();
         }
         else if (checkForAutomaticKhabu(nextPlayer)) {
             khabu(nextPlayer);
