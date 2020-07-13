@@ -109,7 +109,7 @@ class RoundTest {
     }
 
     @Test
-    void revealHandsDuringGame() {
+    void testRevealHandsDuringGame() {
         beginGame();
         try {
             round.revealHands();
