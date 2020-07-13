@@ -46,10 +46,6 @@ public class Round {
         // TODO: Set a starting player (connected to turn, currentPlayer?)
     }
 
-    public boolean getStarted() {
-        return this.roundStarted;
-    }
-
     public void performAction(Player player, Actions action) {
         performAction(player, null, action, -1);
     }
@@ -62,18 +58,24 @@ public class Round {
 
     }
 
-    public boolean readyUp(Player player1) {
-        return false;
-    }
-
-    public int getPlayersReady() {
-        return 0;
-    }
-
-    public boolean getEnded() {
+    public boolean readyUp(Player player) {
+        boolean readiedUp = playersReady.get(player);
+        playersReady.put(player, !readiedUp);
+        if (getPlayersReady() == players.length) {
+            beginRound();
+        }
+        return this.roundStarted;
     }
 
     public Map<Player, CardHand> revealHands() {
+    }
+
+    public int getPlayersReady() {
+        return (int) playersReady.values().stream().filter(Boolean::booleanValue).count();
+    }
+
+    public boolean getEnded() {
+        return this.roundEnded;
     }
 
     public void endRound() {
@@ -86,5 +88,9 @@ public class Round {
     }
 
     public Player[] getPlayers() {
+    }
+
+    public boolean getStarted() {
+        return this.roundStarted;
     }
 }
