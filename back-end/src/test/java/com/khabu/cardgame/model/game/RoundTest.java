@@ -55,7 +55,7 @@ class RoundTest {
     }
 
     @Test
-    void testReadyStartOfRound() {
+    void testReadyStartOfRound() throws InterruptedException {
         boolean started = round.readyUp(player1);
         assertEquals(1, round.getPlayersReady());
         assertFalse(started);
@@ -64,9 +64,12 @@ class RoundTest {
         assertEquals(0, round.getPlayersReady());
 
         round.readyUp(player1);
-        started = round.readyUp(player2);
+        round.readyUp(player2);
+
+        int timePadding = (int) (revealTime*0.10); // So that the test runs after the tested class
+        Thread.sleep(revealTime+ timePadding);
+        assertTrue(round.getStarted());
         assertEquals(2, round.getPlayersReady());
-        assertTrue(started);
     }
 
     @Test
@@ -80,14 +83,6 @@ class RoundTest {
         }
     }
 
-    @Test
-    void testTimerDuringBeginningOfGame() throws InterruptedException {
-        round.readyUp(player1);
-        round.readyUp(player2);
-        assertFalse(round.getStarted());
-        Thread.sleep(revealTime+10);
-        assertTrue(round.getStarted());
-    }
 
     @Test
     void testRevealCardDuringBeginning() {

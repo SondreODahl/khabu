@@ -12,7 +12,7 @@ public class Turn {
 
     public Turn(Player[] players) {
         this.players = players;
-        currentPlayer = 0;
+        currentPlayer = 0; // TODO: Randomize starting player
     }
 
     public void nextPlayer() {
