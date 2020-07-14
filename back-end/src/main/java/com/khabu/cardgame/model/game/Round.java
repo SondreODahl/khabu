@@ -88,7 +88,7 @@ public class Round {
             }
         };
         timer.schedule(task, this.REVEAL_TIME);
-        this.turn.setGameState(Gamestate.DRAW);
+        this.turn.setGameState(Gamestate.FIRST_TURN);
     }
 
     public void endRound() {
