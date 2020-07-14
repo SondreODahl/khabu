@@ -1,6 +1,8 @@
 package com.khabu.cardgame.model.game.action;
 
-import com.khabu.cardgame.model.game.*;
+import com.khabu.cardgame.model.game.Player;
+import com.khabu.cardgame.model.game.Round;
+import com.khabu.cardgame.model.game.Turn;
 import com.khabu.cardgame.model.game.card.Card;
 import com.khabu.cardgame.model.game.card.CardDeck;
 import com.khabu.cardgame.model.game.card.DiscardPile;
@@ -50,11 +52,11 @@ public class ActionPerformer {
         return null;
     }
 
-    public Card putSelf(Player player, int index) throws IllegalArgumentException, IllegalMoveException{
+    public Card putSelf(Player player, int index) throws IllegalArgumentException, IllegalMoveException {
         return putExecutor(player, player, index, Actions.PUT_SELF);
     }
 
-    public Card putOther(Player player1, Player player2, int index) throws  IllegalArgumentException, IllegalMoveException {
+    public Card putOther(Player player1, Player player2, int index) throws IllegalArgumentException, IllegalMoveException {
         return putExecutor(player1, player2, index, Actions.PUT_OTHER);
     }
 
@@ -64,13 +66,11 @@ public class ActionPerformer {
         temporaryCard = null;
         Player nextPlayer = turn.getCurrentPlayer();
         if (nextPlayer == turn.getKhabuPlayer()) {
-            turn.setGameState(Gamestate.ENDED);;
+            turn.setGameState(Gamestate.ENDED);
             round.endRound();
-        }
-        else if (checkForAutomaticKhabu(nextPlayer)) {
+        } else if (checkForAutomaticKhabu(nextPlayer)) {
             khabu(nextPlayer);
-        }
-        else
+        } else
             turn.setGameState(Gamestate.DRAW);
     }
 
@@ -83,10 +83,11 @@ public class ActionPerformer {
 
     public void drawFromDisc(Player player, int index) {
         validateAction(player, Actions.DRAW_FROM_DISC);
-        try {this.temporaryCard = discardPile.draw();}
-        catch (IllegalStateException e) { // TODO: Rethink
+        try {
+            this.temporaryCard = discardPile.draw();
+        } catch (IllegalStateException e) { // TODO: Rethink
             throw new IllegalMoveException(e);
-        };
+        }
         turn.setGameState(Gamestate.CARD_DRAWN);
         swapDrawnCard(player, index);
     }
@@ -117,8 +118,7 @@ public class ActionPerformer {
             discardPile.put(temporaryCard);
             temporaryCard = null;
             turn.setGameState(Gamestate.DISCARD);
-        }
-        else {
+        } else {
             throw new IllegalMoveException("TemporaryCard is null");
         }
     }
@@ -136,7 +136,7 @@ public class ActionPerformer {
             turn.setGameState(Gamestate.PUT);
     }
 
-    private boolean checkForAutomaticKhabu(Player player) {
+    private boolean checkForAutomaticKhabu(Player player) {  // TODO: Reconsider restricting user to only this option instead
         return turn.getCurrentPlayer() == player && player.getHandSize() == 0 && turn.getKhabuPlayer() == null;
     }
 

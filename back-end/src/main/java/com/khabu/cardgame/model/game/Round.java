@@ -13,21 +13,18 @@ import java.util.*;
 
 public class Round {
 
-    private DiscardPile discardPile = new DiscardPile();
-    private CardDeck cardDeck = new CardDeck(discardPile);
-    private Turn turn;
+    private final DiscardPile discardPile = new DiscardPile();
+    private final CardDeck cardDeck = new CardDeck(discardPile);
+    private final Turn turn;
     private ActionPerformer actionPerformer;
-    private Game game;
-    private Player[] players;
+    private final Game game;
+    private final Player[] players;
 
     private boolean roundStarted;
-    private Map<Player, Boolean> playersReady = new HashMap<>();
-    private Map<Player, Integer> revealedCard = new HashMap<>();
-    private Map<Player, Integer> scores = new HashMap<>();
+    private final Map<Player, Boolean> playersReady = new HashMap<>();
+    private final Map<Player, Integer> revealedCard = new HashMap<>();
+    private final Map<Player, Integer> scores = new HashMap<>();
 
-
-    private final int MIN_INIT_HAND_SIZE = 2;
-    private final int MAX_INIT_HAND_SIZE = 8; // TODO: Should be changed to be more dynamic
     private final int INIT_HAND_SIZE;
     private final int REVEAL_TIME;
 
@@ -36,8 +33,8 @@ public class Round {
         validateHandSize(INIT_HAND_SIZE);
         this.INIT_HAND_SIZE = INIT_HAND_SIZE;
         this.REVEAL_TIME = REVEAL_TIME;
-        this.turn = new Turn(players);
         this.players = players;
+        this.turn = new Turn(players);
         this.game = game;
         resetMaps();
     }
@@ -53,7 +50,9 @@ public class Round {
     // ------------------------------ METHODS ------------------------------------------
 
     private void validateHandSize(int initialHandSize) {
-        if (initialHandSize < MIN_INIT_HAND_SIZE || initialHandSize > MAX_INIT_HAND_SIZE )
+        int MIN_INIT_HAND_SIZE = 2; // TODO: Should be changed to be more dynamic
+        int MAX_INIT_HAND_SIZE = 8;
+        if (initialHandSize < MIN_INIT_HAND_SIZE || initialHandSize > MAX_INIT_HAND_SIZE)
             throw new IllegalArgumentException(String.format(
                     "Initial hand size is larger or smaller than allowed (%d-%d)",
                     MIN_INIT_HAND_SIZE, MAX_INIT_HAND_SIZE));
@@ -69,15 +68,13 @@ public class Round {
 
     private void calculateScores() {
         for (Player player : players) {
-            Collection<Card> cards = player.getCardHand().getCards().values();
-            int summedScore = cards.stream().mapToInt(Card::getValue).sum();
+            int summedScore = player.calculateScore();
             int prevScore = scores.get(player);
             scores.put(player, prevScore + summedScore);
         }
     }
 
     public void beginRound() {
-        // This is the logic before first player's turn
         resetMaps();
         dealCards();
         Timer timer = new Timer();
@@ -86,15 +83,15 @@ public class Round {
             public void run() {
                 setStarted(true);
             }
-        };
+        }; // Sets the time available for reveals
         timer.schedule(task, this.REVEAL_TIME);
         this.turn.setGameState(Gamestate.FIRST_TURN);
     }
 
     public void endRound() {
         setStarted(false);
-        calculateScores();
-        game.roundEnded();
+        calculateScores(); // Calculates scores for the round
+        game.roundEnded(); // Calculates total scores in game session
         // TODO: Methods for revealing the cards
     }
 

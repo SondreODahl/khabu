@@ -13,7 +13,6 @@ public class ActionValidator {
             case END_TURN:
                 return isValidEndTurn(attemptingPlayer, turn);
             case PUT_SELF:
-                return isValidPut(attemptingPlayer, turn);
             case PUT_OTHER:
                 return isValidPut(attemptingPlayer, turn);
             case SWAP:
@@ -30,20 +29,20 @@ public class ActionValidator {
     }
 
     private static boolean isValidDrawFromDiscard(Player attemptingPlayer, Turn turn) {
-        return (!turn.getGameState().equals(Gamestate.FIRST_TURN) &&
-                turn.getGameState().equals(Gamestate.DRAW)) &&
+        return (!turn.gameStateEquals(Gamestate.FIRST_TURN) &&
+                turn.gameStateEquals(Gamestate.DRAW)) &&
                 isPlayerCurrentPlayer(attemptingPlayer, turn);
     }
 
     private static boolean isValidKhabuCall(Player attemptingPlayer, Turn turn) {
-        return (turn.getGameState().equals(Gamestate.DRAW) ||
-                turn.getGameState().equals(Gamestate.FIRST_TURN)) &&
+        return (turn.gameStateEquals(Gamestate.DRAW) ||
+                turn.gameStateEquals(Gamestate.FIRST_TURN)) &&
                 isPlayerCurrentPlayer(attemptingPlayer, turn) &&
                 turn.getKhabuPlayer() == null;
     }
 
     private static boolean isValidTransfer(Player attemptingPlayer, Turn turn) {
-        if (turn.getGameState().equals(Gamestate.PUT_OTHER_TRANSFER)) {
+        if (turn.gameStateEquals(Gamestate.PUT_OTHER_TRANSFER)) {
             Player CPP = turn.getCurrentPuttingPlayer();
             return CPP != null && CPP == attemptingPlayer;
         }
@@ -51,33 +50,33 @@ public class ActionValidator {
     }
 
     private static boolean isValidSwap(Player attemptingPlayer, Turn turn) {
-        return turn.getGameState().equals(Gamestate.CARD_DRAWN) &&
-        isPlayerCurrentPlayer(attemptingPlayer, turn);
+        return turn.gameStateEquals(Gamestate.CARD_DRAWN) &&
+                isPlayerCurrentPlayer(attemptingPlayer, turn);
     }
 
 
     private static boolean isValidPut(Player attemptingPlayer, Turn turn) {
-        return ((turn.getGameState().equals(Gamestate.PUT) &&
+        return ((turn.gameStateEquals(Gamestate.PUT) &&
                 turn.getCurrentPuttingPlayer().equals(attemptingPlayer))
                 ||
-                turn.getGameState().equals(Gamestate.DISCARD) ||
-                turn.getGameState().equals(Gamestate.FRENZY));
+                turn.gameStateEquals(Gamestate.DISCARD) ||
+                turn.gameStateEquals(Gamestate.FRENZY));
     }
 
     private static boolean isValidEndTurn(Player attemptingPlayer, Turn turn) {
-        return (turn.getGameState().equals(Gamestate.PUT) ||
-                turn.getGameState().equals(Gamestate.DISCARD) ||
-                turn.getGameState().equals(Gamestate.FRENZY)) &&
+        return (turn.gameStateEquals(Gamestate.PUT) ||
+                turn.gameStateEquals(Gamestate.DISCARD) ||
+                turn.gameStateEquals(Gamestate.FRENZY)) &&
                 isPlayerCurrentPlayer(attemptingPlayer, turn);
     }
 
     private static boolean isValidDiscard(Player attemptingPlayer, Turn turn) {
-        return turn.getGameState().equals(Gamestate.CARD_DRAWN)
+        return turn.gameStateEquals(Gamestate.CARD_DRAWN)
                 && isPlayerCurrentPlayer(attemptingPlayer, turn);
     }
 
     private static boolean isValidDrawFromDeck(Player attemptingPlayer, Turn turn) {
-        return turn.getGameState().equals(Gamestate.DRAW)
+        return turn.gameStateEquals(Gamestate.DRAW)
                 && isPlayerCurrentPlayer(attemptingPlayer, turn);
     }
 

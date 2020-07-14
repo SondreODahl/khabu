@@ -1,13 +1,11 @@
 package com.khabu.cardgame.model.game;
 
 import com.khabu.cardgame.model.game.action.Actions;
-import com.khabu.cardgame.util.IllegalMoveException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class GameTest {
 
@@ -23,11 +21,11 @@ class GameTest {
     }
 
     @Test
-    void testAddPlayerNull(){
+    void testAddPlayerNull() {
         try {
             game.addPlayer(null);
+        } catch (IllegalArgumentException ignored) {
         }
-        catch (IllegalArgumentException ignored) {}
     }
 
     @Test
@@ -36,14 +34,17 @@ class GameTest {
         game.addPlayer(player2);
         try {
             game.addPlayer(new Player("3", 3));
-        } catch (IllegalStateException ignored) {}
+        } catch (IllegalStateException ignored) {
+        }
     }
 
     @Test
     void testBeginGameWithNotEnoughPlayers() {
         game.addPlayer(player1);
-        try {game.beginGame();}
-        catch (IllegalStateException ignored) {}
+        try {
+            game.beginGame();
+        } catch (IllegalStateException ignored) {
+        }
         game.addPlayer(player2);
         game.beginGame();
     }
@@ -54,15 +55,13 @@ class GameTest {
         game.getRound().performAction(player1, Actions.CALL_KHABU);
         game.getRound().performAction(player2, Actions.DRAW_FROM_DECK);
         game.getRound().performAction(player2, Actions.DISCARD);
+        Player[] players = game.getPlayers();
         for (Player player : game.getPlayers()) {
             assertEquals(0, game.getTotalScore(player));
         }
-
         game.getRound().performAction(player2, Actions.END_TURN);
-
-        Map<Player, Integer> totalScores = game.getPlayerTotalScores();
-        for (Player player : totalScores.keySet()) {
-            assertTrue(totalScores.get(player) > 0);
+        for (Player player : players) {
+            assertTrue(game.getTotalScore(player) > 0);
         }
     }
 

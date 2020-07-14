@@ -36,12 +36,8 @@ public class Game {
         }
     }
 
-    public Map<Player, Integer> getPlayerTotalScores() {
-        return playerTotalScores;
-    }
-
     public int getTotalScore(Player player) {
-        return 0;
+        return playerTotalScores.get(player);
     }
 
     public void addPlayer(Player player) {

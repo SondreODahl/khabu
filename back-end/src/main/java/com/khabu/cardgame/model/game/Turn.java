@@ -20,10 +20,6 @@ public class Turn {
         currentPuttingPlayer = null;
     }
 
-    private void checkPlayerForNull(Player player) {
-        if (player == null) throw new IllegalArgumentException("Player cannot be null");
-    }
-
     public Player getKhabuPlayer() {
         return this.khabuPlayer;
     }
@@ -59,12 +55,20 @@ public class Turn {
         this.currentPuttingPlayer = puttingPlayer;
     }
 
+    private void checkPlayerForNull(Player player) {
+        if (player == null) throw new IllegalArgumentException("Player cannot be null");
+    }
+
     public Gamestate getGameState() {
         return this.gameState;
     }
 
     public void setGameState(Gamestate gameState) {
         this.gameState = gameState;
+    }
+
+    public boolean gameStateEquals(Gamestate state) {
+        return this.gameState.equals(state);
     }
 
     @Override
