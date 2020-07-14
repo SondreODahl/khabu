@@ -17,33 +17,37 @@ public class Round {
     private CardDeck cardDeck = new CardDeck(discardPile);
     private Turn turn;
     private ActionPerformer actionPerformer;
+    private Game game;
     private Player[] players;
 
     private boolean roundStarted;
     private Map<Player, Boolean> playersReady = new HashMap<>();
     private Map<Player, Integer> revealedCard = new HashMap<>();
+    private Map<Player, Integer> scores = new HashMap<>();
+
 
     private final int MIN_INIT_HAND_SIZE = 2;
     private final int MAX_INIT_HAND_SIZE = 8; // TODO: Should be changed to be more dynamic
     private final int INIT_HAND_SIZE;
     private final int REVEAL_TIME;
-    private Map<Player, Integer> scores;
 
-    private Round(Player[] players, int INIT_HAND_SIZE, int REVEAL_TIME) {
+
+    private Round(Game game, Player[] players, int INIT_HAND_SIZE, int REVEAL_TIME) {
         validateHandSize(INIT_HAND_SIZE);
         this.INIT_HAND_SIZE = INIT_HAND_SIZE;
         this.REVEAL_TIME = REVEAL_TIME;
         this.turn = new Turn(players);
         this.players = players;
+        this.game = game;
         resetMaps();
     }
-    public static Round Constructor(Player[] players, int INIT_HAND_SIZE, int REVEAL_TIME) { // TODO: Change this implementation
-        Round round = new Round(players, INIT_HAND_SIZE, REVEAL_TIME);
+    public static Round Constructor(Game game, Player[] players, int INIT_HAND_SIZE, int REVEAL_TIME) { // TODO: Change this implementation
+        Round round = new Round(game, players, INIT_HAND_SIZE, REVEAL_TIME);
         round.actionPerformer = new ActionPerformer(round.turn, round.cardDeck, round.discardPile, round);
         return round;
     }
     public static Round DummyConstructor() { // TODO: Change?
-        return new Round(new Player[]{}, 4, 500);
+        return new Round(new Game("abc", 2), new Player[]{}, 4, 500);
     }
 
     // ------------------------------ METHODS ------------------------------------------
@@ -60,6 +64,15 @@ public class Round {
             this.playersReady.put(player, false);
             this.revealedCard.put(player, 0);
             this.scores.put(player, 0);
+        }
+    }
+
+    private void calculateScores() {
+        for (Player player : players) {
+            Collection<Card> cards = player.getCardHand().getCards().values();
+            int summedScore = cards.stream().mapToInt(Card::getValue).sum();
+            int prevScore = scores.get(player);
+            scores.put(player, prevScore + summedScore);
         }
     }
 
@@ -80,7 +93,9 @@ public class Round {
 
     public void endRound() {
         setStarted(false);
-        // TODO: Methods for revealing the cards and calculating scores
+        calculateScores();
+        game.roundEnded();
+        // TODO: Methods for revealing the cards
     }
 
     private void dealCards() {

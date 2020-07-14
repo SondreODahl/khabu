@@ -28,7 +28,8 @@ class RoundTest {
     void setUp() {
         player1 = new Player("Player 1", 1);
         player2 = new Player("Player 2", 2);
-        round = Round.Constructor(new Player[]{player1, player2}, initialHandSize, revealTime);
+        round = Round.Constructor(
+                new Game("abc", 1), new Player[]{player1, player2}, initialHandSize, revealTime);
     }
 
     @Test
@@ -69,7 +70,6 @@ class RoundTest {
         int timePadding = (int) (revealTime*0.10); // So that the test runs after the tested class
         Thread.sleep(revealTime+ timePadding);
         assertTrue(round.getStarted());
-        assertEquals(2, round.getPlayersReady());
     }
 
     @Test
