@@ -27,6 +27,7 @@ public class Round {
     private final int MAX_INIT_HAND_SIZE = 8; // TODO: Should be changed to be more dynamic
     private final int INIT_HAND_SIZE;
     private final int REVEAL_TIME;
+    private Map<Player, Integer> scores;
 
     private Round(Player[] players, int INIT_HAND_SIZE, int REVEAL_TIME) {
         validateHandSize(INIT_HAND_SIZE);
@@ -34,10 +35,7 @@ public class Round {
         this.REVEAL_TIME = REVEAL_TIME;
         this.turn = new Turn(players);
         this.players = players;
-        for (Player player : players) {
-            this.playersReady.put(player, false);
-            this.revealedCard.put(player, 0);
-        }
+        resetMaps();
     }
     public static Round Constructor(Player[] players, int INIT_HAND_SIZE, int REVEAL_TIME) { // TODO: Change this implementation
         Round round = new Round(players, INIT_HAND_SIZE, REVEAL_TIME);
@@ -57,8 +55,17 @@ public class Round {
                     MIN_INIT_HAND_SIZE, MAX_INIT_HAND_SIZE));
     }
 
+    private void resetMaps() {
+        for (Player player : players) {
+            this.playersReady.put(player, false);
+            this.revealedCard.put(player, 0);
+            this.scores.put(player, 0);
+        }
+    }
+
     public void beginRound() {
         // This is the logic before first player's turn
+        resetMaps();
         dealCards();
         Timer timer = new Timer();
         TimerTask task = new TimerTask() {
@@ -74,10 +81,6 @@ public class Round {
     public void endRound() {
         setStarted(false);
         // TODO: Methods for revealing the cards and calculating scores
-        for (Player player : players) {
-            this.playersReady.put(player, false);
-            this.revealedCard.put(player, 0);
-        }
     }
 
     private void dealCards() {
@@ -189,5 +192,9 @@ public class Round {
 
     public boolean getStarted() {
         return this.roundStarted;
+    }
+
+    public int getScore(Player player) {
+        return scores.get(player);
     }
 }

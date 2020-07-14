@@ -144,6 +144,35 @@ class RoundTest {
         }
     }
 
+    @Test
+    void testGetScoreBeforeAndAfterRound() {
+        int player1Score = round.getScore(player1);
+        int player2Score = round.getScore(player2);
+        assertEquals(player1Score, player2Score);
+        assertEquals(0, player1Score);
+        beginGame();
+        round.performAction(player1, Actions.CALL_KHABU);
+        round.performAction(player2, Actions.DRAW_FROM_DECK);
+        round.performAction(player2, Actions.DISCARD);
+        round.performAction(player2, Actions.END_TURN);
+        player1Score = round.getScore(player1);
+        assertTrue(player1Score > 0);
+        player2Score = round.getScore(player2);
+        assertTrue(player2Score > 0);
+    }
+
+    @Test
+    void testScoreResetOnNewRound() {
+        beginGame();
+        round.performAction(player1, Actions.CALL_KHABU);
+        round.performAction(player2, Actions.DRAW_FROM_DECK);
+        round.performAction(player2, Actions.DISCARD);
+        round.performAction(player2, Actions.END_TURN);
+        beginGame();
+        int player1Score = round.getScore(player1);
+        assertEquals(0, player1Score);
+    }
+
     private void beginGame() {
         round.readyUp(player1);
         round.readyUp(player2);
