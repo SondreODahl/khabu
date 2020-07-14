@@ -19,7 +19,7 @@ class GameTest {
     void setUp() {
         player1 = new Player("1", 1);
         player2 = new Player("2", 2);
-        game = new Game("My-room-id", 2);
+        game = new Game("My-room-id", 2, 10);
     }
 
     @Test
@@ -49,12 +49,10 @@ class GameTest {
     }
 
     @Test
-    void testGetTotalScore() {
-        game.addPlayer(player1);
-        game.addPlayer(player2);
-        game.beginGame();
+    void testGetTotalScore() throws InterruptedException {
+        gameSetup();
         game.getRound().performAction(player1, Actions.CALL_KHABU);
-        game.getRound().performAction(player2, Actions.DRAW_FROM_DISC);
+        game.getRound().performAction(player2, Actions.DRAW_FROM_DECK);
         game.getRound().performAction(player2, Actions.DISCARD);
         for (Player player : game.getPlayers()) {
             assertEquals(0, game.getTotalScore(player));
@@ -66,5 +64,14 @@ class GameTest {
         for (Player player : totalScores.keySet()) {
             assertTrue(totalScores.get(player) > 0);
         }
+    }
+
+    private void gameSetup() throws InterruptedException {
+        game.addPlayer(player1);
+        game.addPlayer(player2);
+        game.beginGame();
+        game.getRound().readyUp(player1);
+        game.getRound().readyUp(player2);
+        Thread.sleep(100);
     }
 }
