@@ -2,7 +2,7 @@ import { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addSubMessage } from '../actions';
 
-export default (destination) => {
+export default (destination, actionFunction) => {
   const dispatch = useDispatch();
   const client = useSelector((state) => state.client);
   const connected = useSelector((state) => state.connected);
@@ -13,7 +13,7 @@ export default (destination) => {
       // Below happens every time message is received
       console.log(body);
       console.log(sub);
-      dispatch(addSubMessage(destination, body));
+      dispatch(actionFunction(destination, body));
     });
     return sub;
   }, [client, destination, dispatch]);

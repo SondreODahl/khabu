@@ -1,4 +1,4 @@
-import { SUBSCRIPTION_MESSAGE } from '../actions/types';
+import { SUBSCRIPTION_MESSAGE } from '../../actions/types';
 
 const initialState = {
   '/topic/ready': 0,

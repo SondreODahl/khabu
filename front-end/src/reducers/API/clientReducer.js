@@ -1,4 +1,4 @@
-import { SET_CLIENT, SET_CONNECTED } from '../actions/types';
+import { SET_CLIENT, SET_CONNECTED } from '../../actions/types';
 
 export const clientReducer = (state = { active: false }, { type, payload }) => {
   switch (type) {
