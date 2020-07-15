@@ -21,3 +21,9 @@ export const UPDATE_PLAYERS_READY = 'UPDATE_PLAYERS_READY';
 
 // -------------------- Game -----------------------------
 export const PLAYER_JOIN_GAME = 'PLAYER_JOIN_GAME';
+
+// ------------------ Round ------------------------------
+export const ALL_PLAYERS_READY = 'ALL_PLAYERS_READY';
+export const START_ROUND = 'START_ROUND';
+export const ROUND_END = 'ROUND_END';
+export const SHOW_CARD = 'SHOW_CARD';
