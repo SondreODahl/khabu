@@ -15,7 +15,6 @@ export const SET_CONNECTED = 'SET_CONNECTED';
 // -------------- Subscriptions -------------------------
 export const SUBSCRIPTION_MESSAGE = 'SUBSCRIPTION_MESSAGE';
 
-
 // --------------------- Ready -------------------------
 export const PLAYER_READY = 'READY';
-
+export const UPDATE_PLAYERS_READY = 'UPDATE_PLAYERS_READY';
