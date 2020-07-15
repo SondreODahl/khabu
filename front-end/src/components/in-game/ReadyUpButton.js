@@ -3,12 +3,14 @@ import usePublish from '../../api/usePublish';
 import useSubscribe from '../../api/useSubscribe';
 import { useSelector, useDispatch } from 'react-redux';
 import { toggleReady, updatePlayersReady } from '../../actions';
+import { initializeRound } from '../../actions';
 
 export default (props) => {
   const dispatch = useDispatch();
   const subDest = '/topic/ready';
   const playersReady = useSelector((state) => state.ready.totalReady);
   const ready = useSelector((state) => state.ready.playerReady);
+  const playerCap = useSelector((state) => state.game.playerCapacity);
   const publishToggleReady = usePublish({
     destination: '/app/ready',
     body: ready.toString(), // Can be optimized
@@ -16,7 +18,10 @@ export default (props) => {
 
   useSubscribe(subDest, updatePlayersReady);
 
-  // const buttonMsg = ready ? 'Not Ready' : 'Ready';
+  if (playersReady === playerCap) {
+    dispatch(initializeRound());
+  }
+
   const buttonClassName = ready ? 'active' : 'inactive';
   const readyMsg = `${playersReady} players ready`;
 
