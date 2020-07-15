@@ -28,5 +28,7 @@ export default (state = initialState, { type, payload }) => {
     case SHOW_CARD:
       const playerRevealedCards = state.playerRevealedCards++;
       return { ...state, playerRevealedCards };
+    default:
+      return state;
   }
 };
