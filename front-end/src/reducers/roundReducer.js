@@ -5,7 +5,7 @@ import {
   START_ROUND,
 } from '../actions/types';
 
-const roundStates = {
+export const roundStates = {
   NOT_STARTED: 'NOT_STARTED',
   INITIALIZING: 'INITIALIZING',
   STARTED: 'STARTED',
