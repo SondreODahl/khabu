@@ -1,21 +1,38 @@
-import { PLAYER_JOIN_GAME } from '../../../actions/types';
+import { FORM_SUBMIT, PLAYER_JOIN_GAME } from '../../../actions/types';
+import { combineReducers } from 'redux';
 
-const initialState = {
-  begun: false,
-  players: { player0: null },
-  amountOfPlayers: 1,
-  playerCapacity: 2, // TODO: Make customizable later
-  scores: { player0: 0 },
-};
+const ownPlayerId = 1;
 
-export default (state = initialState, { type, payload }) => {
+function addUserId(state, key, payload) {
+  const username = payload.username;
+  return { ...state, [key]: username };
+}
+
+const playerById = (state = {}, { type, payload }) => {
   switch (type) {
+    case FORM_SUBMIT:
+      return addUserId(state, [ownPlayerId], payload);
     case PLAYER_JOIN_GAME:
-      const amountOfPlayers = state.amountOfPlayers++;
-      const playerId = `player${amountOfPlayers}`;
-      return { ...state, [playerId]: payload, amountOfPlayers };
-    default:
-      return state;
-    // TODO: case: UPDATE_SCORES
+      return addUserId(state, payload.id, payload);
   }
 };
+
+const allPlayers = (state = [], { type, payload }) => {
+  switch (type) {
+    case FORM_SUBMIT:
+    case PLAYER_JOIN_GAME:
+      return state.concat(payload.id); // TODO: Reconsider if Id should be front-end or back-end id
+    default:
+      return state;
+  }
+};
+
+const playerCapacity = (state = 2, { type, action }) => {
+  return state;
+};
+
+export default combineReducers({
+  playerById,
+  allPlayers,
+  playerCapacity,
+});

@@ -1,15 +1,10 @@
-const initialState = {
-  1: 1,
-  2: 2,
-  3: 4,
-  4: 7,
+const addCard = (state, { payload, id, value }) => {
+  const card = { id, value };
+  return { ...state, [id]: card };
 };
 
-export default (state = initialState, { type, payload }) => {
-  switch (state) {
-    /*    case INITIALIZE_HANDS:
-    case ADD_CARD:
-    case REMOVE_CARD:*/
+const cardsById = (state = {}, { type, action }) => {
+  switch (type) {
     default:
       return state;
   }
