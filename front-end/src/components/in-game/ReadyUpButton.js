@@ -7,9 +7,9 @@ import { initializeRound } from '../../actions';
 
 export default (props) => {
   const dispatch = useDispatch();
-  const playersReady = useSelector((state) => state.ready.totalReady);
-  const ready = useSelector((state) => state.ready.playerReady);
-  const playerCap = useSelector((state) => state.game.players.playerCapacity);
+  const playersReady = useSelector((state) => state.round.ready.totalReady);
+  const ready = useSelector((state) => state.round.ready.playerReady);
+  const playerCap = useSelector((state) => state.players.playerCapacity);
   const publishToggleReady = usePublish({
     destination: '/app/ready',
     body: ready.toString(), // Can be optimized

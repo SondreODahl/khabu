@@ -4,6 +4,8 @@ import {
   SHOW_CARD,
   START_ROUND,
 } from '../../../actions/types';
+import readyReducer from './readyReducer';
+import { combineReducers } from 'redux';
 
 export const roundStates = {
   NOT_STARTED: 'NOT_STARTED',
@@ -12,23 +14,30 @@ export const roundStates = {
   OVER: 'OVER',
 };
 
-const initialState = {
-  currentState: roundStates.NOT_STARTED,
-  playerRevealedCards: 0,
-};
-
-export default (state = initialState, { type, payload }) => {
+const currentState = (state = roundStates.NOT_STARTED, { type, payload }) => {
   switch (type) {
     case ALL_PLAYERS_READY:
-      return { ...state, currentState: roundStates.INITIALIZING };
+      return roundStates.INITIALIZING;
     case START_ROUND:
-      return { ...state, currentState: roundStates.STARTED };
+      return roundStates.STARTED;
     case ROUND_END:
-      return { ...state, currentState: roundStates.OVER, playerRevealedCards: 0 };
-    case SHOW_CARD:
-      const playerRevealedCards = state.playerRevealedCards++;
-      return { ...state, playerRevealedCards };
+      return roundStates.OVER;
     default:
       return state;
   }
 };
+
+const playerRevealedCards = (state = 0, { type, payload }) => {
+  switch (type) {
+    case SHOW_CARD:
+      return state.playerRevealedCards++;
+    default:
+      return state;
+  }
+};
+
+export default combineReducers({
+  currentState,
+  playerRevealedCards,
+  ready: readyReducer,
+});
