@@ -19,7 +19,7 @@ export const SUBSCRIPTION_MESSAGE = 'SUBSCRIPTION_MESSAGE';
 export const PLAYER_READY = 'READY';
 export const UPDATE_PLAYERS_READY = 'UPDATE_PLAYERS_READY';
 
-// -------------------- Game -----------------------------
+// -------------------- game -----------------------------
 export const PLAYER_JOIN_GAME = 'PLAYER_JOIN_GAME';
 
 // ------------------ Round ------------------------------

@@ -1,8 +1,8 @@
-import { PLAYER_JOIN_GAME } from '../../actions/types';
+import { PLAYER_JOIN_GAME } from '../../../actions/types';
 
 const initialState = {
   begun: false,
-  players: { player0: null }, // TODO: Consider moving players to separate reducer
+  players: { player0: null },
   amountOfPlayers: 1,
   playerCapacity: 2, // TODO: Make customizable later
   scores: { player0: 0 },
