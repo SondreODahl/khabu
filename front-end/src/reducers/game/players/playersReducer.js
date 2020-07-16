@@ -14,6 +14,8 @@ const playerById = (state = {}, { type, payload }) => {
       return addUserId(state, [ownPlayerId], payload);
     case PLAYER_JOIN_GAME:
       return addUserId(state, payload.id, payload);
+    default:
+      return state;
   }
 };
 
