@@ -5,12 +5,12 @@ import roundReducer from './game/round/roundReducer';
 import gameReducer from './game/gameReducer';
 import cardReducer from './game/players/cardReducer';
 import apiReducer from './API/apiReducer';
+import playersReducer from './game/players/playersReducer';
 
 export default combineReducers({
   cards: cardReducer,
   api: apiReducer,
-  game: gameReducer,
+  players: playersReducer,
   round: roundReducer,
-  ready: readyReducer,
   form: joinFormReducer,
 });
