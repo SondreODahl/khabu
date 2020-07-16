@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 export default (props) => {
   const url = '/api/hello';
   const { getRESTData } = useRESTGet();
-  const data = useSelector((state) => state.get_data);
+  const data = useSelector((state) => state.api.get_data);
 
   useEffect(() => {
     getRESTData(url);

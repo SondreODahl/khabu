@@ -4,8 +4,8 @@ import { addSubMessage } from '../actions';
 
 export default (destination, actionFunction) => {
   const dispatch = useDispatch();
-  const client = useSelector((state) => state.client);
-  const connected = useSelector((state) => state.connected);
+  const client = useSelector((state) => state.api.client.body);
+  const connected = useSelector((state) => state.api.client.connected);
 
   const subscribe = useCallback(() => {
     console.log('Subscribed to', destination);

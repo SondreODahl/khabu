@@ -7,14 +7,13 @@ import readyReducer from './readyReducer';
 import roundReducer from './roundReducer';
 import gameReducer from './gameReducer';
 import cardReducer from './cardReducer';
+import apiReducer from './API/apiReducer';
 
 export default combineReducers({
   data: restReducer,
   cards: cardReducer,
-  client: clientReducer,
-  connected: connectedClientReducer,
+  api: apiReducer,
   game: gameReducer,
-  subscription: subReducer,
   round: roundReducer,
   ready: readyReducer,
   form: joinFormReducer,

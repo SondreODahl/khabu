@@ -7,7 +7,7 @@ import { addSubMessage } from '../../actions';
 
 export default (props) => {
   useSubscribe('/topic/greeting', addSubMessage);
-  const message = useSelector((state) => state.subscription['/topic/greeting']);
+  const message = useSelector((state) => state.api.subscriptions['/topic/greeting']);
   const greetPublish = usePublish({
     destination: '/app/greeting',
     body: 'Greet',
