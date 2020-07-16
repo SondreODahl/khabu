@@ -6,9 +6,11 @@ import joinFormReducer from './joinFormReducer';
 import readyReducer from './readyReducer';
 import roundReducer from './roundReducer';
 import gameReducer from './gameReducer';
+import cardReducer from './cardReducer';
 
 export default combineReducers({
   data: restReducer,
+  cards: cardReducer,
   client: clientReducer,
   connected: connectedClientReducer,
   game: gameReducer,
