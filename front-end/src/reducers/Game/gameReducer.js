@@ -1,4 +1,4 @@
-import { PLAYER_JOIN_GAME } from '../actions/types';
+import { PLAYER_JOIN_GAME } from '../../actions/types';
 
 const initialState = {
   begun: false,

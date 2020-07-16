@@ -3,7 +3,7 @@ import {
   ROUND_END,
   SHOW_CARD,
   START_ROUND,
-} from '../actions/types';
+} from '../../actions/types';
 
 export const roundStates = {
   NOT_STARTED: 'NOT_STARTED',

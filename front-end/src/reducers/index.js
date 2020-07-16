@@ -3,10 +3,10 @@ import restReducer from './API/restReducer';
 import { clientReducer, connectedClientReducer } from './API/clientReducer';
 import subReducer from './API/subReducer';
 import joinFormReducer from './joinFormReducer';
-import readyReducer from './readyReducer';
-import roundReducer from './roundReducer';
-import gameReducer from './gameReducer';
-import cardReducer from './cardReducer';
+import readyReducer from './Game/readyReducer';
+import roundReducer from './Game/roundReducer';
+import gameReducer from './Game/gameReducer';
+import cardReducer from './Game/cardReducer';
 import apiReducer from './API/apiReducer';
 
 export default combineReducers({

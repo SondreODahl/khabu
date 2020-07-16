@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import ReadyUpButton from './ReadyUpButton';
-import { roundStates } from '../../reducers/roundReducer';
+import { roundStates } from '../../reducers/Game/roundReducer';
 import RevealCardHand from './RevealCardHand';
 
 export default () => {
