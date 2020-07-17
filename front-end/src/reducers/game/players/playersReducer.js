@@ -1,4 +1,4 @@
-import { FORM_SUBMIT, PLAYER_JOIN_GAME } from '../../../actions/types';
+import { FORM_SUBMIT, FORM_VALID, PLAYER_JOIN_GAME } from '../../../actions/types';
 import { combineReducers } from 'redux';
 
 const ownPlayerId = 1;
@@ -10,7 +10,7 @@ function addUserId(state, key, payload) {
 
 const playerById = (state = {}, { type, payload }) => {
   switch (type) {
-    case FORM_SUBMIT:
+    case FORM_VALID:
       return addUserId(state, [ownPlayerId], payload);
     case PLAYER_JOIN_GAME:
       return addUserId(state, payload.id, payload);
@@ -21,7 +21,7 @@ const playerById = (state = {}, { type, payload }) => {
 
 const allPlayers = (state = [], { type, payload }) => {
   switch (type) {
-    case FORM_SUBMIT:
+    case FORM_VALID:
     case PLAYER_JOIN_GAME:
       return state.concat(payload.id); // TODO: Reconsider if Id should be front-end or back-end id
     default:
