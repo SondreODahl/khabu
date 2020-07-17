@@ -27,3 +27,7 @@ export const ALL_PLAYERS_READY = 'ALL_PLAYERS_READY';
 export const START_ROUND = 'START_ROUND';
 export const ROUND_END = 'ROUND_END';
 export const SHOW_CARD = 'SHOW_CARD';
+
+// ------------------- Card ------------------------------
+export const ADD_CARD = 'ADD_CARD';
+export const REMOVE_CARD = 'REMOVE_CARD';
