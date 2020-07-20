@@ -81,8 +81,7 @@ class ActionPerformerTest {
         setupState(initialState, player1);
         Card player2Card = new Card(2, 'H');
         player2.addCard(player2Card);
-        Card card = actionPerformer.putOther(player1, player2, firstCardId);
-        assertNull(card);
+        actionPerformer.putOther(player1, player2, firstCardId);
         assertEquals(initialState, turn.getGameState());
         assertNull(turn.getCurrentPuttingPlayer());
     }
@@ -149,7 +148,8 @@ class ActionPerformerTest {
         setupState(Gamestate.DRAW, player1);
         int initialDeckSize = cardDeck.getSize();
         Card topCard = cardDeck.getCards().get(cardDeck.getSize()-1);
-        Card drawnCard = actionPerformer.drawFromDeck(player1);
+        actionPerformer.drawFromDeck(player1);
+        Card drawnCard = actionPerformer.getTemporaryCard();
         assertEquals(topCard, drawnCard);
         assertEquals(initialDeckSize-1, cardDeck.getSize());
         assertEquals(drawnCard, actionPerformer.getTemporaryCard());
@@ -193,7 +193,8 @@ class ActionPerformerTest {
     void testCardsCorrectlyChangedOnSwap() {
         setupState(Gamestate.DRAW, player1);
         Card toBeSwapped = player1.getCard(firstCardId);
-        Card cardDrawn = actionPerformer.drawFromDeck(player1);
+        actionPerformer.drawFromDeck(player1);
+        Card cardDrawn = actionPerformer.getTemporaryCard();
         actionPerformer.swapDrawnCard(player1, firstCardId);
         assertEquals(toBeSwapped, discardPile.showTopCard());
         assertEquals(cardDrawn, player1.getCard(firstCardId));
@@ -213,7 +214,8 @@ class ActionPerformerTest {
     @Test
     void testCardDiscardedIsTheOneDrawn() {
         setupState(Gamestate.DRAW, player1);
-        Card drawnCard = actionPerformer.drawFromDeck(player1);
+        actionPerformer.drawFromDeck(player1);
+        Card drawnCard = actionPerformer.getTemporaryCard();
         actionPerformer.discardCard(player1);
         assertEquals(drawnCard, discardPile.showTopCard());
     }
