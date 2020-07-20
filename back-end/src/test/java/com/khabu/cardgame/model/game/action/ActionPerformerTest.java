@@ -228,45 +228,11 @@ class ActionPerformerTest {
         assertEquals(Gamestate.DRAW, turn.getGameState());
     }
 
-    @Test
-    void testAutomaticKhabuOnEmptyHandAfterPutSelf() {
-        setupState(Gamestate.FRENZY, player1);
-        player1.getCardHand().removeCard(secondCardId);
-        actionPerformer.putSelf(player1, firstCardId);
-        assertEquals(Gamestate.DRAW, turn.getGameState());
-        assertEquals(player2, turn.getCurrentPlayer());
-        assertEquals(player1, turn.getKhabuPlayer());
-    }
-
-    @Test
-    void testAutomaticKhabuOnEmptyHandAfterTransferOther() {
-        setupPlayer1Transfer();
-        player1.getCardHand().removeCard(secondCardId);
-        actionPerformer.transferCard(player1, player2, firstCardId);
-        assertEquals(Gamestate.DRAW, turn.getGameState());
-        assertEquals(player2, turn.getCurrentPlayer());
-        assertEquals(player1, turn.getKhabuPlayer());
-    }
-
-    @Test
-    void testAutomaticKhabuOnlyOnYourOwnTurn() {
-        setupState(Gamestate.PUT_OTHER_TRANSFER, player2);
-        turn.setCurrentPuttingPlayer(player1);
-        player1.removeCard(secondCardId);
-        actionPerformer.transferCard(player1, player2, firstCardId);
-        assertEquals(turn.getCurrentPlayer(), player2);
-        actionPerformer.endTurn(player2);
-        assertEquals(Gamestate.DRAW, turn.getGameState());
-        assertEquals(player2, turn.getCurrentPlayer());
-        assertEquals(player1, turn.getKhabuPlayer());
-    }
-
     // -----------------END TURN---------------------------
 
     @Test
     void testEndTurnCurrentPlayerAndStateChange() {
         setupState(Gamestate.FRENZY, player1);
-        player2.addCard(new Card(1, 'H')); // So that automatic Khabu won't happen
         actionPerformer.endTurn(player1);
         assertEquals(Gamestate.DRAW, turn.getGameState());
         assertEquals(player2, turn.getCurrentPlayer());

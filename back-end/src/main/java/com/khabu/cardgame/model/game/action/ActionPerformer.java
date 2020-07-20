@@ -39,14 +39,9 @@ public class ActionPerformer {
         if (discardPile.showTopCard().isSameValue(card)) {
             discardPile.put(card);
             player2.removeCard(index);
-            // Check for if player's hand is empty on their turn --> Automatic khabu
-            if (checkForAutomaticKhabu(player1))
-                khabu(player1);
-            else {
-                Gamestate nextState = action == Actions.PUT_OTHER ? Gamestate.PUT_OTHER_TRANSFER : Gamestate.PUT;
-                turn.setGameState(nextState);
-                turn.setCurrentPuttingPlayer(player1);
-            }
+            Gamestate nextState = action == Actions.PUT_OTHER ? Gamestate.PUT_OTHER_TRANSFER : Gamestate.PUT;
+            turn.setGameState(nextState);
+            turn.setCurrentPuttingPlayer(player1);
             return card;
         }
         return null;
@@ -68,9 +63,8 @@ public class ActionPerformer {
         if (nextPlayer == turn.getKhabuPlayer()) {
             turn.setGameState(Gamestate.ENDED);
             round.endRound();
-        } else if (checkForAutomaticKhabu(nextPlayer)) {
-            khabu(nextPlayer);
-        } else
+        }
+        else
             turn.setGameState(Gamestate.DRAW);
     }
 
@@ -130,14 +124,7 @@ public class ActionPerformer {
         }
         Card card = player1.removeCard(cardIndex);
         player2.addCard(card);
-        if (checkForAutomaticKhabu(player1))
-            khabu(player1);
-        else
-            turn.setGameState(Gamestate.PUT);
-    }
-
-    private boolean checkForAutomaticKhabu(Player player) {  // TODO: Reconsider restricting user to only this option instead
-        return turn.getCurrentPlayer() == player && player.getHandSize() == 0 && turn.getKhabuPlayer() == null;
+        turn.setGameState(Gamestate.PUT);
     }
 
     public Card getTemporaryCard() {
