@@ -1,6 +1,7 @@
 package com.khabu.cardgame.model.game;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Game {
     private String roomId;

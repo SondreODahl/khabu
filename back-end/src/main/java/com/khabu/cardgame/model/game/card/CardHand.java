@@ -1,8 +1,7 @@
 package com.khabu.cardgame.model.game.card;
 
-import com.khabu.cardgame.model.game.card.Card;
-
-import java.util.*;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class CardHand {
     TreeMap<Integer, Card> cards = new TreeMap<>();

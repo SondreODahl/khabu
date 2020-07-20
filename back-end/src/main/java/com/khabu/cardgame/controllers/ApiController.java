@@ -1,28 +1,17 @@
 package com.khabu.cardgame.controllers;
 
 
-import com.khabu.cardgame.event.UserRepository;
 import com.khabu.cardgame.model.Player;
 import com.khabu.cardgame.model.PlayerRepository;
-import com.khabu.cardgame.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.MessageHeaders;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.Payload;
-import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
-import org.springframework.messaging.simp.SimpMessageType;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.messaging.simp.annotation.SendToUser;
-import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.awt.print.PrinterIOException;
-import java.security.Principal;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Map;
 
 
