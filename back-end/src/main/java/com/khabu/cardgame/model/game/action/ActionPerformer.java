@@ -33,7 +33,7 @@ public class ActionPerformer {
         }
     }
 
-    private Card putExecutor(Player player1, Player player2, int index, Actions action) throws IllegalArgumentException, IllegalMoveException {
+    private boolean putExecutor(Player player1, Player player2, int index, Actions action) throws IllegalArgumentException, IllegalMoveException {
         validateAction(player1, action);
         Card card = player2.getCard(index);
         if (discardPile.showTopCard().isSameValue(card)) {
@@ -42,16 +42,16 @@ public class ActionPerformer {
             Gamestate nextState = action == Actions.PUT_OTHER ? Gamestate.PUT_OTHER_TRANSFER : Gamestate.PUT;
             turn.setGameState(nextState);
             turn.setCurrentPuttingPlayer(player1);
-            return card;
+            return true;
         }
-        return null;
+        return false;
     }
 
-    public Card putSelf(Player player, int index) throws IllegalArgumentException, IllegalMoveException {
+    public boolean putSelf(Player player, int index) throws IllegalArgumentException, IllegalMoveException {
         return putExecutor(player, player, index, Actions.PUT_SELF);
     }
 
-    public Card putOther(Player player1, Player player2, int index) throws IllegalArgumentException, IllegalMoveException {
+    public boolean putOther(Player player1, Player player2, int index) throws IllegalArgumentException, IllegalMoveException {
         return putExecutor(player1, player2, index, Actions.PUT_OTHER);
     }
 
