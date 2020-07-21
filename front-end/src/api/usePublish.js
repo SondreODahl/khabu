@@ -1,8 +1,8 @@
 import { useSelector } from 'react-redux';
 
 export default (parameters) => {
-  const client = useSelector((state) => state.client);
-  const connected = useSelector((state) => state.connected);
+  const client = useSelector((state) => state.api.client.body);
+  const connected = useSelector((state) => state.api.client.connected);
 
   if (!parameters.destination || !parameters.body) {
     console.warn('Publish is missing destination or body');
