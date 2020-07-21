@@ -49,8 +49,8 @@ public class GameStartController {
     }
 
     @MessageMapping("/ready")
-    public void userReady(@Payload Map<String, Object> payload) {
-        int id = Integer.parseInt((String) payload.get("id"));
+    public void userReady(@Payload String payload) {
+        int id = Integer.parseInt(payload);
         Game game = gameRepository.getGames().get(0);
         Player player = game.getPlayers()[id-1];
         game.getRound().readyUp(player);

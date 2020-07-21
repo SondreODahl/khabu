@@ -58,15 +58,18 @@ public class ApiController {
             response.put("status", ResponseEntity.status(HttpStatus.CREATED).build());
             response.put("playerIds", playerRepository.getPlayers());
             response.put("yourId", newPlayer.getPlayerId());
+            if (playerRepository.getPlayers().size() == 2 && gameRepository.getGames().size() == 0) {
+                Game game = new Game(RandomStringUtils.randomAlphabetic(SHORT_ID_LENGTH), 2, 10000);
+                for (int id:playerRepository.getPlayers().keySet()) {
+                    game.addPlayer(new Player(playerRepository.getPlayers().get(id), id));
+                }
+                gameRepository.addGame(game);
+                game.beginGame();
+            }
             return response;
         }
-        if (playerRepository.getPlayers().size() == 2 && gameRepository.getGames().isEmpty()) {
-            Game game = new Game(RandomStringUtils.randomAlphabetic(SHORT_ID_LENGTH), 2, 10000);
-            for (int id:playerRepository.getPlayers().keySet()) {
-                game.addPlayer(new Player(playerRepository.getPlayers().get(id), id));
-            }
-            gameRepository.getGames().add(game);
-        }
+
+
 
         // ERROR
         response.put("status", ResponseEntity.status(HttpStatus.CONFLICT).build());
