@@ -17,7 +17,7 @@ class TurnTest {
     }
 
     @Test
-    void testNextTurnLoop() {
+    void NextTurnLoop() {
         turn.setCurrentPlayer(players[0]);
         turn.nextPlayer();
         Player currentPlayer = turn.getCurrentPlayer();
@@ -28,7 +28,7 @@ class TurnTest {
     }
 
     @Test
-    void testSetPlayerToOneNotInGame() {
+    void SetPlayerToOneNotInGame() {
         try {
             turn.setCurrentPlayer(new Player("rwrwe", 2));
             fail();
@@ -37,18 +37,18 @@ class TurnTest {
     }
 
     @Test
-    void testGetCurrentPlayer() {
+    void GetCurrentPlayer() {
         turn.setCurrentPlayer(players[1]);
         assertEquals(players[1], turn.getCurrentPlayer());
     }
 
     @Test
-    void testGetCurrentPuttingPlayer() {
+    void GetCurrentPuttingPlayer() {
         assertNull(turn.getCurrentPuttingPlayer());
     }
 
     @Test
-    void testSettingKhabuPlayerTwice() {
+    void SettingKhabuPlayerTwice() {
         turn.setKhabuPlayer(players[0]);
         try {
             turn.setKhabuPlayer(players[0]);
@@ -58,7 +58,7 @@ class TurnTest {
     }
 
     @Test
-    void testCurrentPuttingPlayerResetOnNextTurn() {
+    void CurrentPuttingPlayerResetOnNextTurn() {
         turn.setCurrentPuttingPlayer(players[0]);
         assertEquals(players[0], turn.getCurrentPuttingPlayer());
         turn.nextPlayer();

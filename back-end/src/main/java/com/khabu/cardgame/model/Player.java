@@ -1,8 +1,5 @@
 package com.khabu.cardgame.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import org.springframework.stereotype.Component;
-
 public class Player {
 
     private String name;

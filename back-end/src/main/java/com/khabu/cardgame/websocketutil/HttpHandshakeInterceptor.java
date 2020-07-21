@@ -7,7 +7,6 @@ import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.server.HandshakeInterceptor;
 
 import javax.servlet.http.HttpSession;
-import java.security.Principal;
 import java.util.Map;
 
 // Adds a session id cookie that stays the same on refresh

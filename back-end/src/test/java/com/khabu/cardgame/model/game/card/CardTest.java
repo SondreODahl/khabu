@@ -19,7 +19,7 @@ class CardTest {
     }
 
     @Test
-    void testIsSameValue() {
+    void IsSameValue() {
         Card card1 = new Card(12, 'H');
         Card card2 = new Card(12, 'C');
         assertTrue(card1.isSameValue(card2));

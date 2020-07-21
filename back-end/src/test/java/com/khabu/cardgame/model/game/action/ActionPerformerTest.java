@@ -39,7 +39,7 @@ class ActionPerformerTest {
     // -----------------PUTS---------------------
 
     @Test
-    void testPutSelfCorrectStateUpdate() {
+    void PutSelfCorrectStateUpdate() {
         setupState(Gamestate.FRENZY, player1);
         actionPerformer.putSelf(player1, firstCardId);
         assertEquals(Gamestate.PUT, turn.getGameState());
@@ -47,7 +47,7 @@ class ActionPerformerTest {
     }
 
     @Test
-    void testPutOtherNotYourTurn() {
+    void PutOtherNotYourTurn() {
         setupState(Gamestate.FRENZY, player1);
         actionPerformer.putOther(player2, player1, firstCardId);
         assertEquals(Gamestate.PUT_OTHER_TRANSFER, turn.getGameState());
@@ -55,7 +55,7 @@ class ActionPerformerTest {
     }
 
     @Test
-    void testPutOtherCardCorrectTopCard() {
+    void PutOtherCardCorrectTopCard() {
         setupState(Gamestate.FRENZY, player1);
         Card player2Card = new Card(1, 'H');
         player2.addCard(player2Card);
@@ -65,7 +65,7 @@ class ActionPerformerTest {
     }
 
     @Test
-    void testPutOtherNonExistentCard() {
+    void PutOtherNonExistentCard() {
         Gamestate initialState = Gamestate.FRENZY;
         setupState(initialState, player1);
         try{
@@ -76,19 +76,26 @@ class ActionPerformerTest {
     }
 
     @Test
-    void testPutOtherFailedCardValue() {
+    void PutOtherFailedCardValue() {
         Gamestate initialState = Gamestate.FRENZY;
         setupState(initialState, player1);
         Card player2Card = new Card(2, 'H');
         player2.addCard(player2Card);
-        Card card = actionPerformer.putOther(player1, player2, firstCardId);
-        assertNull(card);
+        actionPerformer.putOther(player1, player2, firstCardId);
         assertEquals(initialState, turn.getGameState());
         assertNull(turn.getCurrentPuttingPlayer());
     }
 
     @Test
-    void testCannotPutOnKhabuPlayer() {
+    void WrongCardOnDiscardPileResultsInDrawingExtraCard() {
+        setupState(Gamestate.FRENZY, player1);
+        player1.addCard(new Card(2, 'H'));
+        actionPerformer.putSelf(player1, 1);
+        assertEquals(2, player1.getHandSize());
+    }
+
+    @Test
+    void CannotPutOnKhabuPlayer() {
         setupState(Gamestate.FIRST_TURN, player1);
         actionPerformer.callKhabu(player1);
         try {
@@ -120,7 +127,7 @@ class ActionPerformerTest {
     }
 
     @Test
-    void testCannotTransferToYourself() {
+    void CannotTransferToYourself() {
         setupPlayer1Transfer();
         try {
             actionPerformer.transferCard(player1, player1, firstCardId);
@@ -138,32 +145,33 @@ class ActionPerformerTest {
     // -----------------DRAW---------------------
 
     @Test
-    void testStateChangeOnDrawFromDeck(){
+    void StateChangesOnDrawFromDeck(){
         setupState(Gamestate.DRAW, player1);
         actionPerformer.drawFromDeck(player1);
         assertEquals(Gamestate.CARD_DRAWN, turn.getGameState());
     }
 
     @Test
-    void testCorrectCardReceivedOnDrawFromDeck() {
+    void CorrectCardReceivedOnDrawFromDeck() {
         setupState(Gamestate.DRAW, player1);
         int initialDeckSize = cardDeck.getSize();
         Card topCard = cardDeck.getCards().get(cardDeck.getSize()-1);
-        Card drawnCard = actionPerformer.drawFromDeck(player1);
+        actionPerformer.drawFromDeck(player1);
+        Card drawnCard = actionPerformer.getTemporaryCard();
         assertEquals(topCard, drawnCard);
         assertEquals(initialDeckSize-1, cardDeck.getSize());
         assertEquals(drawnCard, actionPerformer.getTemporaryCard());
     }
 
     @Test
-    void testStateChangeOnDrawFromDisc() {
+    void StateChangesOnDrawFromDisc() {
         setupState(Gamestate.DRAW, player1);
         actionPerformer.drawFromDisc(player1, firstCardId);
         assertEquals(Gamestate.FRENZY, turn.getGameState()); // TODO: Reevaluate state
     }
 
     @Test
-    void testCorrectCardReceivedOnDrawFromDisc() {
+    void CorrectCardReceivedOnDrawFromDisc() {
         setupState(Gamestate.DRAW, player1);
         Card topCard = discardPile.showTopCard();
         actionPerformer.drawFromDisc(player1, firstCardId);
@@ -172,7 +180,7 @@ class ActionPerformerTest {
     }
 
     @Test
-    void testDrawFromDiscEmpty() {
+    void DrawFromDiscEmpty() {
         setupState(Gamestate.DRAW, player1);
         discardPile.draw(); // Now the pile should be empty
         try {actionPerformer.drawFromDisc(player1, firstCardId);}
@@ -183,17 +191,18 @@ class ActionPerformerTest {
     // -----------------SWAP---------------------
 
     @Test
-    void testStateChangeOnSwap() {
+    void StateChangeOnSwap() {
         setupState(Gamestate.CARD_DRAWN, player1);
         actionPerformer.swapDrawnCard(player1, firstCardId);
         assertEquals(Gamestate.FRENZY, turn.getGameState());
     }
 
     @Test
-    void testCardsCorrectlyChangedOnSwap() {
+    void CardsCorrectlyChangedOnSwap() {
         setupState(Gamestate.DRAW, player1);
         Card toBeSwapped = player1.getCard(firstCardId);
-        Card cardDrawn = actionPerformer.drawFromDeck(player1);
+        actionPerformer.drawFromDeck(player1);
+        Card cardDrawn = actionPerformer.getTemporaryCard();
         actionPerformer.swapDrawnCard(player1, firstCardId);
         assertEquals(toBeSwapped, discardPile.showTopCard());
         assertEquals(cardDrawn, player1.getCard(firstCardId));
@@ -203,7 +212,7 @@ class ActionPerformerTest {
     // -----------------DISCARD---------------------
 
     @Test
-    void testDiscardStateChange() {
+    void DiscardStateChange() {
         setupState(Gamestate.CARD_DRAWN, player1);
         actionPerformer.setTemporaryCard(new Card(1, 'C'));
         actionPerformer.discardCard(player1);
@@ -211,9 +220,10 @@ class ActionPerformerTest {
     }
 
     @Test
-    void testCardDiscardedIsTheOneDrawn() {
+    void CardDiscardedIsTheOneDrawn() {
         setupState(Gamestate.DRAW, player1);
-        Card drawnCard = actionPerformer.drawFromDeck(player1);
+        actionPerformer.drawFromDeck(player1);
+        Card drawnCard = actionPerformer.getTemporaryCard();
         actionPerformer.discardCard(player1);
         assertEquals(drawnCard, discardPile.showTopCard());
     }
@@ -221,59 +231,25 @@ class ActionPerformerTest {
     // -----------------KHABU----------------------------
 
     @Test
-    void testTurnAndStateChangeOnKhabu() {
+    void TurnAndStateChangeOnKhabu() {
         setupState(Gamestate.DRAW, player1);
         actionPerformer.callKhabu(player1);
         assertEquals(player2, turn.getCurrentPlayer());
         assertEquals(Gamestate.DRAW, turn.getGameState());
     }
 
-    @Test
-    void testAutomaticKhabuOnEmptyHandAfterPutSelf() {
-        setupState(Gamestate.FRENZY, player1);
-        player1.getCardHand().removeCard(secondCardId);
-        actionPerformer.putSelf(player1, firstCardId);
-        assertEquals(Gamestate.DRAW, turn.getGameState());
-        assertEquals(player2, turn.getCurrentPlayer());
-        assertEquals(player1, turn.getKhabuPlayer());
-    }
-
-    @Test
-    void testAutomaticKhabuOnEmptyHandAfterTransferOther() {
-        setupPlayer1Transfer();
-        player1.getCardHand().removeCard(secondCardId);
-        actionPerformer.transferCard(player1, player2, firstCardId);
-        assertEquals(Gamestate.DRAW, turn.getGameState());
-        assertEquals(player2, turn.getCurrentPlayer());
-        assertEquals(player1, turn.getKhabuPlayer());
-    }
-
-    @Test
-    void testAutomaticKhabuOnlyOnYourOwnTurn() {
-        setupState(Gamestate.PUT_OTHER_TRANSFER, player2);
-        turn.setCurrentPuttingPlayer(player1);
-        player1.removeCard(secondCardId);
-        actionPerformer.transferCard(player1, player2, firstCardId);
-        assertEquals(turn.getCurrentPlayer(), player2);
-        actionPerformer.endTurn(player2);
-        assertEquals(Gamestate.DRAW, turn.getGameState());
-        assertEquals(player2, turn.getCurrentPlayer());
-        assertEquals(player1, turn.getKhabuPlayer());
-    }
-
     // -----------------END TURN---------------------------
 
     @Test
-    void testEndTurnCurrentPlayerAndStateChange() {
+    void EndTurnCurrentPlayerAndStateChange() {
         setupState(Gamestate.FRENZY, player1);
-        player2.addCard(new Card(1, 'H')); // So that automatic Khabu won't happen
         actionPerformer.endTurn(player1);
         assertEquals(Gamestate.DRAW, turn.getGameState());
         assertEquals(player2, turn.getCurrentPlayer());
     }
 
     @Test
-    void testEndTurnEndsGameOnNextPlayerBeingKhabuPlayer() {
+    void EndTurnEndsGameOnNextPlayerBeingKhabuPlayer() {
         setupState(Gamestate.FIRST_TURN, player1);
         actionPerformer.callKhabu(player1);
         turn.setGameState(Gamestate.FRENZY);
@@ -285,7 +261,7 @@ class ActionPerformerTest {
     // --------------------MISC------------------------------
 
     @Test
-    void testInvalidActionsThrowException() {
+    void InvalidActionsThrowException() {
         setupState(Gamestate.DRAW, player1);
         // TODO: Implement for the actions performed. Catch Not your turn exception
     }

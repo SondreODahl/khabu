@@ -9,7 +9,10 @@ import com.khabu.cardgame.model.game.card.CardHand;
 import com.khabu.cardgame.model.game.card.DiscardPile;
 import com.khabu.cardgame.util.IllegalMoveException;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Round {
 
@@ -105,41 +108,39 @@ public class Round {
         }
     }
 
-    public void performAction(Player player, Actions action) {
-        performAction(player, player, action, -1);
+    public boolean performAction(Player player, Actions action) {
+        return performAction(player, player, action, -1);
     }
-    public void performAction(Player player, Actions action, int index) {
-        performAction(player, null, action, index);
+    public boolean performAction(Player player, Actions action, int index) {
+        return performAction(player, null, action, index);
     }
-    public void performAction(Player player1, Player player2, Actions action, int index) {
+    public boolean performAction(Player player1, Player player2, Actions action, int index) {
         switch (action) {
             case SWAP:
                 actionPerformer.swapDrawnCard(player1, index);
-                break;
+                return true;
             case DISCARD:
                 actionPerformer.discardCard(player1);
-                break;
+                return true;
             case END_TURN:
                 actionPerformer.endTurn(player1);
-                break;
+                return true;
             case PUT_SELF:
-                actionPerformer.putSelf(player1, index);
-                break;
+                return actionPerformer.putSelf(player1, index);
             case TRANSFER:
                 actionPerformer.transferCard(player1, player2, index);
-                break;
+                return true;
             case PUT_OTHER:
-                actionPerformer.putOther(player1, player2, index);
-                break;
+                return actionPerformer.putOther(player1, player2, index);
             case CALL_KHABU:
                 actionPerformer.callKhabu(player1);
-                break;
+                return true;
             case DRAW_FROM_DECK:
                 actionPerformer.drawFromDeck(player1);
-                break;
+                return true;
             case DRAW_FROM_DISC:
                 actionPerformer.drawFromDisc(player1, index);
-                break;
+                return true;
             default:
                 throw new IllegalMoveException(String.format(
                         "Tried to perform move which is not legal with %s, %s , %s, %d",
