@@ -47,7 +47,12 @@
 			<artifactId>spring-messaging</artifactId>
 			<version>5.2.3.RELEASE</version>
 		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.9</version>
+        </dependency>
+    </dependencies>
 
 	<build>
 		<plugins>
