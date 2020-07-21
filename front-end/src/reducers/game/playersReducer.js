@@ -10,6 +10,9 @@ const playerById = (state = {}, { type, payload }) => {
   switch (type) {
     case UPDATE_PLAYERS_INFO:
       return { ...state, ...payload.playerIds };
+    case PLAYER_JOIN_GAME:
+      const playerId = Object.keys(payload).pop();
+      return { ...state, [playerId]: payload[playerId] };
     default:
       return state;
   }
@@ -20,13 +23,16 @@ const allPlayers = (state = [], { type, payload }) => {
     case UPDATE_PLAYERS_INFO:
       const listOfIds = Object.keys(payload.playerIds);
       return state.concat(listOfIds);
+    case PLAYER_JOIN_GAME:
+      const playerId = Object.keys(payload).pop();
+      return [...state, playerId];
     default:
       return state;
   }
 };
 
 const playerCapacity = (state = 2, action) => {
-  return state;
+  return state; // TODO: Add playerCapacity as argument to received players info
 };
 
 const yourId = (state = null, { type, payload }) => {

@@ -1,4 +1,4 @@
-import { UPDATE_PLAYERS_INFO } from './types';
+import { PLAYER_JOIN_GAME, UPDATE_PLAYERS_INFO } from './types';
 
 export const retrievePlayers = (response) => {
   const yourId = response.yourId;
@@ -7,4 +7,8 @@ export const retrievePlayers = (response) => {
     type: UPDATE_PLAYERS_INFO,
     payload: { yourId, playerIds },
   };
+};
+
+export const playerJoinedGame = (playerId, username) => {
+  return { type: PLAYER_JOIN_GAME, payload: { [playerId]: username } };
 };
