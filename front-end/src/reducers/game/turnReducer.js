@@ -15,7 +15,7 @@ const khabuPlayer = (state = null, { type, payload }) => {
   }
 };
 
-const currentPlayersTurn = (state = null, { type, payload }) => {
+const currentPlayerTurn = (state = null, { type, payload }) => {
   switch (type) {
     case START_ROUND:
     case PLAYER_CALLED_KHABU:
@@ -29,6 +29,6 @@ const currentPlayersTurn = (state = null, { type, payload }) => {
 };
 
 export default combineReducers({
-  currentPlayersTurn,
+  currentPlayerTurn,
   khabuPlayer,
 });

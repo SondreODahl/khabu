@@ -29,7 +29,7 @@ export default (props) => {
 
   useEffect(
     () => () => {
-      setTimeout(() => dispatch(startRound()), props.TIMEOUT);
+      setTimeout(() => dispatch(startRound(1)), props.TIMEOUT);
     },
     []
   );
