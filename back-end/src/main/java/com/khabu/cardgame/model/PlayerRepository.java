@@ -1,5 +1,6 @@
 package com.khabu.cardgame.model;
 
+import com.khabu.cardgame.model.game.Player;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -8,6 +9,7 @@ import java.util.List;
 @Component
 public class PlayerRepository {
     private List<Player> players = new ArrayList<>();
+    public static int PLAYER_COUNT = 0;
 
     public void addPlayer(Player player) {
         players.add(player);
@@ -15,15 +17,6 @@ public class PlayerRepository {
 
     public void removePlayer(Player player) {
         players.remove(player);
-    }
-
-    public boolean IsPlayerInListBySessionId(String sessionId) {
-        for (Player player: players) {
-            if (player.getSessionId().equals(sessionId)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     public boolean IsPlayerInListByName(String name) {
@@ -36,8 +29,8 @@ public class PlayerRepository {
         return false;
     }
 
-    public void removePlayerBySessionId(String sessionId) {
-        players.removeIf(p -> p.getSessionId().equals(sessionId));
+    public void removePlayerByUsername(String userName) {
+        players.removeIf(p -> p.getName().equals(userName));
     }
 
     public List<Player> getPlayers() {
