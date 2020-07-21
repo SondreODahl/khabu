@@ -1,4 +1,4 @@
-import { PLAYER_READY, UPDATE_PLAYERS_READY } from '../../../actions/types';
+import { PLAYER_READY, UPDATE_PLAYERS_READY } from '../../actions/types';
 
 export default (
   state = { playerReady: false, totalReady: 0 },

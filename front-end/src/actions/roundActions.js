@@ -5,6 +5,6 @@ export const initializeRound = () => (dispatch, getState) => {
   dispatch({ type: ALL_PLAYERS_READY, payload: { playerIds } });
 };
 
-export const startRound = () => {
-  return { type: START_ROUND };
+export const startRound = (startingPlayerId) => {
+  return { type: START_ROUND, payload: startingPlayerId };
 };
