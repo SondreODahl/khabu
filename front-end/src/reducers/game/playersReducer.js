@@ -3,7 +3,7 @@ import {
   FORM_VALID,
   PLAYER_JOIN_GAME,
   UPDATE_PLAYERS_INFO,
-} from '../../../actions/types';
+} from '../../actions/types';
 import { combineReducers } from 'redux';
 
 const playerById = (state = {}, { type, payload }) => {

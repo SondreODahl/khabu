@@ -7,7 +7,7 @@ import {
   REMOVE_CARD,
   REMOVE_CARD_FROM_HAND,
   ROUND_END,
-} from '../../../actions/types';
+} from '../../actions/types';
 import _ from 'lodash';
 
 const addCard = (state, { id, value }) => {

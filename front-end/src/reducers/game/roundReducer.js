@@ -3,7 +3,7 @@ import {
   ROUND_END,
   SHOW_CARD,
   START_ROUND,
-} from '../../../actions/types';
+} from '../../actions/types';
 import readyReducer from './readyReducer';
 import { combineReducers } from 'redux';
 
