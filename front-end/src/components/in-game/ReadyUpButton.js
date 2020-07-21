@@ -12,7 +12,7 @@ export default (props) => {
   const playerCap = useSelector((state) => state.players.playerCapacity);
   const publishToggleReady = usePublish({
     destination: '/app/ready',
-    body: ready.toString(), // Can be optimized
+    body: { id: props.yourId, ready: ready.toString() }, // Can be optimized
   });
   useSubscribe('/topic/ready', updatePlayersReady);
 

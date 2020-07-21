@@ -5,14 +5,14 @@ import { roundStates } from '../../reducers/game/roundReducer';
 import RevealCardHand from './RevealCardHand';
 
 export default () => {
-  const username = useSelector((state) => state.form.data);
+  const yourId = useSelector((state) => state.players.yourId);
   const roundState = useSelector((state) => state.round.currentState);
   const TIMEOUT = 10 * 1000; // TODO: Make more dynamic
 
   const determineRender = () => {
     switch (roundState) {
       case roundStates.NOT_STARTED:
-        return <ReadyUpButton TIMEOUT={TIMEOUT} />;
+        return <ReadyUpButton TIMEOUT={TIMEOUT} yourId={yourId} />;
       case roundStates.INITIALIZING:
         return (
           <div>
@@ -29,10 +29,5 @@ export default () => {
     }
   };
 
-  return (
-    <div>
-      {username}
-      {determineRender()}
-    </div>
-  );
+  return <div>{determineRender()}</div>;
 };
