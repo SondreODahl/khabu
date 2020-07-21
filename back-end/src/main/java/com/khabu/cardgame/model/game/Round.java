@@ -153,9 +153,6 @@ public class Round {
             throw new IllegalStateException("Game has already started. Cannot ready up");
         boolean readiedUp = playersReady.get(player);
         playersReady.put(player, !readiedUp);
-        if (getPlayersReady() == players.length) {
-            beginRound();
-        }
         return this.roundStarted;
     }
 

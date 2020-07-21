@@ -51,12 +51,14 @@ public class GameStartController {
     @MessageMapping("/ready")
     public void userReady(@Payload String payload) {
         int id = Integer.parseInt(payload);
-
         Game game = gameRepository.getGames().get(0);
         Player player = game.getPlayer(id);
         game.getRound().readyUp(player);
         this.simpMessagingTemplate.convertAndSend("/topic/ready",
                 Integer.toString(game.getRound().getPlayersReady()));
+        if (game.getRound().getPlayersReady() == 2) {
+            game.getRound().beginRound();
+        }
     }
 
 
