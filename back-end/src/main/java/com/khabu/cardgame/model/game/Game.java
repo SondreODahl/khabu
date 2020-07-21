@@ -59,6 +59,10 @@ public class Game {
         return players;
     }
 
+    public Player getPlayer(int index) {
+        return players[index-1];
+    }
+
     public int getNUM_OF_PLAYERS() {
         return NUM_OF_PLAYERS;
     }
