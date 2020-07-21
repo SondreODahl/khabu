@@ -87,6 +87,14 @@ class ActionPerformerTest {
     }
 
     @Test
+    void putWrongCardOnDiscardPileResultsInDrawingExtraCard() {
+        setupState(Gamestate.FRENZY, player1);
+        player1.addCard(new Card(2, 'H'));
+        actionPerformer.putSelf(player1, 1);
+        assertEquals(2, player1.getHandSize());
+    }
+
+    @Test
     void testCannotPutOnKhabuPlayer() {
         setupState(Gamestate.FIRST_TURN, player1);
         actionPerformer.callKhabu(player1);
