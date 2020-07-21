@@ -2,6 +2,7 @@ package com.khabu.cardgame.controllers;
 
 
 import com.khabu.cardgame.model.PlayerRepository;
+import com.khabu.cardgame.model.game.GameRepository;
 import com.khabu.cardgame.model.game.Player;
 import com.khabu.cardgame.model.game.Game;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -22,11 +23,13 @@ import java.util.Map;
 public class ApiController {
 
     private PlayerRepository playerRepository;
+    private GameRepository gameRepository;
     private final int SHORT_ID_LENGTH = 8;
 
     @Autowired
-    public ApiController(PlayerRepository playerRepository) {
+    public ApiController(PlayerRepository playerRepository, GameRepository gameRepository) {
         this.playerRepository = playerRepository;
+        this.gameRepository = gameRepository;
     }
 
     @RequestMapping(value="/api/hello", method = RequestMethod.GET, produces = "application/json")
@@ -57,11 +60,12 @@ public class ApiController {
             response.put("yourId", newPlayer.getPlayerId());
             return response;
         }
-        if (playerRepository.getPlayers().size() == 2) {
+        if (playerRepository.getPlayers().size() == 2 && gameRepository.getGames().isEmpty()) {
             Game game = new Game(RandomStringUtils.randomAlphabetic(SHORT_ID_LENGTH), 2, 10000);
             for (int id:playerRepository.getPlayers().keySet()) {
                 game.addPlayer(new Player(playerRepository.getPlayers().get(id), id));
             }
+            gameRepository.getGames().add(game);
         }
 
         // ERROR
