@@ -23,14 +23,14 @@ class CardDeckTest {
     }
 
     @Test
-    public void testGetCardsEncapsulation() {
+    public void GetCardsEncapsulation() {
         List<Card> cards1 = deck.getCards();
         List<Card> cards2 = deck.getCards();
         assertNotSame(cards1, cards2);
     }
 
     @Test
-    public void testDrawCard() {
+    public void DrawCard() {
         Card firstCard = deck.drawCard();
         assertNotNull(firstCard);
         List<Card> cards = deck.getCards();
@@ -39,7 +39,7 @@ class CardDeckTest {
     }
 
     @Test
-    public void testDrawCardEmptyDeck() {
+    public void DrawCardEmptyDeck() {
         for (int i = 0; i < DECK_SIZE; i++) {
             Card card = deck.drawCard();
             discardPile.put(card);
@@ -49,13 +49,13 @@ class CardDeckTest {
     }
 
     @Test
-    public void testConstructor() {
+    public void Constructor() {
         assertEquals(DECK_SIZE, deck.getSize());
         assertEquals(discardPile, deck.getPile()); // TODO: Reconsider getting pile
     }
 
     @Test
-    public void testShuffleWithDiscardPile() {
+    public void ShuffleWithDiscardPile() {
         Card firstCard = deck.drawCard();
         Card secondCard = deck.drawCard();
         discardPile.put(firstCard);
@@ -66,7 +66,7 @@ class CardDeckTest {
     }
 
     @Test
-    public void testShuffle() {
+    public void Shuffle() {
         List<Card> preShuffle = deck.getCards();
         for (int i = 0; i < 5; i++) { // To make equality highly unlikely
             deck.shuffle();
@@ -76,7 +76,7 @@ class CardDeckTest {
     }
 
     @Test
-    public void testInitialDeal() {
+    public void InitialDeal() {
         // TODO: Implement
     }
 }

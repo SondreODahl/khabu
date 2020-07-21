@@ -33,7 +33,7 @@ class RoundTest {
     }
 
     @Test
-    void testGetters() {
+    void getters() {
         Turn turn = round.getTurn();
         assertNotNull(turn);
         CardDeck cardDeck = round.getCardDeck();
@@ -43,7 +43,7 @@ class RoundTest {
     }
 
     @Test
-    void testDealCards() {
+    void DealCards() {
         for (Player player: round.getPlayers()) {
             assertEquals(0, player.getHandSize());
         }
@@ -56,7 +56,7 @@ class RoundTest {
     }
 
     @Test
-    void testReadyStartOfRound() throws InterruptedException {
+    void ReadyStartOfRound() throws InterruptedException {
         boolean started = round.readyUp(player1);
         assertEquals(1, round.getPlayersReady());
         assertFalse(started);
@@ -73,7 +73,7 @@ class RoundTest {
     }
 
     @Test
-    void testReadyAfterStart() {
+    void ReadyAfterStart() {
         beginGame();
         try {
             round.readyUp(player1);
@@ -84,7 +84,7 @@ class RoundTest {
     }
 
     @Test
-    void testReadyingUpAfterEndStartsNewRound() {
+    void ReadyingUpAfterEndStartsNewRound() {
         round.endRound();
         beginGame();
         boolean started = round.getStarted();
@@ -92,7 +92,7 @@ class RoundTest {
     }
 
     @Test
-    void testRoundEndsOnReachingKhabuPlayer() {
+    void RoundEndsOnReachingKhabuPlayer() {
         beginGame();
         round.performAction(player1, Actions.CALL_KHABU);
         round.performAction(player2, Actions.DRAW_FROM_DECK);
@@ -105,7 +105,7 @@ class RoundTest {
     }
 
     @Test
-    void testRevealCardDuringBeginning() {
+    void RevealCardDuringBeginningFails() {
         round.readyUp(player1);
         round.readyUp(player2);
         round.revealCard(player1, 1);
@@ -117,7 +117,7 @@ class RoundTest {
     }
 
     @Test
-    void testRevealHandAfterEndRound() {
+    void RevealHandAfterEndRound() {
         round.endRound();
         Map<Player, CardHand> cards = round.revealHands();
         for (Player player: cards.keySet()) {
@@ -127,7 +127,7 @@ class RoundTest {
     }
 
     @Test
-    void testRevealHandsDuringGame() {
+    void RevealHandsDuringGameFails() {
         beginGame();
         try {
             round.revealHands();
@@ -136,7 +136,7 @@ class RoundTest {
     }
 
     @Test
-    void testRevealHandsReturnCorrectValues() {
+    void RevealHandsReturnCorrectValues() {
         Map<Player, CardHand> receivedHands = round.revealHands();
         for (Player player: receivedHands.keySet()) {
             CardHand receivedHand = receivedHands.get(player);
@@ -145,7 +145,7 @@ class RoundTest {
     }
 
     @Test
-    void testGetScoreBeforeAndAfterRound() {
+    void GetScoreBeforeAndAfterRound() {
         int player1Score = round.getScore(player1);
         int player2Score = round.getScore(player2);
         assertEquals(player1Score, player2Score);
@@ -162,7 +162,7 @@ class RoundTest {
     }
 
     @Test
-    void testScoreResetOnNewRound() {
+    void ScoreResetsOnNewRound() {
         beginGame();
         round.performAction(player1, Actions.CALL_KHABU);
         round.performAction(player2, Actions.DRAW_FROM_DECK);

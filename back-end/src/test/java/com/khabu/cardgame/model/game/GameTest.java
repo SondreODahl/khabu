@@ -21,7 +21,7 @@ class GameTest {
     }
 
     @Test
-    void testAddPlayerNull() {
+    void AddPlayerNull() {
         try {
             game.addPlayer(null);
         } catch (IllegalArgumentException ignored) {
@@ -29,7 +29,7 @@ class GameTest {
     }
 
     @Test
-    void testAddPlayerWhenRoomIsFull() {
+    void AddPlayerWhenRoomIsFull() {
         game.addPlayer(player1);
         game.addPlayer(player2);
         try {
@@ -39,7 +39,7 @@ class GameTest {
     }
 
     @Test
-    void testBeginGameWithNotEnoughPlayers() {
+    void BeginGameWithNotEnoughPlayers() {
         game.addPlayer(player1);
         try {
             game.beginGame();
@@ -50,7 +50,7 @@ class GameTest {
     }
 
     @Test
-    void testGetTotalScore() throws InterruptedException {
+    void GetTotalScore() throws InterruptedException {
         gameSetup();
         game.getRound().performAction(player1, Actions.CALL_KHABU);
         game.getRound().performAction(player2, Actions.DRAW_FROM_DECK);
