@@ -35,3 +35,9 @@ export const ADD_CARD_TO_HAND = 'ADD_CARD_TO_HAND';
 export const REMOVE_CARD_FROM_HAND = 'REMOVE_CARD_FROM_HAND';
 export const PUT_CARD = 'PUT_CARD';
 export const DRAW_CARD_DISCARD = 'DRAW_CARD_DISCARD';
+
+// ------------------ Turn -------------------------------
+export const END_TURN = 'END_TURN';
+
+// ------------------ GameState --------------------------
+export const PLAYER_CALLED_KHABU = 'PLAYER_CALLED_KHABU';
