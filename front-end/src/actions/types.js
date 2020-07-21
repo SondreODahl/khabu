@@ -41,3 +41,11 @@ export const END_TURN = 'END_TURN';
 
 // ------------------ GameState --------------------------
 export const PLAYER_CALLED_KHABU = 'PLAYER_CALLED_KHABU';
+export const DRAW_FROM_DECK = 'DRAW_FROM_DECK';
+export const SUCCESSFUL_PUT_SELF = 'SUCCESSFUL_PUT_SELF';
+export const SUCCESSFUL_PUT_OTHER = 'SUCCESSFUL_PUT_OTHER';
+export const DRAW_FROM_DECK = 'DRAW_FROM_DECK';
+export const TRANSFER_CARD = 'TRANSFER_CARD';
+export const SWAP_CARDS = 'SWAP_CARDS';
+export const SWAP_WITH_DISC = 'SWAP_WITH_DISC';
+export const DISCARD_CARD = 'DISCARD_CARD';
