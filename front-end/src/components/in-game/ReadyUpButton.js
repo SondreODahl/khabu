@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import usePublish from '../../api/usePublish';
 import useSubscribe from '../../api/useSubscribe';
 import { useSelector, useDispatch } from 'react-redux';
@@ -12,7 +12,7 @@ export default (props) => {
   const playerCap = useSelector((state) => state.players.playerCapacity);
   const publishToggleReady = usePublish({
     destination: '/app/ready',
-    body: props.yourId, // Can be optimized
+    body: props.yourId,
   });
   useSubscribe('/topic/ready', updatePlayersReady);
 
@@ -22,9 +22,9 @@ export default (props) => {
     }
   });
 
-  useEffect(() => {
+  const readyUp = useCallback(() => {
     publishToggleReady();
-    // eslint-disable-next-line
+    dispatch(toggleReady());
   }, [ready]);
 
   useEffect(
@@ -38,10 +38,7 @@ export default (props) => {
   const readyMsg = `${playersReady} players ready`;
   return (
     <div>
-      <button
-        className={`ui toggle button ${buttonClassName}`}
-        onClick={() => dispatch(toggleReady())}
-      >
+      <button className={`ui toggle button ${buttonClassName}`} onClick={readyUp}>
         Ready
       </button>
       {readyMsg}
