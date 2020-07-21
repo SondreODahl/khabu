@@ -31,6 +31,8 @@ const playerRevealedCards = (state = 0, { type, payload }) => {
   switch (type) {
     case SHOW_CARD:
       return state.playerRevealedCards++;
+    case ROUND_END:
+      return 0;
     default:
       return state;
   }
