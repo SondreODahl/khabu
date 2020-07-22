@@ -95,7 +95,7 @@ public class GameController {
 
         // CONVERT TO JSON STRING
         try {
-            objectMapper.writeValueAsString(data);
+            jsonOutput = objectMapper.writeValueAsString(data);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
