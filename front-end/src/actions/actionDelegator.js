@@ -1,14 +1,19 @@
-import { initializeRound, updatePlayersReady } from './roundActions';
-import { ALL_PLAYERS_READY } from './types';
+import { initializeRound, startRound, updatePlayersReady } from './roundActions';
+import { ALL_PLAYERS_READY, BEGIN_GAME, START_ROUND } from './types';
 
 export const roundActionDelegator = (topic, body) => {
   const parsedJSON = JSON.parse(body);
   const type = parsedJSON.type;
   switch (type) {
     case 'READY':
-      return updatePlayersReady(parsedJSON.value);
+      const playersReady = parsedJSON.value;
+      return updatePlayersReady(playersReady);
     case 'INITIALIZE':
-      return initializeRound(parsedJSON.value);
+      const revealTime = parsedJSON.value;
+      return initializeRound(revealTime);
+    case 'BEGIN':
+      const startingPlayer = parsedJSON.value;
+      return startRound(startingPlayer);
     default:
       alert(`RoundActionDelegator was called with ${body}`);
   }
