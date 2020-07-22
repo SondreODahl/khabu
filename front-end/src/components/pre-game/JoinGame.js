@@ -18,9 +18,12 @@ export default (props) => {
   useEffect(() => {
     if (submitted) {
       const post = async (url, data) => {
+        console.log('Run now');
         try {
           const response = await axiosREST.post(url, data);
-          if (response.status === 201) dispatch(formValid(data));
+          console.log(response.data);
+          if (response.data.status.statusCodeValue === 201)
+            dispatch(formValid(response.data));
           else dispatch(formError('Username taken')); // TODO: Message for full game
         } catch (err) {
           dispatch(formError(err.message));

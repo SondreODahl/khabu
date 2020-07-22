@@ -1,46 +1,39 @@
 package com.khabu.cardgame.model;
 
+import com.khabu.cardgame.model.game.Player;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Component
 public class PlayerRepository {
-    private List<Player> players = new ArrayList<>();
+    private Map<Integer, String> players = new HashMap<>();
+    public static int PLAYER_ID_COUNT = 1;
 
-    public void addPlayer(Player player) {
-        players.add(player);
+    public void addPlayer(int id, String name) {
+        players.put(id, name);
     }
 
     public void removePlayer(Player player) {
         players.remove(player);
     }
 
-    public boolean IsPlayerInListBySessionId(String sessionId) {
-        for (Player player: players) {
-            if (player.getSessionId().equals(sessionId)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public boolean IsPlayerInListByName(String name) {
-        for (Player player: players) {
-            System.out.printf("\n %s is in the list \n \n", player);
-            if (player.getName().equals(name)) {
-                return true;
+        return players.containsValue(name);
+    }
+
+    public void removePlayerByUsername(String userName) {
+        for (Integer id: players.keySet()) {
+            if (players.get(id).equals(userName)) {
+                players.remove(id);
             }
         }
-        return false;
     }
 
-    public void removePlayerBySessionId(String sessionId) {
-        players.removeIf(p -> p.getSessionId().equals(sessionId));
-    }
-
-    public List<Player> getPlayers() {
+    public Map<Integer, String> getPlayers() {
         return players;
     }
 }

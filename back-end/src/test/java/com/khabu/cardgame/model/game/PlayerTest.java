@@ -13,7 +13,7 @@ class PlayerTest {
 
     @BeforeEach
     void setUp() {
-        this.player = new Player("PlayerName", 1);
+        this.player = new Player("PlayerName", 1, "randomuuid");
         testCard = new Card(1, 'H');
     }
 

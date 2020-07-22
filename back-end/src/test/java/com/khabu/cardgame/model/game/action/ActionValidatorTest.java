@@ -17,8 +17,8 @@ class ActionValidatorTest {
 
     @BeforeEach
     public void setup() {
-        player = new Player("Sandy", 1);
-        opponent = new Player("Tim", 2);
+        player = new Player("Sandy", 1, "James");
+        opponent = new Player("Tim", 2, "asdqwe");
         Player[] players = new Player[]{player, opponent};
         turn = new Turn(players);
     }

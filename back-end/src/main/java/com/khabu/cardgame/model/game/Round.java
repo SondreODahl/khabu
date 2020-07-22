@@ -80,14 +80,6 @@ public class Round {
     public void beginRound() {
         resetMaps();
         dealCards();
-        Timer timer = new Timer();
-        TimerTask task = new TimerTask() {
-            @Override
-            public void run() {
-                setStarted(true);
-            }
-        }; // Sets the time available for reveals
-        timer.schedule(task, this.REVEAL_TIME);
         this.turn.setGameState(Gamestate.FIRST_TURN);
     }
 
@@ -153,9 +145,6 @@ public class Round {
             throw new IllegalStateException("Game has already started. Cannot ready up");
         boolean readiedUp = playersReady.get(player);
         playersReady.put(player, !readiedUp);
-        if (getPlayersReady() == players.length) {
-            beginRound();
-        }
         return this.roundStarted;
     }
 

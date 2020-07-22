@@ -1,4 +1,5 @@
 import {
+  BEGIN_GAME,
   FORM_SUBMIT,
   FORM_VALID,
   PLAYER_JOIN_GAME,
@@ -10,6 +11,9 @@ const playerById = (state = {}, { type, payload }) => {
   switch (type) {
     case UPDATE_PLAYERS_INFO:
       return { ...state, ...payload.playerIds };
+    case PLAYER_JOIN_GAME:
+      const playerId = payload.playerId;
+      return { ...state, [playerId]: payload.playerName };
     default:
       return state;
   }
@@ -20,12 +24,19 @@ const allPlayers = (state = [], { type, payload }) => {
     case UPDATE_PLAYERS_INFO:
       const listOfIds = Object.keys(payload.playerIds);
       return state.concat(listOfIds);
+    case PLAYER_JOIN_GAME:
+      const playerId = payload.playerId;
+      if (state.includes(payload.playerId))
+        // In case it was you who broadcast message
+        return state;
+      return [...state, playerId]; // Else, received from another player. Add to list
     default:
       return state;
   }
 };
 
-const playerCapacity = (state = 2, action) => {
+const playerCapacity = (state = null, { type, payload }) => {
+  if (type === BEGIN_GAME) return payload;
   return state;
 };
 

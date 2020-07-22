@@ -1,47 +1,30 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import usePublish from '../../api/usePublish';
 import useSubscribe from '../../api/useSubscribe';
 import { useSelector, useDispatch } from 'react-redux';
 import { startRound, toggleReady, updatePlayersReady } from '../../actions';
 import { initializeRound } from '../../actions';
+import { roundActionDelegator } from '../../actions/actionDelegator';
 
 export default (props) => {
   const dispatch = useDispatch();
   const playersReady = useSelector((state) => state.round.ready.totalReady);
   const ready = useSelector((state) => state.round.ready.playerReady);
-  const playerCap = useSelector((state) => state.players.playerCapacity);
   const publishToggleReady = usePublish({
-    destination: '/app/ready',
-    body: ready.toString(), // Can be optimized
-  });
-  useSubscribe('/topic/ready', updatePlayersReady);
-
-  useEffect(() => {
-    if (playersReady === playerCap) {
-      dispatch(initializeRound());
-    }
+    destination: '/app/round/flow',
+    body: props.yourId,
   });
 
-  useEffect(() => {
+  const readyUp = useCallback(() => {
     publishToggleReady();
-    // eslint-disable-next-line
+    dispatch(toggleReady());
   }, [ready]);
-
-  useEffect(
-    () => () => {
-      setTimeout(() => dispatch(startRound(1)), props.TIMEOUT);
-    },
-    []
-  );
 
   const buttonClassName = ready ? 'active' : 'inactive';
   const readyMsg = `${playersReady} players ready`;
   return (
     <div>
-      <button
-        className={`ui toggle button ${buttonClassName}`}
-        onClick={() => dispatch(toggleReady())}
-      >
+      <button className={`ui toggle button ${buttonClassName}`} onClick={readyUp}>
         Ready
       </button>
       {readyMsg}

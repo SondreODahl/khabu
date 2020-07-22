@@ -26,8 +26,8 @@ class RoundTest {
 
     @BeforeEach
     void setUp() {
-        player1 = new Player("Player 1", 1);
-        player2 = new Player("Player 2", 2);
+        player1 = new Player("Player 1", 1, "qweqasd");
+        player2 = new Player("Player 2", 2, "asqweqweasd");
         round = Round.Constructor(
                 new Game("abc", 1), new Player[]{player1, player2}, initialHandSize, revealTime);
     }

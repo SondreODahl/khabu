@@ -1,7 +1,8 @@
 package com.khabu.cardgame.controllers;
 
-import com.khabu.cardgame.event.UserRepository;
-import com.khabu.cardgame.model.User;
+import com.khabu.cardgame.model.game.Game;
+import com.khabu.cardgame.model.game.GameRepository;
+import com.khabu.cardgame.model.game.Player;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
 
 // Handles websocket interaction
 
@@ -21,12 +23,13 @@ import java.util.Date;
 public class GameStartController {
 
     private final SimpMessagingTemplate simpMessagingTemplate;
-    private UserRepository userRepository;
+    private GameRepository gameRepository;
 
     @Autowired
-    public GameStartController(SimpMessagingTemplate simpMessagingTemplate, UserRepository userRepository) {
+    public GameStartController(SimpMessagingTemplate simpMessagingTemplate,
+                               GameRepository gameRepository) {
         this.simpMessagingTemplate = simpMessagingTemplate;
-        this.userRepository = userRepository;
+        this.gameRepository = gameRepository;
     }
 
     @MessageMapping("/greeting")
@@ -45,20 +48,7 @@ public class GameStartController {
         return "[" + time + "]" + "Hello" + text;
     }
 
-    @MessageMapping("/ready")
-    public void userReady(@Payload String message, Principal principal) {
-        User user = userRepository.getParticipantByName(principal.getName());
-        System.out.println("\n ---Sending data to user .... ----\n");
-        if (message.equals("true")) {
-            user.setReady(true);
-            userRepository.addReadyPlayer(user);
-        } else {
-            user.setReady(false);
-            userRepository.removeUnreadiedPlayer(user);
-        }
-        this.simpMessagingTemplate.convertAndSend("/topic/ready",
-                Integer.toString(userRepository.getNumberOfPlayersReadiedUp()));
-    }
+
 
 
 //  Might need this for session-control later

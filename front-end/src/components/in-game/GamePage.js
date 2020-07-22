@@ -3,16 +3,31 @@ import { useSelector } from 'react-redux';
 import ReadyUpButton from './ReadyUpButton';
 import { roundStates } from '../../reducers/game/roundReducer';
 import RevealCardHand from './RevealCardHand';
+import useSubscribe from '../../api/useSubscribe';
+import usePublish from '../../api/usePublish';
+import { playerJoinedGame } from '../../actions/playerActions';
+import { roundActionDelegator } from '../../actions/actionDelegator';
 
 export default () => {
-  const username = useSelector((state) => state.form.data);
+  const yourId = useSelector((state) => state.players.yourId);
   const roundState = useSelector((state) => state.round.currentState);
-  const TIMEOUT = 10 * 1000; // TODO: Make more dynamic
+  const publishUserName = usePublish({
+    destination: '/app/game/flow',
+    body: yourId,
+  });
+  useSubscribe('/topic/game/flow', playerJoinedGame, publishUserName);
+  useSubscribe('/topic/round/flow', roundActionDelegator, undefined);
 
   const determineRender = () => {
     switch (roundState) {
+      case roundStates.WAITING_FOR_PLAYERS:
+        return <div>Waiting for other players...</div>;
       case roundStates.NOT_STARTED:
-        return <ReadyUpButton TIMEOUT={TIMEOUT} />;
+        return (
+          <div>
+            <ReadyUpButton yourId={yourId} />
+          </div>
+        );
       case roundStates.INITIALIZING:
         return (
           <div>
@@ -29,10 +44,5 @@ export default () => {
     }
   };
 
-  return (
-    <div>
-      {username}
-      {determineRender()}
-    </div>
-  );
+  return <div>{determineRender()}</div>;
 };
