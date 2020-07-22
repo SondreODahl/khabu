@@ -48,18 +48,7 @@ public class GameStartController {
         return "[" + time + "]" + "Hello" + text;
     }
 
-    @MessageMapping("/ready")
-    public void userReady(@Payload String payload) {
-        int id = Integer.parseInt(payload);
-        Game game = gameRepository.getGames().get(0);
-        Player player = game.getPlayer(id);
-        game.getRound().readyUp(player);
-        this.simpMessagingTemplate.convertAndSend("/topic/ready",
-                Integer.toString(game.getRound().getPlayersReady()));
-        if (game.getRound().getPlayersReady() == 2) {
-            game.getRound().beginRound();
-        }
-    }
+
 
 
 //  Might need this for session-control later
