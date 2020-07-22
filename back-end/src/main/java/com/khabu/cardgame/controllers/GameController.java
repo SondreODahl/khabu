@@ -30,37 +30,33 @@ public class GameController {
     }
 
 
-    @MessageMapping("/ready")
+    @MessageMapping("/round/flow")
     public void userReady(@Payload String payload) {
         // Retrieve data and server data
         int id = Integer.parseInt(payload);
         Game game = gameRepository.getGames().get(0);
         Player player = game.getPlayer(id);
         game.getRound().readyUp(player);
+        Map<String, String> output = new HashMap<>();
 
+        // JSON OBJECT MAPPER
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        String jsonOutput = createJsonString(objectMapper, output,
+                "READY", Integer.toString(game.getRound().getPlayersReady()));
         // Send amount of players ready
-        this.simpMessagingTemplate.convertAndSend("/topic/ready",
-                Integer.toString(game.getRound().getPlayersReady()));
+        this.simpMessagingTemplate.convertAndSend("/topic/round/flow",
+                jsonOutput);
 
         // Start game if all players ready
         if (game.getRound().getPlayersReady() == Game.getNumOfPlayers()) {
             game.getRound().beginRound();
             // Store response to notify client that game can start
-            Map<String, String> output = new HashMap<>();
-            output.put("type", "INITIALIZE");
-            output.put("time", Integer.toString(Game.REVEAL_TIME));
-            String jsonOutput = "";
-
-            //Convert to json
-            try {
-                jsonOutput = new ObjectMapper().writeValueAsString(output);
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
-            }
-
-            this.simpMessagingTemplate.convertAndSend("/topic/ready", jsonOutput);
+            jsonOutput = createJsonString(objectMapper, output, "INITIALIZE", Integer.toString(Game.REVEAL_TIME));
+            this.simpMessagingTemplate.convertAndSend("/topic/round/flow", jsonOutput);
         }
     }
+
 
     // TODO: Implement game startup method (Might to this in another controller)
     // TODO: Implement /round/actions/playerId with responses to drawing
@@ -87,5 +83,23 @@ public class GameController {
         this.simpMessagingTemplate.convertAndSend("/topic/game/flow", jsonOutput);
     }
 
+
+    // Takes a map with data and converts to json with data type and value
+    private String createJsonString(ObjectMapper objectMapper, Map<String, String> data, String type, String value) {
+        data.clear();
+        String jsonOutput = "";
+
+        // Add new data
+        data.put("type", type);
+        data.put("value", value);
+
+        // CONVERT TO JSON STRING
+        try {
+            objectMapper.writeValueAsString(data);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return jsonOutput;
+    }
 
 }
