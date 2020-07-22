@@ -6,6 +6,8 @@ import com.khabu.cardgame.model.PlayerRepository;
 import com.khabu.cardgame.model.game.Game;
 import com.khabu.cardgame.model.game.GameRepository;
 import com.khabu.cardgame.model.game.Player;
+import com.khabu.cardgame.model.game.Round;
+import com.khabu.cardgame.model.game.action.Gamestate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -14,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 @RestController
 public class GameController {
@@ -50,10 +54,12 @@ public class GameController {
 
         // Start game if all players ready
         if (game.getRound().getPlayersReady() == Game.getNumOfPlayers()) {
-            game.getRound().beginRound();
-            // Store response to notify client that game can start
+            // Initializes the countdown and informs front-end the countdown has been initiated
             jsonOutput = createJsonString(objectMapper, output, "INITIALIZE", Integer.toString(Game.REVEAL_TIME));
             this.simpMessagingTemplate.convertAndSend("/topic/round/flow", jsonOutput);
+
+            // Sends a message informing the client that the countdown is finished
+            beginRound(objectMapper, output);
         }
     }
 
@@ -100,6 +106,24 @@ public class GameController {
             e.printStackTrace();
         }
         return jsonOutput;
+    }
+
+    // Initiates round
+    private void beginRound(ObjectMapper objectMapper, Map<String, String> output) {
+        Game game = this.gameRepository.getGames().get(0);
+        Round round = game.getRound();
+        Timer timer = new Timer();
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                // Get starting playerId and change jsonOutput to send a BEGIN message to client
+                int playerId = game.getRound().getTurn().getCurrentPlayer().getPlayerId();
+                String jsonOutput = createJsonString(objectMapper, output, "BEGIN", Integer.toString(playerId));
+                simpMessagingTemplate.convertAndSend("/topic/round/flow", jsonOutput);
+                round.beginRound();
+            }
+        }; // Sets the time available for reveals
+        timer.schedule(task, Game.REVEAL_TIME);
     }
 
 }
