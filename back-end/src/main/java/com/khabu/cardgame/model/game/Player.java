@@ -5,18 +5,24 @@ import com.khabu.cardgame.model.game.card.CardHand;
 
 public class Player {
     private String name;
+    String sessionId;
     private int playerId;
     private CardHand cardHand;
     private boolean ready = false;
 
-    public Player(String name, int playerId) {
+    public Player(String name, int playerId, String sessionId) {
         this.name = name;
         this.playerId = playerId;
+        this.sessionId = sessionId;
         this.cardHand = new CardHand();
     }
 
     public String getName() {
         return name;
+    }
+
+    public String getSessionId() {
+        return sessionId;
     }
 
     public int getPlayerId() {
