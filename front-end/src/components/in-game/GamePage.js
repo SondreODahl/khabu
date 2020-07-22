@@ -23,7 +23,6 @@ export default () => {
         return (
           <div>
             <ReadyUpButton TIMEOUT={TIMEOUT} yourId={yourId} />
-            <button onClick={publishUserName}>Click</button>
           </div>
         );
       case roundStates.INITIALIZING:

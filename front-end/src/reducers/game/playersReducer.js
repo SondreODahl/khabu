@@ -1,4 +1,5 @@
 import {
+  BEGIN_GAME,
   FORM_SUBMIT,
   FORM_VALID,
   PLAYER_JOIN_GAME,
@@ -34,8 +35,9 @@ const allPlayers = (state = [], { type, payload }) => {
   }
 };
 
-const playerCapacity = (state = 2, action) => {
-  return state; // TODO: Add playerCapacity as argument to received players info
+const playerCapacity = (state = null, { type, payload }) => {
+  if (type === BEGIN_GAME) return payload;
+  return state;
 };
 
 const yourId = (state = null, { type, payload }) => {
