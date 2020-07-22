@@ -67,9 +67,9 @@ class RoundTest {
         round.readyUp(player1);
         round.readyUp(player2);
 
-        int timePadding = (int) (revealTime*0.10); // So that the test runs after the tested class
-        Thread.sleep(revealTime+ timePadding);
-        assertTrue(round.getStarted());
+        // Moved timertask to controller. So no longer necessary to test
+        assertEquals(2, round.getPlayersReady());
+        assertFalse(round.getStarted());
     }
 
     @Test
@@ -108,6 +108,7 @@ class RoundTest {
     void RevealCardDuringBeginningFails() {
         round.readyUp(player1);
         round.readyUp(player2);
+        round.beginRound();
         round.revealCard(player1, 1);
         round.revealCard(player1, 2);
         try {
@@ -176,6 +177,7 @@ class RoundTest {
     private void beginGame() {
         round.readyUp(player1);
         round.readyUp(player2);
+        round.beginRound();
         round.setStarted(true);
     }
 }

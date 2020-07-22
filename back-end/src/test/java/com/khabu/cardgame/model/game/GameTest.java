@@ -71,6 +71,7 @@ class GameTest {
         game.beginGame();
         game.getRound().readyUp(player1);
         game.getRound().readyUp(player2);
-        Thread.sleep(100);
+        game.getRound().setStarted(true);
+        game.getRound().beginRound();
     }
 }
