@@ -6,6 +6,7 @@ import RevealCardHand from './RevealCardHand';
 import useSubscribe from '../../api/useSubscribe';
 import usePublish from '../../api/usePublish';
 import { playerJoinedGame } from '../../actions/playerActions';
+import { roundActionDelegator } from '../../actions/actionDelegator';
 
 export default () => {
   const yourId = useSelector((state) => state.players.yourId);
@@ -15,10 +16,13 @@ export default () => {
     body: yourId,
   });
   useSubscribe('/topic/game/flow', playerJoinedGame, publishUserName);
+  useSubscribe('/topic/round/flow', roundActionDelegator, undefined);
   const TIMEOUT = 10 * 1000; // TODO: Make more dynamic
 
   const determineRender = () => {
     switch (roundState) {
+      case roundStates.WAITING_FOR_PLAYERS:
+        return <div>Waiting for other players...</div>;
       case roundStates.NOT_STARTED:
         return (
           <div>

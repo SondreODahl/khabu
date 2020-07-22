@@ -16,10 +16,7 @@ export const roundStates = {
   OVER: 'OVER',
 };
 
-const currentState = (
-  state = roundStates.WAITING_FOR_PLAYERS,
-  { type, payload }
-) => {
+const currentState = (state = roundStates.WAITING_FOR_PLAYERS, { type }) => {
   switch (type) {
     case BEGIN_GAME:
       return roundStates.NOT_STARTED;
@@ -45,8 +42,14 @@ const playerRevealedCards = (state = 0, { type, payload }) => {
   }
 };
 
+const roundRevealTime = (state = null, { type, payload }) => {
+  if (type === ALL_PLAYERS_READY) return payload;
+  return state;
+};
+
 export default combineReducers({
   currentState,
   playerRevealedCards,
   ready: readyReducer,
+  roundRevealTime,
 });

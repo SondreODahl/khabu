@@ -4,16 +4,16 @@ import useSubscribe from '../../api/useSubscribe';
 import { useSelector, useDispatch } from 'react-redux';
 import { startRound, toggleReady, updatePlayersReady } from '../../actions';
 import { initializeRound } from '../../actions';
+import { roundActionDelegator } from '../../actions/actionDelegator';
 
 export default (props) => {
   const dispatch = useDispatch();
   const playersReady = useSelector((state) => state.round.ready.totalReady);
   const ready = useSelector((state) => state.round.ready.playerReady);
   const publishToggleReady = usePublish({
-    destination: '/app/ready',
+    destination: '/app/round/flow',
     body: props.yourId,
   });
-  useSubscribe('/topic/ready', updatePlayersReady, undefined);
 
   const readyUp = useCallback(() => {
     publishToggleReady();
