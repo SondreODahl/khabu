@@ -6,7 +6,6 @@ export const formError = (error) => {
 };
 
 export const formValid = (response) => (dispatch) => {
-  console.log(response);
   dispatch({ type: FORM_VALID });
   dispatch(retrievePlayers(response));
 };
