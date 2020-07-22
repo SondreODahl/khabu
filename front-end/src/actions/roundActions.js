@@ -22,7 +22,3 @@ export const updatePlayersReady = (playersReady) => {
   playersReady = parseInt(playersReady);
   return { type: UPDATE_PLAYERS_READY, payload: playersReady };
 };
-
-export const startRound = (startingPlayer) => {
-  return { type: START_ROUND, payload: startingPlayer };
-};
