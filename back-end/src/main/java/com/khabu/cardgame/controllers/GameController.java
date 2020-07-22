@@ -1,6 +1,7 @@
 package com.khabu.cardgame.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.khabu.cardgame.model.PlayerRepository;
 import com.khabu.cardgame.model.game.Game;
@@ -8,6 +9,7 @@ import com.khabu.cardgame.model.game.GameRepository;
 import com.khabu.cardgame.model.game.Player;
 import com.khabu.cardgame.model.game.Round;
 import com.khabu.cardgame.model.game.action.Gamestate;
+import com.khabu.cardgame.model.game.card.Card;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -32,6 +34,33 @@ public class GameController {
         this.simpMessagingTemplate = simpMessagingTemplate;
         this.gameRepository = gameRepository;
     }
+
+    @MessageMapping("/topic/round/actions")
+    public void receiveAction(@Payload String payload) {
+        // Create a map from payload
+        ObjectMapper objectMapper = new ObjectMapper();
+        TypeReference<HashMap<String, Object>> typeRef =
+                new TypeReference<HashMap<String, Object>>() {};
+
+        HashMap<String, Object> jsonMap = new HashMap<>();
+        try {
+            jsonMap = objectMapper.readValue(payload, typeRef);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        switch ((String) jsonMap.get("action")) {
+            case "REVEAL":
+                revealCard(jsonMap);
+                break;
+            default: sendError(jsonMap);
+        }
+
+
+
+
+    }
+
 
 
     @MessageMapping("/round/flow")
@@ -124,6 +153,47 @@ public class GameController {
             }
         }; // Sets the time available for reveals
         timer.schedule(task, Game.REVEAL_TIME);
+    }
+
+
+    // ------------------------------
+    // ACTION HANDLER METHODS
+    // ------------------------------
+
+    // Action receiver defaults to sending an error in case of faulty behaviour
+    private void sendError(HashMap<String, Object> jsonMap) {
+        Map<String, String> output = new HashMap<>();
+        // TODO: Fix a better errorMsg
+        String errorMsg = "Something went wrong";
+        String jsonResponse = createJsonString(new ObjectMapper(), output, "ERROR", errorMsg);
+        simpMessagingTemplate.convertAndSend("/topic/round/actions");
+    }
+
+    // Handles request from a player to reveal one of his/her cards
+    private void revealCard(HashMap<String, Object> jsonMap) {
+        // Retrieve info from client json
+        int playerId = Integer.parseInt((String) jsonMap.get("playerId"));
+        int targetCardIndex = Integer.parseInt((String) jsonMap.get("index"));
+        Round round = gameRepository.getGames().get(0).getRound();
+
+        // Create response
+        Map<String, String> response = new HashMap<>();
+        response.put("type", "REVEAL");
+        Card revealedCard = round.revealCard(round.getPlayers()[playerId], targetCardIndex);
+        response.put("value", Integer.toString(revealedCard.getValue()));
+        response.put("id", Integer.toString(targetCardIndex));
+        response.put("status", "SUCCESS");
+
+        // Convert response to json
+        String jsonResponse = "";
+        try {
+            jsonResponse = new ObjectMapper().writeValueAsString(response);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        // Send json response back to player
+        simpMessagingTemplate.convertAndSend("/topic/round/actions/" + Integer.toString(playerId), jsonResponse);
     }
 
 }
