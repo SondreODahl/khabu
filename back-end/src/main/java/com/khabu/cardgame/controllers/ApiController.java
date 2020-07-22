@@ -38,11 +38,12 @@ public class ApiController {
     }
 
     @RequestMapping(value="/api/player", method=RequestMethod.POST)
-    public Map<String, Object> createPlayer(@RequestBody Map<String, Object> player) {
+    public Map<String, Object> createPlayer(@RequestBody Map<String, Object> player, HttpServletRequest req) {
         Map<String, Object> response = new HashMap<>();
 
         // GET ATTRIBUTES
         String playerName = (String) player.get("username");
+        String sessionId = req.getSession().getId();
 
         // VALIDATE AND CREATE
         if (playerRepository.getPlayers().containsValue(playerName)) {
@@ -50,7 +51,7 @@ public class ApiController {
             return response;
         }
         if (playerRepository.getPlayers().size() < 2) {
-            Player newPlayer = new Player(playerName, PlayerRepository.PLAYER_ID_COUNT);
+            Player newPlayer = new Player(playerName, PlayerRepository.PLAYER_ID_COUNT, sessionId);
             PlayerRepository.PLAYER_ID_COUNT += 1;
             playerRepository.addPlayer(newPlayer.getPlayerId(), newPlayer.getName());
 
@@ -61,7 +62,7 @@ public class ApiController {
             if (playerRepository.getPlayers().size() == 2 && gameRepository.getGames().size() == 0) {
                 Game game = new Game(RandomStringUtils.randomAlphabetic(SHORT_ID_LENGTH), 2, 10000);
                 for (int id:playerRepository.getPlayers().keySet()) {
-                    game.addPlayer(new Player(playerRepository.getPlayers().get(id), id));
+                    game.addPlayer(new Player(playerRepository.getPlayers().get(id), id, sessionId));
                 }
                 gameRepository.addGame(game);
                 game.beginGame();
