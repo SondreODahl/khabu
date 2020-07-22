@@ -14,12 +14,12 @@ export default (props) => {
     destination: '/app/ready',
     body: props.yourId,
   });
-  useSubscribe('/topic/ready', updatePlayersReady);
+  useSubscribe('/topic/ready', updatePlayersReady, undefined);
 
   useEffect(() => {
-    if (playersReady === playerCap) {
+    if (playersReady === playerCap)
+      // TODO: Replace with message from server
       dispatch(initializeRound());
-    }
   });
 
   const readyUp = useCallback(() => {

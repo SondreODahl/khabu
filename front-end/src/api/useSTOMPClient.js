@@ -18,6 +18,7 @@ export default () => {
         dispatch(setClientConnected(true)); // Update redux store that client is connected
       },
       onDisconnect: () => {
+        console.log('Disconnected');
         dispatch(setClientConnected(false)); // Update redux store that client is disconnected
       },
     });

@@ -7,7 +7,7 @@ import { addSubMessage } from '../../actions';
 import { retrievePlayers } from '../../actions/playerActions';
 
 export default (props) => {
-  useSubscribe('/topic/greeting', addSubMessage);
+  useSubscribe('/topic/greeting', addSubMessage, undefined);
   const message = useSelector((state) => state.api.subscriptions['/topic/greeting']);
   const greetPublish = usePublish({
     destination: '/app/greeting',
