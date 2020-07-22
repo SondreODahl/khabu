@@ -17,7 +17,6 @@ export default () => {
   });
   useSubscribe('/topic/game/flow', playerJoinedGame, publishUserName);
   useSubscribe('/topic/round/flow', roundActionDelegator, undefined);
-  const TIMEOUT = 10 * 1000; // TODO: Make more dynamic
 
   const determineRender = () => {
     switch (roundState) {
@@ -26,7 +25,7 @@ export default () => {
       case roundStates.NOT_STARTED:
         return (
           <div>
-            <ReadyUpButton TIMEOUT={TIMEOUT} yourId={yourId} />
+            <ReadyUpButton yourId={yourId} />
           </div>
         );
       case roundStates.INITIALIZING:

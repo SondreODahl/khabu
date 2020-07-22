@@ -20,13 +20,6 @@ export default (props) => {
     dispatch(toggleReady());
   }, [ready]);
 
-  useEffect(
-    () => () => {
-      setTimeout(() => dispatch(startRound(1)), props.TIMEOUT); // Set the length of reveal time
-    },
-    []
-  );
-
   const buttonClassName = ready ? 'active' : 'inactive';
   const readyMsg = `${playersReady} players ready`;
   return (
