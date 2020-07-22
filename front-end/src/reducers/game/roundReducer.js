@@ -43,7 +43,7 @@ const playerRevealedCards = (state = 0, { type, payload }) => {
 };
 
 const roundRevealTime = (state = null, { type, payload }) => {
-  if (type === ALL_PLAYERS_READY) return payload;
+  if (type === ALL_PLAYERS_READY) return payload.revealTime;
   return state;
 };
 
