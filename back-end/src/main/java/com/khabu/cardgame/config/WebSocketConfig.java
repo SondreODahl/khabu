@@ -33,11 +33,4 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer{
         config.setApplicationDestinationPrefixes("/app");
     }
 
-    @Bean
-    public ServletServerContainerFactoryBean createWebSocketContainer() {
-        ServletServerContainerFactoryBean container = new ServletServerContainerFactoryBean();
-        container.setMaxSessionIdleTimeout(2000000L);
-        return container;
-    }
-
 }
