@@ -32,14 +32,33 @@ public class GameController {
 
     @MessageMapping("/ready")
     public void userReady(@Payload String payload) {
+        // Retrieve data and server data
         int id = Integer.parseInt(payload);
         Game game = gameRepository.getGames().get(0);
         Player player = game.getPlayer(id);
         game.getRound().readyUp(player);
+
+        // Send amount of players ready
         this.simpMessagingTemplate.convertAndSend("/topic/ready",
                 Integer.toString(game.getRound().getPlayersReady()));
-        if (game.getRound().getPlayersReady() == 2) {
+
+        // Start game if all players ready
+        if (game.getRound().getPlayersReady() == Game.getNumOfPlayers()) {
             game.getRound().beginRound();
+            // Store response to notify client that game can start
+            Map<String, String> output = new HashMap<>();
+            output.put("type", "INITIALIZE");
+            output.put("time", Integer.toString(Game.REVEAL_TIME));
+            String jsonOutput = "";
+
+            //Convert to json
+            try {
+                jsonOutput = new ObjectMapper().writeValueAsString(output);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+
+            this.simpMessagingTemplate.convertAndSend("/topic/ready", jsonOutput);
         }
     }
 
