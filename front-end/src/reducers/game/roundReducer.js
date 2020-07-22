@@ -1,5 +1,6 @@
 import {
   ALL_PLAYERS_READY,
+  BEGIN_GAME,
   ROUND_END,
   SHOW_CARD,
   START_ROUND,
@@ -8,14 +9,20 @@ import readyReducer from './readyReducer';
 import { combineReducers } from 'redux';
 
 export const roundStates = {
+  WAITING_FOR_PLAYERS: 'WAITING_FOR_PLAYERS',
   NOT_STARTED: 'NOT_STARTED',
   INITIALIZING: 'INITIALIZING',
   STARTED: 'STARTED',
   OVER: 'OVER',
 };
 
-const currentState = (state = roundStates.NOT_STARTED, { type, payload }) => {
+const currentState = (
+  state = roundStates.WAITING_FOR_PLAYERS,
+  { type, payload }
+) => {
   switch (type) {
+    case BEGIN_GAME:
+      return roundStates.NOT_STARTED;
     case ALL_PLAYERS_READY:
       return roundStates.INITIALIZING;
     case START_ROUND:

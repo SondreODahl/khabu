@@ -9,18 +9,11 @@ export default (props) => {
   const dispatch = useDispatch();
   const playersReady = useSelector((state) => state.round.ready.totalReady);
   const ready = useSelector((state) => state.round.ready.playerReady);
-  const playerCap = useSelector((state) => state.players.playerCapacity);
   const publishToggleReady = usePublish({
     destination: '/app/ready',
     body: props.yourId,
   });
   useSubscribe('/topic/ready', updatePlayersReady, undefined);
-
-  useEffect(() => {
-    if (playersReady === playerCap)
-      // TODO: Replace with message from server
-      dispatch(initializeRound());
-  });
 
   const readyUp = useCallback(() => {
     publishToggleReady();
