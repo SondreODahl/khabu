@@ -54,27 +54,27 @@ public class PresenceEventListener {
 //    }
 //
 //    // TODO: Find a better way to remove sessions when inactive for a long time
-    @EventListener
-    public void handleSessionDisconnected(SessionDisconnectEvent event) {
-        StompHeaderAccessor headers = StompHeaderAccessor.wrap(event.getMessage());
-
-        // Retrieve sessionId
-        String sessionId = headers.getSessionId();
-
-        // Retrieve array of players
-        Player[] players = gameRepository.getGames().get(0).getPlayers();
-
-        // Remove player from playerRepository and gameRepository
-        for (Player player:
-             players) {
-            if (player.getSessionId().equals(sessionId)) {
-                playerRepository.getPlayers().remove(player.getPlayerId());
-                if (playerRepository.getPlayers().size() == 0) {
-                    gameRepository.getGames().remove(0);
-                }
-            }
-        }
-    }
+//    @EventListener
+//    public void handleSessionDisconnected(SessionDisconnectEvent event) {
+//        StompHeaderAccessor headers = StompHeaderAccessor.wrap(event.getMessage());
+//
+//        // Retrieve sessionId
+//        String sessionId = headers.getSessionId();
+//
+//        // Retrieve array of players
+//        Player[] players = gameRepository.getGames().get(0).getPlayers();
+//
+//        // Remove player from playerRepository and gameRepository
+//        for (Player player:
+//             players) {
+//            if (player.getSessionId().equals(sessionId)) {
+//                playerRepository.getPlayers().remove(player.getPlayerId());
+//                if (playerRepository.getPlayers().size() == 0) {
+//                    gameRepository.getGames().remove(0);
+//                }
+//            }
+//        }
+//    }
 //
 //
 //    // TODO: Send a message to /topic/ready updating ready player count
