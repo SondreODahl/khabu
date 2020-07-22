@@ -1,11 +1,11 @@
 import { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addSubMessage } from '../actions';
+import { selectClient } from '../selectors';
 
 export default (destination, actionFunction, onSubFunc = () => {}) => {
   const dispatch = useDispatch();
-  const client = useSelector((state) => state.api.client.body);
-  const connected = useSelector((state) => state.api.client.connected);
+  const { client, connected } = useSelector(selectClient);
 
   const subscribe = useCallback(() => {
     console.log('Subscribed to', destination);
