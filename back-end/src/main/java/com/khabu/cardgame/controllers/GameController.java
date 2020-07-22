@@ -1,5 +1,7 @@
 package com.khabu.cardgame.controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.khabu.cardgame.model.PlayerRepository;
 import com.khabu.cardgame.model.game.Game;
 import com.khabu.cardgame.model.game.GameRepository;
@@ -47,10 +49,21 @@ public class GameController {
     // Method should send back an updated list of players
     @MessageMapping("/game/flow")
     public void playerInfo(@Payload String playerJoining) {
-        Map<String, Object> output = new HashMap<>();
+        Map<String, String> output = new HashMap<>();
+        int playerId = Integer.parseInt(playerJoining);
+        Game game = gameRepository.getGames().get(0);
         output.put("type", "PLAYER_JOINED");
-        output.put("playerName", playerJoining);
-        this.simpMessagingTemplate.convertAndSend("/topic/game/flow", output);
+        output.put("playerId", Integer.toString(playerId));
+        output.put("playerName", game.getPlayer(playerId-1).getName());
+        String jsonOutput = "";
+
+        //Convert object to json string
+        try {
+            jsonOutput = new ObjectMapper().writeValueAsString(output);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        this.simpMessagingTemplate.convertAndSend("/topic/game/flow", jsonOutput);
     }
 
 
