@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class TurnTest {
 
-    Player[] players = {new Player("player1", 1), new Player("player", 2)};
+    Player[] players = {new Player("player1", 1, "qweasd"), new Player("player", 2, "qweasd")};
     private Turn turn;
 
     @BeforeEach
@@ -30,7 +30,7 @@ class TurnTest {
     @Test
     void SetPlayerToOneNotInGame() {
         try {
-            turn.setCurrentPlayer(new Player("rwrwe", 2));
+            turn.setCurrentPlayer(new Player("rwrwe", 2, "asqwesaqwe"));
             fail();
         } catch (IllegalArgumentException ignored) {
         }

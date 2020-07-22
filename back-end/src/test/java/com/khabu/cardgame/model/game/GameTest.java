@@ -15,8 +15,8 @@ class GameTest {
 
     @BeforeEach
     void setUp() {
-        player1 = new Player("1", 1);
-        player2 = new Player("2", 2);
+        player1 = new Player("1", 1, "werwer");
+        player2 = new Player("2", 2, "aqwea");
         game = new Game("My-room-id", 2, 10);
     }
 
@@ -33,7 +33,7 @@ class GameTest {
         game.addPlayer(player1);
         game.addPlayer(player2);
         try {
-            game.addPlayer(new Player("3", 3));
+            game.addPlayer(new Player("3", 3, "asqweq"));
         } catch (IllegalStateException ignored) {
         }
     }

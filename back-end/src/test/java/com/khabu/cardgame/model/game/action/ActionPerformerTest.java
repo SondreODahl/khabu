@@ -27,8 +27,8 @@ class ActionPerformerTest {
 
     @BeforeEach
     void setUp() {
-        player1 = new Player("Player1", 1);
-        player2 = new Player("Player2", 1);
+        player1 = new Player("Player1", 1, "asdasd");
+        player2 = new Player("Player2", 1, "awqesaq");
         Player[] players = new Player[]{player1, player2};
         turn = new Turn(players);
         discardPile = new DiscardPile();
