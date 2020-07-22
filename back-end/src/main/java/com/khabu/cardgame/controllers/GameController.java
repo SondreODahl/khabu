@@ -52,9 +52,11 @@ public class GameController {
         Map<String, String> output = new HashMap<>();
         int playerId = Integer.parseInt(playerJoining);
         Game game = gameRepository.getGames().get(0);
+        String capacityReached = game.getPlayers().length == Game.getNumOfPlayers() ? "true" : "false";
         output.put("type", "PLAYER_JOINED");
         output.put("playerId", Integer.toString(playerId));
         output.put("playerName", game.getPlayer(playerId).getName());
+        output.put("capacityReached", capacityReached);
         String jsonOutput = "";
 
         //Convert object to json string
