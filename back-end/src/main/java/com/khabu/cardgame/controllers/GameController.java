@@ -54,7 +54,7 @@ public class GameController {
         Game game = gameRepository.getGames().get(0);
         output.put("type", "PLAYER_JOINED");
         output.put("playerId", Integer.toString(playerId));
-        output.put("playerName", game.getPlayer(playerId-1).getName());
+        output.put("playerName", game.getPlayer(playerId).getName());
         String jsonOutput = "";
 
         //Convert object to json string

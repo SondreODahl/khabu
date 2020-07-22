@@ -11,8 +11,8 @@ const playerById = (state = {}, { type, payload }) => {
     case UPDATE_PLAYERS_INFO:
       return { ...state, ...payload.playerIds };
     case PLAYER_JOIN_GAME:
-      const playerId = Object.keys(payload).pop();
-      return { ...state, [playerId]: payload[playerId] };
+      const playerId = payload.playerId;
+      return { ...state, [playerId]: payload.playerName };
     default:
       return state;
   }
@@ -24,8 +24,11 @@ const allPlayers = (state = [], { type, payload }) => {
       const listOfIds = Object.keys(payload.playerIds);
       return state.concat(listOfIds);
     case PLAYER_JOIN_GAME:
-      const playerId = Object.keys(payload).pop();
-      return [...state, playerId];
+      const playerId = payload.playerId;
+      if (state.includes(payload.playerId))
+        // In case it was you who broadcast message
+        return state;
+      return [...state, playerId]; // Else, received from another player. Add to list
     default:
       return state;
   }

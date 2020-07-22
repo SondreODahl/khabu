@@ -9,6 +9,10 @@ export const retrievePlayers = (response) => {
   };
 };
 
-export const playerJoinedGame = (topic, { playerId, username }) => {
-  return { type: PLAYER_JOIN_GAME, payload: { [playerId]: username } };
+export const playerJoinedGame = (topic, json) => {
+  const parsedJSON = JSON.parse(json);
+  console.log(parsedJSON);
+  const playerId = parsedJSON.playerId;
+  const playerName = parsedJSON.playerName;
+  return { type: PLAYER_JOIN_GAME, payload: { playerId, playerName } };
 };
