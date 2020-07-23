@@ -18,10 +18,10 @@ export default (props) => {
   const readyUp = useCallback(() => {
     publishToggleReady();
     dispatch(toggleReady());
-  }, [totalReady]);
+  }, [playerReady]);
 
-  const buttonClassName = totalReady ? 'active' : 'inactive';
-  const readyMsg = `${playerReady} players ready`;
+  const buttonClassName = playerReady ? 'active' : 'inactive';
+  const readyMsg = `${totalReady} players ready`;
   return (
     <div>
       <button className={`ui toggle button ${buttonClassName}`} onClick={readyUp}>
