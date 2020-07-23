@@ -1,12 +1,14 @@
 import { useSelector } from 'react-redux';
 import Card from './Card';
 import React from 'react';
+import { selectCardHand } from '../../selectors';
+import RevealCard from './RevealCard';
 
-export default () => {
-  const cards = useSelector((state) => state.cards);
+export default (props) => {
+  const cards = useSelector(selectCardHand(props.playerId));
   const renderCards = () => {
-    return Object.entries(cards).map((card) => {
-      return <Card value={1} id={card} />;
+    return cards.map((id) => {
+      return <RevealCard playerId={props.playerId} id={id} />;
     });
   };
 

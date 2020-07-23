@@ -33,7 +33,7 @@ export default () => {
         return (
           <div>
             <h1>Initializing</h1>
-            <RevealCardHand />
+            <RevealCardHand playerId={yourId} />
           </div>
         );
       case roundStates.STARTED:

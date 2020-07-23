@@ -16,6 +16,13 @@ const getCardsBelongingToPlayer = createSelector(
     cards.filter();
   }
 );
+export const getCardIndexForCard = createSelector(
+  selectCard,
+  selectCardHand,
+  (card, hand) => {
+    return hand.findIndex(card) + 1;
+  }
+);
 
 const selectPlayerReady = (state) => state.round.ready.playerReady;
 const selectTotalReady = (state) => state.round.ready.totalReady;
