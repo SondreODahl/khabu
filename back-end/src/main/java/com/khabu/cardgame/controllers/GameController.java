@@ -17,10 +17,7 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 @RestController
 public class GameController {
@@ -58,16 +55,19 @@ public class GameController {
                 discardCard(jsonMap);
                 break;
             case "PUT_OTHER":
-                put(jsonMap);
+                putOther(jsonMap);
                 break;
             case "PUT_SELF":
-                put(jsonMap);
+                putSelf(jsonMap);
                 break;
             case "TRANSFER":
                 transferCard(jsonMap);
                 break;
             case "CALL_KHABU":
                 callKhabu(jsonMap);
+                break;
+            case "END_TURN":
+                endTurn(jsonMap);
                 break;
             default: sendError(jsonMap);
         }
@@ -194,7 +194,7 @@ public class GameController {
             response.put("status", "FAIL");
         }
 
-        response.put("value", Integer.toString(revealedCard.getValue()));
+        response.put("value", Integer.toString(Objects.requireNonNull(revealedCard).getValue()));
         response.put("id", Integer.toString(targetCardIndex));
 
         // Convert response to json
@@ -240,11 +240,35 @@ public class GameController {
     }
 
     private void swapCard(HashMap<String, Object> jsonMap) {
+        // Retrieve id and the target card
+        int currentPlayerId = Integer.parseInt((String) jsonMap.get("currentPlayerId"));
+        int targetCardIndex = Integer.parseInt((String) jsonMap.get("targetCardIndex"));
 
+        // Perform back-end game logic
+        Round round = gameRepository.getGames().get(0).getRound();
+        round.performAction(round.getPlayers()[currentPlayerId], Actions.SWAP, targetCardIndex);
+        int cardValue = round.getDiscardPile().showTopCard().getValue();
+
+        // Create response
+        Map<String, String> response = new HashMap<>();
+        String jsonResponse = JsonConverter.createJsonString(new ObjectMapper(), response,
+                "SWAP", Integer.toString(cardValue), Integer.toString(targetCardIndex));
+        simpMessagingTemplate.convertAndSend("/topic/round/actions", jsonResponse);
     }
 
     private void discardCard(HashMap<String, Object> jsonMap) {
+        // Retrieve id
+        int currentPlayerId = Integer.parseInt((String) jsonMap.get("currentPlayerId"));
 
+        // Perform back-end game logic
+        Round round = gameRepository.getGames().get(0).getRound();
+        round.performAction(round.getPlayers()[currentPlayerId], Actions.DISCARD);
+        int cardValue = round.getDiscardPile().showTopCard().getValue();
+
+        // Create response
+        String jsonResponse = JsonConverter.createJsonString(new ObjectMapper(), new HashMap<>(),
+                "DISCARD", Integer.toString(cardValue));
+        simpMessagingTemplate.convertAndSend("/topic/round/actions", jsonResponse);
     }
 
     private void endTurn(HashMap<String, Object> jsonMap) {
@@ -259,7 +283,11 @@ public class GameController {
 
     }
 
-    private void put(HashMap<String, Object> jsonMap) {
+    private void putOther(HashMap<String, Object> jsonMap) {
+
+    }
+
+    private void putSelf(HashMap<String, Object> jsonMap) {
 
     }
 
