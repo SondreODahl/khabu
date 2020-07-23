@@ -1,15 +1,15 @@
 package com.khabu.cardgame.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.khabu.cardgame.model.PlayerRepository;
 import com.khabu.cardgame.model.game.Game;
 import com.khabu.cardgame.model.game.GameRepository;
 import com.khabu.cardgame.model.game.Player;
 import com.khabu.cardgame.model.game.Round;
-import com.khabu.cardgame.model.game.action.Gamestate;
 import com.khabu.cardgame.model.game.card.Card;
+import com.khabu.cardgame.util.IllegalMoveException;
+import com.khabu.cardgame.util.JsonConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -37,17 +37,8 @@ public class GameController {
 
     @MessageMapping("/topic/round/actions")
     public void receiveAction(@Payload String payload) {
-        // Create a map from payload
-        ObjectMapper objectMapper = new ObjectMapper();
-        TypeReference<HashMap<String, Object>> typeRef =
-                new TypeReference<HashMap<String, Object>>() {};
-
-        HashMap<String, Object> jsonMap = new HashMap<>();
-        try {
-            jsonMap = objectMapper.readValue(payload, typeRef);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
+        // Convert the payload to a hashmap
+        HashMap<String, Object> jsonMap = JsonConverter.createMapFromJsonString(payload);
 
         switch ((String) jsonMap.get("action")) {
             case "REVEAL":
@@ -55,10 +46,6 @@ public class GameController {
                 break;
             default: sendError(jsonMap);
         }
-
-
-
-
     }
 
 
@@ -75,7 +62,7 @@ public class GameController {
         // JSON OBJECT MAPPER
         ObjectMapper objectMapper = new ObjectMapper();
 
-        String jsonOutput = createJsonString(objectMapper, output,
+        String jsonOutput = JsonConverter.createJsonString(objectMapper, output,
                 "READY", Integer.toString(game.getRound().getPlayersReady()));
         // Send amount of players ready
         this.simpMessagingTemplate.convertAndSend("/topic/round/flow",
@@ -84,7 +71,7 @@ public class GameController {
         // Start game if all players ready
         if (game.getRound().getPlayersReady() == Game.getNumOfPlayers()) {
             // Initializes the countdown and informs front-end the countdown has been initiated
-            jsonOutput = createJsonString(objectMapper, output, "INITIALIZE", Integer.toString(Game.REVEAL_TIME));
+            jsonOutput = JsonConverter.createJsonString(objectMapper, output, "INITIALIZE", Integer.toString(Game.REVEAL_TIME));
             this.simpMessagingTemplate.convertAndSend("/topic/round/flow", jsonOutput);
 
             // Sends a message informing the client that the countdown is finished
@@ -119,24 +106,6 @@ public class GameController {
     }
 
 
-    // Takes a map with data and converts to json with data type and value
-    private String createJsonString(ObjectMapper objectMapper, Map<String, String> data, String type, String value) {
-        data.clear();
-        String jsonOutput = "";
-
-        // Add new data
-        data.put("type", type);
-        data.put("value", value);
-
-        // CONVERT TO JSON STRING
-        try {
-            jsonOutput = objectMapper.writeValueAsString(data);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return jsonOutput;
-    }
-
     // Initiates round
     private void beginRound(ObjectMapper objectMapper, Map<String, String> output) {
         Game game = this.gameRepository.getGames().get(0);
@@ -147,7 +116,7 @@ public class GameController {
             public void run() {
                 // Get starting playerId and change jsonOutput to send a BEGIN message to client
                 int playerId = game.getRound().getTurn().getCurrentPlayer().getPlayerId();
-                String jsonOutput = createJsonString(objectMapper, output, "BEGIN", Integer.toString(playerId));
+                String jsonOutput = JsonConverter.createJsonString(objectMapper, output, "BEGIN", Integer.toString(playerId));
                 simpMessagingTemplate.convertAndSend("/topic/round/flow", jsonOutput);
                 round.beginRound();
             }
@@ -165,8 +134,8 @@ public class GameController {
         Map<String, String> output = new HashMap<>();
         // TODO: Fix a better errorMsg
         String errorMsg = "Something went wrong";
-        String jsonResponse = createJsonString(new ObjectMapper(), output, "ERROR", errorMsg);
-        simpMessagingTemplate.convertAndSend("/topic/round/actions");
+        String jsonResponse = JsonConverter.createJsonString(new ObjectMapper(), output, "ERROR", errorMsg);
+        simpMessagingTemplate.convertAndSend("/topic/round/actions", jsonResponse);
     }
 
     // Handles request from a player to reveal one of his/her cards
@@ -179,10 +148,18 @@ public class GameController {
         // Create response
         Map<String, String> response = new HashMap<>();
         response.put("type", "REVEAL");
-        Card revealedCard = round.revealCard(round.getPlayers()[playerId], targetCardIndex);
+        Card revealedCard = null;
+        try {
+            revealedCard = round.revealCard(round.getPlayers()[playerId], targetCardIndex);
+            response.put("status", "SUCCESS");
+        } catch (IllegalMoveException ime) {
+            ime.printStackTrace();
+            response.put("status", "FAIL");
+        }
+
         response.put("value", Integer.toString(revealedCard.getValue()));
         response.put("id", Integer.toString(targetCardIndex));
-        response.put("status", "SUCCESS");
+
 
         // Convert response to json
         String jsonResponse = "";
