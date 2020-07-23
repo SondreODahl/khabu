@@ -49,18 +49,25 @@ public class GameController {
                 drawFromDeck(jsonMap);
                 break;
             case "DRAW_FROM_DISC":
+                drawFromDisc(jsonMap);
                 break;
             case "SWAP":
+                swapCard(jsonMap);
                 break;
             case "DISCARD":
+                discardCard(jsonMap);
                 break;
             case "PUT_OTHER":
+                put(jsonMap);
                 break;
             case "PUT_SELF":
+                put(jsonMap);
                 break;
             case "TRANSFER":
+                transferCard(jsonMap);
                 break;
             case "CALL_KHABU":
+                callKhabu(jsonMap);
                 break;
             default: sendError(jsonMap);
         }
@@ -231,5 +238,33 @@ public class GameController {
                 "DISC", Integer.toString(cardValue), Integer.toString(targetCardIndex));
         simpMessagingTemplate.convertAndSend("/topic/round/actions", jsonResponse);
     }
+
+    private void swapCard(HashMap<String, Object> jsonMap) {
+
+    }
+
+    private void discardCard(HashMap<String, Object> jsonMap) {
+
+    }
+
+    private void endTurn(HashMap<String, Object> jsonMap) {
+
+    }
+
+    private void callKhabu(HashMap<String, Object> jsonMap) {
+
+    }
+
+    private void transferCard(HashMap<String, Object> jsonMap) {
+
+    }
+
+    private void put(HashMap<String, Object> jsonMap) {
+
+    }
+
+
+
+
 
 }
