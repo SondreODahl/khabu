@@ -9,10 +9,10 @@ import {
   ROUND_END,
 } from '../../actions/types';
 import _ from 'lodash';
+import { addCardToIds } from '../../actions/cardActions';
 
 const addCard = (state, { id, value }) => {
-  const card = { id, value };
-  return { ...state, [id]: card };
+  return { ...state, [id]: value };
 };
 
 const removeCard = (state, id) => {
@@ -22,7 +22,7 @@ const removeCard = (state, id) => {
 const byId = (state = {}, action) => {
   switch (action.type) {
     case ADD_CARD:
-      return addCard(state, action);
+      return addCard(state, action.payload);
     case REMOVE_CARD:
       return removeCard(state, action.payload.id);
     default:
@@ -52,6 +52,18 @@ const discardPile = (state = [], { type, payload }) => {
   }
 };
 
+const initializeHands = (state, action) => {
+  let cardId = 0;
+  for (let id of action.payload.playerIds) {
+    state[id] = byPlayerId(undefined, action);
+    for (let i = 0; i < action.payload.startingHandSize; i++) {
+      state[id][i] = cardId;
+      state.byId = byId(state.byId, addCardToIds(cardId, null));
+      cardId++;
+    }
+  }
+};
+
 const getNewInitState = () => {
   return { byId: byId(undefined, {}), discardPile: discardPile(undefined, {}) };
 };
@@ -60,9 +72,7 @@ const cardHandsReducer = (state = getNewInitState(), action) => {
   switch (action.type) {
     case ALL_PLAYERS_READY:
       const reset_state = getNewInitState();
-      for (let id of action.payload.playerIds) {
-        reset_state[id] = byPlayerId(undefined, action);
-      }
+      initializeHands(reset_state, action);
       return reset_state;
     case ADD_CARD:
     case REMOVE_CARD:
