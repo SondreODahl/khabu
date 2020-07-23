@@ -44,7 +44,7 @@ public class ActionPerformer {
             turn.setCurrentPuttingPlayer(player1);
             return true;
         }
-        // If this code runs the put failed
+        // If this code runs, the put failed
         player1.addCard(cardDeck.drawCard());
         return false;
     }
