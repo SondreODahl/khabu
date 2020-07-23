@@ -5,9 +5,15 @@ import {
   UPDATE_PLAYERS_READY,
 } from './types';
 
-export const initializeRound = (revealTime) => (dispatch, getState) => {
+export const initializeRound = (revealTime, startingHandSize) => (
+  dispatch,
+  getState
+) => {
   const playerIds = getState().players.allPlayers;
-  dispatch({ type: ALL_PLAYERS_READY, payload: { playerIds, revealTime } });
+  dispatch({
+    type: ALL_PLAYERS_READY,
+    payload: { playerIds, revealTime, startingHandSize },
+  });
 };
 
 export const startRound = (startingPlayerId) => {

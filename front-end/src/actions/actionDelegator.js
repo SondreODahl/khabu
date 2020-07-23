@@ -9,8 +9,9 @@ export const roundActionDelegator = (topic, body) => {
       const playersReady = parsedJSON.value;
       return updatePlayersReady(playersReady);
     case 'INITIALIZE':
-      const revealTime = parsedJSON.value;
-      return initializeRound(revealTime);
+      const revealTime = parsedJSON.revealTime;
+      const startingHandSize = parsedJSON.startingHandSize;
+      return initializeRound(revealTime, startingHandSize);
     case 'BEGIN':
       const startingPlayer = parsedJSON.value;
       return startRound(startingPlayer);
