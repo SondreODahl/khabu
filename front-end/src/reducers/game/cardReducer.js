@@ -7,6 +7,7 @@ import {
   REMOVE_CARD,
   REMOVE_CARD_FROM_HAND,
   ROUND_END,
+  SHOW_CARD,
 } from '../../actions/types';
 import _ from 'lodash';
 import { addCardToIds } from '../../actions/cardActions';
@@ -14,7 +15,8 @@ import { addCardToIds } from '../../actions/cardActions';
 const byId = (state = {}, { type, payload }) => {
   switch (type) {
     case ADD_CARD:
-      const { id, value } = payload;
+    case SHOW_CARD:
+      const { id, value } = payload; // Value should always be null on ADD_CARD
       return { ...state, [id]: value };
     case REMOVE_CARD:
       return _.omit(state, payload.id.toString());
