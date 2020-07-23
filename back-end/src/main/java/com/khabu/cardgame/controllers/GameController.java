@@ -44,6 +44,23 @@ public class GameController {
             case "REVEAL":
                 revealCard(jsonMap);
                 break;
+            case "DRAW_FROM_DECK":
+                drawFromDeck(jsonMap);
+                break;
+            case "DRAW_FROM_DISC":
+                break;
+            case "SWAP":
+                break;
+            case "DISCARD":
+                break;
+            case "PUT_OTHER":
+                break;
+            case "PUT_SELF":
+                break;
+            case "TRANSFER":
+                break;
+            case "CALL_KHABU":
+                break;
             default: sendError(jsonMap);
         }
     }
@@ -70,8 +87,20 @@ public class GameController {
 
         // Start game if all players ready
         if (game.getRound().getPlayersReady() == Game.getNumOfPlayers()) {
+            output.clear();
+            // Populate output with correct data
+            output.put("type", "INITIALIZE");
+            output.put("revealTime", Integer.toString(Game.REVEAL_TIME));
+            output.put("startingHandSize", Integer.toString(game.getINIT_STARTING_HAND()));
+
+            // Convert data to json
+            try {
+                jsonOutput = objectMapper.writeValueAsString(output);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+
             // Initializes the countdown and informs front-end the countdown has been initiated
-            jsonOutput = JsonConverter.createJsonString(objectMapper, output, "INITIALIZE", Integer.toString(Game.REVEAL_TIME));
             this.simpMessagingTemplate.convertAndSend("/topic/round/flow", jsonOutput);
 
             // Sends a message informing the client that the countdown is finished
@@ -160,7 +189,6 @@ public class GameController {
         response.put("value", Integer.toString(revealedCard.getValue()));
         response.put("id", Integer.toString(targetCardIndex));
 
-
         // Convert response to json
         String jsonResponse = "";
         try {
@@ -168,9 +196,12 @@ public class GameController {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-
         // Send json response back to player
         simpMessagingTemplate.convertAndSend("/topic/round/actions/" + Integer.toString(playerId), jsonResponse);
+    }
+
+    private void drawFromDeck(HashMap<String, Object> jsonMap) {
+
     }
 
 }
