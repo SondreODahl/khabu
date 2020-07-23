@@ -5,11 +5,11 @@ import { useSelector, useDispatch } from 'react-redux';
 import { startRound, toggleReady, updatePlayersReady } from '../../actions';
 import { initializeRound } from '../../actions';
 import { roundActionDelegator } from '../../actions/actionDelegator';
+import { selectReady } from '../../selectors';
 
 export default (props) => {
   const dispatch = useDispatch();
-  const playersReady = useSelector((state) => state.round.ready.totalReady);
-  const ready = useSelector((state) => state.round.ready.playerReady);
+  const { playerReady, totalReady } = useSelector(selectReady);
   const publishToggleReady = usePublish({
     destination: '/app/round/flow',
     body: props.yourId,
@@ -18,10 +18,10 @@ export default (props) => {
   const readyUp = useCallback(() => {
     publishToggleReady();
     dispatch(toggleReady());
-  }, [ready]);
+  }, [totalReady]);
 
-  const buttonClassName = ready ? 'active' : 'inactive';
-  const readyMsg = `${playersReady} players ready`;
+  const buttonClassName = totalReady ? 'active' : 'inactive';
+  const readyMsg = `${playerReady} players ready`;
   return (
     <div>
       <button className={`ui toggle button ${buttonClassName}`} onClick={readyUp}>
