@@ -11,20 +11,13 @@ import {
 import _ from 'lodash';
 import { addCardToIds } from '../../actions/cardActions';
 
-const addCard = (state, { id, value }) => {
-  return { ...state, [id]: value };
-};
-
-const removeCard = (state, id) => {
-  return _.omit(state, id.toString());
-};
-
-const byId = (state = {}, action) => {
-  switch (action.type) {
+const byId = (state = {}, { type, payload }) => {
+  switch (type) {
     case ADD_CARD:
-      return addCard(state, action.payload);
+      const { id, value } = payload;
+      return { ...state, [id]: value };
     case REMOVE_CARD:
-      return removeCard(state, action.payload.id);
+      return _.omit(state, payload.id.toString());
     default:
       return state;
   }
