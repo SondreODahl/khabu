@@ -7,10 +7,11 @@ import useSubscribe from '../../api/useSubscribe';
 import usePublish from '../../api/usePublish';
 import { playerJoinedGame } from '../../actions/playerActions';
 import { roundActionDelegator } from '../../actions/actionDelegator';
+import { selectRoundState, selectYourId } from '../../selectors';
 
 export default () => {
-  const yourId = useSelector((state) => state.players.yourId);
-  const roundState = useSelector((state) => state.round.currentState);
+  const yourId = useSelector(selectYourId);
+  const roundState = useSelector(selectRoundState);
   const publishUserName = usePublish({
     destination: '/app/game/flow',
     body: yourId,
