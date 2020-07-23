@@ -295,7 +295,18 @@ public class GameController {
         // Retrieve currentPlayer
         int currentPlayerId = Integer.parseInt((String) jsonMap.get("currentPlayerId"));
 
-        
+        // Perform back-end game logic
+        Round round = gameRepository.getGames().get(0).getRound();
+        round.performAction(round.getPlayers()[currentPlayerId], Actions.CALL_KHABU);
+        int nextPlayerId = round.getTurn().getCurrentPlayer().getPlayerId();
+
+        // Create response
+        List<String> keys = Arrays.asList("type","nextPlayer");
+        List<String> values = Arrays.asList("TRANSFER",Integer.toString(nextPlayerId));
+
+        String jsonResponse = JsonConverter.createJsonString(new ObjectMapper(), new HashMap<>(), keys, values);
+        simpMessagingTemplate.convertAndSend("/topic/round/actions", jsonResponse);
+
     }
 
     private void transferCard(HashMap<String, Object> jsonMap) {
