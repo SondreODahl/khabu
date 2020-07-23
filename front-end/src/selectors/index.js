@@ -1,30 +1,13 @@
 import { createSelector } from 'reselect';
 import createCachedSelector from 're-reselect';
 const selectGameState = (state) => state.gameState;
+
+export * from './cardSelectors';
+
 export const selectRoundState = (state) => state.round.currentState;
 
 export const selectYourId = (state) => state.players.yourId;
 const selectPlayer = (id) => (state) => state.players.byId[id];
-
-const selectAllCards = (state) => state.cards.byId;
-export const selectCard = createCachedSelector(
-  (state, id) => state.cards.byId[id],
-  (card) => card
-)((state, id) => id);
-
-export const selectCardHand = (playerId) => (state) => state.cards[playerId];
-const getCardsBelongingToPlayer = createSelector(
-  selectCardHand,
-  selectAllCards,
-  (hand, cards) => {
-    cards.filter();
-  }
-);
-//export const getCardIndexForCard = (id, playerId) =>
-//  createSelector(selectCard(id), selectCardHand(playerId), (card, hand) => {
-//    return hand.findIndex(card) + 1;
-//  });
-
 const selectPlayerReady = (state) => state.round.ready.playerReady;
 const selectTotalReady = (state) => state.round.ready.totalReady;
 export const selectReady = createSelector(
