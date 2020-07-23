@@ -6,14 +6,14 @@ import { formError, formSubmit, formValid, joinSubmit } from '../../actions';
 import { axiosREST, useRESTPostUserName } from '../../api/RESTServer';
 import JoinForm from './JoinForm';
 import { FORM_ERROR, RESET_FORM } from '../../actions/types';
+import { selectFormAttributes } from '../../selectors';
 
 export default (props) => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const formData = useSelector((state) => state.form.data);
-  const submitted = useSelector((state) => state.form.submitted);
-  const validForm = useSelector((state) => state.form.valid);
-  const error = useSelector((state) => state.form.error);
+  const { formData, error, submitted, validForm } = useSelector(
+    selectFormAttributes
+  );
 
   useEffect(() => {
     if (submitted) {
