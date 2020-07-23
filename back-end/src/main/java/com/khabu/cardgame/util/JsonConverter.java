@@ -26,6 +26,8 @@ public class JsonConverter {
         return jsonOutput;
     }
 
+<<<<<<< HEAD
+=======
     public static String createJsonString(ObjectMapper objectMapper, Map<String, String> data, String type) {
         data.clear();
         String jsonOutput = "";
@@ -60,6 +62,7 @@ public class JsonConverter {
         return jsonOutput;
     }
 
+>>>>>>> 53ae0caa04451abc0738113fce26ad3381e89aef
     public static HashMap<String, Object> createMapFromJsonString(String json) {
         // Create a map from payload
         ObjectMapper objectMapper = new ObjectMapper();
