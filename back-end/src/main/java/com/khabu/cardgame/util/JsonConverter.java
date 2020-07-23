@@ -26,6 +26,43 @@ public class JsonConverter {
         return jsonOutput;
     }
 
+<<<<<<< HEAD
+=======
+    public static String createJsonString(ObjectMapper objectMapper, Map<String, String> data, String type) {
+        data.clear();
+        String jsonOutput = "";
+
+        // Add new data
+        data.put("type", type);
+
+        // CONVERT TO JSON STRING
+        try {
+            jsonOutput = objectMapper.writeValueAsString(data);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return jsonOutput;
+    }
+
+    public static String createJsonString(ObjectMapper objectMapper, Map<String, String> data, String type, String value, String targetCardIndex) {
+        data.clear();
+        String jsonOutput = "";
+
+        // Add new data
+        data.put("type", type);
+        data.put("value", value);
+        data.put("targetCardIndex", targetCardIndex);
+
+        // CONVERT TO JSON STRING
+        try {
+            jsonOutput = objectMapper.writeValueAsString(data);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return jsonOutput;
+    }
+
+>>>>>>> 53ae0caa04451abc0738113fce26ad3381e89aef
     public static HashMap<String, Object> createMapFromJsonString(String json) {
         // Create a map from payload
         ObjectMapper objectMapper = new ObjectMapper();
