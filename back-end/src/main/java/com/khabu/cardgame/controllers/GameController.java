@@ -7,6 +7,7 @@ import com.khabu.cardgame.model.game.Game;
 import com.khabu.cardgame.model.game.GameRepository;
 import com.khabu.cardgame.model.game.Player;
 import com.khabu.cardgame.model.game.Round;
+import com.khabu.cardgame.model.game.action.Actions;
 import com.khabu.cardgame.model.game.card.Card;
 import com.khabu.cardgame.util.IllegalMoveException;
 import com.khabu.cardgame.util.JsonConverter;
@@ -201,7 +202,34 @@ public class GameController {
     }
 
     private void drawFromDeck(HashMap<String, Object> jsonMap) {
+        int currentPlayerId = Integer.parseInt((String) jsonMap.get("currentPlayerId"));
+        Round round = gameRepository.getGames().get(0).getRound();
+        round.performAction(round.getPlayers()[currentPlayerId], Actions.DRAW_FROM_DECK);
+        int cardValue = round.getCardDrawnFromDeck().getValue();
+        Map<String, String> response = new HashMap<>();
+        String jsonResponse = JsonConverter.createJsonString(new ObjectMapper(), response,
+                "CARD_DRAWN_DECK", Integer.toString(cardValue));
+        simpMessagingTemplate.convertAndSend("/topic/round/actions/" + Integer.toString(currentPlayerId), jsonResponse);
+        jsonResponse = JsonConverter.createJsonString(new ObjectMapper(), response,
+                "DECK");
+        simpMessagingTemplate.convertAndSend("/topic/round/actions", jsonResponse);
+    }
 
+    private void drawFromDisc(HashMap<String, Object> jsonMap) {
+        // Retrieve id and the target card
+        int currentPlayerId = Integer.parseInt((String) jsonMap.get("currentPlayerId"));
+        int targetCardIndex = Integer.parseInt((String) jsonMap.get("targetCardIndex"));
+
+        // Perform back-end logic
+        Round round = gameRepository.getGames().get(0).getRound();
+        round.performAction(round.getPlayers()[currentPlayerId], Actions.DRAW_FROM_DISC, targetCardIndex);
+        int cardValue = round.getDiscardPile().showTopCard().getValue();
+
+        // Create response
+        Map<String, String> response = new HashMap<>();
+        String jsonResponse = JsonConverter.createJsonString(new ObjectMapper(), response,
+                "DISC", Integer.toString(cardValue), Integer.toString(targetCardIndex));
+        simpMessagingTemplate.convertAndSend("/topic/round/actions", jsonResponse);
     }
 
 }

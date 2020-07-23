@@ -61,6 +61,14 @@ public class Round {
                     MIN_INIT_HAND_SIZE, MAX_INIT_HAND_SIZE));
     }
 
+    public Card getCardDrawnFromDeck() {
+        if (actionPerformer.getTemporaryCard() != null) {
+            return actionPerformer.getTemporaryCard();
+        } else {
+            throw new IllegalMoveException("No card has been drawn");
+        }
+    }
+
     private void resetMaps() {
         for (Player player : players) {
             this.playersReady.put(player, false);
@@ -186,6 +194,10 @@ public class Round {
 
     public CardDeck getCardDeck() {
         return this.cardDeck;
+    }
+
+    public DiscardPile getDiscardPile() {
+        return discardPile;
     }
 
     public Player[] getPlayers() {
