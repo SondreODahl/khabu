@@ -70,8 +70,20 @@ public class GameController {
 
         // Start game if all players ready
         if (game.getRound().getPlayersReady() == Game.getNumOfPlayers()) {
+            output.clear();
+            // Populate output with correct data
+            output.put("type", "INITIALIZE");
+            output.put("value", Integer.toString(Game.REVEAL_TIME));
+            output.put("startingHandSize", Integer.toString(game.getINIT_STARTING_HAND()));
+
+            // Convert data to json
+            try {
+                jsonOutput = objectMapper.writeValueAsString(output)
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+
             // Initializes the countdown and informs front-end the countdown has been initiated
-            jsonOutput = JsonConverter.createJsonString(objectMapper, output, "INITIALIZE", Integer.toString(Game.REVEAL_TIME));
             this.simpMessagingTemplate.convertAndSend("/topic/round/flow", jsonOutput);
 
             // Sends a message informing the client that the countdown is finished
