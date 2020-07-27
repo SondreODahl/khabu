@@ -74,6 +74,6 @@ public class Turn {
     @Override
     public String toString() {
         return String.format("[Turn CurrentPlayer: %s, CurrentPuttingPlayer: %s, KhabuPlayer: %s, State: %s]",
-                getCurrentPlayer(), currentPuttingPlayer, khabuPlayer, gameState.toString());
+                getCurrentPlayer(), currentPuttingPlayer, khabuPlayer, gameState);
     }
 }

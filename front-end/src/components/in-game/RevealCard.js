@@ -8,8 +8,8 @@ export default (props) => {
   const IdInCardHand = useSelector((state) => getCardIndexForCard(state, props));
   const json = {
     action: 'REVEAL',
-    playerId: props.playerId,
-    targetCardIndex: IdInCardHand,
+    playerId: props.playerId.toString(),
+    targetCardIndex: (IdInCardHand + 1).toString(),
   };
   const publishReveal = usePublish({
     destination: '/app/round/actions',

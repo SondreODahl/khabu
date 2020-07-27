@@ -33,11 +33,11 @@ public class GameController {
         this.gameRepository = gameRepository;
     }
 
-    @MessageMapping("/topic/round/actions")
+    @MessageMapping("/round/actions")
     public void receiveAction(@Payload String payload) {
         // Convert the payload to a hashmap
         HashMap<String, Object> jsonMap = JsonConverter.createMapFromJsonString(payload);
-
+        System.out.println("The messagehandler has been reached");
         switch ((String) jsonMap.get("action")) {
             case "REVEAL":
                 revealCard(jsonMap);
@@ -148,6 +148,7 @@ public class GameController {
         Game game = this.gameRepository.getGames().get(0);
         Round round = game.getRound();
         Timer timer = new Timer();
+        round.beginRound();
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
@@ -155,7 +156,6 @@ public class GameController {
                 int playerId = game.getRound().getTurn().getCurrentPlayer().getPlayerId();
                 String jsonOutput = JsonConverter.createJsonString(objectMapper, output, "BEGIN", Integer.toString(playerId));
                 simpMessagingTemplate.convertAndSend("/topic/round/flow", jsonOutput);
-                round.beginRound();
             }
         }; // Sets the time available for reveals
         timer.schedule(task, Game.REVEAL_TIME);
@@ -181,13 +181,14 @@ public class GameController {
         int playerId = Integer.parseInt((String) jsonMap.get("playerId"));
         int targetCardIndex = Integer.parseInt((String) jsonMap.get("targetCardIndex"));
         Round round = gameRepository.getGames().get(0).getRound();
+        System.out.println("This method has been reached");
 
         // Create response
         Map<String, String> response = new HashMap<>();
         response.put("type", "REVEAL");
         Card revealedCard = null;
         try {
-            revealedCard = round.revealCard(round.getPlayers()[playerId], targetCardIndex);
+            revealedCard = round.revealCard(round.getPlayers()[playerId - 1], targetCardIndex);
             response.put("status", "SUCCESS");
         } catch (IllegalMoveException ime) {
             ime.printStackTrace();
@@ -211,7 +212,7 @@ public class GameController {
     private void drawFromDeck(HashMap<String, Object> jsonMap) {
         int currentPlayerId = Integer.parseInt((String) jsonMap.get("currentPlayerId"));
         Round round = gameRepository.getGames().get(0).getRound();
-        round.performAction(round.getPlayers()[currentPlayerId], Actions.DRAW_FROM_DECK);
+        round.performAction(round.getPlayers()[currentPlayerId - 1], Actions.DRAW_FROM_DECK);
         int cardValue = round.getCardDrawnFromDeck().getValue();
         Map<String, String> response = new HashMap<>();
         String jsonResponse = JsonConverter.createJsonString(new ObjectMapper(), response,
