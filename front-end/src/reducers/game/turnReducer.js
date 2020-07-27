@@ -18,6 +18,7 @@ const khabuPlayer = (state = null, { type, payload }) => {
 const currentPlayerTurn = (state = null, { type, payload }) => {
   switch (type) {
     case START_ROUND:
+      return payload.startingPlayerId;
     case PLAYER_CALLED_KHABU:
     case END_TURN:
       return payload;

@@ -6,8 +6,10 @@ import {
   PUT_CARD,
   REMOVE_CARD,
   REMOVE_CARD_FROM_HAND,
+  HIDE_HAND,
   ROUND_END,
   SHOW_CARD,
+  START_ROUND,
 } from '../../actions/types';
 import _ from 'lodash';
 import { addCardToIds } from '../../actions/cardActions';
@@ -47,7 +49,15 @@ const discardPile = (state = [], { type, payload }) => {
   }
 };
 
+const resetHand = (state, playerId) => {
+  for (let i = 0; i < state[playerId].length; i++) {
+    state.byId[state[playerId][i]] = null;
+  }
+  return { ...state };
+};
+
 const initializeHands = (state, action) => {
+  // HELPER METHOD
   let cardId = 0;
   for (let id of action.payload.playerIds) {
     state[id] = byPlayerId(undefined, action);
@@ -60,6 +70,7 @@ const initializeHands = (state, action) => {
 };
 
 const getNewInitState = () => {
+  // HELPER METHOD
   return { byId: byId(undefined, {}), discardPile: discardPile(undefined, {}) };
 };
 
@@ -69,6 +80,8 @@ const cardHandsReducer = (state = getNewInitState(), action) => {
       const reset_state = getNewInitState();
       initializeHands(reset_state, action);
       return reset_state;
+    case HIDE_HAND:
+      return resetHand(state, action.payload.playerId);
     case ADD_CARD:
     case REMOVE_CARD:
       return { ...state, byId: byId(state.byId, action) };
