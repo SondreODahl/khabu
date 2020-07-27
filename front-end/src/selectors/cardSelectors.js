@@ -2,25 +2,23 @@ import createCachedSelector from 're-reselect';
 import { createSelector } from 'reselect';
 
 const selectAllCards = (state) => state.cards.byId;
+const selectCardById = (state, props) => state.cards.byId[props.id];
+const selectCardHandByPlayerId = (state, props) => state.cards[props.playerId];
+
 export const selectCard = createCachedSelector(
-  (state, id) => state.cards.byId[id],
+  selectCardById,
   (card) => card
-)((state, id) => id);
+)((state, props) => props.id);
 
 export const selectCardHand = createCachedSelector(
-  (state, playerId) => state.cards[playerId],
+  selectCardHandByPlayerId,
   (hand) => hand
-)((state, playerId) => playerId);
+)((state, props) => props.playerId);
 
-const getCardsBelongingToPlayer = createSelector(
-  selectCardHand,
-  selectAllCards,
-  (hand, cards) => {
-    cards.filter();
-  }
-);
 export const getCardIndexForCard = createCachedSelector(
-  selectCard,
-  selectCardHand,
-  (card, hand) => hand.findIndex(card)
-)((state, id, playerId) => id);
+  selectCardHandByPlayerId,
+  (_, props) => props, // Ensures that props is received for the combiner
+  (hand, props) => {
+    return hand.indexOf(props.id); // Important! Looks for index of id, not the card value
+  }
+)((state, props) => props.id);
