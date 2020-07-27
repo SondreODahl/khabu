@@ -48,7 +48,7 @@ class TurnTest {
     }
 
     @Test
-    void SettingKhabuPlayerTwice() {
+    void SettingKhabuPlayerTwice() throws IllegalMoveException {
         turn.setKhabuPlayer(players[0]);
         try {
             turn.setKhabuPlayer(players[0]);

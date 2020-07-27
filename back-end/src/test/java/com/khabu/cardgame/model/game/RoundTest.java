@@ -92,7 +92,7 @@ class RoundTest {
     }
 
     @Test
-    void RoundEndsOnReachingKhabuPlayer() {
+    void RoundEndsOnReachingKhabuPlayer() throws IllegalMoveException {
         beginGame();
         round.performAction(player1, Actions.CALL_KHABU);
         round.performAction(player2, Actions.DRAW_FROM_DECK);
@@ -105,7 +105,7 @@ class RoundTest {
     }
 
     @Test
-    void RevealCardDuringBeginningFails() {
+    void RevealCardDuringBeginningFails() throws IllegalMoveException {
         round.readyUp(player1);
         round.readyUp(player2);
         round.beginRound();
@@ -146,7 +146,7 @@ class RoundTest {
     }
 
     @Test
-    void GetScoreBeforeAndAfterRound() {
+    void GetScoreBeforeAndAfterRound() throws IllegalMoveException {
         int player1Score = round.getScore(player1);
         int player2Score = round.getScore(player2);
         assertEquals(player1Score, player2Score);
@@ -163,7 +163,7 @@ class RoundTest {
     }
 
     @Test
-    void ScoreResetsOnNewRound() {
+    void ScoreResetsOnNewRound() throws IllegalMoveException {
         beginGame();
         round.performAction(player1, Actions.CALL_KHABU);
         round.performAction(player2, Actions.DRAW_FROM_DECK);
