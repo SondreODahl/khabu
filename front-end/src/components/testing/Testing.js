@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import GreetButton from './GreetButton';
 import ReadyUpButton from '../in-game/ReadyUpButton';
 import { useRESTGet } from '../../api/RESTServer';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import TestCardReveal from './TestCardReveal';
 
 export default (props) => {
   const url = '/api/hello';
@@ -28,6 +29,9 @@ export default (props) => {
         <div className={'column'}>
           <ReadyUpButton />
         </div>
+      </div>
+      <div>
+        <TestCardReveal />
       </div>
     </div>
   );

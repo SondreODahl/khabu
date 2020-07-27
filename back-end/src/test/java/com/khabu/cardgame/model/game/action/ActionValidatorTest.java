@@ -2,6 +2,7 @@ package com.khabu.cardgame.model.game.action;
 
 import com.khabu.cardgame.model.game.Player;
 import com.khabu.cardgame.model.game.Turn;
+import com.khabu.cardgame.util.IllegalMoveException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -182,7 +183,7 @@ class ActionValidatorTest {
     }
 
     @Test
-    public void illegalToCallKhabuAfterSomeoneElseHasCalledIt() {
+    public void illegalToCallKhabuAfterSomeoneElseHasCalledIt() throws IllegalMoveException {
         turn.setGameState(Gamestate.DRAW);
         turn.setCurrentPlayer(opponent);
         turn.setKhabuPlayer(player);

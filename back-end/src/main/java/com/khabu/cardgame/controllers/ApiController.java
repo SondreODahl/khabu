@@ -45,32 +45,20 @@ public class ApiController {
         String playerName = (String) player.get("username");
         String sessionId = req.getSession().getId();
 
-        // VALIDATE AND CREATE
-        if (playerRepository.getPlayers().containsValue(playerName)) {
-            response.put("status", ResponseEntity.status(HttpStatus.IM_USED).build());
-            return response;
-        }
-        if (playerRepository.getPlayers().size() < 2) {
+        if (playerRepository.getPlayers().size() <= 2 ) {
             Player newPlayer = new Player(playerName, PlayerRepository.PLAYER_ID_COUNT, sessionId);
             PlayerRepository.PLAYER_ID_COUNT += 1;
-            playerRepository.addPlayer(newPlayer.getPlayerId(), newPlayer.getName());
-
+            playerRepository.addPlayer(newPlayer.getPlayerId(), newPlayer);
+            if (gameRepository.getGames().size() == 0) {
+                Game game = new Game(RandomStringUtils.randomAlphabetic(SHORT_ID_LENGTH), Game.getNumOfPlayers(), Game.REVEAL_TIME);
+                gameRepository.addGame(game);
+            }
             // CREATE THE PROPER RESPONSE
             response.put("status", ResponseEntity.status(HttpStatus.CREATED).build());
-            response.put("playerIds", playerRepository.getPlayers());
+            response.put("playerIds", playerRepository.getPlayerNamesAndIds());
             response.put("yourId", newPlayer.getPlayerId());
-            if (playerRepository.getPlayers().size() == 2 && gameRepository.getGames().size() == 0) {
-                Game game = new Game(RandomStringUtils.randomAlphabetic(SHORT_ID_LENGTH), 2, 10000);
-                for (int id:playerRepository.getPlayers().keySet()) {
-                    game.addPlayer(new Player(playerRepository.getPlayers().get(id), id, sessionId));
-                }
-                gameRepository.addGame(game);
-                game.beginGame();
-            }
             return response;
         }
-
-
 
         // ERROR
         response.put("status", ResponseEntity.status(HttpStatus.CONFLICT).build());

@@ -26,7 +26,7 @@ public class ActionPerformer {
         this.round = round;
     }
 
-    private void validateAction(Player player, Actions action) {
+    private void validateAction(Player player, Actions action) throws IllegalMoveException {
         if (!ActionValidator.isValidMoveInCurrentState(player, action, turn)) {
             String errorMessage = String.format("Tried to perform action %s with player %s on turn %s", action.toString(), player.toString(), turn.toString());
             throw new IllegalMoveException(errorMessage);
@@ -44,7 +44,7 @@ public class ActionPerformer {
             turn.setCurrentPuttingPlayer(player1);
             return true;
         }
-        // If this code runs the put failed
+        // If this code runs, the put failed
         player1.addCard(cardDeck.drawCard());
         return false;
     }
@@ -70,14 +70,14 @@ public class ActionPerformer {
             turn.setGameState(Gamestate.DRAW);
     }
 
-    public Card drawFromDeck(Player player) {
+    public Card drawFromDeck(Player player) throws IllegalMoveException {
         validateAction(player, Actions.DRAW_FROM_DECK);
         this.temporaryCard = cardDeck.drawCard();
         turn.setGameState(Gamestate.CARD_DRAWN);
         return temporaryCard;
     }
 
-    public void drawFromDisc(Player player, int index) {
+    public void drawFromDisc(Player player, int index) throws IllegalMoveException {
         validateAction(player, Actions.DRAW_FROM_DISC);
         try {
             this.temporaryCard = discardPile.draw();
@@ -88,18 +88,18 @@ public class ActionPerformer {
         swapDrawnCard(player, index);
     }
 
-    public void callKhabu(Player player) {
+    public void callKhabu(Player player) throws IllegalMoveException {
         validateAction(player, Actions.CALL_KHABU);
         khabu(player);
     }
 
-    private void khabu(Player player) {
+    private void khabu(Player player) throws IllegalMoveException {
         turn.setGameState(Gamestate.FRENZY);
         turn.setKhabuPlayer(player);
         endTurn(player);
     }
 
-    public void swapDrawnCard(Player player, int index) {
+    public void swapDrawnCard(Player player, int index) throws IllegalMoveException {
         validateAction(player, Actions.SWAP);
         Card cardToBeSwapped = player.removeCard(index);
         player.addCard(temporaryCard);
@@ -108,7 +108,7 @@ public class ActionPerformer {
         turn.setGameState(Gamestate.FRENZY);
     }
 
-    public void discardCard(Player player) {
+    public void discardCard(Player player) throws IllegalMoveException {
         validateAction(player, Actions.DISCARD);
         if (temporaryCard != null) {
             discardPile.put(temporaryCard);
@@ -119,7 +119,7 @@ public class ActionPerformer {
         }
     }
 
-    public void transferCard(Player player1, Player player2, int cardIndex) {
+    public void transferCard(Player player1, Player player2, int cardIndex) throws IllegalMoveException {
         validateAction(player1, Actions.TRANSFER);
         if (player1 == player2) {
             throw new IllegalMoveException("Cannot transfer to yourself");
