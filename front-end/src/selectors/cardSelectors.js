@@ -20,7 +20,7 @@ export const getServerIdForCard = createCachedSelector(
   selectCardHandByPlayerId,
   selectProps,
   (hand, props) => {
-    return hand.indexOf(props.id); // Important! Looks for index of id, not the card value
+    return hand.indexOf(props.id) + 1; // Important! Looks for index of id, not the card value
     // Server Id is 1-indexed
   }
 )((state, props) => props.id);
