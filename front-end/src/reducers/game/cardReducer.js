@@ -6,25 +6,22 @@ import {
   PUT_CARD,
   REMOVE_CARD,
   REMOVE_CARD_FROM_HAND,
+  HIDE_HAND,
   ROUND_END,
+  SHOW_CARD,
+  START_ROUND,
 } from '../../actions/types';
 import _ from 'lodash';
+import { addCardToIds } from '../../actions/cardActions';
 
-const addCard = (state, { id, value }) => {
-  const card = { id, value };
-  return { ...state, [id]: card };
-};
-
-const removeCard = (state, id) => {
-  return _.omit(state, id.toString());
-};
-
-const byId = (state = {}, action) => {
-  switch (action.type) {
+const byId = (state = {}, { type, payload }) => {
+  switch (type) {
     case ADD_CARD:
-      return addCard(state, action);
+    case SHOW_CARD:
+      const { id, value } = payload; // Value should always be null on ADD_CARD
+      return { ...state, [id]: value };
     case REMOVE_CARD:
-      return removeCard(state, action.payload.id);
+      return _.omit(state, payload.id.toString());
     default:
       return state;
   }
@@ -52,7 +49,28 @@ const discardPile = (state = [], { type, payload }) => {
   }
 };
 
+const resetHand = (state, playerId) => {
+  for (let i = 0; i < state[playerId].length; i++) {
+    state.byId[state[playerId][i]] = null;
+  }
+  return { ...state };
+};
+
+const initializeHands = (state, action) => {
+  // HELPER METHOD
+  let cardId = 0;
+  for (let id of action.payload.playerIds) {
+    state[id] = byPlayerId(undefined, action);
+    for (let i = 0; i < action.payload.startingHandSize; i++) {
+      state[id][i] = cardId;
+      state.byId = byId(state.byId, addCardToIds(cardId, null));
+      cardId++;
+    }
+  }
+};
+
 const getNewInitState = () => {
+  // HELPER METHOD
   return { byId: byId(undefined, {}), discardPile: discardPile(undefined, {}) };
 };
 
@@ -60,10 +78,10 @@ const cardHandsReducer = (state = getNewInitState(), action) => {
   switch (action.type) {
     case ALL_PLAYERS_READY:
       const reset_state = getNewInitState();
-      for (let id of action.payload.playerIds) {
-        reset_state[id] = byPlayerId(undefined, action);
-      }
+      initializeHands(reset_state, action);
       return reset_state;
+    case HIDE_HAND:
+      return resetHand(state, action.payload.playerId);
     case ADD_CARD:
     case REMOVE_CARD:
       return { ...state, byId: byId(state.byId, action) };

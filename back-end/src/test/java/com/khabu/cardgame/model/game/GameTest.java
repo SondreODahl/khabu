@@ -1,6 +1,7 @@
 package com.khabu.cardgame.model.game;
 
 import com.khabu.cardgame.model.game.action.Actions;
+import com.khabu.cardgame.util.IllegalMoveException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -50,7 +51,7 @@ class GameTest {
     }
 
     @Test
-    void GetTotalScore() throws InterruptedException {
+    void GetTotalScore() throws InterruptedException, IllegalMoveException {
         gameSetup();
         game.getRound().performAction(player1, Actions.CALL_KHABU);
         game.getRound().performAction(player2, Actions.DRAW_FROM_DECK);

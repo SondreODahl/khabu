@@ -61,6 +61,14 @@ public class Round {
                     MIN_INIT_HAND_SIZE, MAX_INIT_HAND_SIZE));
     }
 
+    public Card getCardDrawnFromDeck() throws IllegalMoveException {
+        if (actionPerformer.getTemporaryCard() != null) {
+            return actionPerformer.getTemporaryCard();
+        } else {
+            throw new IllegalMoveException("No card has been drawn");
+        }
+    }
+
     private void resetMaps() {
         for (Player player : players) {
             this.playersReady.put(player, false);
@@ -100,13 +108,13 @@ public class Round {
         }
     }
 
-    public boolean performAction(Player player, Actions action) {
+    public boolean performAction(Player player, Actions action) throws IllegalMoveException {
         return performAction(player, player, action, -1);
     }
-    public boolean performAction(Player player, Actions action, int index) {
+    public boolean performAction(Player player, Actions action, int index) throws IllegalMoveException {
         return performAction(player, null, action, index);
     }
-    public boolean performAction(Player player1, Player player2, Actions action, int index) {
+    public boolean performAction(Player player1, Player player2, Actions action, int index) throws IllegalMoveException {
         switch (action) {
             case SWAP:
                 actionPerformer.swapDrawnCard(player1, index);
@@ -148,7 +156,7 @@ public class Round {
         return this.roundStarted;
     }
 
-    public Card revealCard(Player player, int index) {
+    public Card revealCard(Player player, int index) throws IllegalMoveException {
         if (this.roundStarted) {throw new IllegalStateException("Round has already begun");}
         int alreadyRevealed = this.revealedCard.get(player);
         int maxReveal = this.INIT_HAND_SIZE/2;
@@ -188,6 +196,10 @@ public class Round {
         return this.cardDeck;
     }
 
+    public DiscardPile getDiscardPile() {
+        return discardPile;
+    }
+
     public Player[] getPlayers() {
         return this.players.clone();
     }
@@ -198,5 +210,9 @@ public class Round {
 
     public int getScore(Player player) {
         return scores.get(player);
+    }
+
+    public Player getPlayerById(int id) {
+        return this.players[id-1];
     }
 }

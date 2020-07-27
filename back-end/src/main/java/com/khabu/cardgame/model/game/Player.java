@@ -66,4 +66,8 @@ public class Player {
     public int getHandSize() {
         return cardHand.getSize();
     }
+
+    public int findCardIndexbyCard(Card card) {
+        return cardHand.findCardIndexbyCard(card);
+    }
 }

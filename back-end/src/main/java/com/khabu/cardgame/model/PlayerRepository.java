@@ -10,30 +10,24 @@ import java.util.Map;
 
 @Component
 public class PlayerRepository {
-    private Map<Integer, String> players = new HashMap<>();
+    private Map<Integer, Player> players = new HashMap<>();
     public static int PLAYER_ID_COUNT = 1;
 
-    public void addPlayer(int id, String name) {
-        players.put(id, name);
+    public void addPlayer(int id, Player player) {
+        players.put(id, player);
     }
 
-    public void removePlayer(Player player) {
-        players.remove(player);
-    }
 
-    public boolean IsPlayerInListByName(String name) {
-        return players.containsValue(name);
-    }
-
-    public void removePlayerByUsername(String userName) {
-        for (Integer id: players.keySet()) {
-            if (players.get(id).equals(userName)) {
-                players.remove(id);
-            }
-        }
-    }
-
-    public Map<Integer, String> getPlayers() {
+    public Map<Integer, Player> getPlayers() {
         return players;
+    }
+
+    public Map<Integer, String> getPlayerNamesAndIds() {
+        Map<Integer, String> output = new HashMap<>();
+        // loop through players map and put id + player.getId
+        for (int id:players.keySet()) {
+            output.put(id, players.get(id).getName());
+        }
+        return output;
     }
 }

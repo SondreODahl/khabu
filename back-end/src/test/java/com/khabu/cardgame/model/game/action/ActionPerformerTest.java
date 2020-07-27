@@ -39,7 +39,7 @@ class ActionPerformerTest {
     // -----------------PUTS---------------------
 
     @Test
-    void PutSelfCorrectStateUpdate() {
+    void PutSelfCorrectStateUpdate() throws IllegalMoveException {
         setupState(Gamestate.FRENZY, player1);
         actionPerformer.putSelf(player1, firstCardId);
         assertEquals(Gamestate.PUT, turn.getGameState());
@@ -47,7 +47,7 @@ class ActionPerformerTest {
     }
 
     @Test
-    void PutOtherNotYourTurn() {
+    void PutOtherNotYourTurn() throws IllegalMoveException {
         setupState(Gamestate.FRENZY, player1);
         actionPerformer.putOther(player2, player1, firstCardId);
         assertEquals(Gamestate.PUT_OTHER_TRANSFER, turn.getGameState());
@@ -55,7 +55,7 @@ class ActionPerformerTest {
     }
 
     @Test
-    void PutOtherCardCorrectTopCard() {
+    void PutOtherCardCorrectTopCard() throws IllegalMoveException {
         setupState(Gamestate.FRENZY, player1);
         Card player2Card = new Card(1, 'H');
         player2.addCard(player2Card);
@@ -65,7 +65,7 @@ class ActionPerformerTest {
     }
 
     @Test
-    void PutOtherNonExistentCard() {
+    void PutOtherNonExistentCard() throws IllegalMoveException {
         Gamestate initialState = Gamestate.FRENZY;
         setupState(initialState, player1);
         try{
@@ -76,7 +76,7 @@ class ActionPerformerTest {
     }
 
     @Test
-    void PutOtherFailedCardValue() {
+    void PutOtherFailedCardValue() throws IllegalMoveException {
         Gamestate initialState = Gamestate.FRENZY;
         setupState(initialState, player1);
         Card player2Card = new Card(2, 'H');
@@ -87,7 +87,7 @@ class ActionPerformerTest {
     }
 
     @Test
-    void WrongCardOnDiscardPileResultsInDrawingExtraCard() {
+    void WrongCardOnDiscardPileResultsInDrawingExtraCard() throws IllegalMoveException {
         setupState(Gamestate.FRENZY, player1);
         player1.addCard(new Card(2, 'H'));
         actionPerformer.putSelf(player1, 1);
@@ -95,7 +95,7 @@ class ActionPerformerTest {
     }
 
     @Test
-    void CannotPutOnKhabuPlayer() {
+    void CannotPutOnKhabuPlayer() throws IllegalMoveException {
         setupState(Gamestate.FIRST_TURN, player1);
         actionPerformer.callKhabu(player1);
         try {
@@ -111,14 +111,14 @@ class ActionPerformerTest {
     // ---------------TRANSFER------------------
 
     @Test
-    void checkCorrectStateUpdateOnTransfer() {
+    void checkCorrectStateUpdateOnTransfer() throws IllegalMoveException {
         setupPlayer1Transfer();
         actionPerformer.transferCard(player1, player2, firstCardId); // TODO: Update Card Index
         assertEquals(Gamestate.PUT, turn.getGameState());
     }
 
     @Test
-    void checkCorrectCardIsSentOnTransfer() {
+    void checkCorrectCardIsSentOnTransfer() throws IllegalMoveException {
         setupPlayer1Transfer();
         Card transferCard = player1.getCard(firstCardId);
         actionPerformer.transferCard(player1, player2, firstCardId);
@@ -145,14 +145,14 @@ class ActionPerformerTest {
     // -----------------DRAW---------------------
 
     @Test
-    void StateChangesOnDrawFromDeck(){
+    void StateChangesOnDrawFromDeck() throws IllegalMoveException {
         setupState(Gamestate.DRAW, player1);
         actionPerformer.drawFromDeck(player1);
         assertEquals(Gamestate.CARD_DRAWN, turn.getGameState());
     }
 
     @Test
-    void CorrectCardReceivedOnDrawFromDeck() {
+    void CorrectCardReceivedOnDrawFromDeck() throws IllegalMoveException {
         setupState(Gamestate.DRAW, player1);
         int initialDeckSize = cardDeck.getSize();
         Card topCard = cardDeck.getCards().get(cardDeck.getSize()-1);
@@ -164,14 +164,14 @@ class ActionPerformerTest {
     }
 
     @Test
-    void StateChangesOnDrawFromDisc() {
+    void StateChangesOnDrawFromDisc() throws IllegalMoveException {
         setupState(Gamestate.DRAW, player1);
         actionPerformer.drawFromDisc(player1, firstCardId);
         assertEquals(Gamestate.FRENZY, turn.getGameState()); // TODO: Reevaluate state
     }
 
     @Test
-    void CorrectCardReceivedOnDrawFromDisc() {
+    void CorrectCardReceivedOnDrawFromDisc() throws IllegalMoveException {
         setupState(Gamestate.DRAW, player1);
         Card topCard = discardPile.showTopCard();
         actionPerformer.drawFromDisc(player1, firstCardId);
@@ -191,14 +191,14 @@ class ActionPerformerTest {
     // -----------------SWAP---------------------
 
     @Test
-    void StateChangeOnSwap() {
+    void StateChangeOnSwap() throws IllegalMoveException {
         setupState(Gamestate.CARD_DRAWN, player1);
         actionPerformer.swapDrawnCard(player1, firstCardId);
         assertEquals(Gamestate.FRENZY, turn.getGameState());
     }
 
     @Test
-    void CardsCorrectlyChangedOnSwap() {
+    void CardsCorrectlyChangedOnSwap() throws IllegalMoveException {
         setupState(Gamestate.DRAW, player1);
         Card toBeSwapped = player1.getCard(firstCardId);
         actionPerformer.drawFromDeck(player1);
@@ -212,7 +212,7 @@ class ActionPerformerTest {
     // -----------------DISCARD---------------------
 
     @Test
-    void DiscardStateChange() {
+    void DiscardStateChange() throws IllegalMoveException {
         setupState(Gamestate.CARD_DRAWN, player1);
         actionPerformer.setTemporaryCard(new Card(1, 'C'));
         actionPerformer.discardCard(player1);
@@ -220,7 +220,7 @@ class ActionPerformerTest {
     }
 
     @Test
-    void CardDiscardedIsTheOneDrawn() {
+    void CardDiscardedIsTheOneDrawn() throws IllegalMoveException {
         setupState(Gamestate.DRAW, player1);
         actionPerformer.drawFromDeck(player1);
         Card drawnCard = actionPerformer.getTemporaryCard();
@@ -231,7 +231,7 @@ class ActionPerformerTest {
     // -----------------KHABU----------------------------
 
     @Test
-    void TurnAndStateChangeOnKhabu() {
+    void TurnAndStateChangeOnKhabu() throws IllegalMoveException {
         setupState(Gamestate.DRAW, player1);
         actionPerformer.callKhabu(player1);
         assertEquals(player2, turn.getCurrentPlayer());
@@ -241,7 +241,7 @@ class ActionPerformerTest {
     // -----------------END TURN---------------------------
 
     @Test
-    void EndTurnCurrentPlayerAndStateChange() {
+    void EndTurnCurrentPlayerAndStateChange() throws IllegalMoveException {
         setupState(Gamestate.FRENZY, player1);
         actionPerformer.endTurn(player1);
         assertEquals(Gamestate.DRAW, turn.getGameState());
@@ -249,7 +249,7 @@ class ActionPerformerTest {
     }
 
     @Test
-    void EndTurnEndsGameOnNextPlayerBeingKhabuPlayer() {
+    void EndTurnEndsGameOnNextPlayerBeingKhabuPlayer() throws IllegalMoveException {
         setupState(Gamestate.FIRST_TURN, player1);
         actionPerformer.callKhabu(player1);
         turn.setGameState(Gamestate.FRENZY);
