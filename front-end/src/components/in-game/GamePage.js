@@ -6,7 +6,10 @@ import RevealCardHand from './RevealCardHand';
 import useSubscribe from '../../api/useSubscribe';
 import usePublish from '../../api/usePublish';
 import { playerJoinedGame } from '../../actions/playerActions';
-import { roundActionDelegator } from '../../actions/actionDelegator';
+import {
+  privateActionsDelegator,
+  roundActionDelegator,
+} from '../../actions/actionDelegator';
 import { selectRoundState, selectYourId } from '../../selectors';
 
 export default () => {
@@ -18,6 +21,7 @@ export default () => {
   });
   useSubscribe('/topic/game/flow', playerJoinedGame, publishUserName);
   useSubscribe('/topic/round/flow', roundActionDelegator, undefined);
+  useSubscribe(`/topic/round/actions/${yourId}`, privateActionsDelegator, undefined);
 
   const determineRender = () => {
     switch (roundState) {
