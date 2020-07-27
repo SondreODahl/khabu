@@ -17,8 +17,8 @@ export default (props) => {
   });
 
   return (
-    <div onClick={publishReveal}>
-      <Card id={props.id} />
+    <div className={'column'}>
+      <Card id={props.id} onClick={publishReveal} />
     </div>
   );
 };

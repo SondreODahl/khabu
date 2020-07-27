@@ -23,7 +23,7 @@ export default () => {
     );
     dispatch(initializeRound(1, 4));
     dispatch(startRound(0));
-    dispatch(revealCard(2, 3));
+    dispatch(revealCard(0, 2, 3));
   }, []);
 
   const render = () => {
