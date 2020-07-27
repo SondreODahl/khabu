@@ -14,6 +14,8 @@ import org.springframework.web.socket.messaging.SessionConnectEvent;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 import org.springframework.web.socket.messaging.SessionUnsubscribeEvent;
 
+import java.util.Objects;
+
 
 // Handles connection and disconnection events.
 
@@ -60,22 +62,27 @@ public class PresenceEventListener {
         StompHeaderAccessor headers = StompHeaderAccessor.wrap(event.getMessage());
 
         // Retrieve sessionId
-        String sessionId = headers.getSessionId();
+        String sessionId = Objects.requireNonNull(headers.getSessionAttributes()).get("sessionId").toString();
 
-        // Retrieve player disconnecting
-        Game game = gameRepository.getGames().get(0);
-        Player[] players = game.getPlayers();
+        // Check if the player left an active game
+        if (gameRepository.getGames().size() > 0) {
+            // Retrieve player disconnecting
+            Game game = gameRepository.getGames().get(0);
+            Player[] players = game.getPlayers();
 
-        // Remove player from playerRepository and gameRepository
-        for (Player player: players) {
-            if (player.getSessionId().equals(sessionId)) {
-                playerRepository.removePlayer(player.getPlayerId());
-                game.removePlayer(player);
+            // Remove player from playerRepository and gameRepository
+            for (Player player: players) {
+                if (player.getSessionId().equals(sessionId)) {
+                    playerRepository.removePlayer(player.getPlayerId());
+                    game.removePlayer(player);
+                    PlayerRepository.PLAYER_ID_COUNT -= 1;
+                    break;
+                }
+            }
+            if (playerRepository.getPlayers().size() == 0) {
+                gameRepository.getGames().remove(game);
             }
         }
-
-
-
     }
 //
 //
