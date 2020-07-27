@@ -17,8 +17,8 @@ export default (props) => {
   });
 
   return (
-    <div>
-      <Card id={props.id} onClick={publishReveal} />
+    <div onClick={publishReveal}>
+      <Card id={props.id} />
     </div>
   );
 };

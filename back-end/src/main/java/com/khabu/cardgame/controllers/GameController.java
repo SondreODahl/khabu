@@ -179,7 +179,7 @@ public class GameController {
     private void revealCard(HashMap<String, Object> jsonMap) {
         // Retrieve info from client json
         int playerId = Integer.parseInt((String) jsonMap.get("playerId"));
-        int targetCardIndex = Integer.parseInt((String) jsonMap.get("index"));
+        int targetCardIndex = Integer.parseInt((String) jsonMap.get("targetCardIndex"));
         Round round = gameRepository.getGames().get(0).getRound();
 
         // Create response
