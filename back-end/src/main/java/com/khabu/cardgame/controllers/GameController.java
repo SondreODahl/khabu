@@ -37,7 +37,6 @@ public class GameController {
     public void receiveAction(@Payload String payload) {
         // Convert the payload to a hashmap
         HashMap<String, Object> jsonMap = JsonConverter.createMapFromJsonString(payload);
-        System.out.println("The messagehandler has been reached");
         switch ((String) jsonMap.get("action")) {
             case "REVEAL":
                 revealCard(jsonMap);
@@ -181,7 +180,6 @@ public class GameController {
         int playerId = Integer.parseInt((String) jsonMap.get("playerId"));
         int targetCardIndex = Integer.parseInt((String) jsonMap.get("targetCardIndex"));
         Round round = gameRepository.getGames().get(0).getRound();
-        System.out.println("This method has been reached");
 
         // Create response
         Map<String, String> response = new HashMap<>();
@@ -213,8 +211,13 @@ public class GameController {
     private void drawFromDeck(HashMap<String, Object> jsonMap) {
         int currentPlayerId = Integer.parseInt((String) jsonMap.get("currentPlayerId"));
         Round round = gameRepository.getGames().get(0).getRound();
-        round.performAction(round.getPlayerById(currentPlayerId), Actions.DRAW_FROM_DECK);
-        int cardValue = round.getCardDrawnFromDeck().getValue();
+        int cardValue = 0;
+        try {
+            round.performAction(round.getPlayerById(currentPlayerId), Actions.DRAW_FROM_DECK);
+            cardValue = round.getCardDrawnFromDeck().getValue();
+        } catch (IllegalMoveException e) {
+            e.printStackTrace();
+        }
         Map<String, String> response = new HashMap<>();
         String jsonResponse = JsonConverter.createJsonString(new ObjectMapper(), response,
                 "CARD_DRAWN_DECK", Integer.toString(cardValue));
@@ -231,7 +234,11 @@ public class GameController {
 
         // Perform back-end logic
         Round round = gameRepository.getGames().get(0).getRound();
-        round.performAction(round.getPlayerById(currentPlayerId), Actions.DRAW_FROM_DISC, targetCardIndex);
+        try {
+            round.performAction(round.getPlayerById(currentPlayerId), Actions.DRAW_FROM_DISC, targetCardIndex);
+        } catch (IllegalMoveException e) {
+            e.printStackTrace();
+        }
         int cardValue = round.getDiscardPile().showTopCard().getValue();
 
         // Create response
@@ -248,7 +255,11 @@ public class GameController {
 
         // Perform back-end game logic
         Round round = gameRepository.getGames().get(0).getRound();
-        round.performAction(round.getPlayerById(currentPlayerId), Actions.SWAP, targetCardIndex);
+        try {
+            round.performAction(round.getPlayerById(currentPlayerId), Actions.SWAP, targetCardIndex);
+        } catch (IllegalMoveException e) {
+            e.printStackTrace();
+        }
         int cardValue = round.getDiscardPile().showTopCard().getValue();
 
         // Create response
@@ -264,7 +275,11 @@ public class GameController {
 
         // Perform back-end game logic
         Round round = gameRepository.getGames().get(0).getRound();
-        round.performAction(round.getPlayerById(currentPlayerId), Actions.DISCARD);
+        try {
+            round.performAction(round.getPlayerById(currentPlayerId), Actions.DISCARD);
+        } catch (IllegalMoveException e) {
+            e.printStackTrace();
+        }
         int cardValue = round.getDiscardPile().showTopCard().getValue();
 
         // Create response
@@ -279,7 +294,11 @@ public class GameController {
 
         // Perform back-end game logic
         Round round = gameRepository.getGames().get(0).getRound();
-        round.performAction(round.getPlayerById(currentPlayerId), Actions.END_TURN);
+        try {
+            round.performAction(round.getPlayerById(currentPlayerId), Actions.END_TURN);
+        } catch (IllegalMoveException e) {
+            e.printStackTrace();
+        }
         int nextPlayer = round.getTurn().getCurrentPlayer().getPlayerId();
         // Started boolean gets set to false when round.endRound() is called
         String roundOver = round.getStarted() ? "false" : "true";
@@ -299,7 +318,11 @@ public class GameController {
 
         // Perform back-end game logic
         Round round = gameRepository.getGames().get(0).getRound();
-        round.performAction(round.getPlayerById(currentPlayerId), Actions.CALL_KHABU);
+        try {
+            round.performAction(round.getPlayerById(currentPlayerId), Actions.CALL_KHABU);
+        } catch (IllegalMoveException e) {
+            e.printStackTrace();
+        }
         int nextPlayerId = round.getTurn().getCurrentPlayer().getPlayerId();
 
         // Create response
@@ -321,8 +344,12 @@ public class GameController {
         // Perform back-end game logic
         Round round = gameRepository.getGames().get(0).getRound();
         Card targetCard = round.getPlayerById(transferringPlayerId).getCard(targetCardIndex);
-        round.performAction(round.getPlayerById(transferringPlayerId), round.getPlayerById(targetPlayerId),
-                Actions.TRANSFER, targetCardIndex);
+        try {
+            round.performAction(round.getPlayerById(transferringPlayerId), round.getPlayerById(targetPlayerId),
+                    Actions.TRANSFER, targetCardIndex);
+        } catch (IllegalMoveException e) {
+            e.printStackTrace();
+        }
         int cardIndexAfterTransfer = round.getPlayerById(targetPlayerId).findCardIndexbyCard(targetCard);
 
         // Create response
@@ -343,9 +370,15 @@ public class GameController {
         // Perform back-end game logic
         Round round = gameRepository.getGames().get(0).getRound();
         Card targetCard = round.getPlayerById(targetPlayerId).getCard(targetCardIndex);
-        boolean successfulPut = round.performAction(round.getPlayerById(currentPlayerId),
-                round.getPlayerById(targetPlayerId), Actions.PUT_OTHER, targetCardIndex);
-        String status = successfulPut ? "success" : "fail";
+        String status = "";
+        try {
+            round.performAction(round.getPlayerById(currentPlayerId),
+                    round.getPlayerById(targetPlayerId), Actions.PUT_OTHER, targetCardIndex);
+            status = "success";
+        } catch (IllegalMoveException e) {
+            e.printStackTrace();
+            status = "fail";
+        }
 
         // Create response
         Map<String, String> response = new HashMap<>();
@@ -365,9 +398,16 @@ public class GameController {
         // Perform back-end game logic
         Round round = gameRepository.getGames().get(0).getRound();
         Card targetCard = round.getPlayerById(currentPlayerId).getCard(targetCardIndex);
-        boolean successfulPut = round.performAction(round.getPlayerById(currentPlayerId),
-                round.getPlayerById(currentPlayerId), Actions.PUT_SELF, targetCardIndex);
-        String status = successfulPut ? "success" : "fail";
+        boolean successfulPut = false;
+        String status = "";
+        try {
+            round.performAction(round.getPlayerById(currentPlayerId),
+                    round.getPlayerById(currentPlayerId), Actions.PUT_SELF, targetCardIndex);
+            status = "success";
+        } catch (IllegalMoveException e) {
+            e.printStackTrace();
+            status = "fail";
+        }
 
         // Create response
         Map<String, String> response = new HashMap<>();
