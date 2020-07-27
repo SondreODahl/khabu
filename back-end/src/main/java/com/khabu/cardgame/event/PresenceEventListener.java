@@ -2,6 +2,7 @@ package com.khabu.cardgame.event;
 
 import com.khabu.cardgame.model.PlayerRepository;
 import com.khabu.cardgame.model.User;
+import com.khabu.cardgame.model.game.Game;
 import com.khabu.cardgame.model.game.GameRepository;
 import com.khabu.cardgame.model.game.Player;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,27 +55,28 @@ public class PresenceEventListener {
 //    }
 //
 //    // TODO: Find a better way to remove sessions when inactive for a long time
-//    @EventListener
-//    public void handleSessionDisconnected(SessionDisconnectEvent event) {
-//        StompHeaderAccessor headers = StompHeaderAccessor.wrap(event.getMessage());
-//
-//        // Retrieve sessionId
-//        String sessionId = headers.getSessionId();
-//
-//        // Retrieve array of players
-//        Player[] players = gameRepository.getGames().get(0).getPlayers();
-//
-//        // Remove player from playerRepository and gameRepository
-//        for (Player player:
-//             players) {
-//            if (player.getSessionId().equals(sessionId)) {
-//                playerRepository.getPlayers().remove(player.getPlayerId());
-//                if (playerRepository.getPlayers().size() == 0) {
-//                    gameRepository.getGames().remove(0);
-//                }
-//            }
-//        }
-//    }
+    @EventListener
+    public void handleSessionDisconnected(SessionDisconnectEvent event) {
+        StompHeaderAccessor headers = StompHeaderAccessor.wrap(event.getMessage());
+
+        // Retrieve sessionId
+        String sessionId = headers.getSessionId();
+
+        // Retrieve player disconnecting
+        Game game = gameRepository.getGames().get(0);
+        Player[] players = game.getPlayers();
+
+        // Remove player from playerRepository and gameRepository
+        for (Player player: players) {
+            if (player.getSessionId().equals(sessionId)) {
+                playerRepository.removePlayer(player.getPlayerId());
+                game.removePlayer(player);
+            }
+        }
+
+
+
+    }
 //
 //
 //    // TODO: Send a message to /topic/ready updating ready player count

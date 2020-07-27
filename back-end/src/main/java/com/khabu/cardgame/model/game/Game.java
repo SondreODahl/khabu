@@ -1,7 +1,6 @@
 package com.khabu.cardgame.model.game;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Game {
     private String roomId;
@@ -49,6 +48,14 @@ public class Game {
         playerTotalScores.put(player, 0);
         players[playersAdded] = player;
         playersAdded++;
+    }
+
+    public void removePlayer(Player player) {
+        List<Player> players = new ArrayList<>(Arrays.asList(this.players));
+        players.remove(player);
+        this.players = players.toArray(new Player[0]);
+        // TODO: Possible to do with streams?
+        // Arrays.stream(players).filter(p -> !p.equals(player))
     }
 
     public String getRoomId() {
