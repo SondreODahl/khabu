@@ -188,7 +188,7 @@ public class GameController {
         response.put("type", "REVEAL");
         Card revealedCard = null;
         try {
-            revealedCard = round.revealCard(round.getPlayers()[playerId - 1], targetCardIndex);
+            revealedCard = round.revealCard(round.getPlayerById(playerId), targetCardIndex);
             response.put("status", "SUCCESS");
         } catch (IllegalMoveException ime) {
             ime.printStackTrace();
@@ -197,6 +197,7 @@ public class GameController {
 
         response.put("value", Integer.toString(Objects.requireNonNull(revealedCard).getValue()));
         response.put("id", Integer.toString(targetCardIndex));
+        response.put("playerId", Integer.toString(playerId));
 
         // Convert response to json
         String jsonResponse = "";
@@ -212,7 +213,7 @@ public class GameController {
     private void drawFromDeck(HashMap<String, Object> jsonMap) {
         int currentPlayerId = Integer.parseInt((String) jsonMap.get("currentPlayerId"));
         Round round = gameRepository.getGames().get(0).getRound();
-        round.performAction(round.getPlayers()[currentPlayerId - 1], Actions.DRAW_FROM_DECK);
+        round.performAction(round.getPlayerById(currentPlayerId), Actions.DRAW_FROM_DECK);
         int cardValue = round.getCardDrawnFromDeck().getValue();
         Map<String, String> response = new HashMap<>();
         String jsonResponse = JsonConverter.createJsonString(new ObjectMapper(), response,
@@ -230,7 +231,7 @@ public class GameController {
 
         // Perform back-end logic
         Round round = gameRepository.getGames().get(0).getRound();
-        round.performAction(round.getPlayers()[currentPlayerId], Actions.DRAW_FROM_DISC, targetCardIndex);
+        round.performAction(round.getPlayerById(currentPlayerId), Actions.DRAW_FROM_DISC, targetCardIndex);
         int cardValue = round.getDiscardPile().showTopCard().getValue();
 
         // Create response
@@ -247,7 +248,7 @@ public class GameController {
 
         // Perform back-end game logic
         Round round = gameRepository.getGames().get(0).getRound();
-        round.performAction(round.getPlayers()[currentPlayerId], Actions.SWAP, targetCardIndex);
+        round.performAction(round.getPlayerById(currentPlayerId), Actions.SWAP, targetCardIndex);
         int cardValue = round.getDiscardPile().showTopCard().getValue();
 
         // Create response
@@ -263,7 +264,7 @@ public class GameController {
 
         // Perform back-end game logic
         Round round = gameRepository.getGames().get(0).getRound();
-        round.performAction(round.getPlayers()[currentPlayerId], Actions.DISCARD);
+        round.performAction(round.getPlayerById(currentPlayerId), Actions.DISCARD);
         int cardValue = round.getDiscardPile().showTopCard().getValue();
 
         // Create response
@@ -278,7 +279,7 @@ public class GameController {
 
         // Perform back-end game logic
         Round round = gameRepository.getGames().get(0).getRound();
-        round.performAction(round.getPlayers()[currentPlayerId], Actions.END_TURN);
+        round.performAction(round.getPlayerById(currentPlayerId), Actions.END_TURN);
         int nextPlayer = round.getTurn().getCurrentPlayer().getPlayerId();
         // Started boolean gets set to false when round.endRound() is called
         String roundOver = round.getStarted() ? "false" : "true";
@@ -298,7 +299,7 @@ public class GameController {
 
         // Perform back-end game logic
         Round round = gameRepository.getGames().get(0).getRound();
-        round.performAction(round.getPlayers()[currentPlayerId], Actions.CALL_KHABU);
+        round.performAction(round.getPlayerById(currentPlayerId), Actions.CALL_KHABU);
         int nextPlayerId = round.getTurn().getCurrentPlayer().getPlayerId();
 
         // Create response
@@ -319,11 +320,10 @@ public class GameController {
 
         // Perform back-end game logic
         Round round = gameRepository.getGames().get(0).getRound();
-        Player[] players = round.getPlayers();
-        Card targetCard = players[transferringPlayerId].getCard(targetCardIndex);
-        round.performAction(players[transferringPlayerId], players[targetPlayerId],
+        Card targetCard = round.getPlayerById(transferringPlayerId).getCard(targetCardIndex);
+        round.performAction(round.getPlayerById(transferringPlayerId), round.getPlayerById(targetPlayerId),
                 Actions.TRANSFER, targetCardIndex);
-        int cardIndexAfterTransfer = players[targetPlayerId].findCardIndexbyCard(targetCard);
+        int cardIndexAfterTransfer = round.getPlayerById(targetPlayerId).findCardIndexbyCard(targetCard);
 
         // Create response
         List<String> keys = Arrays.asList("type","victim","agentCard");
@@ -342,10 +342,9 @@ public class GameController {
 
         // Perform back-end game logic
         Round round = gameRepository.getGames().get(0).getRound();
-        Player[] players = round.getPlayers();
-        Card targetCard = players[targetPlayerId].getCard(targetCardIndex);
-        boolean successfulPut = round.performAction(players[currentPlayerId],
-                players[targetPlayerId], Actions.PUT_OTHER, targetCardIndex);
+        Card targetCard = round.getPlayerById(targetPlayerId).getCard(targetCardIndex);
+        boolean successfulPut = round.performAction(round.getPlayerById(currentPlayerId),
+                round.getPlayerById(targetPlayerId), Actions.PUT_OTHER, targetCardIndex);
         String status = successfulPut ? "success" : "fail";
 
         // Create response
@@ -365,26 +364,19 @@ public class GameController {
 
         // Perform back-end game logic
         Round round = gameRepository.getGames().get(0).getRound();
-        Player[] players = round.getPlayers();
-        Card targetCard = players[currentPlayerId].getCard(targetCardIndex);
-        boolean successfulPut = round.performAction(players[currentPlayerId],
-                players[currentPlayerId], Actions.PUT_SELF, targetCardIndex);
+        Card targetCard = round.getPlayerById(currentPlayerId).getCard(targetCardIndex);
+        boolean successfulPut = round.performAction(round.getPlayerById(currentPlayerId),
+                round.getPlayerById(currentPlayerId), Actions.PUT_SELF, targetCardIndex);
         String status = successfulPut ? "success" : "fail";
 
         // Create response
         Map<String, String> response = new HashMap<>();
-        // Keys
+        // Keys and values
         List<String> names = Arrays.asList("type","agent","victim","victimCard", "status", "value");
-        // Values
         List<String> values = Arrays.asList("PUT",Integer.toString(currentPlayerId),
                 Integer.toString(currentPlayerId), Integer.toString(targetCardIndex),
                 status, Integer.toString(targetCard.getValue()));
         String jsonResponse = JsonConverter.createJsonString(new ObjectMapper(), response, names, values);
         simpMessagingTemplate.convertAndSend("/topic/round/actions", jsonResponse);
     }
-
-
-
-
-
 }

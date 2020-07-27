@@ -211,4 +211,8 @@ public class Round {
     public int getScore(Player player) {
         return scores.get(player);
     }
+
+    public Player getPlayerById(int id) {
+        return this.players[id-1];
+    }
 }
