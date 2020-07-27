@@ -28,6 +28,15 @@ public class CardHand {
         cards.put(index, card);
     }
 
+    public int findCardIndexbyCard(Card card) {
+        for (int i: cards.keySet()) {
+            if (cards.get(i).equals(card)) {
+                return i;
+            }
+        }
+        return 0;
+    }
+
     private int findSmallestAvailableIndex() {
         if (cards.size() == 0) return 1;
         for (int i = 0; i <= cards.lastKey(); i++) {

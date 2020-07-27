@@ -21,7 +21,7 @@ public class Game {
     public Game(String roomId, int NUM_OF_PLAYERS, int REVEAL_TIME) {
         this.roomId = roomId;
         this.players = new Player[NUM_OF_PLAYERS];
-        this.REVEAL_TIME = REVEAL_TIME;
+        Game.REVEAL_TIME = REVEAL_TIME;
     }
 
     public void beginGame() {
