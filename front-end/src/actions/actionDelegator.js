@@ -25,11 +25,11 @@ export const privateActionsDelegator = (topic, body) => {
   const type = parsedJSON.type;
   switch (type) {
     case 'REVEAL':
-      const { status, id, value } = parsedJSON;
+      const { status, playerId, id, value } = parsedJSON;
       if (status === 'FAIL') {
         alert('You have already shown enough cards');
         break;
-      } else return revealCard(id, value);
+      } else return revealCard(playerId, id - 1, value); // Id is 1-indexed in back-end..
     default:
       alert(`privateActionsDelegator was called with ${body}`);
   }

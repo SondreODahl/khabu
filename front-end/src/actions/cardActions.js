@@ -4,8 +4,10 @@ export const addCardToIds = (id, value) => {
   return { type: ADD_CARD, payload: { id, value } };
 };
 
-export const revealCard = (id, value) => {
-  return addCardToIds(id, value);
+export const revealCard = (playerId, id, value) => (dispatch, getState) => {
+  const playerCards = getState().cards[playerId]; // List of card Ids
+  const revealedCard = playerCards[id]; // Id is the index of the card. Relative in back-end
+  dispatch(addCardToIds(revealedCard, value));
 };
 
 export const addCardToHand = (cardId, playerId) => {
