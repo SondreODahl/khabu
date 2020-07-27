@@ -24,7 +24,7 @@ public class Turn {
         return this.khabuPlayer;
     }
 
-    public void setKhabuPlayer(Player khabuPlayer) {
+    public void setKhabuPlayer(Player khabuPlayer) throws IllegalMoveException {
         checkPlayerForNull(khabuPlayer);
         if (this.khabuPlayer != null) {
             throw new IllegalMoveException("Khabu player is already set");
