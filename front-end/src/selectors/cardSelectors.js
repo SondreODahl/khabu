@@ -8,13 +8,11 @@ const selectProps = (_, props) => props;
 
 export const selectCard = createCachedSelector(
   selectCardById,
-  selectProps,
   (card) => card
 )((state, props) => props.id);
 
 export const selectCardHand = createCachedSelector(
   selectCardHandByPlayerId,
-  selectProps,
   (hand) => hand
 )((state, props) => props.playerId);
 
