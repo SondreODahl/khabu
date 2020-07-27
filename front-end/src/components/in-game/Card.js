@@ -8,7 +8,7 @@ export default (props) => {
   const image = require(`../../assets/images/${imageValue}.png`);
   return (
     <div onClick={props.onClick}>
-      <img src={image} alt={value} style={{ width: '10%', height: '10%' }} />
+      <img src={image} alt={value} style={{ width: '120px', height: '200px' }} />
     </div>
   );
 };

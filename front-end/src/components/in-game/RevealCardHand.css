@@ -1,0 +1,13 @@
+.row {
+    height: 200px !important;
+    width: 120px !important;
+    padding: 0 !important;
+}
+.grid {
+    margin: 0 !important;
+}
+
+.column {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
