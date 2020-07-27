@@ -82,4 +82,8 @@ public class Game {
     public Round getRound() {
         return currentRound;
     }
+
+    public int getPlayersAdded() {
+        return playersAdded;
+    }
 }

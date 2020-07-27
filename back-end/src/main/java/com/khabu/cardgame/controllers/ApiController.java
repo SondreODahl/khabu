@@ -45,28 +45,17 @@ public class ApiController {
         String playerName = (String) player.get("username");
         String sessionId = req.getSession().getId();
 
-        // VALIDATE AND CREATE
-        if (playerRepository.getPlayers().containsValue(playerName)) {
-            response.put("status", ResponseEntity.status(HttpStatus.IM_USED).build());
-            return response;
-        }
-        if (playerRepository.getPlayers().size() < 2 ) {
+        if (playerRepository.getPlayers().size() <= 2 ) {
             Player newPlayer = new Player(playerName, PlayerRepository.PLAYER_ID_COUNT, sessionId);
             PlayerRepository.PLAYER_ID_COUNT += 1;
-            playerRepository.addPlayer(newPlayer.getPlayerId(), newPlayer.getName());
+            playerRepository.addPlayer(newPlayer.getPlayerId(), newPlayer);
             if (gameRepository.getGames().size() == 0) {
                 Game game = new Game(RandomStringUtils.randomAlphabetic(SHORT_ID_LENGTH), Game.getNumOfPlayers(), Game.REVEAL_TIME);
                 gameRepository.addGame(game);
-                game.addPlayer(newPlayer);
-
             }
-            if (playerRepository.getPlayers().size() == 2 ) {
-                gameRepository.getGames().get(0).beginGame();
-            }
-
             // CREATE THE PROPER RESPONSE
             response.put("status", ResponseEntity.status(HttpStatus.CREATED).build());
-            response.put("playerIds", playerRepository.getPlayers());
+            response.put("playerIds", playerRepository.getPlayerNamesAndIds());
             response.put("yourId", newPlayer.getPlayerId());
             return response;
         }

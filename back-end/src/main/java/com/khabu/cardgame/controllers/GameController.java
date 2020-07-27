@@ -125,7 +125,15 @@ public class GameController {
         Map<String, String> output = new HashMap<>();
         int playerId = Integer.parseInt(playerJoining);
         Game game = gameRepository.getGames().get(0);
-        String capacityReached = game.getPlayers().length == Game.getNumOfPlayers() ? "true" : "false";
+
+        // Add player to game
+        Player joiningPlayer = playerRepository.getPlayers().get(playerId);
+        game.addPlayer(joiningPlayer);
+
+        String capacityReached = game.getPlayersAdded() == Game.getNumOfPlayers() ? "true" : "false";
+        if (capacityReached.equals("true")) {
+            game.beginGame();
+        }
         output.put("type", "PLAYER_JOINED");
         output.put("playerId", Integer.toString(playerId));
         output.put("playerName", game.getPlayer(playerId).getName());
