@@ -17,7 +17,6 @@ export const playerJoinedGame = (topic, json) => (dispatch, getState) => {
   const playerName = parsedJSON.playerName;
   const capacityReached = parsedJSON.capacityReached;
   if (capacityReached) {
-    console.log('Cap reached');
     const capacity = getState().players.allPlayers.length;
     dispatch({
       type: PLAYER_JOIN_GAME,
