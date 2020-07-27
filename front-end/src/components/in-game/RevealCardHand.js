@@ -5,7 +5,7 @@ import { selectCardHand } from '../../selectors';
 import RevealCard from './RevealCard';
 
 export default (props) => {
-  const cards = useSelector(selectCardHand(props.playerId));
+  const cards = useSelector((state) => selectCardHand(state, props));
   const renderCards = () => {
     return cards.map((id) => {
       return <RevealCard playerId={props.playerId} id={id} />;

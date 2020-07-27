@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { selectCard } from '../../selectors';
 
 export default (props) => {
-  const value = useSelector((state) => selectCard(state, props.id));
+  const value = useSelector((state) => selectCard(state, props));
   const imageValue = value === null ? 'red_back' : value;
   const image = require(`../../assets/images/${imageValue}.png`);
   return (
