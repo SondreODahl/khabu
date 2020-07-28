@@ -13,6 +13,7 @@ import {
 } from '../../actions/actionDelegator';
 import { selectRoundState, selectYourId } from '../../selectors';
 import CardDeck from './cards/CardDeck';
+import TemporaryCard from './cards/TemporaryCard';
 
 export default () => {
   const yourId = useSelector(selectYourId);
@@ -47,6 +48,7 @@ export default () => {
           <div>
             <h1>Started</h1>
             <CardDeck yourId={yourId} />
+            <TemporaryCard />
           </div>
         );
       case roundStates.OVER:
