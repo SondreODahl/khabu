@@ -27,7 +27,7 @@ export const discardCard = () => {
 export const drawFromCardDeck = (cardId, value) => {
   return { type: DRAW_FROM_DECK, payload: { cardId, value } };
 };
-export const DrawFromDeckAndRegisterCard = (value) => (dispatch, getState) => {
+export const drawFromDeckAndRegisterCard = (value) => (dispatch, getState) => {
   const newId = getHighestId(getState);
   dispatch(addCardToIds(newId, value));
   dispatch(drawFromCardDeck(newId, value));
