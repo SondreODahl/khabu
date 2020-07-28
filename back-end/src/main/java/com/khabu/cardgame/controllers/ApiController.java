@@ -57,7 +57,7 @@ public class ApiController {
             // CREATE THE PROPER RESPONSE
             response.put("status", ResponseEntity.status(HttpStatus.CREATED).build());
             response.put("playerIds", playerRepository.getPlayerNamesAndIds());
-            response.put("yourId", newPlayer.getPlayerId());
+            response.put("yourId", Integer.toString(newPlayer.getPlayerId()));
             return response;
         }
 

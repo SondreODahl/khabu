@@ -77,7 +77,7 @@ public class ActionValidator {
 
     // TODO: REFACTOR TO INCLUDE FIRST_TURN
     private static boolean isValidDrawFromDeck(Player attemptingPlayer, Turn turn) {
-        return turn.gameStateEquals(Gamestate.DRAW)
+        return (turn.gameStateEquals(Gamestate.DRAW) || turn.gameStateEquals(Gamestate.FIRST_TURN))
                 && isPlayerCurrentPlayer(attemptingPlayer, turn);
     }
 
