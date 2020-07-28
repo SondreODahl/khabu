@@ -36,6 +36,8 @@ export const drawFromDeckAndRegisterCard = (value) => (dispatch, getState) => {
 // HELPER METHOD
 const getHighestId = (getState) => {
   const currentIds = getState().cards.byId;
-  const maxKey = _.maxBy(_.keys(currentIds), (o) => currentIds[o]);
+  const keysArray = _.keys(currentIds);
+  const intArray = keysArray.map(Number);
+  const maxKey = _.max(intArray);
   return maxKey + 1; // One higher than current highest
 };

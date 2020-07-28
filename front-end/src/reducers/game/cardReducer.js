@@ -110,6 +110,8 @@ const cardHandsReducer = (state = getNewInitState(), action) => {
     case REMOVE_CARD_FROM_HAND:
       const playerId = action.payload.playerId;
       return { ...state, [playerId]: byPlayerId(state[playerId], action) };
+    case DRAW_FROM_DECK:
+      return { ...state, temporaryCard: temporaryCard(state.temporaryCard, action) };
     case PUT_CARD:
       return {
         ...state,
