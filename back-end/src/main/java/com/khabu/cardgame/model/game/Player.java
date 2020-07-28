@@ -70,4 +70,8 @@ public class Player {
     public int findCardIndexbyCard(Card card) {
         return cardHand.findCardIndexbyCard(card);
     }
+
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
+    }
 }

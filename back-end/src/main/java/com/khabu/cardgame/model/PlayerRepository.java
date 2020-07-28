@@ -17,6 +17,9 @@ public class PlayerRepository {
         players.put(id, player);
     }
 
+    public void removePlayer(int id) {
+        players.remove(id);
+    }
 
     public Map<Integer, Player> getPlayers() {
         return players;
@@ -24,7 +27,6 @@ public class PlayerRepository {
 
     public Map<Integer, String> getPlayerNamesAndIds() {
         Map<Integer, String> output = new HashMap<>();
-        // loop through players map and put id + player.getId
         for (int id:players.keySet()) {
             output.put(id, players.get(id).getName());
         }

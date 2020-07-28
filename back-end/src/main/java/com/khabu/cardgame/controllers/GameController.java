@@ -14,6 +14,7 @@ import com.khabu.cardgame.util.JsonConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -121,13 +122,16 @@ public class GameController {
 
     // Method should send back an updated list of players
     @MessageMapping("/game/flow")
-    public void playerInfo(@Payload String playerJoining) {
+    public void playerInfo(@Payload String playerJoining, SimpMessageHeaderAccessor headerAccessor) {
         Map<String, String> output = new HashMap<>();
         int playerId = Integer.parseInt(playerJoining);
         Game game = gameRepository.getGames().get(0);
-
-        // Add player to game
+      
+        // Add player to game and update player sessionId
+        String sessionId = Objects.requireNonNull(headerAccessor.getSessionAttributes()).get("sessionId").toString();
         Player joiningPlayer = playerRepository.getPlayers().get(playerId);
+        joiningPlayer.setSessionId(sessionId);
+        headerAccessor.setSessionId(sessionId);
         game.addPlayer(joiningPlayer);
 
         String capacityReached = game.getPlayersAdded() == Game.getNumOfPlayers() ? "true" : "false";
