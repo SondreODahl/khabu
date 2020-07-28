@@ -1,7 +1,6 @@
 package com.khabu.cardgame.model.game;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Game {
     private String roomId;
@@ -9,7 +8,7 @@ public class Game {
     private int playersAdded = 0;
     static private final int NUM_OF_PLAYERS = 2;
     private final int INIT_STARTING_HAND = 4;
-    public static int REVEAL_TIME = 10*1000;
+    public static int REVEAL_TIME = 15*1000;
     private final Map<Player, Integer> playerTotalScores = new HashMap<>();;
     private Round currentRound;
 
@@ -51,9 +50,14 @@ public class Game {
         playersAdded++;
     }
 
-    public String getRoomId() {
-        return roomId;
+    public void removePlayer(Player player) {
+        List<Player> players = new ArrayList<>(Arrays.asList(this.players));
+        players.remove(player);
+        this.players = players.toArray(new Player[0]);
+        // TODO: Possible to do with streams?
+        // Arrays.stream(players).filter(p -> !p.equals(player))
     }
+
 
     public Player[] getPlayers() {
         return players;
@@ -63,20 +67,12 @@ public class Game {
         return players[index-1];
     }
 
-    public int getNUM_OF_PLAYERS() {
-        return NUM_OF_PLAYERS;
-    }
-
     public static int getNumOfPlayers() {
         return NUM_OF_PLAYERS;
     }
 
     public int getINIT_STARTING_HAND() {
         return INIT_STARTING_HAND;
-    }
-
-    public int getREVEAL_TIME() {
-        return REVEAL_TIME;
     }
 
     public Round getRound() {

@@ -4,6 +4,7 @@ import { createSelector } from 'reselect';
 const selectAllCards = (state) => state.cards.byId;
 const selectCardById = (state, props) => state.cards.byId[props.id];
 const selectCardHandByPlayerId = (state, props) => state.cards[props.playerId];
+<<<<<<< HEAD
 
 const selectDiscardPile = (state) => state.cards.discardPile;
 const selectDiscardPileLength = (state) => state.cards.discardPile.length;
@@ -16,6 +17,8 @@ export const getDiscardPileTopCard = createSelector(
   }
 );
 
+=======
+>>>>>>> master
 const selectProps = (_, props) => props;
 
 export const selectCard = createCachedSelector(

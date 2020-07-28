@@ -2,6 +2,7 @@ package com.khabu.cardgame.event;
 
 import com.khabu.cardgame.model.PlayerRepository;
 import com.khabu.cardgame.model.User;
+import com.khabu.cardgame.model.game.Game;
 import com.khabu.cardgame.model.game.GameRepository;
 import com.khabu.cardgame.model.game.Player;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.socket.messaging.SessionConnectEvent;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 import org.springframework.web.socket.messaging.SessionUnsubscribeEvent;
+
+import java.util.Objects;
 
 
 // Handles connection and disconnection events.
@@ -54,27 +57,33 @@ public class PresenceEventListener {
 //    }
 //
 //    // TODO: Find a better way to remove sessions when inactive for a long time
-//    @EventListener
-//    public void handleSessionDisconnected(SessionDisconnectEvent event) {
-//        StompHeaderAccessor headers = StompHeaderAccessor.wrap(event.getMessage());
-//
-//        // Retrieve sessionId
-//        String sessionId = headers.getSessionId();
-//
-//        // Retrieve array of players
-//        Player[] players = gameRepository.getGames().get(0).getPlayers();
-//
-//        // Remove player from playerRepository and gameRepository
-//        for (Player player:
-//             players) {
-//            if (player.getSessionId().equals(sessionId)) {
-//                playerRepository.getPlayers().remove(player.getPlayerId());
-//                if (playerRepository.getPlayers().size() == 0) {
-//                    gameRepository.getGames().remove(0);
-//                }
-//            }
-//        }
-//    }
+    @EventListener
+    public void handleSessionDisconnected(SessionDisconnectEvent event) {
+        StompHeaderAccessor headers = StompHeaderAccessor.wrap(event.getMessage());
+
+        // Retrieve sessionId
+        String sessionId = Objects.requireNonNull(headers.getSessionAttributes()).get("sessionId").toString();
+
+        // Check if the player left an active game
+        if (gameRepository.getGames().size() > 0) {
+            // Retrieve player disconnecting
+            Game game = gameRepository.getGames().get(0);
+            Player[] players = game.getPlayers();
+
+            // Remove player from playerRepository and gameRepository
+            for (Player player: players) {
+                if (player.getSessionId().equals(sessionId)) {
+                    playerRepository.removePlayer(player.getPlayerId());
+                    game.removePlayer(player);
+                    PlayerRepository.PLAYER_ID_COUNT -= 1;
+                    break;
+                }
+            }
+            if (playerRepository.getPlayers().size() == 0) {
+                gameRepository.getGames().remove(game);
+            }
+        }
+    }
 //
 //
 //    // TODO: Send a message to /topic/ready updating ready player count
