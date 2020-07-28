@@ -57,10 +57,7 @@ public class Game {
         // TODO: Possible to do with streams?
         // Arrays.stream(players).filter(p -> !p.equals(player))
     }
-
-    public String getRoomId() {
-        return roomId;
-    }
+    
 
     public Player[] getPlayers() {
         return players;
@@ -70,20 +67,12 @@ public class Game {
         return players[index-1];
     }
 
-    public int getNUM_OF_PLAYERS() {
-        return NUM_OF_PLAYERS;
-    }
-
     public static int getNumOfPlayers() {
         return NUM_OF_PLAYERS;
     }
 
     public int getINIT_STARTING_HAND() {
         return INIT_STARTING_HAND;
-    }
-
-    public int getREVEAL_TIME() {
-        return REVEAL_TIME;
     }
 
     public Round getRound() {
