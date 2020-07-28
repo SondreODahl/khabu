@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import ReadyUpButton from './ReadyUpButton';
 import { roundStates } from '../../reducers/game/roundReducer';
-import RevealCardHand from './RevealCardHand';
+import RevealCardHand from './cards/RevealCardHand';
 import useSubscribe from '../../api/useSubscribe';
 import usePublish from '../../api/usePublish';
 import { playerJoinedGame } from '../../actions/playerActions';
@@ -12,7 +12,7 @@ import {
   roundActionDelegator,
 } from '../../actions/actionDelegator';
 import { selectRoundState, selectYourId } from '../../selectors';
-import CardDeck from './CardDeck';
+import CardDeck from './cards/CardDeck';
 
 export default () => {
   const yourId = useSelector(selectYourId);

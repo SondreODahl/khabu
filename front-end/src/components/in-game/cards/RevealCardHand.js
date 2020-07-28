@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import React from 'react';
-import { selectCardHand } from '../../selectors';
+import { selectCardHand } from '../../../selectors';
 import RevealCard from './RevealCard';
 import './RevealCardHand.css';
 
@@ -11,6 +11,5 @@ export default (props) => {
       return <RevealCard playerId={props.playerId} id={id} />;
     });
   };
-
   return <div className={'ui five column grid'}>{renderCards()}</div>;
 };

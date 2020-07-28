@@ -1,8 +1,8 @@
-import usePublish from '../../api/usePublish';
+import usePublish from '../../../api/usePublish';
 import Card from './Card';
 import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { getServerIdForCard, selectCard } from '../../selectors';
+import { getServerIdForCard, selectCard } from '../../../selectors';
 
 export default (props) => {
   const IdInCardHand = useSelector((state) => getServerIdForCard(state, props));

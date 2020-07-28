@@ -4,10 +4,10 @@ import React, { useEffect } from 'react';
 import { retrievePlayers } from '../../actions/playerActions';
 import { initializeRound, startRound } from '../../actions';
 import { revealCard } from '../../actions/cardActions';
-import RevealCardHand from '../in-game/RevealCardHand';
+import RevealCardHand from '../in-game/cards/RevealCardHand';
 import useSubscribe from '../../api/useSubscribe';
 import { privateActionsDelegator } from '../../actions/actionDelegator';
-import DiscardPile from '../in-game/DiscardPile';
+import DiscardPile from '../in-game/cards/DiscardPile';
 import TestDiscardPile from './TestDiscardPile';
 
 export default () => {

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import DiscardPile from '../in-game/DiscardPile';
+import DiscardPile from '../in-game/cards/DiscardPile';
 import { drawFromDeckAndRegisterCard } from '../../actions/cardActions';
 
 export default (props) => {

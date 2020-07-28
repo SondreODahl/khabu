@@ -1,6 +1,6 @@
 import React from 'react';
 import Card from './Card';
-import { getDiscardPileTopCard } from '../../selectors';
+import { getDiscardPileTopCard } from '../../../selectors';
 
 export default () => {
   return (
