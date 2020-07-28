@@ -126,7 +126,7 @@ public class GameController {
         Map<String, String> output = new HashMap<>();
         int playerId = Integer.parseInt(playerJoining);
         Game game = gameRepository.getGames().get(0);
-
+      
         // Add player to game and update player sessionId
         String sessionId = Objects.requireNonNull(headerAccessor.getSessionAttributes()).get("sessionId").toString();
         Player joiningPlayer = playerRepository.getPlayers().get(playerId);

@@ -15,7 +15,7 @@ export const playerJoinedGame = (topic, json) => (dispatch, getState) => {
   console.log(parsedJSON);
   const playerId = parsedJSON.playerId;
   const playerName = parsedJSON.playerName;
-  const capacityReached = parsedJSON.capacityReached;
+  const capacityReached = parsedJSON.capacityReached === 'true'; // ALWAYS RECEIVE STRINGS FROM BACKEND
   if (capacityReached) {
     console.log('Cap reached');
     const capacity = getState().players.allPlayers.length;
