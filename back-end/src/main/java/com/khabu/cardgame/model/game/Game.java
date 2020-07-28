@@ -57,7 +57,7 @@ public class Game {
         // TODO: Possible to do with streams?
         // Arrays.stream(players).filter(p -> !p.equals(player))
     }
-    
+
 
     public Player[] getPlayers() {
         return players;

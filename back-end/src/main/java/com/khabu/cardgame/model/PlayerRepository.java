@@ -25,10 +25,10 @@ public class PlayerRepository {
         return players;
     }
 
-    public Map<Integer, String> getPlayerNamesAndIds() {
-        Map<Integer, String> output = new HashMap<>();
+    public Map<Object, String> getPlayerNamesAndIds() {
+        Map<Object, String> output = new HashMap<>();
         for (int id:players.keySet()) {
-            output.put(id, players.get(id).getName());
+            output.put(Integer.toString(id), players.get(id).getName());
         }
         return output;
     }
