@@ -2,7 +2,7 @@ import React, { useCallback, useEffect } from 'react';
 import usePublish from '../../api/usePublish';
 import { useSelector } from 'react-redux';
 import { getCanDrawCard } from '../../selectors/gameStateSelectors';
-import RedCardBack from '../../assets/images/red_back.png';
+import RedCardBack from '../../assets/images/purple_back.png';
 
 export default (props) => {
   const playerCanDraw = useSelector(getCanDrawCard);
