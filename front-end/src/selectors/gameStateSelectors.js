@@ -21,12 +21,9 @@ export const getDiscardPileAction = createSelector(
   selectPutAllowed,
   getIsYourTurn,
   (length, state, putAllowed, yourTurn) => {
-    if (state !== null) {
-      if (putAllowed) return PUT_MOVE; // Put is only allowed when the others aren't
-      if (yourTurn) {
-        if (length === 0) return DISCARD_MOVE;
-        else if (state === DRAW) return DRAW_MOVE;
-      }
+    if (yourTurn && state !== null) {
+      if (length === 0) return DISCARD_MOVE;
+      else if (state === DRAW) return DRAW_MOVE;
     }
     return null;
   }
