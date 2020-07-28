@@ -10,6 +10,8 @@ import {
   ROUND_END,
   SHOW_CARD,
   START_ROUND,
+  DISCARD_CARD,
+  DRAW_FROM_DECK,
 } from '../../actions/types';
 import _ from 'lodash';
 import { addCardToIds } from '../../actions/cardActions';
@@ -40,6 +42,7 @@ const byPlayerId = (state = [], { type, payload }) => {
 
 const discardPile = (state = [], { type, payload }) => {
   switch (type) {
+    case DISCARD_CARD:
     case PUT_CARD:
       return [...state, payload.cardId];
     case DRAW_CARD_DISCARD:
@@ -48,6 +51,20 @@ const discardPile = (state = [], { type, payload }) => {
       return state;
   }
 };
+
+const temporaryCard = (state = null, { type, payload }) => {
+  switch (type) {
+    case DISCARD_CARD:
+      return null;
+    case DRAW_FROM_DECK:
+      return payload.cardId;
+    // TODO: Case for swapping cards
+    default:
+      return state;
+  }
+};
+
+// Helper methods
 
 const resetHand = (state, playerId) => {
   for (let i = 0; i < state[playerId].length; i++) {
@@ -71,7 +88,11 @@ const initializeHands = (state, action) => {
 
 const getNewInitState = () => {
   // HELPER METHOD
-  return { byId: byId(undefined, {}), discardPile: discardPile(undefined, {}) };
+  return {
+    byId: byId(undefined, {}),
+    discardPile: discardPile(undefined, {}),
+    temporaryCard: temporaryCard(undefined, {}),
+  };
 };
 
 const cardHandsReducer = (state = getNewInitState(), action) => {
@@ -90,6 +111,16 @@ const cardHandsReducer = (state = getNewInitState(), action) => {
       const playerId = action.payload.playerId;
       return { ...state, [playerId]: byPlayerId(state[playerId], action) };
     case PUT_CARD:
+      return {
+        ...state,
+        discardPile: discardPile(state.discardPile, action),
+      };
+    case DISCARD_CARD:
+      return {
+        ...state,
+        discardPile: discardPile(state.discardPile, action),
+        temporaryCard: temporaryCard(state.temporaryCard, action),
+      };
     case DRAW_CARD_DISCARD:
       return { ...state, discardPile: discardPile(state.discardPile, action) };
     default:
