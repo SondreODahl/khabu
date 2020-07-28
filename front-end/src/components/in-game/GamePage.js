@@ -47,10 +47,9 @@ export default () => {
       case roundStates.STARTED:
         return (
           <div>
-            <h1>Started</h1>
             <CardDeck yourId={yourId} />
             <TemporaryCard />
-            <DiscardPile />
+            <DiscardPile yourId={yourId} />
           </div>
         );
       case roundStates.OVER:

@@ -1,29 +1,33 @@
 import React from 'react';
 import Card from './Card';
-import { getDiscardPileTopCard, selectDiscardPileLength } from '../../../selectors';
+import { getDiscardPileTopCardId, selectCard } from '../../../selectors';
 import { useSelector } from 'react-redux';
 import { getDiscardPileAction } from '../../../selectors/gameStateSelectors';
 import CardDisplay from './CardDisplay';
 import DiscardPileImage from '../../../assets/images/discardpile_empty.png';
+import useAction from './useAction';
 
-export default () => {
+export default (props) => {
   const possibleAction = useSelector(getDiscardPileAction);
-  const length = useSelector(selectDiscardPileLength);
-  if (length === 0)
+  const id = useSelector(getDiscardPileTopCardId);
+  const discardParams = { currentPlayerId: props.yourId };
+  const discard = useAction('DISCARD', discardParams);
+
+  if (!id)
+    // Empty pile
     return (
       <div>
         <CardDisplay
-          onClick={null}
+          onClick={discard}
           value={'Discard Pile'}
           image={DiscardPileImage}
         />
-        {possibleAction}
       </div>
     );
   return (
+    // There is a card on the pile
     <div className={'discard-pile'}>
-      <Card selector={getDiscardPileTopCard} />
-      {possibleAction}
+      <Card selector={selectCard} id={id} />
     </div>
   );
 };
