@@ -1,8 +1,8 @@
-import usePublish from '../../api/usePublish';
+import usePublish from '../../../api/usePublish';
 import Card from './Card';
 import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { getServerIdForCard } from '../../selectors';
+import { getServerIdForCard, selectCard } from '../../../selectors';
 
 export default (props) => {
   const IdInCardHand = useSelector((state) => getServerIdForCard(state, props));
@@ -18,7 +18,7 @@ export default (props) => {
 
   return (
     <div className={'column'}>
-      <Card id={props.id} onClick={publishReveal} />
+      <Card id={props.id} onClick={publishReveal} selector={selectCard} />
     </div>
   );
 };

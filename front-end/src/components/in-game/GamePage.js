@@ -2,15 +2,18 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import ReadyUpButton from './ReadyUpButton';
 import { roundStates } from '../../reducers/game/roundReducer';
-import RevealCardHand from './RevealCardHand';
+import RevealCardHand from './cards/RevealCardHand';
 import useSubscribe from '../../api/useSubscribe';
 import usePublish from '../../api/usePublish';
 import { playerJoinedGame } from '../../actions/playerActions';
 import {
   privateActionsDelegator,
+  publicActionsDelegator,
   roundActionDelegator,
 } from '../../actions/actionDelegator';
 import { selectRoundState, selectYourId } from '../../selectors';
+import CardDeck from './cards/CardDeck';
+import TemporaryCard from './cards/TemporaryCard';
 
 export default () => {
   const yourId = useSelector(selectYourId);
@@ -22,6 +25,7 @@ export default () => {
   useSubscribe('/topic/game/flow', playerJoinedGame, publishUserName);
   useSubscribe('/topic/round/flow', roundActionDelegator, undefined);
   useSubscribe(`/topic/round/actions/${yourId}`, privateActionsDelegator, undefined);
+  useSubscribe('/topic/round/actions', publicActionsDelegator, undefined);
 
   const determineRender = () => {
     switch (roundState) {
@@ -36,12 +40,17 @@ export default () => {
       case roundStates.INITIALIZING:
         return (
           <div>
-            <h1>Initializing</h1>
             <RevealCardHand playerId={yourId} />
           </div>
         );
       case roundStates.STARTED:
-        return <h1>Started</h1>;
+        return (
+          <div>
+            <h1>Started</h1>
+            <CardDeck yourId={yourId} />
+            <TemporaryCard />
+          </div>
+        );
       case roundStates.OVER:
         return <h1>Over</h1>;
       default:
