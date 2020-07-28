@@ -11,6 +11,7 @@ import {
   roundActionDelegator,
 } from '../../actions/actionDelegator';
 import { selectRoundState, selectYourId } from '../../selectors';
+import CardDeck from './CardDeck';
 
 export default () => {
   const yourId = useSelector(selectYourId);
@@ -36,12 +37,16 @@ export default () => {
       case roundStates.INITIALIZING:
         return (
           <div>
-            <h1>Initializing</h1>
             <RevealCardHand playerId={yourId} />
           </div>
         );
       case roundStates.STARTED:
-        return <h1>Started</h1>;
+        return (
+          <div>
+            <h1>Started</h1>
+            <CardDeck yourId={yourId} />
+          </div>
+        );
       case roundStates.OVER:
         return <h1>Over</h1>;
       default:
