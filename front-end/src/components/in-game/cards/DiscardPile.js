@@ -6,19 +6,23 @@ import { getDiscardPileAction } from '../../../selectors/gameStateSelectors';
 import CardDisplay from './CardDisplay';
 import DiscardPileImage from '../../../assets/images/discardpile_empty.png';
 import useAction from './usePublishMove';
+import { DISCARD_MOVE } from '../../../constants/gameMoves';
 
 export default (props) => {
   const possibleAction = useSelector(getDiscardPileAction);
   const id = useSelector(getDiscardPileTopCardId);
   const discardParams = { currentPlayerId: props.yourId };
-  const discard = useAction('DISCARD', discardParams);
-
+  let action;
+  if (possibleAction !== null) {
+    action = possibleAction === DISCARD_MOVE ? 'DISCARD' : 'DRAW';
+  }
+  const onClick = useAction(action, discardParams);
   if (!id)
     // Empty pile
     return (
       <div>
         <CardDisplay
-          onClick={discard}
+          onClick={onClick}
           value={'Discard Pile'}
           image={DiscardPileImage}
         />
@@ -27,7 +31,7 @@ export default (props) => {
   return (
     // There is a card on the pile
     <div className={'discard-pile'}>
-      <Card selector={selectCard} id={id} />
+      <Card selector={selectCard} id={id} onClick={onClick} />
     </div>
   );
 };
