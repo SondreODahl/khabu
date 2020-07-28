@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import {
   ADD_CARD,
   ADD_CARD_TO_HAND,
@@ -7,14 +6,10 @@ import {
   REMOVE_CARD_FROM_HAND,
 } from './types';
 import _ from 'lodash';
-=======
-import { ADD_CARD, ADD_CARD_TO_HAND } from './types';
->>>>>>> master
 
 export const addCardToIds = (id, value) => {
   return { type: ADD_CARD, payload: { id, value } };
 };
-<<<<<<< HEAD
 export const revealCard = (playerId, cardId, value) => (dispatch, getState) => {
   const playerCards = getState().cards[playerId]; // List of card Ids
   const revealedCard = playerCards[cardId]; // Id is the index of the card. Relative in back-end
@@ -46,15 +41,3 @@ const getHighestId = (getState) => {
   const maxKey = _.max(intArray);
   return maxKey + 1; // One higher than current highest
 };
-=======
-
-export const revealCard = (playerId, id, value) => (dispatch, getState) => {
-  const playerCards = getState().cards[playerId]; // List of card Ids
-  const revealedCard = playerCards[id]; // Id is the index of the card. Relative in back-end
-  dispatch(addCardToIds(revealedCard, value));
-};
-
-export const addCardToHand = (cardId, playerId) => {
-  return { type: ADD_CARD_TO_HAND, payload: { cardId, playerId } };
-};
->>>>>>> master

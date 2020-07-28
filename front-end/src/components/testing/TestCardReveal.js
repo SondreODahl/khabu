@@ -4,18 +4,11 @@ import React, { useEffect } from 'react';
 import { retrievePlayers } from '../../actions/playerActions';
 import { initializeRound, startRound } from '../../actions';
 import { revealCard } from '../../actions/cardActions';
-<<<<<<< HEAD
 import RevealCardHand from '../in-game/RevealCardHand';
 import useSubscribe from '../../api/useSubscribe';
 import { privateActionsDelegator } from '../../actions/actionDelegator';
 import DiscardPile from '../in-game/DiscardPile';
 import TestDiscardPile from './TestDiscardPile';
-=======
-import HandIndexSelector from './HandIndexSelector';
-import RevealCardHand from '../in-game/RevealCardHand';
-import useSubscribe from '../../api/useSubscribe';
-import { privateActionsDelegator } from '../../actions/actionDelegator';
->>>>>>> master
 
 export default () => {
   const cardHand = useSelector((state) => selectCardHand(state, { playerId: 0 }));
@@ -38,13 +31,8 @@ export default () => {
     if (cardHand) {
       return (
         <div>
-<<<<<<< HEAD
           <RevealCardHand playerId={0} />
           <TestDiscardPile dispatch={dispatch} />
-=======
-          <HandIndexSelector />
-          <RevealCardHand playerId={0} />
->>>>>>> master
         </div>
       );
     }
