@@ -79,7 +79,6 @@ public class GameController {
     }
 
 
-
     @MessageMapping("/round/flow")
     public void userReady(@Payload String payload) {
         // Retrieve data and server data
@@ -121,9 +120,6 @@ public class GameController {
         }
     }
 
-
-    // TODO: Implement game startup method (Might to this in another controller)
-    // TODO: Implement /round/actions/playerId with responses to drawing
 
     // Method should send back an updated list of players
     @MessageMapping("/game/flow")
