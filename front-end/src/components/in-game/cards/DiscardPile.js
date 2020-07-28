@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { getDiscardPileAction } from '../../../selectors/gameStateSelectors';
 import CardDisplay from './CardDisplay';
 import DiscardPileImage from '../../../assets/images/discardpile_empty.png';
-import useAction from './useAction';
+import useAction from './usePublishMove';
 
 export default (props) => {
   const possibleAction = useSelector(getDiscardPileAction);
