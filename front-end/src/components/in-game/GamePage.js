@@ -8,6 +8,7 @@ import usePublish from '../../api/usePublish';
 import { playerJoinedGame } from '../../actions/playerActions';
 import {
   privateActionsDelegator,
+  publicActionsDelegator,
   roundActionDelegator,
 } from '../../actions/actionDelegator';
 import { selectRoundState, selectYourId } from '../../selectors';
@@ -23,6 +24,7 @@ export default () => {
   useSubscribe('/topic/game/flow', playerJoinedGame, publishUserName);
   useSubscribe('/topic/round/flow', roundActionDelegator, undefined);
   useSubscribe(`/topic/round/actions/${yourId}`, privateActionsDelegator, undefined);
+  useSubscribe('/topic/round/actions', publicActionsDelegator, undefined);
 
   const determineRender = () => {
     switch (roundState) {
