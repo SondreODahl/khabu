@@ -21,7 +21,7 @@ export default (props) => {
     } else {
       console.log('Cannot draw card');
     }
-  }, []);
+  }, [playerCanDraw]);
 
   return (
     <div>
