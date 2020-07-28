@@ -6,7 +6,7 @@ const selectCardById = (state, props) => state.cards.byId[props.id];
 const selectCardHandByPlayerId = (state, props) => state.cards[props.playerId];
 
 const selectDiscardPile = (state) => state.cards.discardPile;
-const selectDiscardPileLength = (state) => state.cards.discardPile.length;
+export const selectDiscardPileLength = (state) => state.cards.discardPile.length;
 export const getDiscardPileTopCard = createSelector(
   selectDiscardPileLength,
   selectDiscardPile,
