@@ -19,7 +19,7 @@ import {
   FRENZY,
   PUT,
   TRANSFER,
-} from './gameStates';
+} from '../../constants/gameStates';
 
 const initialState = {
   currentState: null,

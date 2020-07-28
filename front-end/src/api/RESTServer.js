@@ -1,5 +1,5 @@
 import Axios from 'axios';
-import { config } from './Constants';
+import { config } from '../constants/api';
 import { useDispatch } from 'react-redux';
 import { formError, formValid, setData } from '../actions';
 import { POST_DATA } from '../actions/types';

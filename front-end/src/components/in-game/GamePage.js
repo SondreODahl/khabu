@@ -14,6 +14,7 @@ import {
 import { selectRoundState, selectYourId } from '../../selectors';
 import CardDeck from './cards/CardDeck';
 import TemporaryCard from './cards/TemporaryCard';
+import DiscardPile from './cards/DiscardPile';
 
 export default () => {
   const yourId = useSelector(selectYourId);
@@ -46,9 +47,9 @@ export default () => {
       case roundStates.STARTED:
         return (
           <div>
-            <h1>Started</h1>
             <CardDeck yourId={yourId} />
             <TemporaryCard />
+            <DiscardPile yourId={yourId} />
           </div>
         );
       case roundStates.OVER:

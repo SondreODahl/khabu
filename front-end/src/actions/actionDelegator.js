@@ -5,6 +5,7 @@ import {
   playerDrewFromDeck,
   revealCard,
 } from './cardActions';
+import { playerDiscardedCard } from './inGameActions';
 
 export const roundActionDelegator = (topic, body) => {
   const parsedJSON = JSON.parse(body);
@@ -47,6 +48,9 @@ export const publicActionsDelegator = (topic, body) => {
   switch (type) {
     case 'DECK':
       return playerDrewFromDeck();
+    case 'DISCARD':
+      const value = parsedJSON.value;
+      return playerDiscardedCard(value);
     default:
       alert(`publicActionsDelegator was called with ${body}`);
   }
