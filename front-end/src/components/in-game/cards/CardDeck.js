@@ -3,17 +3,12 @@ import usePublish from '../../../api/usePublish';
 import { useSelector } from 'react-redux';
 import { getCanDrawCard } from '../../../selectors/gameStateSelectors';
 import RedCardBack from '../../../assets/images/purple_back.png';
+import usePublishMove from './usePublishMove';
 
 export default (props) => {
   const playerCanDraw = useSelector(getCanDrawCard);
-
-  const json = {
-    action: 'DRAW_FROM_DECK',
+  const publishDraw = usePublishMove('DRAW_FROM_DECK', {
     currentPlayerId: props.yourId,
-  };
-  const publishDraw = usePublish({
-    destination: '/app/round/actions',
-    body: JSON.stringify(json),
   });
   const drawCard = useCallback(() => {
     if (playerCanDraw) {
@@ -25,7 +20,6 @@ export default (props) => {
 
   return (
     <div>
-      <h1>Deck</h1>
       <img
         src={RedCardBack}
         alt={'Drawing Deck'}

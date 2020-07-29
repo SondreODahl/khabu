@@ -4,6 +4,7 @@ import {
   DISCARD_CARD,
   DRAW_FROM_DECK,
   REMOVE_CARD_FROM_HAND,
+  SWAP_CARDS,
 } from './types';
 import _ from 'lodash';
 
@@ -16,11 +17,14 @@ export const addCardToHand = (cardId, playerId) => {
 export const removeCardFromHand = (cardId, playerId) => {
   return { type: REMOVE_CARD_FROM_HAND, payload: { cardId, playerId } };
 };
-export const discardCard = () => {
-  return { type: DISCARD_CARD };
+export const discardCard = (cardId) => {
+  return { type: DISCARD_CARD, payload: { cardId } };
 };
 export const drawFromCardDeck = (cardId, value) => {
   return { type: DRAW_FROM_DECK, payload: { cardId, value } };
+};
+export const swapCards = (playerId, cardId, tempCardId, value) => {
+  return { type: SWAP_CARDS, payload: { playerId, cardId, tempCardId, value } };
 };
 
 export const revealCard = (playerId, cardId, value) => (dispatch, getState) => {

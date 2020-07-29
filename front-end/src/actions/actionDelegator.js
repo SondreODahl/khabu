@@ -5,7 +5,7 @@ import {
   playerDrewFromDeck,
   revealCard,
 } from './cardActions';
-import { playerDiscardedCard } from './inGameActions';
+import { playerDiscardedCard, playerSwappedCard } from './inGameActions';
 
 export const roundActionDelegator = (topic, body) => {
   const parsedJSON = JSON.parse(body);
@@ -49,8 +49,10 @@ export const publicActionsDelegator = (topic, body) => {
     case 'DECK':
       return playerDrewFromDeck();
     case 'DISCARD':
-      const value = parsedJSON.value;
-      return playerDiscardedCard(value);
+      return playerDiscardedCard(parsedJSON.value);
+    case 'SWAP':
+      const { targetCardIndex, value } = parsedJSON;
+      return playerSwappedCard(targetCardIndex - 1, value); // Server is 1-indexed
     default:
       alert(`publicActionsDelegator was called with ${body}`);
   }
