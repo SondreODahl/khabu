@@ -28,10 +28,11 @@ export default (props) => {
         />
       </div>
     );
-  return (
-    // There is a card on the pile
-    <div className={'discard-pile'}>
-      <Card selector={selectCard} id={id} onClick={onClick} />
-    </div>
-  );
+  else
+    return (
+      // There is a card on the pile
+      <div className={'discard-pile'}>
+        <Card selector={selectCard} id={id} onClick={onClick} />
+      </div>
+    );
 };
