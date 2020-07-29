@@ -57,11 +57,13 @@ class EffectValidatorTest {
 
     @Test
     void checkingCardsInDifferentHandsReturnsTrue() {
+        turn.setGameState(Gamestate.KING_EFFECT);
         assertTrue(EffectValidator.isValidEffectUseInCurrentState(player, opponent, Effect.CHECK_TWO_CARDS, turn));
     }
 
     @Test
     void checkingCardsInSameHandReturnsFalse() {
+        turn.setGameState(Gamestate.KING_EFFECT);
         assertFalse(EffectValidator.isValidEffectUseInCurrentState(player, player, Effect.CHECK_TWO_CARDS, turn));
     }
 
