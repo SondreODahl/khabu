@@ -8,7 +8,7 @@ export default (props) => {
   const cards = useSelector((state) => selectCardHand(state, props));
   const renderCards = () => {
     return cards.map((id) => {
-      return <RevealCard playerId={props.playerId} id={id} />;
+      return <RevealCard playerId={props.playerId} id={id} key={id} />;
     });
   };
   return <div className={'ui five column grid'}>{renderCards()}</div>;

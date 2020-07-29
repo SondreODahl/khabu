@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { getDiscardPileAction } from '../../../selectors/gameStateSelectors';
 import CardDisplay from './CardDisplay';
 import DiscardPileImage from '../../../assets/images/discardpile_empty.png';
-import useAction from './usePublishMove';
+import usePublishMove from './usePublishMove';
 import { DISCARD_MOVE } from '../../../constants/gameMoves';
 
 export default (props) => {
@@ -16,7 +16,7 @@ export default (props) => {
   if (possibleAction !== null) {
     action = possibleAction === DISCARD_MOVE ? 'DISCARD' : 'DRAW';
   }
-  const onClick = useAction(action, discardParams);
+  const onClick = usePublishMove(action, discardParams);
   if (!id) {
     return (
       <div>
