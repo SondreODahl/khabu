@@ -6,9 +6,10 @@ import { getServerIdForCard, selectCard } from '../../../selectors';
 import usePublishMove from './usePublishMove';
 
 export default (props) => {
+  console.log(props);
   const IdInCardHand = useSelector((state) => getServerIdForCard(state, props));
   const publishReveal = usePublishMove('REVEAL', {
-    playerId: props.playerId.toString(),
+    ...props.parameters,
     targetCardIndex: IdInCardHand.toString(),
   });
   return (

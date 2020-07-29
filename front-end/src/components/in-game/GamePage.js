@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import ReadyUpButton from './ReadyUpButton';
 import { roundStates } from '../../reducers/game/roundReducer';
-import RevealCardHand from './cards/RevealCardHand';
+import CardHand from './cards/CardHand';
 import useSubscribe from '../../api/useSubscribe';
 import usePublish from '../../api/usePublish';
 import { playerJoinedGame } from '../../actions/playerActions';
@@ -41,7 +41,7 @@ export default () => {
       case roundStates.INITIALIZING:
         return (
           <div>
-            <RevealCardHand playerId={yourId} />
+            <CardHand playerId={yourId} />
           </div>
         );
       case roundStates.STARTED:
