@@ -20,7 +20,16 @@ public class EffectPerformer {
     public void exchangeCards(Player targetOne, Player targetTwo, int targetOneIndex, int targetTwoIndex) {
     }
 
-    void checkAndExchangeCards(Player targetOne, Player targetTwo, int targetOneIndex, int targetTwoIndex) {
+    public void checkAndExchangeCards(Player targetOne, Player targetTwo, int targetOneIndex, int targetTwoIndex) {
+
+    }
+
+    public void checkTwoCards(Player targetOne, Player targetTwo, int targetOneIndex, int targetTwoIndex) {
+
+    }
+
+    // TODO: Might not need this, check if it is possible to use exchangeCards()
+    public void exchangeCheckedCards(Player targetOne, Player targetTwo, int targetOneIndex, int targetTwoIndex) {
 
     }
 
