@@ -19,6 +19,11 @@ export const getDiscardPileTopCardId = createSelector(
 
 const selectProps = (_, props) => props;
 
+export const selectCardGlow = createCachedSelector(
+  selectCardValueById,
+  (card) => card.glow
+)((state, props) => props.id);
+
 export const selectCard = createCachedSelector(
   selectCardValueById,
   (card) => card.value
