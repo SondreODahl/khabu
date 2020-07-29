@@ -15,13 +15,13 @@ import CardWrapper from './CardWrapper';
 const getParameters = (possibleAction, props) => {
   switch (possibleAction) {
     case SWAP_MOVE:
-      return { currentPlayerId: props.playerId };
+      return { action: 'SWAP', parameters: { currentPlayerId: props.playerId } };
     case REVEAL_MOVE:
-      return { playerId: props.playerId }; // TODO: Change to currentPlayerId
+      return { action: 'REVEAL', parameters: { playerId: props.playerId } }; // TODO: Change to currentPlayerId
     case PUT_MOVE: // NOT IMPLEMENTED YET
     case TRANSFER_MOVE: // NOT IMPLEMENTED YET
     case null: // NO POSSIBLE MOVE ON THE CARD
-      return {};
+      return { action: null, parameters: null };
     default:
       alert(`Error in getCardAction. Returned ${possibleAction}`);
   }
@@ -31,12 +31,13 @@ export default (props) => {
   const cards = useSelector((state) => selectCardHand(state, props));
   const possibleAction = useSelector((state) => getCardAction(state));
   const getParametersMemoized = useCallback(getParameters, [possibleAction, props]);
+  const { action, parameters } = getParametersMemoized(possibleAction, props);
   const renderCards = () => {
     return cards.map((id) => {
       return (
         <CardWrapper
-          action={possibleAction}
-          parameters={getParametersMemoized(possibleAction, props)}
+          action={action}
+          parameters={parameters}
           playerId={props.playerId}
           id={id}
           key={id}
