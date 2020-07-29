@@ -18,7 +18,6 @@ export default (props) => {
   }
   const onClick = useAction(action, discardParams);
   if (!id)
-    // Empty pile
     return (
       <div>
         <CardDisplay
@@ -30,7 +29,6 @@ export default (props) => {
     );
   else
     return (
-      // There is a card on the pile
       <div className={'discard-pile'}>
         <Card selector={selectCard} id={id} onClick={onClick} />
       </div>
