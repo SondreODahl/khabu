@@ -12,6 +12,7 @@ import {
   START_ROUND,
   DISCARD_CARD,
   DRAW_FROM_DECK,
+  SWAP_CARDS,
 } from '../../actions/types';
 import _ from 'lodash';
 import { addCardToIds } from '../../actions/cardActions';
@@ -24,6 +25,9 @@ const byId = (state = {}, { type, payload }) => {
       return { ...state, [id]: value };
     case REMOVE_CARD:
       return _.omit(state, payload.id.toString());
+    case SWAP_CARDS: // TODO: REFACTOR LATER
+      const { cardId, tempCardId } = payload;
+      return { ...state, [cardId]: payload.value, [tempCardId]: null };
     default:
       return state;
   }
@@ -35,6 +39,10 @@ const byPlayerId = (state = [], { type, payload }) => {
       return [...state, payload.cardId];
     case REMOVE_CARD_FROM_HAND:
       return state.filter((cardId) => cardId !== payload.cardId);
+    case SWAP_CARDS:
+      return state.map((card) =>
+        card === payload.cardId ? payload.tempCardId : card
+      ); // Replace the card with the temp
     default:
       return state;
   }
@@ -44,6 +52,7 @@ const discardPile = (state = [], { type, payload }) => {
   switch (type) {
     case DISCARD_CARD:
     case PUT_CARD:
+    case SWAP_CARDS:
       return [...state, payload.cardId];
     case DRAW_CARD_DISCARD:
       return state.filter((cardId) => cardId !== payload.cardId);
@@ -55,10 +64,10 @@ const discardPile = (state = [], { type, payload }) => {
 const temporaryCard = (state = null, { type, payload }) => {
   switch (type) {
     case DISCARD_CARD:
+    case SWAP_CARDS:
       return null;
     case DRAW_FROM_DECK:
       return payload.cardId;
-    // TODO: Case for swapping cards
     default:
       return state;
   }
@@ -122,6 +131,17 @@ const cardHandsReducer = (state = getNewInitState(), action) => {
         ...state,
         discardPile: discardPile(state.discardPile, action),
         temporaryCard: temporaryCard(state.temporaryCard, action),
+      };
+    case SWAP_CARDS:
+      return {
+        ...state,
+        discardPile: discardPile(state.discardPile, action),
+        temporaryCard: temporaryCard(state.temporaryCard, action),
+        [action.payload.playerId]: byPlayerId(
+          state[action.payload.playerId],
+          action
+        ),
+        byId: byId(state.byId, action),
       };
     case DRAW_CARD_DISCARD:
       return { ...state, discardPile: discardPile(state.discardPile, action) };
