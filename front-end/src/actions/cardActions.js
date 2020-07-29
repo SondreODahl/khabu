@@ -31,6 +31,11 @@ export const toggleCardGlow = (cardId) => {
   return { type: TOGGLE_GLOW, payload: cardId };
 };
 
+export const cardGlow = (cardId) => (dispatch) => {
+  dispatch(toggleCardGlow(cardId));
+  setTimeout((cardId) => dispatch(toggleCardGlow(cardId)), 2000);
+};
+
 export const revealCard = (playerId, cardId, value) => (dispatch, getState) => {
   const playerCards = getState().cards[playerId]; // List of card Ids
   const revealedCard = playerCards[cardId]; // Id is the index of the card. Relative in back-end

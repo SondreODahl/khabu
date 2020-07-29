@@ -13,6 +13,7 @@ import {
   DISCARD_CARD,
   DRAW_FROM_DECK,
   SWAP_CARDS,
+  TOGGLE_GLOW,
 } from '../../actions/types';
 import _ from 'lodash';
 import { addCardToIds } from '../../actions/cardActions';
