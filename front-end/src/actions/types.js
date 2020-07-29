@@ -38,6 +38,7 @@ export const REMOVE_CARD_FROM_HAND = 'REMOVE_CARD_FROM_HAND';
 export const PUT_CARD = 'PUT_CARD';
 export const DRAW_CARD_DISCARD = 'DRAW_CARD_DISCARD';
 export const HIDE_HAND = 'HIDE_HAND';
+export const TOGGLE_GLOW = 'TOGGLE_GLOW';
 
 // ------------------ Turn -------------------------------
 export const END_TURN = 'END_TURN';

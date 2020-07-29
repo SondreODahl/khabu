@@ -5,6 +5,7 @@ import {
   DRAW_FROM_DECK,
   REMOVE_CARD_FROM_HAND,
   SWAP_CARDS,
+  TOGGLE_GLOW,
 } from './types';
 import _ from 'lodash';
 
@@ -25,6 +26,9 @@ export const drawFromCardDeck = (cardId, value) => {
 };
 export const swapCards = (playerId, cardId, tempCardId, value) => {
   return { type: SWAP_CARDS, payload: { playerId, cardId, tempCardId, value } };
+};
+export const toggleCardGlow = (cardId) => {
+  return { type: TOGGLE_GLOW, payload: cardId };
 };
 
 export const revealCard = (playerId, cardId, value) => (dispatch, getState) => {
