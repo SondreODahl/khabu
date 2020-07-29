@@ -28,12 +28,12 @@ export const swapCards = (playerId, cardId, tempCardId, value) => {
   return { type: SWAP_CARDS, payload: { playerId, cardId, tempCardId, value } };
 };
 export const toggleCardGlow = (cardId) => {
-  return { type: TOGGLE_GLOW, payload: cardId };
+  return { type: TOGGLE_GLOW, payload: { cardId } };
 };
 
 export const cardGlow = (cardId) => (dispatch) => {
   dispatch(toggleCardGlow(cardId));
-  setTimeout((cardId) => dispatch(toggleCardGlow(cardId)), 2000);
+  setTimeout(() => dispatch(toggleCardGlow(cardId)), 1000);
 };
 
 export const revealCard = (playerId, cardId, value) => (dispatch, getState) => {
