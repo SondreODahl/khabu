@@ -20,7 +20,6 @@ export default (props) => {
 
   return (
     <div>
-      <h1>Deck</h1>
       <img
         src={RedCardBack}
         alt={'Drawing Deck'}

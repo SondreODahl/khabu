@@ -6,15 +6,14 @@ import { getServerIdForCard, selectCard } from '../../../selectors';
 import usePublishMove from './usePublishMove';
 
 export default (props) => {
-  console.log(props);
   const IdInCardHand = useSelector((state) => getServerIdForCard(state, props));
-  const publishReveal = usePublishMove('REVEAL', {
+  const publishMove = usePublishMove(props.action, {
     ...props.parameters,
     targetCardIndex: IdInCardHand.toString(),
   });
   return (
     <div className={'column'}>
-      <Card id={props.id} onClick={publishReveal} selector={selectCard} />
+      <Card id={props.id} onClick={publishMove} selector={selectCard} />
     </div>
   );
 };

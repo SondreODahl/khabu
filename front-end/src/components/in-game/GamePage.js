@@ -50,6 +50,7 @@ export default () => {
             <CardDeck yourId={yourId} />
             <TemporaryCard />
             <DiscardPile yourId={yourId} />
+            <CardHand playerId={yourId} />
           </div>
         );
       case roundStates.OVER:
