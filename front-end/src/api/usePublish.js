@@ -8,6 +8,9 @@ export default (parameters) => {
     console.warn('Publish is missing destination or body');
   }
   const failedFunc = useCallback(() => console.log('Waiting for connection'), []);
-  const returnFunc = useCallback(() => client.publish(parameters), [connected]);
+  const returnFunc = useCallback(() => client.publish(parameters), [
+    parameters,
+    connected,
+  ]);
   return connected ? returnFunc : failedFunc;
 };
