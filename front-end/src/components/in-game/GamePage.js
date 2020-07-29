@@ -11,13 +11,15 @@ import {
   publicActionsDelegator,
   roundActionDelegator,
 } from '../../actions/actionDelegator';
-import { selectRoundState, selectYourId } from '../../selectors';
+import { selectOpponentId, selectRoundState, selectYourId } from '../../selectors';
 import CardDeck from './cards/CardDeck';
 import TemporaryCard from './cards/TemporaryCard';
 import DiscardPile from './cards/DiscardPile';
+import Card from './cards/Card';
 
 export default () => {
   const yourId = useSelector(selectYourId);
+  const opponentId = useSelector(selectOpponentId);
   const roundState = useSelector(selectRoundState);
   const publishUserName = usePublish({
     destination: '/app/game/flow',
@@ -47,6 +49,7 @@ export default () => {
       case roundStates.STARTED:
         return (
           <div>
+            <CardHand playerId={opponentId} />
             <CardDeck yourId={yourId} />
             <TemporaryCard />
             <DiscardPile yourId={yourId} />
