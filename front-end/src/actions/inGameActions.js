@@ -2,6 +2,7 @@ import { DISCARD_CARD, END_TURN, PLAYER_CALLED_KHABU, SWAP_CARDS } from './types
 import {
   addCardToHand,
   addCardToIds,
+  cardGlow,
   discardCard,
   removeCardFromHand,
   swapCards,
@@ -27,4 +28,5 @@ export const playerSwappedCard = (targetCardIndex, value) => (
   const tempCardId = getState().cards.temporaryCard;
   const cardId = getState().cards[playerId][targetCardIndex];
   dispatch(swapCards(playerId, cardId, tempCardId, value));
+  dispatch(cardGlow(tempCardId));
 };

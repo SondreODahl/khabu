@@ -13,6 +13,7 @@ import {
   DISCARD_CARD,
   DRAW_FROM_DECK,
   SWAP_CARDS,
+  TOGGLE_GLOW,
 } from '../../actions/types';
 import _ from 'lodash';
 import { addCardToIds } from '../../actions/cardActions';
@@ -20,14 +21,30 @@ import { addCardToIds } from '../../actions/cardActions';
 const byId = (state = {}, { type, payload }) => {
   switch (type) {
     case ADD_CARD:
-    case SHOW_CARD:
+    case SHOW_CARD: {
       const { id, value } = payload; // Value should always be null on ADD_CARD
-      return { ...state, [id]: value };
+      return { ...state, [id]: { value, glow: false } };
+    }
     case REMOVE_CARD:
       return _.omit(state, payload.id.toString());
-    case SWAP_CARDS: // TODO: REFACTOR LATER
+    case SWAP_CARDS: {
+      // TODO: REFACTOR LATER
       const { cardId, tempCardId } = payload;
-      return { ...state, [cardId]: payload.value, [tempCardId]: null };
+      return {
+        ...state,
+        [cardId]: { value: payload.value, glow: false },
+        [tempCardId]: { value: null, glow: false },
+      };
+    }
+    case TOGGLE_GLOW: {
+      const { cardId } = payload;
+      const { value, glow } = state[cardId];
+      console.log(`cardId: ${cardId}, value: ${value} glow: ${glow}`);
+      return {
+        ...state,
+        [cardId]: { value, glow: !glow },
+      };
+    }
     default:
       return state;
   }
@@ -77,7 +94,7 @@ const temporaryCard = (state = null, { type, payload }) => {
 
 const resetHand = (state, playerId) => {
   for (let i = 0; i < state[playerId].length; i++) {
-    state.byId[state[playerId][i]] = null;
+    state.byId[state[playerId][i]] = { value: null, glow: false };
   }
   return { ...state };
 };
@@ -114,6 +131,7 @@ const cardHandsReducer = (state = getNewInitState(), action) => {
       return resetHand(state, action.payload.playerId);
     case ADD_CARD:
     case REMOVE_CARD:
+    case TOGGLE_GLOW:
       return { ...state, byId: byId(state.byId, action) };
     case ADD_CARD_TO_HAND:
     case REMOVE_CARD_FROM_HAND:

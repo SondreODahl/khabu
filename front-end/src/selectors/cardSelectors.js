@@ -3,7 +3,7 @@ import { createSelector } from 'reselect';
 import { useSelector } from 'react-redux';
 
 const selectAllCards = (state) => state.cards.byId;
-const selectCardById = (state, props) => state.cards.byId[props.id];
+const selectCardValueById = (state, props) => state.cards.byId[props.id];
 const selectCardHandByPlayerId = (state, props) => state.cards[props.playerId];
 
 const selectDiscardPile = (state) => state.cards.discardPile;
@@ -19,9 +19,14 @@ export const getDiscardPileTopCardId = createSelector(
 
 const selectProps = (_, props) => props;
 
+export const selectCardGlow = createCachedSelector(
+  selectCardValueById,
+  (card) => card.glow
+)((state, props) => props.id);
+
 export const selectCard = createCachedSelector(
-  selectCardById,
-  (card) => card
+  selectCardValueById,
+  (card) => card.value
 )((state, props) => props.id);
 
 export const selectCardHand = createCachedSelector(

@@ -1,0 +1,9 @@
+.glow {
+    border-color: aqua;
+    border-width: 2px;
+    border-style: solid;
+}
+img {
+    width: 120px;
+    height: 200px;
+}
