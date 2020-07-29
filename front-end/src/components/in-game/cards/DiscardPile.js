@@ -12,12 +12,12 @@ export default (props) => {
   const possibleAction = useSelector(getDiscardPileAction);
   const id = useSelector(getDiscardPileTopCardId);
   const discardParams = { currentPlayerId: props.yourId };
-  let action;
+  let action = null;
   if (possibleAction !== null) {
     action = possibleAction === DISCARD_MOVE ? 'DISCARD' : 'DRAW';
   }
   const onClick = useAction(action, discardParams);
-  if (!id)
+  if (!id) {
     return (
       <div>
         <CardDisplay
@@ -27,10 +27,11 @@ export default (props) => {
         />
       </div>
     );
-  else
+  } else {
     return (
-      <div className={'discard-pile'}>
+      <div>
         <Card selector={selectCard} id={id} onClick={onClick} />
       </div>
     );
+  }
 };
