@@ -12,13 +12,12 @@ export default (props) => {
   const possibleAction = useSelector(getDiscardPileAction);
   const id = useSelector(getDiscardPileTopCardId);
   const discardParams = { currentPlayerId: props.yourId };
-  let action;
+  let action = null;
   if (possibleAction !== null) {
     action = possibleAction === DISCARD_MOVE ? 'DISCARD' : 'DRAW';
   }
   const onClick = useAction(action, discardParams);
-  if (!id)
-    // Empty pile
+  if (!id) {
     return (
       <div>
         <CardDisplay
@@ -28,10 +27,11 @@ export default (props) => {
         />
       </div>
     );
-  return (
-    // There is a card on the pile
-    <div className={'discard-pile'}>
-      <Card selector={selectCard} id={id} onClick={onClick} />
-    </div>
-  );
+  } else {
+    return (
+      <div>
+        <Card selector={selectCard} id={id} onClick={onClick} />
+      </div>
+    );
+  }
 };
