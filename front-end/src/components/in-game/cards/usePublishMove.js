@@ -1,10 +1,11 @@
 import usePublish from '../../../api/usePublish';
 
 export default (action, parameters) => {
-  if (action === null) return null;
   const json = JSON.stringify({ action, ...parameters });
-  return usePublish({
+  const publish = usePublish({
     destination: '/app/round/actions',
     body: json,
   });
+  if (action === null) return null;
+  return publish;
 };
