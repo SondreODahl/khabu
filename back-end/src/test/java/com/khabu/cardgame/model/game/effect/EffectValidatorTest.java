@@ -26,45 +26,45 @@ class EffectValidatorTest {
 
     @Test
     void illegalToUseEffectOnOpponentTurn() {
-        assertFalse(EffectValidator.isValidEffectUseInCurrentState(opponent, player, Effect.CHECK_TWO_CARDS, turn));
+        assertFalse(EffectValidator.isValidEffectUseInCurrentState(opponent, opponent, player, Effect.CHECK_TWO_CARDS, turn));
     }
 
     @Test
     void illegalToUseEffectInOtherStateThanDiscard() {
         turn.setGameState(Gamestate.FRENZY);
-        assertFalse(EffectValidator.isValidEffectUseInCurrentState(player, opponent, Effect.CHECK_OTHER_CARD, turn));
+        assertFalse(EffectValidator.isValidEffectUseInCurrentState(player, player, opponent, Effect.CHECK_OTHER_CARD, turn));
     }
 
     @Test
     void checkingYourOwnCardOnRightEffectReturnsTrue() {
-        assertTrue(EffectValidator.isValidEffectUseInCurrentState(player, player, Effect.CHECK_SELF_CARD, turn));
+        assertTrue(EffectValidator.isValidEffectUseInCurrentState(player, player,null, Effect.CHECK_SELF_CARD, turn));
     }
 
     @Test
     void checkingOpponentCardOnRightEffectReturnsTrue() {
-        assertTrue(EffectValidator.isValidEffectUseInCurrentState(player, opponent, Effect.CHECK_OTHER_CARD, turn));
+        assertTrue(EffectValidator.isValidEffectUseInCurrentState(player, opponent, null, Effect.CHECK_OTHER_CARD, turn));
     }
 
     @Test
     void exchangingCardsInDifferentHandsReturnsTrue() {
-        assertTrue(EffectValidator.isValidEffectUseInCurrentState(player, opponent, Effect.EXCHANGE_CARDS, turn));
+        assertTrue(EffectValidator.isValidEffectUseInCurrentState(player, player, opponent, Effect.EXCHANGE_CARDS, turn));
     }
 
     @Test
     void exchangingCardsInSameHandReturnsFalse() {
-        assertFalse(EffectValidator.isValidEffectUseInCurrentState(player, player, Effect.EXCHANGE_CARDS, turn));
+        assertFalse(EffectValidator.isValidEffectUseInCurrentState(player, player, player, Effect.EXCHANGE_CARDS, turn));
     }
 
     @Test
     void checkingCardsInDifferentHandsReturnsTrue() {
         turn.setGameState(Gamestate.KING_EFFECT);
-        assertTrue(EffectValidator.isValidEffectUseInCurrentState(player, opponent, Effect.CHECK_TWO_CARDS, turn));
+        assertTrue(EffectValidator.isValidEffectUseInCurrentState(player, player, opponent, Effect.CHECK_TWO_CARDS, turn));
     }
 
     @Test
     void checkingCardsInSameHandReturnsFalse() {
         turn.setGameState(Gamestate.KING_EFFECT);
-        assertFalse(EffectValidator.isValidEffectUseInCurrentState(player, player, Effect.CHECK_TWO_CARDS, turn));
+        assertFalse(EffectValidator.isValidEffectUseInCurrentState(player, player, player, Effect.CHECK_TWO_CARDS, turn));
     }
 
 }
