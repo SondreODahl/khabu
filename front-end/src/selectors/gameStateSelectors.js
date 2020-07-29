@@ -38,7 +38,7 @@ export const getDiscardPileAction = createSelector(
   selectDiscardPileLength,
   selectCurrentGameState,
   getIsYourTurn,
-  (length, state, putAllowed, yourTurn) => {
+  (length, state, yourTurn) => {
     if (yourTurn && state !== null) {
       if (length === 0) return DISCARD_MOVE;
       else if (state === DRAW) return DRAW_MOVE;
