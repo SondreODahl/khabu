@@ -16,6 +16,7 @@ import CardDeck from './cards/CardDeck';
 import TemporaryCard from './cards/TemporaryCard';
 import DiscardPile from './cards/DiscardPile';
 import Card from './cards/Card';
+import NameDisplay from './NameDisplay';
 
 export default () => {
   const yourId = useSelector(selectYourId);
@@ -49,11 +50,13 @@ export default () => {
       case roundStates.STARTED:
         return (
           <div>
+            <NameDisplay playerId={opponentId} />
             <CardHand playerId={opponentId} />
             <CardDeck yourId={yourId} />
             <TemporaryCard />
             <DiscardPile yourId={yourId} />
             <CardHand playerId={yourId} />
+            <NameDisplay playerId={yourId} />
           </div>
         );
       case roundStates.OVER:
