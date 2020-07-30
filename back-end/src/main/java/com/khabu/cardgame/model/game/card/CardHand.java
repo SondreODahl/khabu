@@ -28,6 +28,10 @@ public class CardHand {
         cards.put(index, card);
     }
 
+    public void addCardToSpecificIndex(Card card, int index) {
+        cards.put(index, card);
+    }
+
     public int findCardIndexbyCard(Card card) {
         for (int i: cards.keySet()) {
             if (cards.get(i).equals(card)) {

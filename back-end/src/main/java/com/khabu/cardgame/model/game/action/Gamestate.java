@@ -6,6 +6,7 @@ public enum Gamestate {
     PUT,
     PUT_OTHER_TRANSFER,
     DISCARD,
+    KING_EFFECT,
     FRENZY,
     FIRST_TURN,
     ENDED
