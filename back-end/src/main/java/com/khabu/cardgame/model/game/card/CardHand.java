@@ -72,7 +72,7 @@ public class CardHand {
             && card.getValue() == 12) {
                 sum -= 1;
             } else {
-                sum += (card.getValue() + 1);
+                sum += card.getValue();
             }
         }
         return sum;
