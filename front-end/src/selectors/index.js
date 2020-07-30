@@ -1,15 +1,11 @@
 import { createSelector } from 'reselect';
 import createCachedSelector from 're-reselect';
-const selectGameState = (state) => state.gameState;
-
 export * from './cardSelectors';
 export * from './playerSelectors';
 export * from './gameStateSelectors';
 export * from './turnSelectors';
 
 export const selectRoundState = (state) => state.round.currentState;
-export const selectProps = (_, props) => props;
-
 const selectPlayerReady = (state) => state.round.ready.playerReady;
 const selectTotalReady = (state) => state.round.ready.totalReady;
 export const selectReady = createSelector(

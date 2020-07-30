@@ -1,7 +1,7 @@
-import { selectPlayer, selectYourId } from './playerSelectors';
-import { selectProps } from './index';
+import { selectYourId } from './playerSelectors';
 import { createSelector } from 'reselect';
 
+const selectProps = (_, props) => props;
 export const selectCurrentPlayer = (state) => state.turn.currentPlayerTurn;
 export const selectCurrentPuttingPlayer = (state) => state.turn.currentPuttingPlayer;
 export const getIsYourTurn = createSelector(
