@@ -28,26 +28,26 @@ public class EffectValidator {
     }
 
     private static boolean isValidCheckEffectOnOpponent(Player attemptingPlayer, Player targetPlayer, Effect effect, Turn turn) {
-        return (!attemptingPlayer.equals(targetPlayer)) &&
+        return !(attemptingPlayer.equals(targetPlayer)) &&
                 isPlayerCurrentPlayer(attemptingPlayer, turn) &&
                 turn.gameStateEquals(Gamestate.DISCARD);
     }
 
     private static boolean isValidExchange(Player attemptingPlayer, Player targetOne, Player targetTwo, Effect effect, Turn turn) {
         return isPlayerCurrentPlayer(attemptingPlayer, turn) &&
-                (!targetOne.equals(targetTwo)) &&
+                !(targetOne.equals(targetTwo)) &&
                 turn.gameStateEquals(Gamestate.DISCARD);
     }
 
     private static boolean isValidCheckOnTwoPlayers(Player attemptingPlayer, Player targetOne, Player targetTwo, Effect effect, Turn turn) {
         return isPlayerCurrentPlayer(attemptingPlayer, turn) &&
-                (!targetOne.equals(targetTwo)) &&
+                !(targetOne.equals(targetTwo)) &&
                 turn.gameStateEquals(Gamestate.DISCARD);
     }
 
     private static boolean isValidExchangeAfterCheck(Player attemptingPlayer, Player targetOne, Player targetTwo, Effect effect, Turn turn) {
         return isPlayerCurrentPlayer(attemptingPlayer, turn) &&
-                (!(attemptingPlayer.equals(targetOne) && attemptingPlayer.equals(targetTwo))) &&
+                !(targetOne.equals(targetTwo)) &&
                 turn.gameStateEquals(Gamestate.KING_EFFECT);
     }
 
