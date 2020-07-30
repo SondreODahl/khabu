@@ -14,7 +14,7 @@ export default (props) => {
   const discardParams = { currentPlayerId: props.yourId };
   let action = null;
   if (possibleAction !== null) {
-    action = possibleAction === DISCARD_MOVE ? 'DISCARD' : 'DRAW';
+    action = possibleAction === DISCARD_MOVE ? 'DISCARD' : null; // TODO: Replace null with DRAW_DISC
   }
   const onClick = usePublishMove(action, discardParams);
   if (!id) {
