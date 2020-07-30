@@ -45,6 +45,10 @@ public class Player {
         cardHand.addCard(h);
     }
 
+    public void addCardToSpecificIndex(Card card, int index) {
+        cardHand.addCardToSpecificIndex(card, index);
+    }
+
     public Card getCard(int i) {
         return cardHand.getCard(i);
     }

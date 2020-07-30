@@ -4,6 +4,7 @@ import {
   PLAYER_READY,
   UPDATE_PLAYERS_READY,
   HIDE_HAND,
+  ROUND_END,
 } from './types';
 
 export const initializeRound = (revealTime, startingHandSize) => (
@@ -21,6 +22,10 @@ export const startRound = (startingPlayerId) => (dispatch, getState) => {
   const yourId = getState().players.yourId;
   dispatch({ type: HIDE_HAND, payload: { playerId: yourId } });
   dispatch({ type: START_ROUND, payload: { startingPlayerId } });
+};
+
+export const roundEnd = () => {
+  return { type: ROUND_END };
 };
 
 export const toggleReady = () => {

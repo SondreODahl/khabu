@@ -5,7 +5,11 @@ import {
   playerDrewFromDeck,
   revealCard,
 } from './cardActions';
-import { playerDiscardedCard, playerSwappedCard } from './inGameActions';
+import {
+  playerDiscardedCard,
+  playerEndedTurn,
+  playerSwappedCard,
+} from './inGameActions';
 
 export const roundActionDelegator = (topic, body) => {
   const parsedJSON = JSON.parse(body);
@@ -53,6 +57,10 @@ export const publicActionsDelegator = (topic, body) => {
     case 'SWAP':
       const { targetCardIndex, value } = parsedJSON;
       return playerSwappedCard(targetCardIndex - 1, value); // Server is 1-indexed
+    case 'END_TURN':
+      const { nextPlayer, roundOver } = parsedJSON;
+      const roundOverParsed = roundOver === 'true'; // Always receive strings from backend
+      return playerEndedTurn(nextPlayer, roundOverParsed);
     default:
       alert(`publicActionsDelegator was called with ${body}`);
   }

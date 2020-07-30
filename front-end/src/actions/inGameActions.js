@@ -7,12 +7,11 @@ import {
   removeCardFromHand,
   swapCards,
 } from './cardActions';
+import { endTurn } from './turnActions';
+import { roundEnd } from './roundActions';
 
 export const playerCalledKhabu = (playerId, nextPlayerId) => {
   return { type: PLAYER_CALLED_KHABU, payload: { playerId, nextPlayerId } };
-};
-export const playerEndedTurn = (nextPlayerId) => {
-  return { type: END_TURN, payload: nextPlayerId };
 };
 export const playerDiscardedCard = (value) => (dispatch, getState) => {
   const tempCardId = getState().cards.temporaryCard;
@@ -29,4 +28,9 @@ export const playerSwappedCard = (targetCardIndex, value) => (
   const cardId = getState().cards[playerId][targetCardIndex];
   dispatch(swapCards(playerId, cardId, tempCardId, value));
   dispatch(cardGlow(tempCardId));
+};
+
+export const playerEndedTurn = (nextPlayerId, roundOver) => (dispatch) => {
+  if (roundOver) dispatch(roundEnd());
+  else dispatch(endTurn(nextPlayerId));
 };

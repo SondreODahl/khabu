@@ -1,4 +1,12 @@
-import { CARD_DRAWN, DRAW, FIRST_TURN, TRANSFER } from '../constants/gameStates';
+import {
+  CARD_DRAWN,
+  DISCARD,
+  DRAW,
+  FIRST_TURN,
+  FRENZY,
+  PUT,
+  TRANSFER,
+} from '../constants/gameStates';
 import {
   getAreYouCurrentPuttingPlayer,
   getIsYourTurn,
@@ -59,5 +67,14 @@ export const getCardAction = createSelector(
     if (state === TRANSFER && puttingPlayer) return TRANSFER_MOVE;
     if (state === null) return REVEAL_MOVE; // Before the game has started. State is null
     return null; // No valid moves at this moment
+  }
+);
+
+export const getCanEndTurn = createSelector(
+  getIsYourTurn,
+  selectCurrentGameState,
+  (yourTurn, state) => {
+    if (!yourTurn) return false;
+    return state === FRENZY || state === PUT || state === DISCARD;
   }
 );

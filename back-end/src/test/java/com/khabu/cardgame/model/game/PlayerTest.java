@@ -59,4 +59,10 @@ class PlayerTest {
         int totalCardValue = player.getCardHand().calculateHandScore();
         assertEquals(totalCardValue, score);
     }
+
+    @Test
+    void addCardToSpecificIndex() {
+        player.addCardToSpecificIndex(testCard, 3);
+        assertEquals(testCard, player.getCard(3));
+    }
 }
