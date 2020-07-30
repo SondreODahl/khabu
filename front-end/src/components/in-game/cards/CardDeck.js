@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect } from 'react';
 import usePublish from '../../../api/usePublish';
 import { useSelector } from 'react-redux';
-import { getCanDrawCard } from '../../../selectors/gameStateSelectors';
+import { getCanDrawCard } from '../../../selectors';
 import RedCardBack from '../../../assets/images/purple_back.png';
 import usePublishMove from './usePublishMove';
 

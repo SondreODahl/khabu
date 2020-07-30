@@ -3,17 +3,13 @@ import createCachedSelector from 're-reselect';
 const selectGameState = (state) => state.gameState;
 
 export * from './cardSelectors';
+export * from './playerSelectors';
+export * from './gameStateSelectors';
+export * from './turnSelectors';
 
 export const selectRoundState = (state) => state.round.currentState;
+export const selectProps = (_, props) => props;
 
-export const selectYourId = (state) => state.players.yourId;
-export const selectAllPlayers = (state) => state.players.allPlayers;
-export const selectOpponentId = createSelector(
-  selectYourId,
-  selectAllPlayers,
-  (yourId, allPlayers) => allPlayers.filter((ids) => ids !== yourId).pop()
-);
-const selectPlayer = (id) => (state) => state.players.byId[id];
 const selectPlayerReady = (state) => state.round.ready.playerReady;
 const selectTotalReady = (state) => state.round.ready.totalReady;
 export const selectReady = createSelector(

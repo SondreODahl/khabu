@@ -14,7 +14,7 @@ import {
   TRANSFER_MOVE,
 } from '../constants/gameMoves';
 import { selectDiscardPileLength } from './cardSelectors';
-import { selectYourId } from './index';
+import { selectYourId } from './playerSelectors';
 
 export const selectCurrentGameState = (state) => state.gameState.currentState;
 const selectPutAllowed = (state) => state.gameState.putAllowed;
