@@ -1,0 +1,10 @@
+.glow {
+    border-color: aqua;
+    border-width: 2px;
+    border-style: solid;
+}
+
+.user-display {
+    display: table;
+    margin: 0 auto;
+}

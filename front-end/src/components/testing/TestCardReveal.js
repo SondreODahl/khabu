@@ -9,6 +9,7 @@ import useSubscribe from '../../api/useSubscribe';
 import { privateActionsDelegator } from '../../actions/actionDelegator';
 import DiscardPile from '../in-game/cards/DiscardPile';
 import TestDiscardPile from './TestDiscardPile';
+import NameDisplay from '../in-game/NameDisplay';
 
 export default () => {
   const cardHand = useSelector((state) => selectCardHand(state, { playerId: 0 }));
@@ -33,6 +34,7 @@ export default () => {
         <div>
           <RevealCardHand playerId={0} />
           <TestDiscardPile dispatch={dispatch} />
+          <NameDisplay playerId={0} />
         </div>
       );
     }
