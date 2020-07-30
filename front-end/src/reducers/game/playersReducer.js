@@ -7,7 +7,7 @@ import {
 } from '../../actions/types';
 import { combineReducers } from 'redux';
 
-const playerById = (state = {}, { type, payload }) => {
+const byId = (state = {}, { type, payload }) => {
   switch (type) {
     case UPDATE_PLAYERS_INFO:
       return { ...state, ...payload.playerIds };
@@ -46,7 +46,7 @@ const yourId = (state = null, { type, payload }) => {
 };
 
 export default combineReducers({
-  playerById,
+  byId,
   allPlayers,
   yourId,
   playerCapacity,

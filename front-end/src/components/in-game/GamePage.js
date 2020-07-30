@@ -16,6 +16,7 @@ import CardDeck from './cards/CardDeck';
 import TemporaryCard from './cards/TemporaryCard';
 import DiscardPile from './cards/DiscardPile';
 import Card from './cards/Card';
+import NameDisplay from './NameDisplay';
 import EndTurnButton from './EndTurnButton';
 
 export default () => {
@@ -50,12 +51,14 @@ export default () => {
       case roundStates.STARTED:
         return (
           <div>
+            <NameDisplay playerId={opponentId} />
             <CardHand playerId={opponentId} />
             <CardDeck yourId={yourId} />
             <TemporaryCard />
             <DiscardPile yourId={yourId} />
             <EndTurnButton yourId={yourId} />
             <CardHand playerId={yourId} />
+            <NameDisplay playerId={yourId} />
           </div>
         );
       case roundStates.OVER:

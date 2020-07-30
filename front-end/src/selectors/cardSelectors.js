@@ -1,7 +1,7 @@
 import createCachedSelector from 're-reselect';
 import { createSelector } from 'reselect';
-import { useSelector } from 'react-redux';
 
+const selectProps = (_, props) => props;
 const selectAllCards = (state) => state.cards.byId;
 const selectCardValueById = (state, props) => state.cards.byId[props.id];
 const selectCardHandByPlayerId = (state, props) => state.cards[props.playerId];
@@ -16,8 +16,6 @@ export const getDiscardPileTopCardId = createSelector(
     else return pile[length - 1];
   }
 );
-
-const selectProps = (_, props) => props;
 
 export const selectCardGlow = createCachedSelector(
   selectCardValueById,
