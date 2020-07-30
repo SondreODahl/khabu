@@ -1,5 +1,5 @@
 import { Client } from '@stomp/stompjs';
-import { config } from './Constants';
+import { config } from '../constants/api';
 import { useDispatch } from 'react-redux';
 import { setClient, setClientConnected } from '../actions';
 import { useEffect } from 'react';

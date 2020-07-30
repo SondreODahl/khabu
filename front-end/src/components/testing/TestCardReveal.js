@@ -4,10 +4,11 @@ import React, { useEffect } from 'react';
 import { retrievePlayers } from '../../actions/playerActions';
 import { initializeRound, startRound } from '../../actions';
 import { revealCard } from '../../actions/cardActions';
-import HandIndexSelector from './HandIndexSelector';
-import RevealCardHand from '../in-game/RevealCardHand';
+import RevealCardHand from '../in-game/cards/CardHand';
 import useSubscribe from '../../api/useSubscribe';
 import { privateActionsDelegator } from '../../actions/actionDelegator';
+import DiscardPile from '../in-game/cards/DiscardPile';
+import TestDiscardPile from './TestDiscardPile';
 
 export default () => {
   const cardHand = useSelector((state) => selectCardHand(state, { playerId: 0 }));
@@ -30,8 +31,8 @@ export default () => {
     if (cardHand) {
       return (
         <div>
-          <HandIndexSelector />
           <RevealCardHand playerId={0} />
+          <TestDiscardPile dispatch={dispatch} />
         </div>
       );
     }

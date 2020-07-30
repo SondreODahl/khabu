@@ -2,18 +2,24 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import ReadyUpButton from './ReadyUpButton';
 import { roundStates } from '../../reducers/game/roundReducer';
-import RevealCardHand from './RevealCardHand';
+import CardHand from './cards/CardHand';
 import useSubscribe from '../../api/useSubscribe';
 import usePublish from '../../api/usePublish';
 import { playerJoinedGame } from '../../actions/playerActions';
 import {
   privateActionsDelegator,
+  publicActionsDelegator,
   roundActionDelegator,
 } from '../../actions/actionDelegator';
-import { selectRoundState, selectYourId } from '../../selectors';
+import { selectOpponentId, selectRoundState, selectYourId } from '../../selectors';
+import CardDeck from './cards/CardDeck';
+import TemporaryCard from './cards/TemporaryCard';
+import DiscardPile from './cards/DiscardPile';
+import Card from './cards/Card';
 
 export default () => {
   const yourId = useSelector(selectYourId);
+  const opponentId = useSelector(selectOpponentId);
   const roundState = useSelector(selectRoundState);
   const publishUserName = usePublish({
     destination: '/app/game/flow',
@@ -22,6 +28,7 @@ export default () => {
   useSubscribe('/topic/game/flow', playerJoinedGame, publishUserName);
   useSubscribe('/topic/round/flow', roundActionDelegator, undefined);
   useSubscribe(`/topic/round/actions/${yourId}`, privateActionsDelegator, undefined);
+  useSubscribe('/topic/round/actions', publicActionsDelegator, undefined);
 
   const determineRender = () => {
     switch (roundState) {
@@ -36,12 +43,19 @@ export default () => {
       case roundStates.INITIALIZING:
         return (
           <div>
-            <h1>Initializing</h1>
-            <RevealCardHand playerId={yourId} />
+            <CardHand playerId={yourId} />
           </div>
         );
       case roundStates.STARTED:
-        return <h1>Started</h1>;
+        return (
+          <div>
+            <CardHand playerId={opponentId} />
+            <CardDeck yourId={yourId} />
+            <TemporaryCard />
+            <DiscardPile yourId={yourId} />
+            <CardHand playerId={yourId} />
+          </div>
+        );
       case roundStates.OVER:
         return <h1>Over</h1>;
       default:
