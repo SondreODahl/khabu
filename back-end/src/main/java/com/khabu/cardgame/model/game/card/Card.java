@@ -10,7 +10,7 @@ public class Card {
     }
 
     public int getValue() {
-        return value + 1;
+        return value+1;
     }
 
     public char getFace() {

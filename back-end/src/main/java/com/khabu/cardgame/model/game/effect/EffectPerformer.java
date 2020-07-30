@@ -104,8 +104,8 @@ public class EffectPerformer {
         Card targetOneCard = targetOne.removeCard(targetOneIndex);
         Card targetTwoCard = targetTwo.removeCard(targetTwoIndex);
         // Add cards to the correct hands
-        targetOne.addCardToSpecificIndex(targetTwoCard, targetTwoIndex);
-        targetTwo.addCardToSpecificIndex(targetOneCard, targetOneIndex);
+        targetOne.addCardToSpecificIndex(targetTwoCard, targetOneIndex);
+        targetTwo.addCardToSpecificIndex(targetOneCard, targetTwoIndex);
     }
 
 
