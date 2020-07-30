@@ -59,7 +59,8 @@ export const publicActionsDelegator = (topic, body) => {
       return playerSwappedCard(targetCardIndex - 1, value); // Server is 1-indexed
     case 'END_TURN':
       const { nextPlayer, roundOver } = parsedJSON;
-      return playerEndedTurn(nextPlayer, roundOver);
+      const roundOverParsed = roundOver === 'true'; // Always receive strings from backend
+      return playerEndedTurn(nextPlayer, roundOverParsed);
     default:
       alert(`publicActionsDelegator was called with ${body}`);
   }
