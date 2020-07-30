@@ -166,6 +166,7 @@ public class GameController {
             @Override
             public void run() {
                 // Get starting playerId and change jsonOutput to send a BEGIN message to client
+                round.setStarted(true);
                 int playerId = game.getRound().getTurn().getCurrentPlayer().getPlayerId();
                 String jsonOutput = JsonConverter.createJsonString(objectMapper, output, "BEGIN", Integer.toString(playerId));
                 simpMessagingTemplate.convertAndSend("/topic/round/flow", jsonOutput);

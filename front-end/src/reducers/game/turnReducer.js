@@ -13,6 +13,7 @@ const currentPuttingPlayer = (state = null, { type, payload }) => {
       return payload.puttingPlayer;
     case END_TURN:
     case PLAYER_CALLED_KHABU:
+    case ROUND_END:
       return null;
     default:
       return state;
@@ -34,7 +35,7 @@ const currentPlayerTurn = (state = null, { type, payload }) => {
       return payload.startingPlayerId;
     case PLAYER_CALLED_KHABU:
     case END_TURN:
-      return payload;
+      return payload.nextPlayerId;
     case ROUND_END:
       return null;
     default:

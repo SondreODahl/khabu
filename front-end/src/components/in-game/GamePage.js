@@ -16,6 +16,7 @@ import CardDeck from './cards/CardDeck';
 import TemporaryCard from './cards/TemporaryCard';
 import DiscardPile from './cards/DiscardPile';
 import Card from './cards/Card';
+import EndTurnButton from './EndTurnButton';
 
 export default () => {
   const yourId = useSelector(selectYourId);
@@ -53,6 +54,7 @@ export default () => {
             <CardDeck yourId={yourId} />
             <TemporaryCard />
             <DiscardPile yourId={yourId} />
+            <EndTurnButton yourId={yourId} />
             <CardHand playerId={yourId} />
           </div>
         );
