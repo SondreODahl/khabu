@@ -42,7 +42,7 @@ export const revealCard = (playerId, cardId, value) => (dispatch, getState) => {
   dispatch(addCardToIds(revealedCard, value));
 };
 export const drawFromDeckAndRegisterCard = (value) => (dispatch, getState) => {
-  const newId = getHighestId(getState);
+  const newId = getHighestId(getState) + 1;
   dispatch(addCardToIds(newId, value));
   dispatch(drawFromCardDeck(newId, value));
 };
@@ -55,10 +55,9 @@ export const playerDrewFromDeck = () => (dispatch, getState) => {
   }
 };
 // HELPER METHOD
-const getHighestId = (getState) => {
+export const getHighestId = (getState) => {
   const currentIds = getState().cards.byId;
   const keysArray = _.keys(currentIds);
   const intArray = keysArray.map(Number);
-  const maxKey = _.max(intArray);
-  return maxKey + 1; // One higher than current highest
+  return _.max(intArray);
 };
