@@ -3,6 +3,7 @@ import {
   DRAW_FROM_DECK,
   END_TURN,
   PLAYER_CALLED_KHABU,
+  PUT_CARD,
   ROUND_END,
   START_ROUND,
   SUCCESSFUL_PUT_OTHER,
@@ -18,6 +19,7 @@ import {
   FIRST_TURN,
   FRENZY,
   PUT,
+  PUT_FAIL,
   TRANSFER,
 } from '../../constants/gameStates';
 
@@ -39,11 +41,16 @@ const gameState = (state = initialState, { type, payload }) => {
       return newState(DRAW, false);
     case DRAW_FROM_DECK:
       return newState(CARD_DRAWN, false);
-    case SUCCESSFUL_PUT_SELF:
+    case PUT_CARD:
+      if (payload.status === 'fail')
+        // You should move into put_fail stat e
+        return newState(PUT_FAIL, false);
+      if (payload.agent === payload.victim)
+        // This means that it is a put-self case
+        return newState(PUT, payload.putAllowed); // Cannot transfer to yourself
+      return newState(TRANSFER, false); // Transfer to another player
     case TRANSFER_CARD:
       return newState(PUT, payload.putAllowed);
-    case SUCCESSFUL_PUT_OTHER:
-      return newState(TRANSFER, false);
     case SWAP_CARDS:
     case SWAP_WITH_DISC:
       return newState(FRENZY, true);
