@@ -4,7 +4,7 @@ import React, { useEffect } from 'react';
 import { retrievePlayers } from '../../actions/playerActions';
 import { initializeRound, startRound } from '../../actions';
 import { revealCard } from '../../actions/cardActions';
-import RevealCardHand from '../in-game/cards/CardHand';
+import RevealCardHand from '../in-game/cards/CardHand/CardHand';
 import useSubscribe from '../../api/useSubscribe';
 import {
   privateActionsDelegator,
