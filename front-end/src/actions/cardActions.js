@@ -12,8 +12,8 @@ import _ from 'lodash';
 export const addCardToIds = (id, value) => {
   return { type: ADD_CARD, payload: { id, value } };
 };
-export const addCardToHand = (cardId, playerId) => {
-  return { type: ADD_CARD_TO_HAND, payload: { cardId, playerId } };
+export const addCardToHand = (cardId, playerId, index) => {
+  return { type: ADD_CARD_TO_HAND, payload: { cardId, playerId, index } };
 };
 export const removeCardFromHand = (cardId, playerId) => {
   return { type: REMOVE_CARD_FROM_HAND, payload: { cardId, playerId } };

@@ -68,11 +68,11 @@ const putFail = (agent, victim, victimCard, value) => (dispatch, getState) => {
   setTimeout(() => {
     dispatch(putReverse(agent, prevState)); // Reverse gameState and remove discardPile top deck
     dispatch(addCardToIds(victimCardId, null)); // Rehide the previous card
-    dispatch(addCardToHand(victimCardId, victim)); // Add the lost card back to the player
+    dispatch(addCardToHand(victimCardId, victim, 0)); // Add the lost card back to the player
     const drawnCardId = getHighestId(getState);
     // Should not trigger draw_from_deck action as this should happen automatically and not enter new state
     dispatch(addCardToIds(drawnCardId, null)); // The drawn card is hidden
-    dispatch(addCardToHand(drawnCardId, agent)); // Player who failed is punished with a card
+    dispatch(addCardToHand(drawnCardId, agent, 0)); // Player who failed is punished with a card
   }, DISC_PILE_TIMEOUT);
   dispatch(removeCardFromHand(victimCardId, victim));
   dispatch(addCardToIds(victimCardId, value));

@@ -53,10 +53,11 @@ const byId = (state = {}, { type, payload }) => {
 
 const byPlayerId = (state = [], { type, payload }) => {
   switch (type) {
-    case ADD_CARD_TO_HAND:
-      return [...state, payload.cardId];
+    case ADD_CARD_TO_HAND: // Inserts card at specific index
+      const index = payload.index !== undefined ? payload.index : state.length; // If no index specified, insert at the end
+      return [...state.slice(0, index), payload.cardId, ...state.slice(index)];
     case REMOVE_CARD_FROM_HAND:
-      return state.filter((cardId) => cardId !== payload.cardId);
+      return state.map((cardId) => (cardId === payload.cardId ? null : cardId)); // Insert null where the card previously was
     case SWAP_CARDS:
       return state.map((card) =>
         card === payload.cardId ? payload.tempCardId : card
@@ -71,7 +72,7 @@ const discardPile = (state = [], { type, payload }) => {
     case PUT_CARD:
       return [...state, payload.victimCardId];
     case PUT_REVERSE:
-      return [...state.slice(0, state.length - 1)]; // Remove the top card that failed
+      return [...state.slice(0, -1)]; // Remove the top card that failed
     case DISCARD_CARD:
     case SWAP_CARDS:
       return [...state, payload.cardId];
