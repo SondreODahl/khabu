@@ -15,6 +15,7 @@ import {
   getHighestId,
   removeCardFromHand,
   swapCards,
+  updateCard,
 } from './cardActions';
 import { endTurn } from './turnActions';
 import { roundEnd } from './roundActions';
@@ -24,7 +25,7 @@ export const playerCalledKhabu = (playerId, nextPlayerId) => {
 };
 export const playerDiscardedCard = (value) => (dispatch, getState) => {
   const tempCardId = getState().cards.temporaryCard;
-  dispatch(addCardToIds(tempCardId, value)); // Update the card value so it is visible
+  dispatch(updateCard(tempCardId, value)); // Update the card value so it is visible
   dispatch(discardCard(tempCardId)); // Add to discard pile ids and reset temp card
 };
 

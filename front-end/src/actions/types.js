@@ -32,6 +32,7 @@ export const SHOW_CARD = 'SHOW_CARD';
 
 // ------------------- Card ------------------------------
 export const ADD_CARD = 'ADD_CARD';
+export const UPDATE_CARD = 'UPDATE_CARD';
 export const REMOVE_CARD = 'REMOVE_CARD';
 export const ADD_CARD_TO_HAND = 'ADD_CARD_TO_HAND';
 export const REMOVE_CARD_FROM_HAND = 'REMOVE_CARD_FROM_HAND';

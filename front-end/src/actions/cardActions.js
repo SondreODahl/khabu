@@ -6,11 +6,15 @@ import {
   REMOVE_CARD_FROM_HAND,
   SWAP_CARDS,
   TOGGLE_GLOW,
+  UPDATE_CARD,
 } from './types';
 import _ from 'lodash';
 
 export const addCardToIds = (id, value) => {
   return { type: ADD_CARD, payload: { id, value } };
+};
+export const updateCard = (id, value) => {
+  return { type: UPDATE_CARD, payload: { id, value } };
 };
 export const addCardToHand = (cardId, playerId, index) => {
   return { type: ADD_CARD_TO_HAND, payload: { cardId, playerId, index } };
@@ -39,7 +43,7 @@ export const cardGlow = (cardId) => (dispatch) => {
 export const revealCard = (playerId, cardId, value) => (dispatch, getState) => {
   const playerCards = getState().cards[playerId]; // List of card Ids
   const revealedCard = playerCards[cardId]; // Id is the index of the card. Relative in back-end
-  dispatch(addCardToIds(revealedCard, value));
+  dispatch(updateCard(revealedCard, value));
 };
 export const drawFromDeckAndRegisterCard = (value) => (dispatch, getState) => {
   const newId = getHighestId(getState) + 1;

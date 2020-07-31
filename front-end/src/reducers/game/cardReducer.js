@@ -15,6 +15,7 @@ import {
   SWAP_CARDS,
   TOGGLE_GLOW,
   PUT_REVERSE,
+  UPDATE_CARD,
 } from '../../actions/types';
 import _ from 'lodash';
 import { addCardToIds } from '../../actions/cardActions';
@@ -22,7 +23,7 @@ import { addCardToIds } from '../../actions/cardActions';
 const byId = (state = {}, { type, payload }) => {
   switch (type) {
     case ADD_CARD:
-    case SHOW_CARD: {
+    case UPDATE_CARD: {
       const { id, value } = payload; // Value should always be null on ADD_CARD
       return { ...state, [id]: { value, glow: false } };
     }
