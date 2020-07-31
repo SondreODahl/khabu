@@ -6,7 +6,6 @@ import CardDisplay from './CardDisplay';
 export default (props) => {
   const value = useSelector((state) => props.selector(state, props));
   const glow = useSelector((state) => selectCardGlow(state, props));
-  console.log(`Glow: ${glow}`);
   const imageValue = value === null ? 'red_back' : value;
   const image = require(`../../../../assets/images/${imageValue}.png`);
   const name = glow ? 'glow' : '';

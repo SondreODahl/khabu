@@ -49,7 +49,7 @@ export const getDiscardPileAction = createSelector(
   getIsYourTurn,
   (length, state, yourTurn) => {
     if (yourTurn && state !== null) {
-      if (length === 0) return DISCARD_MOVE;
+      if (state === CARD_DRAWN) return DISCARD_MOVE;
       else if (state === DRAW) return DRAW_MOVE;
     }
     return null;
@@ -68,6 +68,10 @@ export const getCardAction = createSelector(
     if (state === null) return REVEAL_MOVE; // Before the game has started. State is null
     return null; // No valid moves at this moment
   }
+);
+
+export const getCardActionOpponent = createSelector(getCanPut, (canPut) =>
+  canPut ? PUT_MOVE : null
 );
 
 export const getCanEndTurn = createSelector(

@@ -44,7 +44,7 @@ export default () => {
       case roundStates.INITIALIZING:
         return (
           <div>
-            <CardHand playerId={yourId} />
+            <CardHand playerId={yourId} yourId={yourId} />
           </div>
         );
       case roundStates.STARTED:

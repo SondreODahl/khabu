@@ -1,14 +1,13 @@
-import usePublish from '../../../api/usePublish';
 import Card from './Card';
-import React, { useCallback, useMemo } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
-import { getCardAction, getServerIdForCard, selectCard } from '../../../selectors';
-import usePublishMove from './usePublishMove';
+import { getServerIdForCard, selectCard } from '../../../../selectors';
+import usePublishMove from '../usePublishMove';
 
 export default (props) => {
   const IdInCardHand = useSelector((state) => getServerIdForCard(state, props));
-  const publishMove = usePublishMove(action, {
-    ...parameters,
+  const publishMove = usePublishMove(props.action, {
+    ...props.parameters,
     targetCardIndex: IdInCardHand.toString(),
   });
   return (
