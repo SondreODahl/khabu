@@ -180,7 +180,7 @@ public class GameHandler {
     }
     public static String handlePutOther(HashMap<String, Object> jsonMap, Round round) {
         // Retrieve puttingPlayerId and targetPlayerId and targetCardindex
-        int currentPlayerId = Integer.parseInt((String) jsonMap.get("currentPlayerId"));
+        int currentPlayerId = Integer.parseInt((String) jsonMap.get("puttingPlayerId"));
         int targetPlayerId = Integer.parseInt((String) jsonMap.get("targetPlayerId"));
         int targetCardIndex = Integer.parseInt((String) jsonMap.get("targetCardIndex"));
 
@@ -202,7 +202,7 @@ public class GameHandler {
     }
     public static String handlePutSelf(HashMap<String, Object> jsonMap, Round round) {
         // Retrieve puttingPlayerId and targetPlayerId and targetCardindex
-        int currentPlayerId = Integer.parseInt((String) jsonMap.get("currentPlayerId"));
+        int currentPlayerId = Integer.parseInt((String) jsonMap.get("puttingPlayerId"));
         int targetCardIndex = Integer.parseInt((String) jsonMap.get("targetCardIndex"));
 
         // Perform back-end game logic
