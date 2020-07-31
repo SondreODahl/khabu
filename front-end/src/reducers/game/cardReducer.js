@@ -14,6 +14,7 @@ import {
   DRAW_FROM_DECK,
   SWAP_CARDS,
   TOGGLE_GLOW,
+  PUT_REVERSE,
 } from '../../actions/types';
 import _ from 'lodash';
 import { addCardToIds } from '../../actions/cardActions';
@@ -67,8 +68,11 @@ const byPlayerId = (state = [], { type, payload }) => {
 
 const discardPile = (state = [], { type, payload }) => {
   switch (type) {
-    case DISCARD_CARD:
     case PUT_CARD:
+      return [...state, payload.victimCardId];
+    case PUT_REVERSE:
+      return [...state].pop(); // Remove the top card that failed
+    case DISCARD_CARD:
     case SWAP_CARDS:
       return [...state, payload.cardId];
     case DRAW_CARD_DISCARD:
@@ -140,6 +144,7 @@ const cardHandsReducer = (state = getNewInitState(), action) => {
     case DRAW_FROM_DECK:
       return { ...state, temporaryCard: temporaryCard(state.temporaryCard, action) };
     case PUT_CARD:
+    case PUT_REVERSE:
       return {
         ...state,
         discardPile: discardPile(state.discardPile, action),

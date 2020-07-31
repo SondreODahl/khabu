@@ -6,7 +6,10 @@ import { initializeRound, startRound } from '../../actions';
 import { revealCard } from '../../actions/cardActions';
 import RevealCardHand from '../in-game/cards/CardHand';
 import useSubscribe from '../../api/useSubscribe';
-import { privateActionsDelegator } from '../../actions/actionDelegator';
+import {
+  privateActionsDelegator,
+  publicActionsDelegator,
+} from '../../actions/actionDelegator';
 import DiscardPile from '../in-game/cards/DiscardPile';
 import TestDiscardPile from './TestDiscardPile';
 import NameDisplay from '../in-game/NameDisplay';
@@ -26,6 +29,19 @@ export default () => {
     dispatch(initializeRound(1, 4));
     dispatch(revealCard(0, 2, 3));
     dispatch(startRound(0));
+    dispatch(
+      publicActionsDelegator(
+        null,
+        JSON.stringify({
+          type: 'PUT',
+          agent: 0,
+          victim: 0,
+          victimCard: 1,
+          status: 'success',
+          value: 2,
+        })
+      )
+    );
   }, []);
 
   const render = () => {
