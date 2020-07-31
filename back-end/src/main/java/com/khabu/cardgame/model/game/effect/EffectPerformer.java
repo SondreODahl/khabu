@@ -16,14 +16,12 @@ import java.util.List;
 public class EffectPerformer {
     Turn turn;
     Round round;
-    CardDeck cardDeck;
     DiscardPile discardPile;
 
-    public EffectPerformer(Turn turn, CardDeck cardDeck, DiscardPile discardPile, Round round) {
-        if (turn == null || cardDeck == null || discardPile == null || round == null)
+    public EffectPerformer(Turn turn, DiscardPile discardPile, Round round) {
+        if (turn == null || discardPile == null || round == null)
             throw new IllegalArgumentException("Argument cannot be null");
         this.turn = turn;
-        this.cardDeck = cardDeck;
         this.discardPile = discardPile;
         this.round = round;
     }
