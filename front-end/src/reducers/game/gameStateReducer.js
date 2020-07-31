@@ -4,6 +4,7 @@ import {
   END_TURN,
   PLAYER_CALLED_KHABU,
   PUT_CARD,
+  PUT_REVERSE,
   ROUND_END,
   START_ROUND,
   SUCCESSFUL_PUT_OTHER,
@@ -49,6 +50,8 @@ const gameState = (state = initialState, { type, payload }) => {
         // This means that it is a put-self case
         return newState(PUT, payload.putAllowed); // Cannot transfer to yourself
       return newState(TRANSFER, false); // Transfer to another player
+    case PUT_REVERSE:
+      return newState(payload.prevState, true); // Put is always allowed if a failed put has been allowed to happened
     case TRANSFER_CARD:
       return newState(PUT, payload.putAllowed);
     case SWAP_CARDS:
