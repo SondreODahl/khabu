@@ -10,7 +10,8 @@ import {
 const currentPuttingPlayer = (state = null, { type, payload }) => {
   switch (type) {
     case PUT_CARD:
-      return payload.puttingPlayer;
+      if (payload.status === 'success') return payload.agent;
+      return state;
     case END_TURN:
     case PLAYER_CALLED_KHABU:
     case ROUND_END:

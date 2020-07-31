@@ -48,7 +48,7 @@ const gameState = (state = initialState, { type, payload }) => {
         return newState(PUT_FAIL, false);
       if (payload.agent === payload.victim)
         // This means that it is a put-self case
-        return newState(PUT, payload.putAllowed); // Cannot transfer to yourself
+        return newState(PUT, true); // Cannot transfer to yourself
       return newState(TRANSFER, false); // Transfer to another player
     case PUT_REVERSE:
       return newState(payload.prevState, true); // Put is always allowed if a failed put has been allowed to happened
