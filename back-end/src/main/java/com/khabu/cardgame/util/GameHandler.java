@@ -188,9 +188,9 @@ public class GameHandler {
         Card targetCard = round.getPlayerById(targetPlayerId).getCard(targetCardIndex);
         String status = "";
         try {
-            round.performAction(round.getPlayerById(currentPlayerId),
+            boolean success = round.performAction(round.getPlayerById(currentPlayerId),
                     round.getPlayerById(targetPlayerId), Actions.PUT_OTHER, targetCardIndex);
-            status = "success";
+            status = success ? "success" : "fail";
         } catch (IllegalMoveException e) {
             e.printStackTrace();
             status = "fail";
@@ -210,9 +210,9 @@ public class GameHandler {
         boolean successfulPut = false;
         String status = "";
         try {
-            round.performAction(round.getPlayerById(currentPlayerId),
+            boolean success = round.performAction(round.getPlayerById(currentPlayerId),
                     round.getPlayerById(currentPlayerId), Actions.PUT_SELF, targetCardIndex);
-            status = "success";
+            status = success ? "success" : "fail";
         } catch (IllegalMoveException e) {
             e.printStackTrace();
             status = "fail";
