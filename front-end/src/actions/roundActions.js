@@ -1,11 +1,12 @@
 import {
   ALL_PLAYERS_READY,
-  START_ROUND,
-  PLAYER_READY,
-  UPDATE_PLAYERS_READY,
   HIDE_HAND,
+  PLAYER_READY,
   ROUND_END,
+  START_ROUND,
+  UPDATE_PLAYERS_READY,
 } from './types';
+import { updateScores } from './scoresActions';
 
 export const initializeRound = (revealTime, startingHandSize) => (
   dispatch,
@@ -40,9 +41,10 @@ export const updatePlayersReady = (playersReady) => {
 export const endRound = (playersInfo) => (dispatch, getState) => {
   console.log(playersInfo);
   const cards = {};
+  const scores = {};
   Object.keys(playersInfo).forEach((playerId) => {
     const playerHand = getState().cards[playerId];
-    console.log(playerHand);
+    scores[playerId] = playersInfo[playerId].score;
     for (let i = 0; i < playerHand.length; i++) {
       const cardId = playerHand[i];
       const cardValue = playersInfo[playerId].cards[i];
@@ -50,4 +52,5 @@ export const endRound = (playersInfo) => (dispatch, getState) => {
     }
   });
   dispatch(roundEnd(cards));
+  dispatch(updateScores(scores));
 };
