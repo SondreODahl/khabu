@@ -18,7 +18,7 @@ export default (props) => {
   const { action, parameters } = getParametersMemoized(possibleAction, props);
   const renderCards = () => {
     return cards.map((id) => {
-      if (id === null) return <div>Empty Card Slot</div>;
+      if (id === null) return <div className={'column'}>{null}</div>;
       return (
         <CardWrapper
           action={action}

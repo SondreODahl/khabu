@@ -70,7 +70,7 @@ const byPlayerId = (state = [], { type, payload }) => {
     case FORCE_DRAW: {
       const indexOfNull = state.indexOf(null); // Find first empty card. -1 if hand is full
       const index = indexOfNull === -1 ? state.length : indexOfNull;
-      return [...state.slice(0, index), payload.cardId, ...state.slice(index)];
+      return [...state.slice(0, index), payload.cardId, ...state.slice(index + 1)]; // Want to replace the null value. Therefore + 1
     }
     case ADD_CARD_TO_HAND: // Inserts card at specific index
       const index = payload.index !== undefined ? payload.index : state.length; // If no index specified, insert at the end
