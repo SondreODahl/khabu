@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import ReadyUpButton from './ReadyUpButton';
 import { roundStates } from '../../reducers/game/roundReducer';
-import CardHand from './cards/CardHand';
+import CardHand from './cards/CardHand/CardHand';
 import useSubscribe from '../../api/useSubscribe';
 import usePublish from '../../api/usePublish';
 import { playerJoinedGame } from '../../actions/playerActions';
@@ -15,7 +15,6 @@ import { selectOpponentId, selectRoundState, selectYourId } from '../../selector
 import CardDeck from './cards/CardDeck';
 import TemporaryCard from './cards/TemporaryCard';
 import DiscardPile from './cards/DiscardPile';
-import Card from './cards/Card';
 import NameDisplay from './NameDisplay';
 import EndTurnButton from './EndTurnButton';
 
@@ -45,19 +44,19 @@ export default () => {
       case roundStates.INITIALIZING:
         return (
           <div>
-            <CardHand playerId={yourId} />
+            <CardHand playerId={yourId} yourId={yourId} />
           </div>
         );
       case roundStates.STARTED:
         return (
           <div>
             <NameDisplay playerId={opponentId} />
-            <CardHand playerId={opponentId} />
+            <CardHand playerId={opponentId} yourId={yourId} />
             <CardDeck yourId={yourId} />
             <TemporaryCard />
             <DiscardPile yourId={yourId} />
             <EndTurnButton yourId={yourId} />
-            <CardHand playerId={yourId} />
+            <CardHand playerId={yourId} yourId={yourId} />
             <NameDisplay playerId={yourId} />
           </div>
         );

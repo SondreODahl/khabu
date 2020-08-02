@@ -13,8 +13,10 @@ import {
   cardGlow,
   discardCard,
   getHighestId,
+  forceDraw,
   removeCardFromHand,
   swapCards,
+  updateCard,
 } from './cardActions';
 import { endTurn } from './turnActions';
 import { roundEnd } from './roundActions';
@@ -24,7 +26,7 @@ export const playerCalledKhabu = (playerId, nextPlayerId) => {
 };
 export const playerDiscardedCard = (value) => (dispatch, getState) => {
   const tempCardId = getState().cards.temporaryCard;
-  dispatch(addCardToIds(tempCardId, value)); // Update the card value so it is visible
+  dispatch(updateCard(tempCardId, value)); // Update the card value so it is visible
   dispatch(discardCard(tempCardId)); // Add to discard pile ids and reset temp card
 };
 
@@ -53,12 +55,12 @@ export const playerPutCard = (agent, victim, victimCard, status, value) => {
   } else alert(`playerPutCard called with status ${status}`);
 };
 
-const putCard = (agent, victim, victimCardId, status, value) => {
-  return { type: PUT_CARD, payload: { agent, victim, victimCardId, status, value } };
+const putCard = (agent, victim, cardId, status, value) => {
+  return { type: PUT_CARD, payload: { agent, victim, cardId, status, value } };
 };
 
-const putReverse = (agent, prevState) => {
-  return { type: PUT_REVERSE, payload: { agent, prevState } };
+const putReverse = (agent, victim, cardId, index, prevState) => {
+  return { type: PUT_REVERSE, payload: { agent, victim, cardId, index, prevState } };
 };
 
 const putFail = (agent, victim, victimCard, value) => (dispatch, getState) => {
@@ -66,22 +68,13 @@ const putFail = (agent, victim, victimCard, value) => (dispatch, getState) => {
   const victimCardId = getState().cards[victim][victimCard];
   const DISC_PILE_TIMEOUT = 2000;
   setTimeout(() => {
-    dispatch(putReverse(agent, prevState)); // Reverse gameState and remove discardPile top deck
-    dispatch(addCardToIds(victimCardId, null)); // Rehide the previous card
-    dispatch(addCardToHand(victimCardId, victim)); // Add the lost card back to the player
-    const drawnCardId = getHighestId(getState);
-    // Should not trigger draw_from_deck action as this should happen automatically and not enter new state
-    dispatch(addCardToIds(drawnCardId, null)); // The drawn card is hidden
-    dispatch(addCardToHand(drawnCardId, agent)); // Player who failed is punished with a card
+    dispatch(putReverse(agent, victim, victimCardId, victimCard, prevState)); // Reverse gameState and remove discardPile top deck
+    dispatch(forceDraw(agent));
   }, DISC_PILE_TIMEOUT);
-  dispatch(removeCardFromHand(victimCardId, victim));
-  dispatch(addCardToIds(victimCardId, value));
   dispatch(putCard(agent, victim, victimCardId, 'fail', value));
 };
 
 const putSuccess = (agent, victim, victimCard, value) => (dispatch, getState) => {
   const victimCardId = getState().cards[victim][victimCard];
-  dispatch(removeCardFromHand(victimCardId, victim));
-  dispatch(addCardToIds(victimCardId, value));
   dispatch(putCard(agent, victim, victimCardId, 'success', value));
 };

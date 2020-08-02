@@ -1,4 +1,4 @@
-import Card from './Card';
+import Card from './Card/Card';
 import React from 'react';
 import { selectCard } from '../../../selectors';
 import { useSelector } from 'react-redux';

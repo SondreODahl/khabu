@@ -34,6 +34,9 @@ export const privateActionsDelegator = (topic, body) => {
   const parsedJSON = JSON.parse(body);
   const type = parsedJSON.type;
   switch (type) {
+    case 'ERROR':
+      console.log(parsedJSON.value);
+      break;
     case 'REVEAL':
       const { status, playerId, id, value } = parsedJSON;
       if (status === 'FAIL') {
