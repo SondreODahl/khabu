@@ -18,6 +18,7 @@ import DiscardPile from './cards/DiscardPile';
 import NameDisplay from './NameDisplay';
 import EndTurnButton from './EndTurnButton';
 import GameInterface from './GameInterface';
+import WaitingPage from './WaitingPage';
 
 export default () => {
   const yourId = useSelector(selectYourId);
@@ -35,7 +36,7 @@ export default () => {
   const determineRender = () => {
     switch (roundState) {
       case roundStates.WAITING_FOR_PLAYERS:
-        return <div>Waiting for other players...</div>;
+        return <WaitingPage />;
       case roundStates.NOT_STARTED:
         return (
           <div>
