@@ -11,6 +11,7 @@ import {
   getAreYouCurrentPuttingPlayer,
   getIsYourTurn,
   selectCurrentPuttingPlayer,
+  selectKhabuPlayer,
 } from './turnSelectors';
 import { createSelector } from 'reselect';
 import {
@@ -81,4 +82,12 @@ export const getCanEndTurn = createSelector(
     if (!yourTurn) return false;
     return state === FRENZY || state === PUT || state === DISCARD;
   }
+);
+
+export const getCanCallKhabu = createSelector(
+  getIsYourTurn,
+  selectKhabuPlayer,
+  selectCurrentGameState,
+  (yourTurn, khabuPlayer, state) =>
+    yourTurn && !khabuPlayer && (state === DRAW || state === FIRST_TURN)
 );

@@ -3,9 +3,9 @@ import CardHand from '../cards/CardHand/CardHand';
 import CardDeck from '../cards/CardDeck';
 import TemporaryCard from '../cards/TemporaryCard';
 import DiscardPile from '../cards/DiscardPile';
-import EndTurnButton from '../buttons/EndTurnButton';
 import React from 'react';
 import './GameInterface.css';
+import GameButtons from '../buttons/GameButtons';
 
 export default (props) => {
   return (
@@ -19,11 +19,7 @@ export default (props) => {
         <TemporaryCard />
       </div>
       <div className={'ui container'}>
-        <div className={'ui grid'}>
-          <div className={'two column centered row button-row'}>
-            <EndTurnButton yourId={props.yourId} />
-          </div>
-        </div>
+        <GameButtons playerId={props.yourId} />
       </div>
       <CardHand playerId={props.yourId} yourId={props.yourId} />
       <NameDisplay playerId={props.yourId} />
