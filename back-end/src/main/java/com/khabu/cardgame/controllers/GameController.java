@@ -196,6 +196,7 @@ public class GameController {
         simpMessagingTemplate.convertAndSend("/topic/round/actions", jsonResponse);
     }
 
+    // TODO: Send response to everyone with playerid, cardindex and type:reveal
     // Handles request from a player to reveal one of his/her cards
     private void revealCard(HashMap<String, Object> jsonMap, Round round) {
         String jsonResponse = GameHandler.handleReveal(jsonMap, round);
@@ -283,5 +284,57 @@ public class GameController {
         simpMessagingTemplate.convertAndSend("/topic/round/actions", jsonResponse);
     }
 
+    // TODO: Separate method into private and public response
+    private void checkOpponentCard(HashMap<String, Object> jsonMap, Round round) {
+        int currentPlayerId = Integer.parseInt((String) jsonMap.get("currentPlayerId"));
+        int targetIndex = Integer.parseInt((String) jsonMap.get("targetIndex"));
+        int targetPlayerId = Integer.parseInt((String) jsonMap.get("targetPlayerId"));
+        int targetCardValue = round.getPlayerById(currentPlayerId).getCard(targetIndex).getValue();
+
+        try {
+            round.performEffect(round.getPlayerById(currentPlayerId),
+                    round.getPlayerById(targetPlayerId), targetIndex, Effect.CHECK_OTHER_CARD);
+        } catch(IllegalMoveException ime) {
+            ime.printStackTrace();
+        }
+
+        List<String> keys = Arrays.asList("type","agent", "victim", "victimCard", "value");
+        List<String> values = Arrays.asList("OPPONENT_CHECK",Integer.toString(currentPlayerId),
+                Integer.toString(targetPlayerId), Integer.toString(targetIndex),
+                Integer.toString(targetCardValue));
+
+        String jsonResponse = JsonConverter.createJsonString(new ObjectMapper(), new HashMap<>(), keys, values);
+        simpMessagingTemplate.convertAndSend("/topic/round/actions/" + Integer.toString(currentPlayerId),
+                jsonResponse);
+
+        keys = Arrays.asList("type", "targetPlayer","cardId");
+        values = Arrays.asList("PLAYER_CHECK_OPPONENT", Integer.toString(targetPlayerId), Integer.toString(targetIndex));
+        jsonResponse = JsonConverter.createJsonString(new ObjectMapper(), new HashMap<>(), keys, values);
+        simpMessagingTemplate.convertAndSend("/topic/round/actions", jsonResponse);
+    }
+
+    private void exchangeCards(HashMap<String, Object> jsonMap, Round round) {
+        int currentPlayerId = Integer.parseInt((String) jsonMap.get("currentPlayerId"));
+        int targetOneId = Integer.parseInt((String) jsonMap.get("targetOneId"));
+        int targetOneIndex = Integer.parseInt((String) jsonMap.get("targetOneIndex"));
+        int targetTwoId = Integer.parseInt((String) jsonMap.get("targetTwoId"));
+        int targetTwoIndex = Integer.parseInt((String) jsonMap.get("targetTwoIndex"));
+
+        try {
+            round.performEffect(round.getPlayerById(currentPlayerId),
+                    round.getPlayerById(targetOneId), round.getPlayerById(targetTwoId),
+                    Effect.EXCHANGE_CARDS, targetOneIndex, targetTwoIndex);
+        } catch(IllegalMoveException ime) {
+            ime.printStackTrace();
+        }
+
+        List<String> keys = Arrays.asList("type","victimOne", "cardOne", "victimTwo", "cardTwo");
+        List<String> values = Arrays.asList("EXCHANGE_CARDS",Integer.toString(targetOneId),
+                Integer.toString(targetOneIndex), Integer.toString(targetTwoId),
+                Integer.toString(targetTwoIndex));
+
+        String jsonResponse = JsonConverter.createJsonString(new ObjectMapper(), new HashMap<>(), keys, values);
+        simpMessagingTemplate.convertAndSend("/topic/round/actions", jsonResponse);
+    }
 
 }
