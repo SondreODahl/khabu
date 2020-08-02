@@ -12,7 +12,7 @@ export const getParameters = (possibleAction, props) => {
     case REVEAL_MOVE:
       return { action: 'REVEAL', parameters: { playerId: props.playerId } }; // TODO: Change to currentPlayerId
     case PUT_MOVE:
-      if (props.playerId === props.yourId)
+      if (props.playerId !== props.yourId)
         return {
           action: 'PUT_OTHER',
           parameters: {
