@@ -17,6 +17,7 @@ import {
   removeCardFromHand,
   swapCards,
   updateCard,
+  transferCard,
 } from './cardActions';
 import { endTurn } from './turnActions';
 import { roundEnd } from './roundActions';
@@ -51,9 +52,8 @@ export const playerTransferredCard = (victim, victimCardIndex, agentCardIndex) =
   getState
 ) => {
   const agent = getState().turn.currentPuttingPlayer; // Always current putting player that transfers
-  const agentCardId = getState().cards[agent][agentCardIndex];
-  dispatch(removeCardFromHand(agentCardId, agent));
-  dispatch(addCardToHand(agentCardId, victim, victimCardIndex));
+  const agentCardId = getState().cards[agent][agentCardIndex]; // Need id to put it in other player's hand
+  dispatch(transferCard(victim, victimCardIndex, agent, agentCardId));
 };
 
 export const playerPutCard = (agent, victim, victimCard, status, value) => (

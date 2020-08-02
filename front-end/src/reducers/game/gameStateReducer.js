@@ -53,7 +53,7 @@ const gameState = (state = initialState, { type, payload }) => {
     case PUT_REVERSE:
       return newState(payload.prevState, true); // Put is always allowed if a failed put has been allowed to happened
     case TRANSFER_CARD:
-      return newState(PUT, payload.putAllowed);
+      return newState(PUT, true);
     case SWAP_CARDS:
     case SWAP_WITH_DISC:
       return newState(FRENZY, true);

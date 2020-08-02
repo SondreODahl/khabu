@@ -7,6 +7,7 @@ import {
   REMOVE_CARD_FROM_HAND,
   SWAP_CARDS,
   TOGGLE_GLOW,
+  TRANSFER_CARD,
   UPDATE_CARD,
 } from './types';
 import _ from 'lodash';
@@ -31,6 +32,12 @@ export const drawFromCardDeck = (cardId, value) => {
 };
 export const swapCards = (playerId, cardId, tempCardId, value) => {
   return { type: SWAP_CARDS, payload: { playerId, cardId, tempCardId, value } };
+};
+export const transferCard = (victim, victimCardIndex, agent, cardId) => {
+  return {
+    type: TRANSFER_CARD,
+    payload: { victim, victimCardIndex, agent, cardId },
+  };
 };
 export const toggleCardGlow = (cardId) => {
   return { type: TOGGLE_GLOW, payload: { cardId } };
