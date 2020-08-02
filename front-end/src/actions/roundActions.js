@@ -1,11 +1,12 @@
 import {
   ALL_PLAYERS_READY,
-  START_ROUND,
-  PLAYER_READY,
-  UPDATE_PLAYERS_READY,
   HIDE_HAND,
+  PLAYER_READY,
   ROUND_END,
+  START_ROUND,
+  UPDATE_PLAYERS_READY,
 } from './types';
+import { updateScores } from './scoresActions';
 
 export const initializeRound = (revealTime, startingHandSize) => (
   dispatch,
@@ -24,8 +25,8 @@ export const startRound = (startingPlayerId) => (dispatch, getState) => {
   dispatch({ type: START_ROUND, payload: { startingPlayerId } });
 };
 
-export const roundEnd = () => {
-  return { type: ROUND_END };
+export const roundEnd = (cards) => {
+  return { type: ROUND_END, payload: { cards } };
 };
 
 export const toggleReady = () => {
@@ -35,4 +36,21 @@ export const toggleReady = () => {
 export const updatePlayersReady = (playersReady) => {
   playersReady = parseInt(playersReady);
   return { type: UPDATE_PLAYERS_READY, payload: playersReady };
+};
+
+export const endRound = (playersInfo) => (dispatch, getState) => {
+  console.log(playersInfo);
+  const cards = {};
+  const scores = {};
+  Object.keys(playersInfo).forEach((playerId) => {
+    const playerHand = getState().cards[playerId];
+    scores[playerId] = playersInfo[playerId].score;
+    for (let i = 0; i < playerHand.length; i++) {
+      const cardId = playerHand[i];
+      const cardValue = playersInfo[playerId].cards[i];
+      cards[cardId] = { value: cardValue, glow: false };
+    }
+  });
+  dispatch(roundEnd(cards));
+  dispatch(updateScores(scores));
 };

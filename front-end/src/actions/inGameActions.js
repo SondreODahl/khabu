@@ -43,11 +43,6 @@ export const playerSwappedCard = (targetCardIndex, value) => (
   dispatch(cardGlow(tempCardId));
 };
 
-export const playerEndedTurn = (nextPlayerId, roundOver) => {
-  if (roundOver) return roundEnd();
-  else return endTurn(nextPlayerId);
-};
-
 export const playerTransferredCard = (victim, victimCardIndex, agentCardIndex) => (
   dispatch,
   getState

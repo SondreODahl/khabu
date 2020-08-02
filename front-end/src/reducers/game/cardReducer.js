@@ -55,6 +55,9 @@ const byId = (state = {}, { type, payload }) => {
         [cardId]: { value, glow: !glow },
       };
     }
+    case ROUND_END: {
+      return { ...state, ...payload.cards };
+    }
     default:
       return state;
   }
@@ -164,6 +167,7 @@ const cardHandsReducer = (state = getNewInitState(), action) => {
     case ADD_CARD:
     case REMOVE_CARD:
     case TOGGLE_GLOW:
+    case ROUND_END:
     case UPDATE_CARD:
       return { ...state, byId: byId(state.byId, action) };
     case ADD_CARD_TO_HAND:

@@ -243,12 +243,9 @@ public class GameHandler {
         Map<String, Object> data = new HashMap<>();
         data.put("type", "END");
         Map<String, Object> players = new HashMap<>();
-        List<Integer> cardValues = new ArrayList<>();
-        Map<String, Object> playerData = new HashMap<>();
         for (Player player: round.getPlayers()) {
-            // Clear old data
-            cardValues.clear();
-            playerData.clear();
+            List<Integer> cardValues = new ArrayList<>();
+            Map<String, Object> playerData = new HashMap<>();
 
             // Add new data
             for (Card card:player.getCardHand().getCards().values()) {

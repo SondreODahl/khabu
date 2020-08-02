@@ -1,4 +1,9 @@
-import { initializeRound, startRound, updatePlayersReady } from './roundActions';
+import {
+  endRound,
+  initializeRound,
+  startRound,
+  updatePlayersReady,
+} from './roundActions';
 import { ALL_PLAYERS_READY, BEGIN_GAME, START_ROUND } from './types';
 import {
   drawFromDeckAndRegisterCard,
@@ -13,6 +18,7 @@ import {
   playerSwappedCard,
   playerTransferredCard,
 } from './inGameActions';
+import { endTurn } from './turnActions';
 
 export const roundActionDelegator = (topic, body) => {
   const parsedJSON = JSON.parse(body);
@@ -27,6 +33,8 @@ export const roundActionDelegator = (topic, body) => {
     case 'BEGIN':
       const startingPlayer = parsedJSON.value;
       return startRound(startingPlayer);
+    case 'END':
+      return endRound(parsedJSON.players);
     default:
       alert(`RoundActionDelegator was called with ${body}`);
   }
@@ -65,9 +73,8 @@ export const publicActionsDelegator = (topic, body) => {
       return playerSwappedCard(targetCardIndex - 1, value); // Server is 1-indexed
     }
     case 'END_TURN': {
-      const { nextPlayer, roundOver } = parsedJSON;
-      const roundOverParsed = roundOver === 'true'; // Always receive strings from backend
-      return playerEndedTurn(nextPlayer, roundOverParsed);
+      const { nextPlayer } = parsedJSON;
+      return endTurn(nextPlayer);
     }
     case 'PUT': {
       const { agent, victim, victimCard, status, value } = parsedJSON;
