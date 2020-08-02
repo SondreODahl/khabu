@@ -56,13 +56,21 @@ export const playerTransferredCard = (victim, victimCardIndex, agentCardIndex) =
   dispatch(addCardToHand(agentCardId, victim, victimCardIndex));
 };
 
-export const playerPutCard = (agent, victim, victimCard, status, value) => {
+export const playerPutCard = (agent, victim, victimCard, status, value) => (
+  dispatch,
+  getState
+) => {
   const cardValue = parseInt(value);
+  const victimCardId = getState().cards[victim][victimCard];
   if (status === 'fail') {
-    return putFail(agent, victim, victimCard, cardValue);
-  } else if (status === 'success') {
-    return putSuccess(agent, victim, victimCard, cardValue);
-  } else alert(`playerPutCard called with status ${status}`);
+    const prevState = getState().gameState.currentState;
+    const DISC_PILE_TIMEOUT = 2000;
+    setTimeout(() => {
+      dispatch(putReverse(agent, victim, victimCardId, victimCard, prevState)); // Reverse gameState and remove discardPile top deck
+      dispatch(forceDraw(agent));
+    }, DISC_PILE_TIMEOUT);
+  }
+  dispatch(putCard(agent, victim, victimCardId, status, cardValue));
 };
 
 const putCard = (agent, victim, cardId, status, value) => {
@@ -71,20 +79,4 @@ const putCard = (agent, victim, cardId, status, value) => {
 
 const putReverse = (agent, victim, cardId, index, prevState) => {
   return { type: PUT_REVERSE, payload: { agent, victim, cardId, index, prevState } };
-};
-
-const putFail = (agent, victim, victimCard, value) => (dispatch, getState) => {
-  const prevState = getState().gameState.currentState;
-  const victimCardId = getState().cards[victim][victimCard];
-  const DISC_PILE_TIMEOUT = 2000;
-  setTimeout(() => {
-    dispatch(putReverse(agent, victim, victimCardId, victimCard, prevState)); // Reverse gameState and remove discardPile top deck
-    dispatch(forceDraw(agent));
-  }, DISC_PILE_TIMEOUT);
-  dispatch(putCard(agent, victim, victimCardId, 'fail', value));
-};
-
-const putSuccess = (agent, victim, victimCard, value) => (dispatch, getState) => {
-  const victimCardId = getState().cards[victim][victimCard];
-  dispatch(putCard(agent, victim, victimCardId, 'success', value));
 };
