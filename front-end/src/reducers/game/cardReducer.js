@@ -71,7 +71,7 @@ const discardPile = (state = [], { type, payload }) => {
     case PUT_CARD:
       return [...state, payload.victimCardId];
     case PUT_REVERSE:
-      return [...state].pop(); // Remove the top card that failed
+      return [...state.slice(0, state.length - 1)]; // Remove the top card that failed
     case DISCARD_CARD:
     case SWAP_CARDS:
       return [...state, payload.cardId];

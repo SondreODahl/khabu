@@ -66,7 +66,7 @@ export const publicActionsDelegator = (topic, body) => {
     }
     case 'PUT': {
       const { agent, victim, victimCard, status, value } = parsedJSON;
-      return playerPutCard(agent, victim, victimCard, status, value);
+      return playerPutCard(agent, victim, victimCard - 1, status, value);
     }
     default:
       alert(`publicActionsDelegator was called with ${body}`);
