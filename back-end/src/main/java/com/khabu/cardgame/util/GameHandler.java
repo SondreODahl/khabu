@@ -2,6 +2,7 @@ package com.khabu.cardgame.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.khabu.cardgame.model.game.Player;
 import com.khabu.cardgame.model.game.Round;
 import com.khabu.cardgame.model.game.action.Actions;
 import com.khabu.cardgame.model.game.card.Card;
@@ -165,20 +166,20 @@ public class GameHandler {
         // Retrieve the player transferring a card,
         // the card being transferred and the target of the transfer
         int transferringPlayerId = Integer.parseInt((String) jsonMap.get("transferringPlayerId"));
-        int targetPlayerId = Integer.parseInt((String) jsonMap.get("targetPlayerId"));
         int targetCardIndex = Integer.parseInt((String) jsonMap.get("targetCardIndex"));
 
         // Perform back-end game logic
         Card targetCard = round.getPlayerById(transferringPlayerId).getCard(targetCardIndex);
+        Player targetPlayer = round.getTransferTarget();
         try {
-            round.performAction(round.getPlayerById(transferringPlayerId), round.getPlayerById(targetPlayerId),
+            round.performAction(round.getPlayerById(transferringPlayerId), targetPlayer,
                     Actions.TRANSFER, targetCardIndex);
-            int cardIndexAfterTransfer = round.getPlayerById(targetPlayerId).findCardIndexbyCard(targetCard);
+            int cardIndexAfterTransfer = targetPlayer.findCardIndexbyCard(targetCard);
 
             // Create response
-            List<String> keys = Arrays.asList("type","victim","agentCard");
-            List<String> values = Arrays.asList("TRANSFER",Integer.toString(targetPlayerId),
-                    Integer.toString(cardIndexAfterTransfer));
+            List<String> keys = Arrays.asList("type","victim","victimCardIndex", "agentCardIndex");
+            List<String> values = Arrays.asList("TRANSFER",Integer.toString(targetPlayer.getPlayerId()),
+                    Integer.toString(cardIndexAfterTransfer), Integer.toString(targetCardIndex));
 
             return JsonConverter.createJsonString(new ObjectMapper(), new HashMap<>(), keys, values);
         } catch (IllegalMoveException e) {
@@ -236,6 +237,38 @@ public class GameHandler {
                 Integer.toString(victimPlayerId), Integer.toString(targetCardIndex),
                 status, Integer.toString(targetCard.getValue()));
         return JsonConverter.createJsonString(new ObjectMapper(), new HashMap<>(), names, values);
+    }
+
+    public static String createEndGameResponse(Round round) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("type", "END");
+        Map<String, Object> players = new HashMap<>();
+        List<Integer> cardValues = new ArrayList<>();
+        Map<String, Object> playerData = new HashMap<>();
+        for (Player player: round.getPlayers()) {
+            // Clear old data
+            cardValues.clear();
+            playerData.clear();
+
+            // Add new data
+            for (Card card:player.getCardHand().getCards().values()) {
+                cardValues.add(card.getValue());
+            }
+            int score = player.calculateScore();
+            playerData.put("score", score);
+            playerData.put("cards", cardValues);
+            players.put(player.getName(), playerData);
+        }
+        data.put("players", players);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String jsonResponse = "";
+        try {
+            jsonResponse = objectMapper.writeValueAsString(data);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return jsonResponse;
     }
 
 

@@ -17,6 +17,7 @@ import {
   PUT_REVERSE,
   UPDATE_CARD,
   FORCE_DRAW,
+  TRANSFER_CARD,
 } from '../../actions/types';
 import _ from 'lodash';
 import { addCardToIds } from '../../actions/cardActions';
@@ -72,10 +73,16 @@ const byPlayerId = (state = [], { type, payload }) => {
       const index = indexOfNull === -1 ? state.length : indexOfNull;
       return [...state.slice(0, index), payload.cardId, ...state.slice(index + 1)]; // Want to replace the null value. Therefore + 1
     }
-    case ADD_CARD_TO_HAND: // Inserts card at specific index
-      const index = payload.index !== undefined ? payload.index : state.length; // If no index specified, insert at the end
-      return [...state.slice(0, index), payload.cardId, ...state.slice(index)];
-    case REMOVE_CARD_FROM_HAND:
+    case TRANSFER_CARD: {
+      const { victimCardIndex, cardId } = payload;
+      const isAgent = state.indexOf(cardId) !== -1; // Does the current hand contain the agentCard
+      if (isAgent) return state.map((id) => (id === cardId ? null : id)); // Insert null where the card previously was
+      return [
+        ...state.slice(0, victimCardIndex),
+        payload.cardId,
+        ...state.slice(victimCardIndex + 1),
+      ]; // Want to replace the null value. Therefore + 1
+    }
     case PUT_CARD:
       return state.map((cardId) => (cardId === payload.cardId ? null : cardId)); // Insert null where the card previously was
     case SWAP_CARDS:
@@ -199,6 +206,13 @@ const cardHandsReducer = (state = getNewInitState(), action) => {
           action
         ),
         byId: byId(state.byId, action),
+      };
+    case TRANSFER_CARD:
+      const { victim, agent } = action.payload;
+      return {
+        ...state,
+        [victim]: byPlayerId(state[victim], action),
+        [agent]: byPlayerId(state[agent], action),
       };
     case DRAW_CARD_DISCARD:
       return { ...state, discardPile: discardPile(state.discardPile, action) };
