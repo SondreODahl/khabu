@@ -3,6 +3,7 @@ import {
   ADD_CARD_TO_HAND,
   DISCARD_CARD,
   DRAW_FROM_DECK,
+  FORCE_DRAW,
   REMOVE_CARD_FROM_HAND,
   SWAP_CARDS,
   TOGGLE_GLOW,
@@ -10,11 +11,11 @@ import {
 } from './types';
 import _ from 'lodash';
 
-export const addCardToIds = (id, value) => {
-  return { type: ADD_CARD, payload: { id, value } };
+export const addCardToIds = (cardId, value) => {
+  return { type: ADD_CARD, payload: { cardId, value } };
 };
-export const updateCard = (id, value) => {
-  return { type: UPDATE_CARD, payload: { id, value } };
+export const updateCard = (cardId, value) => {
+  return { type: UPDATE_CARD, payload: { cardId, value } };
 };
 export const addCardToHand = (cardId, playerId, index) => {
   return { type: ADD_CARD_TO_HAND, payload: { cardId, playerId, index } };
@@ -33,6 +34,10 @@ export const swapCards = (playerId, cardId, tempCardId, value) => {
 };
 export const toggleCardGlow = (cardId) => {
   return { type: TOGGLE_GLOW, payload: { cardId } };
+};
+export const forceDraw = (playerId) => (dispatch, getState) => {
+  const cardId = getHighestId(getState) + 1;
+  return { type: FORCE_DRAW, payload: { playerId, cardId } };
 };
 
 export const cardGlow = (cardId) => (dispatch) => {
@@ -55,7 +60,7 @@ export const playerDrewFromDeck = () => (dispatch, getState) => {
   const yourId = getState().players.yourId;
   if (!(currentPlayer === yourId)) {
     // If it is your Id, then drawFromDeckAndRegisterCard will occur
-    dispatch(drawFromDeckAndRegisterCard(null)); // Value is then hidden from you
+    dispatch(drawFromDeckAndRegisterCard(null)); //G Value is then hidden from you
   }
 };
 // HELPER METHOD
