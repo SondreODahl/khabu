@@ -6,6 +6,7 @@ import {
   revealCard,
 } from './cardActions';
 import {
+  playerCalledKhabu,
   playerDiscardedCard,
   playerEndedTurn,
   playerPutCard,
@@ -75,6 +76,10 @@ export const publicActionsDelegator = (topic, body) => {
     case 'TRANSFER': {
       const { victim, victimCardIndex, agentCardIndex } = parsedJSON;
       return playerTransferredCard(victim, victimCardIndex - 1, agentCardIndex - 1);
+    }
+    case 'KHABU': {
+      const { nextPlayer } = parsedJSON;
+      return playerCalledKhabu(nextPlayer);
     }
     default:
       alert(`publicActionsDelegator was called with ${body}`);

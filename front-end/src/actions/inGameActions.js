@@ -22,8 +22,9 @@ import {
 import { endTurn } from './turnActions';
 import { roundEnd } from './roundActions';
 
-export const playerCalledKhabu = (playerId, nextPlayerId) => {
-  return { type: PLAYER_CALLED_KHABU, payload: { playerId, nextPlayerId } };
+export const playerCalledKhabu = (nextPlayerId) => (dispatch, getState) => {
+  const playerId = getState().turn.currentPlayerTurn;
+  dispatch({ type: PLAYER_CALLED_KHABU, payload: { playerId, nextPlayerId } });
 };
 export const playerDiscardedCard = (value) => (dispatch, getState) => {
   const tempCardId = getState().cards.temporaryCard;

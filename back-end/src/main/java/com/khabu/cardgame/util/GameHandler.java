@@ -152,7 +152,7 @@ public class GameHandler {
 
             // Create response
             List<String> keys = Arrays.asList("type","nextPlayer");
-            List<String> values = Arrays.asList("TRANSFER",Integer.toString(nextPlayerId));
+            List<String> values = Arrays.asList("KHABU",Integer.toString(nextPlayerId));
 
             return JsonConverter.createJsonString(new ObjectMapper(), new HashMap<>(), keys, values);
         } catch (IllegalMoveException e) {
