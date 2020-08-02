@@ -176,9 +176,9 @@ public class GameHandler {
             int cardIndexAfterTransfer = round.getPlayerById(targetPlayerId).findCardIndexbyCard(targetCard);
 
             // Create response
-            List<String> keys = Arrays.asList("type","victim","agentCard");
+            List<String> keys = Arrays.asList("type","victim","victimCardIndex", "agentCardIndex");
             List<String> values = Arrays.asList("TRANSFER",Integer.toString(targetPlayerId),
-                    Integer.toString(cardIndexAfterTransfer));
+                    Integer.toString(cardIndexAfterTransfer), Integer.toString(targetCardIndex));
 
             return JsonConverter.createJsonString(new ObjectMapper(), new HashMap<>(), keys, values);
         } catch (IllegalMoveException e) {
