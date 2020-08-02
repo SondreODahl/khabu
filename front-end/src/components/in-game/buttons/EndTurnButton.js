@@ -1,7 +1,7 @@
-import usePublishMove from './cards/usePublishMove';
+import usePublishMove from '../cards/usePublishMove';
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { getCanEndTurn } from '../../selectors';
+import { getCanEndTurn } from '../../../selectors';
 
 export default (props) => {
   const publishEndTurn = usePublishMove('END_TURN', {
@@ -9,10 +9,10 @@ export default (props) => {
   });
   const playerCanEndTurn = useSelector((state) => getCanEndTurn(state));
   const onClick = playerCanEndTurn ? publishEndTurn : null;
-  const className = playerCanEndTurn ? 'active' : 'inactive';
+  const className = playerCanEndTurn ? 'active' : 'disabled';
 
   return (
-    <div>
+    <div className={'end-turn-button'}>
       <button onClick={onClick} className={`ui toggle button ${className}`}>
         End Turn
       </button>

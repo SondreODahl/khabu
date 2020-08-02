@@ -1,0 +1,10 @@
+.button-row {
+    height: 4rem !important;
+}
+.end-turn-button {
+    height: inherit;
+}
+
+.opponent-air-to-deck {
+    height: 4rem;
+}
