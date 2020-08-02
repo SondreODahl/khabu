@@ -70,6 +70,10 @@ export const getCardAction = createSelector(
   }
 );
 
+export const getCardActionOpponent = createSelector(getCanPut, (canPut) =>
+  canPut ? PUT_MOVE : null
+);
+
 export const getCanEndTurn = createSelector(
   getIsYourTurn,
   selectCurrentGameState,

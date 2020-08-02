@@ -1,7 +1,7 @@
 import usePublishMove from './cards/usePublishMove';
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { getCanEndTurn } from '../../selectors/gameStateSelectors';
+import { getCanEndTurn } from '../../selectors';
 
 export default (props) => {
   const publishEndTurn = usePublishMove('END_TURN', {

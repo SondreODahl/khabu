@@ -8,6 +8,7 @@ import {
 import {
   playerDiscardedCard,
   playerEndedTurn,
+  playerPutCard,
   playerSwappedCard,
 } from './inGameActions';
 
@@ -33,6 +34,9 @@ export const privateActionsDelegator = (topic, body) => {
   const parsedJSON = JSON.parse(body);
   const type = parsedJSON.type;
   switch (type) {
+    case 'ERROR':
+      console.log(parsedJSON.value);
+      break;
     case 'REVEAL':
       const { status, playerId, id, value } = parsedJSON;
       if (status === 'FAIL') {
@@ -54,14 +58,21 @@ export const publicActionsDelegator = (topic, body) => {
       return playerDrewFromDeck();
     case 'DISCARD':
       return playerDiscardedCard(parsedJSON.value);
-    case 'SWAP':
+    case 'SWAP': {
       const { targetCardIndex, value } = parsedJSON;
       return playerSwappedCard(targetCardIndex - 1, value); // Server is 1-indexed
-    case 'END_TURN':
+    }
+    case 'END_TURN': {
       const { nextPlayer, roundOver } = parsedJSON;
       const roundOverParsed = roundOver === 'true'; // Always receive strings from backend
       return playerEndedTurn(nextPlayer, roundOverParsed);
+    }
+    case 'PUT': {
+      const { agent, victim, victimCard, status, value } = parsedJSON;
+      return playerPutCard(agent, victim, victimCard - 1, status, value);
+    }
     default:
       alert(`publicActionsDelegator was called with ${body}`);
+      break;
   }
 };

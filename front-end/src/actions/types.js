@@ -32,7 +32,9 @@ export const SHOW_CARD = 'SHOW_CARD';
 
 // ------------------- Card ------------------------------
 export const ADD_CARD = 'ADD_CARD';
+export const UPDATE_CARD = 'UPDATE_CARD';
 export const REMOVE_CARD = 'REMOVE_CARD';
+export const FORCE_DRAW = 'FORCE_DRAW';
 export const ADD_CARD_TO_HAND = 'ADD_CARD_TO_HAND';
 export const REMOVE_CARD_FROM_HAND = 'REMOVE_CARD_FROM_HAND';
 export const PUT_CARD = 'PUT_CARD';
@@ -50,5 +52,6 @@ export const SUCCESSFUL_PUT_SELF = 'SUCCESSFUL_PUT_SELF';
 export const SUCCESSFUL_PUT_OTHER = 'SUCCESSFUL_PUT_OTHER';
 export const TRANSFER_CARD = 'TRANSFER_CARD';
 export const SWAP_CARDS = 'SWAP_CARDS';
+export const PUT_REVERSE = 'PUT_REVERSE';
 export const SWAP_WITH_DISC = 'SWAP_WITH_DISC';
 export const DISCARD_CARD = 'DISCARD_CARD';
