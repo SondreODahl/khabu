@@ -37,7 +37,7 @@ export const toggleCardGlow = (cardId) => {
 };
 export const forceDraw = (playerId) => (dispatch, getState) => {
   const cardId = getHighestId(getState) + 1;
-  return { type: FORCE_DRAW, payload: { playerId, cardId } };
+  dispatch({ type: FORCE_DRAW, payload: { playerId, cardId } });
 };
 
 export const cardGlow = (cardId) => (dispatch) => {

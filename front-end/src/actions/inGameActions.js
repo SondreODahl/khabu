@@ -69,7 +69,6 @@ const putFail = (agent, victim, victimCard, value) => (dispatch, getState) => {
   const DISC_PILE_TIMEOUT = 2000;
   setTimeout(() => {
     dispatch(putReverse(agent, victim, victimCardId, victimCard, prevState)); // Reverse gameState and remove discardPile top deck
-    // Should not trigger draw_from_deck action as this should happen automatically and not enter new state
     dispatch(forceDraw(agent));
   }, DISC_PILE_TIMEOUT);
   dispatch(putCard(agent, victim, victimCardId, 'fail', value));

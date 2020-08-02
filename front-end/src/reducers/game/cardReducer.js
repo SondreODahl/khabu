@@ -181,7 +181,7 @@ const cardHandsReducer = (state = getNewInitState(), action) => {
       return {
         ...state,
         byId: byId(state.byId, action),
-        [playerId]: byPlayerId(state[playerId]),
+        [playerId]: byPlayerId(state[playerId], action),
       };
     case DISCARD_CARD:
       return {
