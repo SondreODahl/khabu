@@ -186,7 +186,7 @@ public class GameHandler {
 
         // Perform back-end game logic
         Card targetCard = round.getPlayerById(targetPlayerId).getCard(targetCardIndex);
-        String status = "";
+        String status;
         try {
             boolean success = round.performAction(round.getPlayerById(currentPlayerId),
                     round.getPlayerById(targetPlayerId), Actions.PUT_OTHER, targetCardIndex);
@@ -208,7 +208,7 @@ public class GameHandler {
         // Perform back-end game logic
         Card targetCard = round.getPlayerById(currentPlayerId).getCard(targetCardIndex);
         boolean successfulPut = false;
-        String status = "";
+        String status;
         try {
             boolean success = round.performAction(round.getPlayerById(currentPlayerId),
                     round.getPlayerById(currentPlayerId), Actions.PUT_SELF, targetCardIndex);
