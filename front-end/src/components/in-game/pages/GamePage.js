@@ -44,9 +44,8 @@ export default () => {
         );
       case roundStates.INITIALIZING:
       case roundStates.STARTED:
-        return <GameInterface yourId={yourId} opponentId={opponentId} />;
       case roundStates.OVER:
-        return <h1>Over</h1>;
+        return <GameInterface yourId={yourId} opponentId={opponentId} />;
       default:
         return <div>Error. Something has gone terribly wrong with Round State</div>;
     }
