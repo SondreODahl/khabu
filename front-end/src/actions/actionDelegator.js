@@ -1,4 +1,9 @@
-import { initializeRound, startRound, updatePlayersReady } from './roundActions';
+import {
+  endRound,
+  initializeRound,
+  startRound,
+  updatePlayersReady,
+} from './roundActions';
 import { ALL_PLAYERS_READY, BEGIN_GAME, START_ROUND } from './types';
 import {
   drawFromDeckAndRegisterCard,
@@ -27,6 +32,8 @@ export const roundActionDelegator = (topic, body) => {
     case 'BEGIN':
       const startingPlayer = parsedJSON.value;
       return startRound(startingPlayer);
+    case 'END':
+      return endRound(parsedJSON.players);
     default:
       alert(`RoundActionDelegator was called with ${body}`);
   }

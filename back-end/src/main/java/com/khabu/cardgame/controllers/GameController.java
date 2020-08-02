@@ -251,7 +251,7 @@ public class GameController {
             // If the round is over, send round ended data to clients
             if (!round.getStarted()) {
                 jsonResponse = GameHandler.createEndGameResponse(round);
-                simpMessagingTemplate.convertAndSend("/topic/round/actions", jsonResponse);
+                simpMessagingTemplate.convertAndSend("/topic/round/flow", jsonResponse);
             }
         }
 
