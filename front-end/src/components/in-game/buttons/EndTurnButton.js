@@ -9,7 +9,7 @@ export default (props) => {
   });
   const playerCanEndTurn = useSelector((state) => getCanEndTurn(state));
   const onClick = playerCanEndTurn ? publishEndTurn : null;
-  const className = playerCanEndTurn ? 'active' : 'inactive';
+  const className = playerCanEndTurn ? 'active' : 'disabled';
 
   return (
     <div className={'end-turn-button'}>
