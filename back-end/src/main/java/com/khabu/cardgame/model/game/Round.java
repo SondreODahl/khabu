@@ -264,4 +264,8 @@ public class Round {
     public int getTemporaryTargetIndexTwo() {
         return effectPerformer.getTemporaryTargetIndexTwo();
     }
+
+    public void clearTemps() {
+        effectPerformer.clearTempTargets();
+    }
 }

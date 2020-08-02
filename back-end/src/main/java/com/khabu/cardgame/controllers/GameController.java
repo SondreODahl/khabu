@@ -8,6 +8,7 @@ import com.khabu.cardgame.model.game.GameRepository;
 import com.khabu.cardgame.model.game.Player;
 import com.khabu.cardgame.model.game.Round;
 import com.khabu.cardgame.model.game.action.Actions;
+import com.khabu.cardgame.model.game.action.Gamestate;
 import com.khabu.cardgame.model.game.card.Card;
 import com.khabu.cardgame.model.game.effect.Effect;
 import com.khabu.cardgame.util.GameHandler;
@@ -383,8 +384,19 @@ public class GameController {
         if (isSwapping) {
             try {
                 int currentPlayerId = Integer.parseInt((String) jsonMap.get("currentPlayerId"));
+                round.performEffect(round.getPlayerById(currentPlayerId), 0, Effect.EXCHANGE_AFTER_CHECKS);
+            } catch (IllegalMoveException ime) {
+                ime.printStackTrace();
             }
+        } else {
+            round.getTurn().setGameState(Gamestate.FRENZY);
         }
+
+        
+
+
+        // Clear variables set to handle effect in effectPerformer
+        round.clearTemps();
     }
 
 

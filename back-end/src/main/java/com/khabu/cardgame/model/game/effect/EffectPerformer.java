@@ -147,4 +147,11 @@ public class EffectPerformer {
     public void setTemporaryTargetIndexTwo(int temporaryTargetIndexTwo) {
         this.temporaryTargetIndexTwo = temporaryTargetIndexTwo;
     }
+
+    public void clearTempTargets() {
+        setTemporaryTargetIndexTwo(0);
+        setTemporaryTargetIndexOne(0);
+        setTemporaryTargetOne(null);
+        setTemporaryTargetTwo(null);
+    }
 }
