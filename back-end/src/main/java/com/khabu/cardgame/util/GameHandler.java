@@ -2,6 +2,7 @@ package com.khabu.cardgame.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.khabu.cardgame.model.game.Player;
 import com.khabu.cardgame.model.game.Round;
 import com.khabu.cardgame.model.game.action.Actions;
 import com.khabu.cardgame.model.game.card.Card;
@@ -165,19 +166,19 @@ public class GameHandler {
         // Retrieve the player transferring a card,
         // the card being transferred and the target of the transfer
         int transferringPlayerId = Integer.parseInt((String) jsonMap.get("transferringPlayerId"));
-        int targetPlayerId = Integer.parseInt((String) jsonMap.get("targetPlayerId"));
         int targetCardIndex = Integer.parseInt((String) jsonMap.get("targetCardIndex"));
 
         // Perform back-end game logic
         Card targetCard = round.getPlayerById(transferringPlayerId).getCard(targetCardIndex);
+        Player targetPlayer = round.getTransferTarget();
         try {
-            round.performAction(round.getPlayerById(transferringPlayerId), round.getPlayerById(targetPlayerId),
+            round.performAction(round.getPlayerById(transferringPlayerId), targetPlayer,
                     Actions.TRANSFER, targetCardIndex);
-            int cardIndexAfterTransfer = round.getPlayerById(targetPlayerId).findCardIndexbyCard(targetCard);
+            int cardIndexAfterTransfer = targetPlayer.findCardIndexbyCard(targetCard);
 
             // Create response
             List<String> keys = Arrays.asList("type","victim","victimCardIndex", "agentCardIndex");
-            List<String> values = Arrays.asList("TRANSFER",Integer.toString(targetPlayerId),
+            List<String> values = Arrays.asList("TRANSFER",Integer.toString(targetPlayer.getPlayerId()),
                     Integer.toString(cardIndexAfterTransfer), Integer.toString(targetCardIndex));
 
             return JsonConverter.createJsonString(new ObjectMapper(), new HashMap<>(), keys, values);

@@ -215,4 +215,8 @@ public class Round {
     public Player getPlayerById(int id) {
         return this.players[id-1];
     }
+
+    public Player getTransferTarget() {
+        return actionPerformer.getTemporaryTarget();
+    }
 }
