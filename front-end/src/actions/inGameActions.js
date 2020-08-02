@@ -46,6 +46,16 @@ export const playerEndedTurn = (nextPlayerId, roundOver) => {
   else return endTurn(nextPlayerId);
 };
 
+export const playerTransferredCard = (victim, victimCardIndex, agentCardIndex) => (
+  dispatch,
+  getState
+) => {
+  const agent = getState().turn.currentPuttingPlayer; // Always current putting player that transfers
+  const agentCardId = getState().cards[agent][agentCardIndex];
+  dispatch(removeCardFromHand(agentCardId, agent));
+  dispatch(addCardToHand(agentCardId, victim, victimCardIndex));
+};
+
 export const playerPutCard = (agent, victim, victimCard, status, value) => {
   const cardValue = parseInt(value);
   if (status === 'fail') {

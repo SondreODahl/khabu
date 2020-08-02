@@ -27,7 +27,11 @@ export const getParameters = (possibleAction, props) => {
             puttingPlayerId: props.playerId,
           },
         };
-    case TRANSFER_MOVE: // NOT IMPLEMENTED YET
+    case TRANSFER_MOVE:
+      return {
+        action: 'TRANSFER',
+        parameters: { transferringPlayerId: props.playerId },
+      };
     case null: // NO POSSIBLE MOVE ON THE CARD
       return { action: null, parameters: null };
     default:
