@@ -257,7 +257,7 @@ public class GameHandler {
             int score = player.calculateScore();
             playerData.put("score", score);
             playerData.put("cards", cardValues);
-            players.put(player.getName(), playerData);
+            players.put(Integer.toString(player.getPlayerId()), playerData);
         }
         data.put("players", players);
 
