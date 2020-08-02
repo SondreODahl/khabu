@@ -1,22 +1,26 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import ReadyUpButton from './ReadyUpButton';
-import { roundStates } from '../../reducers/game/roundReducer';
-import CardHand from './cards/CardHand/CardHand';
-import useSubscribe from '../../api/useSubscribe';
-import usePublish from '../../api/usePublish';
-import { playerJoinedGame } from '../../actions/playerActions';
+import ReadyUpButton from '../buttons/ReadyUpButton';
+import { roundStates } from '../../../reducers/game/roundReducer';
+import CardHand from '../cards/CardHand/CardHand';
+import useSubscribe from '../../../api/useSubscribe';
+import usePublish from '../../../api/usePublish';
+import { playerJoinedGame } from '../../../actions/playerActions';
 import {
   privateActionsDelegator,
   publicActionsDelegator,
   roundActionDelegator,
-} from '../../actions/actionDelegator';
-import { selectOpponentId, selectRoundState, selectYourId } from '../../selectors';
-import CardDeck from './cards/CardDeck';
-import TemporaryCard from './cards/TemporaryCard';
-import DiscardPile from './cards/DiscardPile';
-import NameDisplay from './NameDisplay';
-import EndTurnButton from './EndTurnButton';
+} from '../../../actions/actionDelegator';
+import {
+  selectOpponentId,
+  selectRoundState,
+  selectYourId,
+} from '../../../selectors';
+import CardDeck from '../cards/CardDeck';
+import TemporaryCard from '../cards/TemporaryCard';
+import DiscardPile from '../cards/DiscardPile';
+import NameDisplay from '../NameDisplay';
+import EndTurnButton from '../buttons/EndTurnButton';
 import GameInterface from './GameInterface';
 import WaitingPage from './WaitingPage';
 

@@ -1,9 +1,9 @@
-import NameDisplay from './NameDisplay';
-import CardHand from './cards/CardHand/CardHand';
-import CardDeck from './cards/CardDeck';
-import TemporaryCard from './cards/TemporaryCard';
-import DiscardPile from './cards/DiscardPile';
-import EndTurnButton from './EndTurnButton';
+import NameDisplay from '../NameDisplay';
+import CardHand from '../cards/CardHand/CardHand';
+import CardDeck from '../cards/CardDeck';
+import TemporaryCard from '../cards/TemporaryCard';
+import DiscardPile from '../cards/DiscardPile';
+import EndTurnButton from '../buttons/EndTurnButton';
 import React from 'react';
 import './GameInterface.css';
 
