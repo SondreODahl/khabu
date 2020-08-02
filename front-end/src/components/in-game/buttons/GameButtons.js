@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux';
 import { getCanCallKhabu, getCanEndTurn } from '../../../selectors';
 import GameButton from './GameButton';
 import React from 'react';
-import EndTurnButton from './EndTurnButton';
 
 export default (props) => (
   <div className={'ui grid'}>
