@@ -10,6 +10,7 @@ import {
   playerEndedTurn,
   playerPutCard,
   playerSwappedCard,
+  playerTransferredCard,
 } from './inGameActions';
 
 export const roundActionDelegator = (topic, body) => {
@@ -70,6 +71,10 @@ export const publicActionsDelegator = (topic, body) => {
     case 'PUT': {
       const { agent, victim, victimCard, status, value } = parsedJSON;
       return playerPutCard(agent, victim, victimCard - 1, status, value);
+    }
+    case 'TRANSFER': {
+      const { victim, victimCardIndex, agentCardIndex } = parsedJSON;
+      return playerTransferredCard(victim, victimCardIndex - 1, agentCardIndex - 1);
     }
     default:
       alert(`publicActionsDelegator was called with ${body}`);
