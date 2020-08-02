@@ -17,6 +17,7 @@ import TemporaryCard from './cards/TemporaryCard';
 import DiscardPile from './cards/DiscardPile';
 import NameDisplay from './NameDisplay';
 import EndTurnButton from './EndTurnButton';
+import GameInterface from './GameInterface';
 
 export default () => {
   const yourId = useSelector(selectYourId);
@@ -42,24 +43,8 @@ export default () => {
           </div>
         );
       case roundStates.INITIALIZING:
-        return (
-          <div>
-            <CardHand playerId={yourId} yourId={yourId} />
-          </div>
-        );
       case roundStates.STARTED:
-        return (
-          <div>
-            <NameDisplay playerId={opponentId} />
-            <CardHand playerId={opponentId} yourId={yourId} />
-            <CardDeck yourId={yourId} />
-            <TemporaryCard />
-            <DiscardPile yourId={yourId} />
-            <EndTurnButton yourId={yourId} />
-            <CardHand playerId={yourId} yourId={yourId} />
-            <NameDisplay playerId={yourId} />
-          </div>
-        );
+        return <GameInterface yourId={yourId} opponentId={opponentId} />;
       case roundStates.OVER:
         return <h1>Over</h1>;
       default:

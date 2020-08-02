@@ -12,7 +12,7 @@ export default (props) => {
   const className = playerCanEndTurn ? 'active' : 'inactive';
 
   return (
-    <div>
+    <div className={'end-turn-button'}>
       <button onClick={onClick} className={`ui toggle button ${className}`}>
         End Turn
       </button>
