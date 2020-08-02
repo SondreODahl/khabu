@@ -337,4 +337,56 @@ public class GameController {
         simpMessagingTemplate.convertAndSend("/topic/round/actions", jsonResponse);
     }
 
+    private void checkTwoCards(HashMap<String, Object> jsonMap, Round round) {
+        int currentPlayerId = Integer.parseInt((String) jsonMap.get("currentPlayerId"));
+        int targetOneId = Integer.parseInt((String) jsonMap.get("targetOneId"));
+        int targetOneIndex = Integer.parseInt((String) jsonMap.get("targetOneIndex"));
+        Card cardOne = round.getPlayerById(targetOneId).getCard(targetOneIndex);
+
+        int targetTwoId = Integer.parseInt((String) jsonMap.get("targetTwoId"));
+        int targetTwoIndex = Integer.parseInt((String) jsonMap.get("targetTwoIndex"));
+        Card cardTwo = round.getPlayerById(targetTwoId).getCard(targetTwoIndex);
+
+        try {
+            round.performEffect(round.getPlayerById(currentPlayerId),
+                    round.getPlayerById(targetOneId), round.getPlayerById(targetTwoId),
+                    Effect.CHECK_TWO_CARDS, targetOneIndex, targetTwoIndex);
+        } catch(IllegalMoveException ime) {
+            ime.printStackTrace();
+        }
+
+        List<String> keys = Arrays.asList("type", "agent","victimOne", "cardOne",
+                "cardOneValue", "victimTwo", "cardTwo", "cardTwoValue");
+        List<String> values = Arrays.asList("CHECK_TWO_CARDS", Integer.toString(currentPlayerId),
+                Integer.toString(targetOneId),
+                Integer.toString(targetOneIndex), Integer.toString(cardOne.getValue()),
+                Integer.toString(targetTwoId),
+                Integer.toString(targetTwoIndex), Integer.toString(cardTwo.getValue()));
+
+        String jsonResponse = JsonConverter.createJsonString(new ObjectMapper(), new HashMap<>(), keys, values);
+        simpMessagingTemplate.convertAndSend("/topic/round/actions/" +
+                currentPlayerId, jsonResponse);
+
+        keys = Arrays.asList("type","victimOne", "cardOne",
+                "victimTwo", "cardTwo");
+        values = Arrays.asList("CHECK_TWO_CARDS",
+                Integer.toString(targetOneId),
+                Integer.toString(targetOneIndex),
+                Integer.toString(targetTwoId),
+                Integer.toString(targetTwoIndex));
+        jsonResponse = JsonConverter.createJsonString(new ObjectMapper(), new HashMap<>(), keys, values);
+        simpMessagingTemplate.convertAndSend("/topic/round/actions", jsonResponse);
+    }
+
+    private void exchangeCardsAfterChecking(HashMap<String, Object> jsonMap, Round round) {
+        boolean isSwapping = ((String) jsonMap.get("isSwapping")).equals("true");
+        if (isSwapping) {
+            try {
+                int currentPlayerId = Integer.parseInt((String) jsonMap.get("currentPlayerId"));
+            }
+        }
+    }
+
+
+
 }

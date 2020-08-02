@@ -175,7 +175,7 @@ public class Round {
                 effectPerformer.checkTwoCards(current, target1, target2, indexOne, indexTwo);
                 return true;
             case EXCHANGE_AFTER_CHECKS:
-                effectPerformer.swapCheckedCardsFromKingEffect(current, target1, target2, indexOne, indexTwo);
+                effectPerformer.swapCheckedCardsFromKingEffect(current);
                 return true;
             default:
                 return false;
@@ -248,5 +248,20 @@ public class Round {
 
     public Player getPlayerById(int id) {
         return this.players[id-1];
+    }
+
+    // EFFECT GETTERS USED TO REDUCE LENGTH OF MESSAGES BETWEEN SERVER AND CLIENT
+
+    public Player getTemporaryTargetOne() {
+        return effectPerformer.getTemporaryTargetOne();
+    }
+    public Player getTemporaryTargetTwo() {
+        return effectPerformer.getTemporaryTargetTwo();
+    }
+    public int getTemporaryTargetIndexOne() {
+        return effectPerformer.getTemporaryTargetIndexOne();
+    }
+    public int getTemporaryTargetIndexTwo() {
+        return effectPerformer.getTemporaryTargetIndexTwo();
     }
 }
