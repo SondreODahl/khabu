@@ -82,3 +82,9 @@ export const getCanEndTurn = createSelector(
     return state === FRENZY || state === PUT || state === DISCARD;
   }
 );
+
+export const getCanCallKhabu = createSelector(
+  getIsYourTurn,
+  selectCurrentGameState,
+  (yourTurn, state) => yourTurn && state === DRAW
+);
