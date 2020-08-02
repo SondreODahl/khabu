@@ -239,5 +239,37 @@ public class GameHandler {
         return JsonConverter.createJsonString(new ObjectMapper(), new HashMap<>(), names, values);
     }
 
+    public static String createEndGameResponse(Round round) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("type", "END");
+        Map<String, Object> players = new HashMap<>();
+        List<Integer> cardValues = new ArrayList<>();
+        Map<String, Object> playerData = new HashMap<>();
+        for (Player player: round.getPlayers()) {
+            // Clear old data
+            cardValues.clear();
+            playerData.clear();
+
+            // Add new data
+            for (Card card:player.getCardHand().getCards().values()) {
+                cardValues.add(card.getValue());
+            }
+            int score = player.calculateScore();
+            playerData.put("score", score);
+            playerData.put("cards", cardValues);
+            players.put(player.getName(), playerData);
+        }
+        data.put("players", players);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String jsonResponse = "";
+        try {
+            jsonResponse = objectMapper.writeValueAsString(data);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return jsonResponse;
+    }
+
 
 }
