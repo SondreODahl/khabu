@@ -9,6 +9,7 @@ import com.khabu.cardgame.model.game.Player;
 import com.khabu.cardgame.model.game.Round;
 import com.khabu.cardgame.model.game.action.Actions;
 import com.khabu.cardgame.model.game.card.Card;
+import com.khabu.cardgame.model.game.effect.Effect;
 import com.khabu.cardgame.util.GameHandler;
 import com.khabu.cardgame.util.IllegalMoveException;
 import com.khabu.cardgame.util.JsonConverter;
@@ -74,6 +75,12 @@ public class GameController {
             case "END_TURN":
                 endTurn(jsonMap, round);
                 break;
+            case "CHECK_SELF_CARD":
+
+            case "CHECK_OPPONENT_CARD":
+            case "EXCHANGE_CARDS":
+            case "CHECK_TWO_CARDS":
+            case "EXCHANGE_AFTER_CHECKING":
             default: sendError(jsonMap);
         }
     }
@@ -249,4 +256,32 @@ public class GameController {
         String jsonResponse = GameHandler.handlePutSelf(jsonMap, round);
         simpMessagingTemplate.convertAndSend("/topic/round/actions", jsonResponse);
     }
+
+    private void checkSelfCard(HashMap<String, Object> jsonMap, Round round) {
+        int currentPlayerId = Integer.parseInt((String) jsonMap.get("currentPlayerId"));
+        int targetIndex = Integer.parseInt((String) jsonMap.get("targetIndex"));
+        int targetCardValue = round.getPlayerById(currentPlayerId).getCard(targetIndex).getValue();
+
+        try {
+            round.performEffect(round.getPlayerById(currentPlayerId), targetIndex, Effect.CHECK_SELF_CARD);
+        } catch (IllegalMoveException ime) {
+            ime.printStackTrace();
+        }
+
+        // Create response
+        List<String> keys = Arrays.asList("type","playerId", "value");
+        List<String> values = Arrays.asList("SELF_CHECK",Integer.toString(currentPlayerId),
+                Integer.toString(targetCardValue));
+
+        String jsonResponse = JsonConverter.createJsonString(new ObjectMapper(), new HashMap<>(), keys, values);
+        simpMessagingTemplate.convertAndSend("/topic/round/actions/" + Integer.toString(currentPlayerId),
+                jsonResponse);
+
+        keys = Arrays.asList("type","cardId");
+        values = Arrays.asList("PLAYER_CHECK_SELF", Integer.toString(targetIndex));
+        jsonResponse = JsonConverter.createJsonString(new ObjectMapper(), new HashMap<>(), keys, values);
+        simpMessagingTemplate.convertAndSend("/topic/round/actions", jsonResponse);
+    }
+
+
 }
