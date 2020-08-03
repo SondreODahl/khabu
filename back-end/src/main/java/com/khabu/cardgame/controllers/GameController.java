@@ -2,6 +2,7 @@ package com.khabu.cardgame.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.khabu.cardgame.gameutil.GameEffectHandler;
 import com.khabu.cardgame.model.PlayerRepository;
 import com.khabu.cardgame.model.game.Game;
 import com.khabu.cardgame.model.game.GameRepository;
@@ -10,7 +11,7 @@ import com.khabu.cardgame.model.game.Round;
 import com.khabu.cardgame.model.game.action.Gamestate;
 import com.khabu.cardgame.model.game.card.Card;
 import com.khabu.cardgame.model.game.effect.Effect;
-import com.khabu.cardgame.util.GameHandler;
+import com.khabu.cardgame.gameutil.GameHandler;
 import com.khabu.cardgame.util.IllegalMoveException;
 import com.khabu.cardgame.util.JsonConverter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -334,13 +335,7 @@ public class GameController {
 
     private void activateEffect(HashMap<String, Object> jsonMap, Round round) {
         int currentPlayerId = Integer.parseInt((String) jsonMap.get("currentPlayerId"));
-        try {
-            round.performEffect(round.getPlayerById(currentPlayerId), 0, Effect.ACTIVATE_EFFECT);
-        } catch (IllegalMoveException ime) {
-            ime.printStackTrace();
-        }
-
-        String jsonResponse = JsonConverter.createJsonString(new ObjectMapper(), new HashMap<>(), "ACTIVATE_EFFECT");
+        String jsonResponse = GameEffectHandler.handleActivateEffect(jsonMap, round);
         simpMessagingTemplate.convertAndSend("/topic/round/effects", jsonResponse);
     }
 
