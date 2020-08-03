@@ -8,7 +8,7 @@ public class Game {
     private int playersAdded = 0;
     static private final int NUM_OF_PLAYERS = 2;
     private final int INIT_STARTING_HAND = 4;
-    public static int REVEAL_TIME = 15*1000;
+    public static int REVEAL_TIME = 7*1000;
     private final Map<Player, Integer> playerTotalScores = new HashMap<>();;
     private Round currentRound;
 

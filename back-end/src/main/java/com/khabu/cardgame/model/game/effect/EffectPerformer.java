@@ -42,7 +42,7 @@ public class EffectPerformer {
         validateEffect(player, player, null, Effect.CHECK_SELF_CARD);
         if (discardPile.showTopCard().getValue() == 7 || discardPile.showTopCard().getValue() == 8) {
             Card checkedCard = player.getCard(index);
-            turn.setGameState(Gamestate.FRENZY);
+            setCorrectStateUponUseOfEffect();
             return checkedCard;
         } else {
             throw new IllegalMoveException("Wrong card value");
@@ -53,7 +53,7 @@ public class EffectPerformer {
         validateEffect(player, targetPlayer, null, Effect.CHECK_OTHER_CARD);
         if (discardPile.showTopCard().getValue() == 9 || discardPile.showTopCard().getValue() == 10) {
             Card checkedCard = targetPlayer.getCard(index);
-            turn.setGameState(Gamestate.FRENZY);
+            setCorrectStateUponUseOfEffect();
             return checkedCard;
         } else {
             throw new IllegalMoveException("Wrong card value");
@@ -68,7 +68,7 @@ public class EffectPerformer {
         if (discardPile.showTopCard().getValue() == 11 || discardPile.showTopCard().getValue() == 12) {
             swapCards(targetOne, targetTwo, targetOneIndex, targetTwoIndex);
             // Update state
-            turn.setGameState(Gamestate.FRENZY);
+            setCorrectStateUponUseOfEffect();
         } else {
             throw new IllegalMoveException("Wrong card value");
         }
@@ -102,7 +102,12 @@ public class EffectPerformer {
     public void swapCheckedCardsFromKingEffect(Player attemptingPlayer) throws IllegalMoveException {
         validateEffect(attemptingPlayer, temporaryTargetOne, temporaryTargetTwo, Effect.EXCHANGE_AFTER_CHECKS);
         swapCards(temporaryTargetOne, temporaryTargetTwo, temporaryTargetIndexOne, temporaryTargetIndexTwo);
-        turn.setGameState(Gamestate.FRENZY);
+        setCorrectStateUponUseOfEffect();
+    }
+
+    public void activateEffect(Player attemptingPlayer) throws IllegalMoveException {
+        validateEffect(attemptingPlayer, null, null, Effect.ACTIVATE_EFFECT);
+        turn.setGameState(Gamestate.USE_EFFECT);
     }
 
     private void swapCards(Player targetOne, Player targetTwo,
@@ -114,6 +119,14 @@ public class EffectPerformer {
         // Add cards to the correct hands
         targetOne.addCardToSpecificIndex(targetTwoCard, targetOneIndex);
         targetTwo.addCardToSpecificIndex(targetOneCard, targetTwoIndex);
+    }
+
+    private void setCorrectStateUponUseOfEffect() {
+        if (turn.getCurrentPuttingPlayer() == null) {
+            turn.setGameState(Gamestate.FRENZY);
+        } else {
+            turn.setGameState(Gamestate.PUT);
+        }
     }
 
     public Player getTemporaryTargetOne() {

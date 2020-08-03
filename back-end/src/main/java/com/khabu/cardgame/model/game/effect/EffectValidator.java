@@ -17,6 +17,8 @@ public class EffectValidator {
                 return isValidCheckOnTwoPlayers(attemptingPlayer, targetOne, targetTwo, effect, turn);
             case EXCHANGE_AFTER_CHECKS:
                 return isValidExchangeAfterCheck(attemptingPlayer, targetOne, targetTwo, effect, turn);
+            case ACTIVATE_EFFECT:
+                return isValidActivateEffect(attemptingPlayer, turn);
             default: return false;
         }
     }
@@ -24,31 +26,36 @@ public class EffectValidator {
     private static boolean isValidEffectOnSelf(Player attemptingPlayer, Player targetPlayer, Effect effect, Turn turn) {
         return attemptingPlayer.equals(targetPlayer) &&
                 isPlayerCurrentPlayer(attemptingPlayer, turn) &&
-                turn.gameStateEquals(Gamestate.DISCARD);
+                turn.gameStateEquals(Gamestate.USE_EFFECT);
     }
 
     private static boolean isValidCheckEffectOnOpponent(Player attemptingPlayer, Player targetPlayer, Effect effect, Turn turn) {
         return !(attemptingPlayer.equals(targetPlayer)) &&
                 isPlayerCurrentPlayer(attemptingPlayer, turn) &&
-                turn.gameStateEquals(Gamestate.DISCARD);
+                turn.gameStateEquals(Gamestate.USE_EFFECT);
     }
 
     private static boolean isValidExchange(Player attemptingPlayer, Player targetOne, Player targetTwo, Effect effect, Turn turn) {
         return isPlayerCurrentPlayer(attemptingPlayer, turn) &&
                 !(targetOne.equals(targetTwo)) &&
-                turn.gameStateEquals(Gamestate.DISCARD);
+                turn.gameStateEquals(Gamestate.USE_EFFECT);
     }
 
     private static boolean isValidCheckOnTwoPlayers(Player attemptingPlayer, Player targetOne, Player targetTwo, Effect effect, Turn turn) {
         return isPlayerCurrentPlayer(attemptingPlayer, turn) &&
                 !(targetOne.equals(targetTwo)) &&
-                turn.gameStateEquals(Gamestate.DISCARD);
+                turn.gameStateEquals(Gamestate.USE_EFFECT);
     }
 
     private static boolean isValidExchangeAfterCheck(Player attemptingPlayer, Player targetOne, Player targetTwo, Effect effect, Turn turn) {
         return isPlayerCurrentPlayer(attemptingPlayer, turn) &&
                 !(targetOne.equals(targetTwo)) &&
                 turn.gameStateEquals(Gamestate.KING_EFFECT);
+    }
+
+    private static boolean isValidActivateEffect(Player attemptingPlayer, Turn turn) {
+        return isPlayerCurrentPlayer(attemptingPlayer, turn) &&
+                (turn.gameStateEquals(Gamestate.DISCARD) || turn.gameStateEquals(Gamestate.PUT));
     }
 
     private static boolean isPlayerCurrentPlayer(Player player, Turn turn) {

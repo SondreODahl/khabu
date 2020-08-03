@@ -20,7 +20,7 @@ class EffectValidatorTest {
         opponent = new Player("Tim", 2, "asdqwe");
         Player[] players = new Player[]{player, opponent};
         turn = new Turn(players);
-        turn.setGameState(Gamestate.DISCARD);
+        turn.setGameState(Gamestate.USE_EFFECT);
         turn.setCurrentPlayer(player);
     }
 
@@ -57,7 +57,6 @@ class EffectValidatorTest {
 
     @Test
     void checkingCardsInDifferentHandsReturnsTrue() {
-        turn.setGameState(Gamestate.DISCARD);
         assertTrue(EffectValidator.isValidEffectUseInCurrentState(player, player, opponent, Effect.CHECK_TWO_CARDS, turn));
     }
 
