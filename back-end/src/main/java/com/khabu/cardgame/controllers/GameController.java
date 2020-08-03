@@ -333,164 +333,60 @@ public class GameController {
         }
     }
 
+    // ------------------------------
+    // EFFECT HANDLER METHODS
+    // ------------------------------
+
     private void activateEffect(HashMap<String, Object> jsonMap, Round round) {
-        int currentPlayerId = Integer.parseInt((String) jsonMap.get("currentPlayerId"));
+        String currentPlayerId =(String) jsonMap.get("currentPlayerId");
         String jsonResponse = GameEffectHandler.handleActivateEffect(jsonMap, round);
         simpMessagingTemplate.convertAndSend("/topic/round/effects", jsonResponse);
     }
 
 
     private void finishEffect(HashMap<String, Object> jsonMap, Round round) {
-        int currentPlayerId = Integer.parseInt((String) jsonMap.get("currentPlayerId"));
-        if (round.getTurn().getCurrentPlayer() != round.getPlayerById(currentPlayerId)) {
-            sendError(Integer.toString(currentPlayerId));
+        String currentPlayerId =(String) jsonMap.get("currentPlayerId");
+        String jsonResponse = GameEffectHandler.handleFinishEffect(jsonMap, round);
+        if (jsonResponse.equals("fail")) {
+            sendError(currentPlayerId);
         }
-        if (jsonMap.get("swap").equals("true")) {
-            exchangeCardsAfterChecking(jsonMap, round);
-        }
-        if (round.getTurn().gameStateEquals(Gamestate.KING_EFFECT)) {
-            Gamestate gameState = round.getTurn().getCurrentPuttingPlayer() == null ? Gamestate.FRENZY : Gamestate.PUT;
-            round.getTurn().setGameState(gameState);
-        }
-
-        List<String> keys = Arrays.asList("type", "swap");
-        List<String> values = Arrays.asList("FINISH_EFFECT", (String) jsonMap.get("swap"));
-
-        String jsonResponse = JsonConverter.createJsonString(new ObjectMapper(), new HashMap<>(), keys, values);
         simpMessagingTemplate.convertAndSend("/topic/round/effects", jsonResponse);
     }
 
     private void checkSelfCard(HashMap<String, Object> jsonMap, Round round) {
-        int currentPlayerId = Integer.parseInt((String) jsonMap.get("currentPlayerId"));
-        int targetIndex = Integer.parseInt((String) jsonMap.get("targetIndex"));
-        int targetCardValue = round.getPlayerById(currentPlayerId).getCard(targetIndex).getValue();
-
-        try {
-            round.performEffect(round.getPlayerById(currentPlayerId), targetIndex, Effect.CHECK_SELF_CARD);
-        } catch (IllegalMoveException ime) {
-            ime.printStackTrace();
-        }
-
-        // Create response
-        List<String> keys = Arrays.asList("type","playerId", "value");
-        List<String> values = Arrays.asList("SELF_CHECK",Integer.toString(currentPlayerId),
-                Integer.toString(targetCardValue));
-
-        String jsonResponse = JsonConverter.createJsonString(new ObjectMapper(), new HashMap<>(), keys, values);
-        simpMessagingTemplate.convertAndSend("/topic/round/effects/" + Integer.toString(currentPlayerId),
+        String currentPlayerId =(String) jsonMap.get("currentPlayerId");
+        String jsonResponse = GameEffectHandler.handlePrivateCheckSelfCard(jsonMap, round);
+        simpMessagingTemplate.convertAndSend("/topic/round/effects/" + currentPlayerId,
                 jsonResponse);
 
-        keys = Arrays.asList("type","cardId");
-        values = Arrays.asList("PLAYER_CHECK_SELF", Integer.toString(targetIndex));
-        jsonResponse = JsonConverter.createJsonString(new ObjectMapper(), new HashMap<>(), keys, values);
+        jsonResponse = GameEffectHandler.handlePublicCheckSelfCard(jsonMap);
         simpMessagingTemplate.convertAndSend("/topic/round/effects", jsonResponse);
     }
 
-    // TODO: Separate method into private and public response
     private void checkOpponentCard(HashMap<String, Object> jsonMap, Round round) {
-        int currentPlayerId = Integer.parseInt((String) jsonMap.get("currentPlayerId"));
-        int targetIndex = Integer.parseInt((String) jsonMap.get("targetIndex"));
-        int targetPlayerId = Integer.parseInt((String) jsonMap.get("targetPlayerId"));
-        int targetCardValue = round.getPlayerById(currentPlayerId).getCard(targetIndex).getValue();
-
-        try {
-            round.performEffect(round.getPlayerById(currentPlayerId),
-                    round.getPlayerById(targetPlayerId), targetIndex, Effect.CHECK_OTHER_CARD);
-        } catch(IllegalMoveException ime) {
-            ime.printStackTrace();
-        }
-
-        List<String> keys = Arrays.asList("type","agent", "victim", "victimCard", "value");
-        List<String> values = Arrays.asList("OPPONENT_CHECK",Integer.toString(currentPlayerId),
-                Integer.toString(targetPlayerId), Integer.toString(targetIndex),
-                Integer.toString(targetCardValue));
-
-        String jsonResponse = JsonConverter.createJsonString(new ObjectMapper(), new HashMap<>(), keys, values);
-        simpMessagingTemplate.convertAndSend("/topic/round/effects/" + Integer.toString(currentPlayerId),
+        String currentPlayerId =(String) jsonMap.get("currentPlayerId");
+        String jsonResponse = GameEffectHandler.handlePrivateCheckOpponentCard(jsonMap, round);
+        simpMessagingTemplate.convertAndSend("/topic/round/effects/" + currentPlayerId,
                 jsonResponse);
-
-        keys = Arrays.asList("type", "targetPlayer","cardId");
-        values = Arrays.asList("PLAYER_CHECK_OPPONENT", Integer.toString(targetPlayerId), Integer.toString(targetIndex));
-        jsonResponse = JsonConverter.createJsonString(new ObjectMapper(), new HashMap<>(), keys, values);
+        jsonResponse = GameEffectHandler.handlePublicCheckOpponentCard(jsonMap);
         simpMessagingTemplate.convertAndSend("/topic/round/effects", jsonResponse);
     }
 
     private void exchangeCards(HashMap<String, Object> jsonMap, Round round) {
-        int currentPlayerId = Integer.parseInt((String) jsonMap.get("currentPlayerId"));
-        int targetOneId = Integer.parseInt((String) jsonMap.get("targetOneId"));
-        int targetOneIndex = Integer.parseInt((String) jsonMap.get("targetOneIndex"));
-        int targetTwoId = Integer.parseInt((String) jsonMap.get("targetTwoId"));
-        int targetTwoIndex = Integer.parseInt((String) jsonMap.get("targetTwoIndex"));
-
-        try {
-            round.performEffect(round.getPlayerById(currentPlayerId),
-                    round.getPlayerById(targetOneId), round.getPlayerById(targetTwoId),
-                    Effect.EXCHANGE_CARDS, targetOneIndex, targetTwoIndex);
-        } catch(IllegalMoveException ime) {
-            ime.printStackTrace();
-        }
-
-        List<String> keys = Arrays.asList("type","victimOne", "cardOne", "victimTwo", "cardTwo");
-        List<String> values = Arrays.asList("EXCHANGE_CARDS",Integer.toString(targetOneId),
-                Integer.toString(targetOneIndex), Integer.toString(targetTwoId),
-                Integer.toString(targetTwoIndex));
-
-        String jsonResponse = JsonConverter.createJsonString(new ObjectMapper(), new HashMap<>(), keys, values);
+        String jsonResponse = GameEffectHandler.handleExchangeCards(jsonMap, round);
         simpMessagingTemplate.convertAndSend("/topic/round/effects", jsonResponse);
     }
 
     private void checkTwoCards(HashMap<String, Object> jsonMap, Round round) {
-        int currentPlayerId = Integer.parseInt((String) jsonMap.get("currentPlayerId"));
-        int targetOneId = Integer.parseInt((String) jsonMap.get("targetOneId"));
-        int targetOneIndex = Integer.parseInt((String) jsonMap.get("targetOneIndex"));
-        Card cardOne = round.getPlayerById(targetOneId).getCard(targetOneIndex);
-
-        int targetTwoId = Integer.parseInt((String) jsonMap.get("targetTwoId"));
-        int targetTwoIndex = Integer.parseInt((String) jsonMap.get("targetTwoIndex"));
-        Card cardTwo = round.getPlayerById(targetTwoId).getCard(targetTwoIndex);
-
-        try {
-            round.performEffect(round.getPlayerById(currentPlayerId),
-                    round.getPlayerById(targetOneId), round.getPlayerById(targetTwoId),
-                    Effect.CHECK_TWO_CARDS, targetOneIndex, targetTwoIndex);
-        } catch(IllegalMoveException ime) {
-            ime.printStackTrace();
-        }
-
-        List<String> keys = Arrays.asList("type", "agent","victimOne", "cardOne",
-                "cardOneValue", "victimTwo", "cardTwo", "cardTwoValue");
-        List<String> values = Arrays.asList("CHECK_TWO_CARDS", Integer.toString(currentPlayerId),
-                Integer.toString(targetOneId),
-                Integer.toString(targetOneIndex), Integer.toString(cardOne.getValue()),
-                Integer.toString(targetTwoId),
-                Integer.toString(targetTwoIndex), Integer.toString(cardTwo.getValue()));
-
-        String jsonResponse = JsonConverter.createJsonString(new ObjectMapper(), new HashMap<>(), keys, values);
+        String currentPlayerId =(String) jsonMap.get("currentPlayerId");
+        String jsonResponse = GameEffectHandler.handlePrivateCheckTwoCards(jsonMap, round);
         simpMessagingTemplate.convertAndSend("/topic/round/effects/" +
                 currentPlayerId, jsonResponse);
-
-        keys = Arrays.asList("type","victimOne", "cardOne",
-                "victimTwo", "cardTwo");
-        values = Arrays.asList("CHECK_TWO_CARDS",
-                Integer.toString(targetOneId),
-                Integer.toString(targetOneIndex),
-                Integer.toString(targetTwoId),
-                Integer.toString(targetTwoIndex));
-        jsonResponse = JsonConverter.createJsonString(new ObjectMapper(), new HashMap<>(), keys, values);
+        jsonResponse = GameEffectHandler.handlePublicCheckTwoCards(jsonMap);
         simpMessagingTemplate.convertAndSend("/topic/round/effects", jsonResponse);
     }
 
-    private void exchangeCardsAfterChecking(HashMap<String, Object> jsonMap, Round round) {
-        try {
-            int currentPlayerId = Integer.parseInt((String) jsonMap.get("currentPlayerId"));
-            round.performEffect(round.getPlayerById(currentPlayerId), 0, Effect.EXCHANGE_AFTER_CHECKS);
-        } catch (IllegalMoveException ime) {
-            ime.printStackTrace();
-        }
 
-        // Clear variables set to handle effect in effectPerformer
-        round.clearTemps();
-    }
 
 
 
