@@ -76,12 +76,14 @@ public class GameController {
             case "END_TURN":
                 endTurn(jsonMap, round);
                 break;
+            case "ACTIVATE_EFFECT":
+                activateEffect(jsonMap, round);
+                break;
             case "CHECK_SELF_CARD":
             case "CHECK_OPPONENT_CARD":
             case "EXCHANGE_CARDS":
             case "CHECK_TWO_CARDS":
             case "EXCHANGE_AFTER_CHECKING":
-            default: sendError(jsonMap);
         }
     }
 
@@ -306,6 +308,18 @@ public class GameController {
         } else {
             simpMessagingTemplate.convertAndSend("/topic/round/actions", jsonResponse);
         }
+    }
+
+    private void activateEffect(HashMap<String, Object> jsonMap, Round round) {
+        int currentPlayerId = Integer.parseInt((String) jsonMap.get("currentPlayerId"));
+        try {
+            round.performEffect(round.getPlayerById(currentPlayerId), 0, Effect.ACTIVATE_EFFECT);
+        } catch (IllegalMoveException ime) {
+            ime.printStackTrace();
+        }
+
+        String jsonResponse = JsonConverter.createJsonString(new ObjectMapper(), new HashMap<>(), "ACTIVATE_EFFECT");
+        simpMessagingTemplate.convertAndSend("/topic/round/actions");
     }
 
     private void checkSelfCard(HashMap<String, Object> jsonMap, Round round) {
