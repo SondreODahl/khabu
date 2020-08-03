@@ -1,4 +1,5 @@
 import {
+  ACTIVATE_EFFECT,
   DISCARD_CARD,
   DRAW_FROM_DECK,
   END_TURN,
@@ -22,6 +23,7 @@ import {
   PUT,
   PUT_FAIL,
   TRANSFER,
+  USING_EFFECT,
 } from '../../constants/gameStates';
 
 const initialState = {
@@ -59,6 +61,8 @@ const gameState = (state = initialState, { type, payload }) => {
       return newState(FRENZY, true);
     case DISCARD_CARD:
       return newState(DISCARD, true);
+    case ACTIVATE_EFFECT:
+      return newState(USING_EFFECT, false);
     case ROUND_END:
       return initialState;
     default:
