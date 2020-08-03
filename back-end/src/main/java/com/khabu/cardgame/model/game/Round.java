@@ -86,6 +86,8 @@ public class Round {
     }
 
     public void beginRound() {
+        discardPile.reset();
+        cardDeck.initializeCards();
         resetMaps();
         dealCards();
         this.turn.setGameState(Gamestate.FIRST_TURN);

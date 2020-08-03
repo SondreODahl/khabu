@@ -11,6 +11,10 @@ public class DiscardPile {
         pile = new Stack<>();
     }
 
+    public void reset() {
+        pile.clear();
+    }
+
     public Card draw() {
         if (pile.empty()) {
             throw new IllegalStateException("Illegal Move. DiscardPile is empty");
