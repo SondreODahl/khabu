@@ -21,7 +21,6 @@ class EffectPerformerTest {
     Player player1;
     Player player2;
     DiscardPile discardPile;
-    CardDeck cardDeck;
     Card spadesFour;
 
 
@@ -32,8 +31,7 @@ class EffectPerformerTest {
         Player[] players = new Player[]{player1, player2};
         turn = new Turn(players);
         discardPile = new DiscardPile();
-        cardDeck = new CardDeck(discardPile);
-        effectPerformer = new EffectPerformer(turn, cardDeck, discardPile, Round.DummyConstructor());
+        effectPerformer = new EffectPerformer(turn, discardPile, Round.DummyConstructor());
         spadesFour = new Card(4, 'S');
 
         // Set turn variables

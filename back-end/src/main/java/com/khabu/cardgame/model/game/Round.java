@@ -7,6 +7,8 @@ import com.khabu.cardgame.model.game.card.Card;
 import com.khabu.cardgame.model.game.card.CardDeck;
 import com.khabu.cardgame.model.game.card.CardHand;
 import com.khabu.cardgame.model.game.card.DiscardPile;
+import com.khabu.cardgame.model.game.effect.Effect;
+import com.khabu.cardgame.model.game.effect.EffectPerformer;
 import com.khabu.cardgame.util.IllegalMoveException;
 
 import java.util.HashMap;
@@ -20,6 +22,7 @@ public class Round {
     private final CardDeck cardDeck = new CardDeck(discardPile);
     private final Turn turn;
     private ActionPerformer actionPerformer;
+    private EffectPerformer effectPerformer;
     private final Game game;
     private final Player[] players;
 
@@ -44,6 +47,7 @@ public class Round {
     public static Round Constructor(Game game, Player[] players, int INIT_HAND_SIZE, int REVEAL_TIME) { // TODO: Change this implementation
         Round round = new Round(game, players, INIT_HAND_SIZE, REVEAL_TIME);
         round.actionPerformer = new ActionPerformer(round.turn, round.cardDeck, round.discardPile, round);
+        round.effectPerformer = new EffectPerformer(round.turn, round.discardPile, round);
         return round;
     }
     public static Round DummyConstructor() { // TODO: Change?
@@ -157,6 +161,36 @@ public class Round {
         }
     }
 
+    public boolean performEffect(Player current, int index, Effect effect) throws IllegalMoveException {
+        return performEffect(current, null, null, effect, index, 0);
+    }
+
+    public boolean performEffect(Player current, Player target1, int index, Effect effect) throws IllegalMoveException {
+        return performEffect(current, target1, null, effect, index, 0);
+    }
+
+    public boolean performEffect(Player current, Player target1, Player target2, Effect effect, int indexOne, int indexTwo) throws IllegalMoveException {
+        switch (effect) {
+            case CHECK_SELF_CARD:
+                effectPerformer.checkOwnCard(current, indexOne);
+                return true;
+            case CHECK_OTHER_CARD:
+                effectPerformer.checkOpponentCard(current, target1, indexOne);
+                return true;
+            case EXCHANGE_CARDS:
+                effectPerformer.exchangeCards(current, target1, target2, indexOne, indexTwo);
+                return true;
+            case CHECK_TWO_CARDS:
+                effectPerformer.checkTwoCards(current, target1, target2, indexOne, indexTwo);
+                return true;
+            case EXCHANGE_AFTER_CHECKS:
+                effectPerformer.swapCheckedCardsFromKingEffect(current);
+                return true;
+            default:
+                return false;
+        }
+    }
+
     public boolean readyUp(Player player) {
         if (this.roundStarted)
             throw new IllegalStateException("Game has already started. Cannot ready up");
@@ -225,6 +259,25 @@ public class Round {
         return this.players[id-1];
     }
 
+    // EFFECT GETTERS USED TO REDUCE LENGTH OF MESSAGES BETWEEN SERVER AND CLIENT
+
+    public Player getTemporaryTargetOne() {
+        return effectPerformer.getTemporaryTargetOne();
+    }
+    public Player getTemporaryTargetTwo() {
+        return effectPerformer.getTemporaryTargetTwo();
+    }
+    public int getTemporaryTargetIndexOne() {
+        return effectPerformer.getTemporaryTargetIndexOne();
+    }
+    public int getTemporaryTargetIndexTwo() {
+        return effectPerformer.getTemporaryTargetIndexTwo();
+    }
+
+    public void clearTemps() {
+        effectPerformer.clearTempTargets();
+    }
+  
     public Player getTransferTarget() {
         return actionPerformer.getTemporaryTarget();
     }
