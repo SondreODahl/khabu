@@ -1,12 +1,9 @@
 package com.khabu.cardgame.controllers;
 
-import com.khabu.cardgame.model.game.Game;
 import com.khabu.cardgame.model.game.GameRepository;
-import com.khabu.cardgame.model.game.Player;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Map;
 
 // Handles websocket interaction
 

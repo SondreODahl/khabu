@@ -3,9 +3,7 @@ package com.khabu.cardgame.model;
 import com.khabu.cardgame.model.game.Player;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Component
