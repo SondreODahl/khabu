@@ -25,6 +25,8 @@ const khabuPlayer = (state = null, { type, payload }) => {
   switch (type) {
     case PLAYER_CALLED_KHABU:
       return payload.playerId;
+    case ROUND_END:
+      return null;
     default:
       return state;
   }

@@ -66,6 +66,7 @@ public class ActionPerformer {
         Player nextPlayer = turn.getCurrentPlayer();
         if (nextPlayer == turn.getKhabuPlayer()) {
             turn.setGameState(Gamestate.ENDED);
+            turn.resetKhabuPlayer();
             round.endRound();
         }
         else

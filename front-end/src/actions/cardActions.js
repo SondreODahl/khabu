@@ -6,7 +6,7 @@ import {
   FORCE_DRAW,
   REMOVE_CARD_FROM_HAND,
   SWAP_CARDS,
-  TOGGLE_GLOW,
+  CARD_GLOW,
   TRANSFER_CARD,
   UPDATE_CARD,
 } from './types';
@@ -39,8 +39,8 @@ export const transferCard = (victim, victimCardIndex, agent, cardId) => {
     payload: { victim, victimCardIndex, agent, cardId },
   };
 };
-export const toggleCardGlow = (cardId) => {
-  return { type: TOGGLE_GLOW, payload: { cardId } };
+export const toggleCardGlow = (cardId, glow) => {
+  return { type: CARD_GLOW, payload: { cardId, glow } };
 };
 export const forceDraw = (playerId) => (dispatch, getState) => {
   const cardId = getHighestId(getState) + 1;
@@ -48,8 +48,8 @@ export const forceDraw = (playerId) => (dispatch, getState) => {
 };
 
 export const cardGlow = (cardId) => (dispatch) => {
-  dispatch(toggleCardGlow(cardId));
-  setTimeout(() => dispatch(toggleCardGlow(cardId)), 1000);
+  dispatch(toggleCardGlow(cardId, true));
+  setTimeout(() => dispatch(toggleCardGlow(cardId, false)), 1000);
 };
 
 export const revealCard = (playerId, cardId, value) => (dispatch, getState) => {

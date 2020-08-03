@@ -20,6 +20,7 @@ export default (props) => {
       </div>
       <div className={'ui container'}>
         <GameButtons playerId={props.yourId} />
+        {props.children}
       </div>
       <CardHand playerId={props.yourId} yourId={props.yourId} />
       <NameDisplay playerId={props.yourId} />
