@@ -6,3 +6,4 @@ export const PUT_FAIL = 'PUT_FAIL';
 export const DISCARD = 'DISCARD';
 export const FRENZY = 'FRENZY';
 export const TRANSFER = 'TRANSFER';
+export const USING_EFFECT = 'USING_EFFECT';
