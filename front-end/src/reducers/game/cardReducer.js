@@ -13,7 +13,7 @@ import {
   DISCARD_CARD,
   DRAW_FROM_DECK,
   SWAP_CARDS,
-  TOGGLE_GLOW,
+  CARD_GLOW,
   PUT_REVERSE,
   UPDATE_CARD,
   FORCE_DRAW,
@@ -46,13 +46,12 @@ const byId = (state = {}, { type, payload }) => {
         [tempCardId]: { value: null, glow: false },
       };
     }
-    case TOGGLE_GLOW: {
-      const { cardId } = payload;
-      const { value, glow } = state[cardId];
-      console.log(`cardId: ${cardId}, value: ${value} glow: ${glow}`);
+    case CARD_GLOW: {
+      const { cardId, glow } = payload;
+      const { value } = state[cardId];
       return {
         ...state,
-        [cardId]: { value, glow: !glow },
+        [cardId]: { value, glow },
       };
     }
     case ROUND_END: {
@@ -166,7 +165,7 @@ const cardHandsReducer = (state = getNewInitState(), action) => {
       return resetHand(state, action.payload.playerId);
     case ADD_CARD:
     case REMOVE_CARD:
-    case TOGGLE_GLOW:
+    case CARD_GLOW:
     case ROUND_END:
     case UPDATE_CARD:
       return { ...state, byId: byId(state.byId, action) };
