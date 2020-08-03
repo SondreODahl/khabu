@@ -19,7 +19,11 @@ import {
   playerTransferredCard,
 } from './inGameActions';
 import { endTurn } from './turnActions';
-import { activateEffect, playerChoseCard } from './effectActions';
+import {
+  activateEffect,
+  playerChoseCard,
+  playerExchangedCards,
+} from './effectActions';
 
 export const roundActionDelegator = (topic, body) => {
   const parsedJSON = JSON.parse(body);
@@ -95,6 +99,9 @@ export const publicActionsDelegator = (topic, body) => {
     case 'CHOOSE_CARD_EFFECT': {
       const { victim, card } = parsedJSON;
       return playerChoseCard(victim, card - 1);
+    }
+    case 'EXCHANGE_CARDS': {
+      return playerExchangedCards();
     }
     default:
       alert(`publicActionsDelegator was called with ${body}`);
