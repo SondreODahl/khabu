@@ -18,16 +18,19 @@ const effectType = (state = null, { type, payload }) => {
 };
 
 const chosenCards = (
-  state = { cardOne: null, cardTwo: null },
+  state = {
+    cardOne: { cardId: null, victimId: null },
+    cardTwo: { cardId: null, victimId: null },
+  },
   { type, payload }
 ) => {
   switch (type) {
     case CHOOSE_CARD_FOR_EFFECT:
-      const { cardId } = payload;
+      const { cardId, victimId } = payload;
       if (state.cardOne)
         // Already chosen the first card
-        return { ...state, cardTwo: cardId };
-      return { ...state, cardOne: cardId };
+        return { ...state, cardTwo: { cardId, victimId } };
+      return { ...state, cardOne: { cardId, victimId } };
     case EXCHANGE_CARDS:
     case FINISH_EFFECT:
       return { cardOne: null, cardTwo: null };
