@@ -6,10 +6,10 @@ import {
   FINISH_EFFECT,
 } from '../../actions/types';
 
-const hasEffect = (state = false, { type, payload }) => {
+const effectType = (state = null, { type, payload }) => {
   switch (type) {
     case DISCARD_CARD:
-      return payload.value >= 7; // EffectPlayer will ALWAYS be currentPlayer
+      return payload.value >= 7 ? payload.value : null; // If 7 or more, there is an effect
     case FINISH_EFFECT:
       return false;
     default:
@@ -37,6 +37,6 @@ const chosenCards = (
 };
 
 export default combineReducers({
-  hasEffect,
+  effectType: effectType,
   chosenCards,
 });
