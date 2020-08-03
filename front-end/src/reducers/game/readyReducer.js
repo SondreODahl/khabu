@@ -1,4 +1,8 @@
-import { PLAYER_READY, UPDATE_PLAYERS_READY } from '../../actions/types';
+import {
+  PLAYER_READY,
+  START_ROUND,
+  UPDATE_PLAYERS_READY,
+} from '../../actions/types';
 
 export default (
   state = { playerReady: false, totalReady: 0 },
@@ -10,6 +14,8 @@ export default (
       return { ...state, playerReady };
     case UPDATE_PLAYERS_READY:
       return { ...state, totalReady: payload };
+    case START_ROUND:
+      return { playerReady: false, totalReady: 0 };
     default:
       return state;
   }
