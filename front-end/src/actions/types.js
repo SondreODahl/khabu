@@ -58,3 +58,10 @@ export const DISCARD_CARD = 'DISCARD_CARD';
 
 // ---------------------- Scores ----------------------------
 export const UPDATE_SCORES = 'UPDATE_SCORES';
+
+// ----------------------- Effects --------------------------
+export const ACTIVATE_EFFECT = 'ACTIVATE_EFFECT';
+export const PEEK_CARD = 'PEEK_CARD';
+export const CHOOSE_CARD_FOR_EFFECT = 'CHOOSE_CARD_FOR_EFFECT';
+export const EXCHANGE_CARDS = 'EXCHANGE_CARDS';
+export const FINISH_EFFECT = 'FINISH_EFFECT';

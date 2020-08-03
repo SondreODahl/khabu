@@ -35,7 +35,7 @@ class EffectPerformerTest {
         spadesFour = new Card(4, 'S');
 
         // Set turn variables
-        turn.setGameState(Gamestate.DISCARD);
+        turn.setGameState(Gamestate.USE_EFFECT);
         turn.setCurrentPlayer(player1);
     }
 

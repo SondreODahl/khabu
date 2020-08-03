@@ -24,8 +24,8 @@ export const addCardToHand = (cardId, playerId, index) => {
 export const removeCardFromHand = (cardId, playerId) => {
   return { type: REMOVE_CARD_FROM_HAND, payload: { cardId, playerId } };
 };
-export const discardCard = (cardId) => {
-  return { type: DISCARD_CARD, payload: { cardId } };
+export const discardCard = (cardId, value) => {
+  return { type: DISCARD_CARD, payload: { cardId, value } };
 };
 export const drawFromCardDeck = (cardId, value) => {
   return { type: DRAW_FROM_DECK, payload: { cardId, value } };

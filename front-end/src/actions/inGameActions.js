@@ -28,8 +28,7 @@ export const playerCalledKhabu = (nextPlayerId) => (dispatch, getState) => {
 };
 export const playerDiscardedCard = (value) => (dispatch, getState) => {
   const tempCardId = getState().cards.temporaryCard;
-  dispatch(updateCard(tempCardId, value)); // Update the card value so it is visible
-  dispatch(discardCard(tempCardId)); // Add to discard pile ids and reset temp card
+  dispatch(discardCard(tempCardId, value)); // Add to discard pile ids and reset temp card
 };
 
 export const playerSwappedCard = (targetCardIndex, value) => (

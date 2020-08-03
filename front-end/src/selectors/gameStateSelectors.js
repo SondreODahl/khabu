@@ -6,6 +6,7 @@ import {
   FRENZY,
   PUT,
   TRANSFER,
+  USING_EFFECT,
 } from '../constants/gameStates';
 import {
   getAreYouCurrentPuttingPlayer,
@@ -24,6 +25,16 @@ import {
 } from '../constants/gameMoves';
 import { selectDiscardPileLength } from './cardSelectors';
 import { selectYourId } from './playerSelectors';
+import {
+  getCardEffectAction,
+  getCardEffectActionOpponent,
+  getEffectType,
+} from './effectSelectors';
+import {
+  ACTIVATE_EFFECT,
+  PLAYER_CHECK_OTHER,
+  PLAYER_CHECK_SELF,
+} from '../constants/effectMoves';
 
 const selectProps = (_, props) => props;
 export const selectCurrentGameState = (state) => state.gameState.currentState;
@@ -48,10 +59,12 @@ export const getDiscardPileAction = createSelector(
   selectDiscardPileLength,
   selectCurrentGameState,
   getIsYourTurn,
-  (length, state, yourTurn) => {
+  getEffectType,
+  (length, state, yourTurn, effectType) => {
     if (yourTurn && state !== null) {
       if (state === CARD_DRAWN) return DISCARD_MOVE;
       else if (length !== 0 && state === DRAW) return DRAW_MOVE;
+      else if (state === DISCARD && effectType !== null) return ACTIVATE_EFFECT;
     }
     return null;
   }
@@ -62,8 +75,10 @@ export const getCardAction = createSelector(
   getCanPut,
   getAreYouCurrentPuttingPlayer,
   getIsYourTurn,
-  (state, canPut, puttingPlayer, yourTurn) => {
+  getCardEffectAction,
+  (state, canPut, puttingPlayer, yourTurn, effect) => {
     if (canPut) return PUT_MOVE;
+    if (effect) return effect;
     if (state === CARD_DRAWN && yourTurn) return SWAP_MOVE;
     if (state === TRANSFER && puttingPlayer) return TRANSFER_MOVE;
     if (state === null) return REVEAL_MOVE; // Before the game has started. State is null
@@ -71,8 +86,10 @@ export const getCardAction = createSelector(
   }
 );
 
-export const getCardActionOpponent = createSelector(getCanPut, (canPut) =>
-  canPut ? PUT_MOVE : null
+export const getCardActionOpponent = createSelector(
+  getCanPut,
+  getCardEffectActionOpponent,
+  (canPut, effect) => (canPut ? PUT_MOVE : effect) // Effect is null if no effect is possible
 );
 
 export const getCanEndTurn = createSelector(

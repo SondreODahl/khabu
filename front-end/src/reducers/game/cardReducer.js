@@ -26,6 +26,7 @@ const byId = (state = {}, { type, payload }) => {
   switch (type) {
     case ADD_CARD:
     case UPDATE_CARD:
+    case DISCARD_CARD:
     case PUT_CARD: {
       const { cardId, value } = payload; // Value should always be null on ADD_CARD
       return { ...state, [cardId]: { value, glow: false } };
@@ -198,6 +199,7 @@ const cardHandsReducer = (state = getNewInitState(), action) => {
         ...state,
         discardPile: discardPile(state.discardPile, action),
         temporaryCard: temporaryCard(state.temporaryCard, action),
+        byId: byId(state.byId, action),
       };
     case SWAP_CARDS:
       return {

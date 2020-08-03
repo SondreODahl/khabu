@@ -8,6 +8,7 @@ import playersReducer from './game/playersReducer';
 import turnReducer from './game/turnReducer';
 import gameStateReducer from './game/gameStateReducer';
 import scoresReducer from './game/scoresReducer';
+import effectReducer from './game/effectReducer';
 
 export default combineReducers({
   cards: cardReducer,
@@ -18,4 +19,5 @@ export default combineReducers({
   turn: turnReducer,
   gameState: gameStateReducer,
   scores: scoresReducer,
+  effect: effectReducer,
 });
