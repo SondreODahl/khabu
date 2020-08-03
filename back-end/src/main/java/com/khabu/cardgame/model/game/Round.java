@@ -85,8 +85,15 @@ public class Round {
         }
     }
 
+    public void resetPlayerHands() {
+        for (Player player : players) {
+            player.getCardHand().getCards().clear();
+        }
+    }
+
     public void beginRound() {
         resetMaps();
+        resetPlayerHands();
         dealCards();
         this.turn.setGameState(Gamestate.FIRST_TURN);
     }
