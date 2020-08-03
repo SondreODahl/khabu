@@ -392,9 +392,6 @@ public class GameController {
             round.getTurn().setGameState(Gamestate.FRENZY);
         }
 
-        
-
-
         // Clear variables set to handle effect in effectPerformer
         round.clearTemps();
     }
