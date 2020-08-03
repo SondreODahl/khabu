@@ -2,9 +2,11 @@ package com.khabu.cardgame.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.khabu.cardgame.model.game.Player;
 import com.khabu.cardgame.model.game.Round;
 import com.khabu.cardgame.model.game.action.Actions;
 import com.khabu.cardgame.model.game.card.Card;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import java.util.*;
 
@@ -48,11 +50,12 @@ public class GameHandler {
         try {
             round.performAction(round.getPlayerById(currentPlayerId), Actions.DRAW_FROM_DECK);
             cardValue = round.getCardDrawnFromDeck().getValue();
+            return JsonConverter.createJsonString(new ObjectMapper(), new HashMap<>(),
+                    "CARD_DRAWN_DECK", Integer.toString(cardValue));
         } catch (IllegalMoveException e) {
-            e.printStackTrace();
+            return "fail";
         }
-        return JsonConverter.createJsonString(new ObjectMapper(), new HashMap<>(),
-                "CARD_DRAWN_DECK", Integer.toString(cardValue));
+
     }
 
 
@@ -64,14 +67,15 @@ public class GameHandler {
         // Perform back-end logic
         try {
             round.performAction(round.getPlayerById(currentPlayerId), Actions.DRAW_FROM_DISC, targetCardIndex);
-        } catch (IllegalMoveException e) {
-            e.printStackTrace();
-        }
-        int cardValue = round.getDiscardPile().showTopCard().getValue();
+            int cardValue = round.getDiscardPile().showTopCard().getValue();
 
-        // Create response
-        return JsonConverter.createJsonString(new ObjectMapper(), new HashMap<>(),
-                "DISC", Integer.toString(cardValue), Integer.toString(targetCardIndex));
+            // Create response
+            return JsonConverter.createJsonString(new ObjectMapper(), new HashMap<>(),
+                    "DISC", Integer.toString(cardValue), Integer.toString(targetCardIndex));
+        } catch (IllegalMoveException e) {
+            return "fail";
+        }
+
     }
 
 
@@ -83,14 +87,15 @@ public class GameHandler {
         // Perform back-end game logic
         try {
             round.performAction(round.getPlayerById(currentPlayerId), Actions.SWAP, targetCardIndex);
-        } catch (IllegalMoveException e) {
-            e.printStackTrace();
-        }
-        int cardValue = round.getDiscardPile().showTopCard().getValue();
+            int cardValue = round.getDiscardPile().showTopCard().getValue();
 
-        // Create response
-        return JsonConverter.createJsonString(new ObjectMapper(), new HashMap<>(),
-                "SWAP", Integer.toString(cardValue), Integer.toString(targetCardIndex));
+            // Create response
+            return JsonConverter.createJsonString(new ObjectMapper(), new HashMap<>(),
+                    "SWAP", Integer.toString(cardValue), Integer.toString(targetCardIndex));
+        } catch (IllegalMoveException e) {
+            return "fail";
+        }
+
     }
 
 
@@ -101,14 +106,15 @@ public class GameHandler {
         // Perform back-end game logic
         try {
             round.performAction(round.getPlayerById(currentPlayerId), Actions.DISCARD);
-        } catch (IllegalMoveException e) {
-            e.printStackTrace();
-        }
-        int cardValue = round.getDiscardPile().showTopCard().getValue();
+            int cardValue = round.getDiscardPile().showTopCard().getValue();
 
-        // Create response
-        return JsonConverter.createJsonString(new ObjectMapper(), new HashMap<>(),
-                "DISCARD", Integer.toString(cardValue));
+            // Create response
+            return JsonConverter.createJsonString(new ObjectMapper(), new HashMap<>(),
+                    "DISCARD", Integer.toString(cardValue));
+        } catch (IllegalMoveException e) {
+            return "fail";
+        }
+
     }
 
 
@@ -119,18 +125,19 @@ public class GameHandler {
         // Perform back-end game logic
         try {
             round.performAction(round.getPlayerById(currentPlayerId), Actions.END_TURN);
-        } catch (IllegalMoveException e) {
-            e.printStackTrace();
-        }
-        int nextPlayer = round.getTurn().getCurrentPlayer().getPlayerId();
-        // Started boolean gets set to false when round.endRound() is called
-        String roundOver = round.getStarted() ? "false" : "true";
-        // Keys and values for response
-        List<String> keys = Arrays.asList("type", "nextPlayer", "roundOver");
-        List<String> values = Arrays.asList("END_TURN", Integer.toString(nextPlayer), roundOver);
+            int nextPlayer = round.getTurn().getCurrentPlayer().getPlayerId();
+            // Started boolean gets set to false when round.endRound() is called
+            String roundOver = round.getStarted() ? "false" : "true";
+            // Keys and values for response
+            List<String> keys = Arrays.asList("type", "nextPlayer", "roundOver");
+            List<String> values = Arrays.asList("END_TURN", Integer.toString(nextPlayer), roundOver);
 
-        // Create response and send it
-        return JsonConverter.createJsonString(new ObjectMapper(), new HashMap<>(), keys, values);
+            // Create response and send it
+            return JsonConverter.createJsonString(new ObjectMapper(), new HashMap<>(), keys, values);
+        } catch (IllegalMoveException e) {
+            return "fail";
+        }
+
     }
 
 
@@ -141,16 +148,17 @@ public class GameHandler {
         // Perform back-end game logic
         try {
             round.performAction(round.getPlayerById(currentPlayerId), Actions.CALL_KHABU);
+            int nextPlayerId = round.getTurn().getCurrentPlayer().getPlayerId();
+
+            // Create response
+            List<String> keys = Arrays.asList("type","nextPlayer");
+            List<String> values = Arrays.asList("KHABU",Integer.toString(nextPlayerId));
+
+            return JsonConverter.createJsonString(new ObjectMapper(), new HashMap<>(), keys, values);
         } catch (IllegalMoveException e) {
-            e.printStackTrace();
+            return "fail";
         }
-        int nextPlayerId = round.getTurn().getCurrentPlayer().getPlayerId();
 
-        // Create response
-        List<String> keys = Arrays.asList("type","nextPlayer");
-        List<String> values = Arrays.asList("TRANSFER",Integer.toString(nextPlayerId));
-
-       return JsonConverter.createJsonString(new ObjectMapper(), new HashMap<>(), keys, values);
     }
 
 
@@ -158,68 +166,69 @@ public class GameHandler {
         // Retrieve the player transferring a card,
         // the card being transferred and the target of the transfer
         int transferringPlayerId = Integer.parseInt((String) jsonMap.get("transferringPlayerId"));
-        int targetPlayerId = Integer.parseInt((String) jsonMap.get("targetPlayerId"));
         int targetCardIndex = Integer.parseInt((String) jsonMap.get("targetCardIndex"));
 
         // Perform back-end game logic
         Card targetCard = round.getPlayerById(transferringPlayerId).getCard(targetCardIndex);
+        Player targetPlayer = round.getTransferTarget();
         try {
-            round.performAction(round.getPlayerById(transferringPlayerId), round.getPlayerById(targetPlayerId),
+            round.performAction(round.getPlayerById(transferringPlayerId), targetPlayer,
                     Actions.TRANSFER, targetCardIndex);
+            int cardIndexAfterTransfer = targetPlayer.findCardIndexbyCard(targetCard);
+
+            // Create response
+            List<String> keys = Arrays.asList("type","victim","victimCardIndex", "agentCardIndex");
+            List<String> values = Arrays.asList("TRANSFER",Integer.toString(targetPlayer.getPlayerId()),
+                    Integer.toString(cardIndexAfterTransfer), Integer.toString(targetCardIndex));
+
+            return JsonConverter.createJsonString(new ObjectMapper(), new HashMap<>(), keys, values);
         } catch (IllegalMoveException e) {
-            e.printStackTrace();
+            return "fail";
         }
-        int cardIndexAfterTransfer = round.getPlayerById(targetPlayerId).findCardIndexbyCard(targetCard);
 
-        // Create response
-        List<String> keys = Arrays.asList("type","victim","agentCard");
-        List<String> values = Arrays.asList("TRANSFER",Integer.toString(targetPlayerId),
-                Integer.toString(cardIndexAfterTransfer));
-
-        return JsonConverter.createJsonString(new ObjectMapper(), new HashMap<>(), keys, values);
     }
     public static String handlePutOther(HashMap<String, Object> jsonMap, Round round) {
         // Retrieve puttingPlayerId and targetPlayerId and targetCardindex
-        int currentPlayerId = Integer.parseInt((String) jsonMap.get("currentPlayerId"));
+        int currentPlayerId = Integer.parseInt((String) jsonMap.get("puttingPlayerId"));
         int targetPlayerId = Integer.parseInt((String) jsonMap.get("targetPlayerId"));
         int targetCardIndex = Integer.parseInt((String) jsonMap.get("targetCardIndex"));
 
         // Perform back-end game logic
         Card targetCard = round.getPlayerById(targetPlayerId).getCard(targetCardIndex);
-        String status = "";
+        String status;
         try {
-            round.performAction(round.getPlayerById(currentPlayerId),
+            boolean success = round.performAction(round.getPlayerById(currentPlayerId),
                     round.getPlayerById(targetPlayerId), Actions.PUT_OTHER, targetCardIndex);
-            status = "success";
+            status = success ? "success" : "fail";
+
+            // Create response
+            return createPutResponse(currentPlayerId, targetPlayerId, targetCard, targetCardIndex, status);
         } catch (IllegalMoveException e) {
-            e.printStackTrace();
-            status = "fail";
+            return "fail";
         }
 
-        // Create response
-        return createPutResponse(currentPlayerId, targetPlayerId, targetCard, targetCardIndex, status);
 
     }
     public static String handlePutSelf(HashMap<String, Object> jsonMap, Round round) {
         // Retrieve puttingPlayerId and targetPlayerId and targetCardindex
-        int currentPlayerId = Integer.parseInt((String) jsonMap.get("currentPlayerId"));
+        int currentPlayerId = Integer.parseInt((String) jsonMap.get("puttingPlayerId"));
         int targetCardIndex = Integer.parseInt((String) jsonMap.get("targetCardIndex"));
 
         // Perform back-end game logic
         Card targetCard = round.getPlayerById(currentPlayerId).getCard(targetCardIndex);
         boolean successfulPut = false;
-        String status = "";
+        String status;
         try {
-            round.performAction(round.getPlayerById(currentPlayerId),
+            boolean success = round.performAction(round.getPlayerById(currentPlayerId),
                     round.getPlayerById(currentPlayerId), Actions.PUT_SELF, targetCardIndex);
-            status = "success";
+            status = success ? "success" : "fail";
+
+            // Create response
+            return createPutResponse(currentPlayerId, currentPlayerId, targetCard, targetCardIndex, status);
         } catch (IllegalMoveException e) {
-            e.printStackTrace();
-            status = "fail";
+            return "fail";
         }
 
-        // Create response
-        return createPutResponse(currentPlayerId, currentPlayerId, targetCard, targetCardIndex, status);
     }
 
     private static String createPutResponse(int currentPlayerId, int victimPlayerId, Card targetCard, int targetCardIndex, String status) {
@@ -228,6 +237,35 @@ public class GameHandler {
                 Integer.toString(victimPlayerId), Integer.toString(targetCardIndex),
                 status, Integer.toString(targetCard.getValue()));
         return JsonConverter.createJsonString(new ObjectMapper(), new HashMap<>(), names, values);
+    }
+
+    public static String createEndGameResponse(Round round) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("type", "END");
+        Map<String, Object> players = new HashMap<>();
+        for (Player player: round.getPlayers()) {
+            List<Integer> cardValues = new ArrayList<>();
+            Map<String, Object> playerData = new HashMap<>();
+
+            // Add new data
+            for (Card card:player.getCardHand().getCards().values()) {
+                cardValues.add(card.getValue());
+            }
+            int score = player.calculateScore();
+            playerData.put("score", score);
+            playerData.put("cards", cardValues);
+            players.put(Integer.toString(player.getPlayerId()), playerData);
+        }
+        data.put("players", players);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String jsonResponse = "";
+        try {
+            jsonResponse = objectMapper.writeValueAsString(data);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return jsonResponse;
     }
 
 

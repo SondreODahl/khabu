@@ -16,6 +16,7 @@ public class ActionPerformer {
     private final Round round;
 
     private Card temporaryCard;
+    private Player temporaryTarget; // Used for transfers
 
     public ActionPerformer(Turn turn, CardDeck cardDeck, DiscardPile discardPile, Round round) {
         if (turn == null || cardDeck == null || discardPile == null || round == null)
@@ -39,6 +40,7 @@ public class ActionPerformer {
         if (discardPile.showTopCard().isSameValue(card)) {
             discardPile.put(card);
             player2.removeCard(index);
+            if (action == Actions.PUT_OTHER) setTemporaryTarget(player2);
             Gamestate nextState = action == Actions.PUT_OTHER ? Gamestate.PUT_OTHER_TRANSFER : Gamestate.PUT;
             turn.setGameState(nextState);
             turn.setCurrentPuttingPlayer(player1);
@@ -64,6 +66,7 @@ public class ActionPerformer {
         Player nextPlayer = turn.getCurrentPlayer();
         if (nextPlayer == turn.getKhabuPlayer()) {
             turn.setGameState(Gamestate.ENDED);
+            turn.resetKhabuPlayer();
             round.endRound();
         }
         else
@@ -127,6 +130,7 @@ public class ActionPerformer {
         Card card = player1.removeCard(cardIndex);
         player2.addCard(card);
         turn.setGameState(Gamestate.PUT);
+        setTemporaryTarget(null);
     }
 
     public Card getTemporaryCard() {
@@ -135,6 +139,14 @@ public class ActionPerformer {
 
     public void setTemporaryCard(Card temporaryCard) {
         this.temporaryCard = temporaryCard;
+    }
+
+    public Player getTemporaryTarget() {
+        return temporaryTarget;
+    }
+
+    public void setTemporaryTarget(Player temporaryTarget) {
+        this.temporaryTarget = temporaryTarget;
     }
 }
 

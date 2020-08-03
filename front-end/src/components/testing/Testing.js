@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo } from 'react';
 import GreetButton from './GreetButton';
-import ReadyUpButton from '../in-game/ReadyUpButton';
+import ReadyUpButton from '../in-game/buttons/ReadyUpButton';
 import { useRESTGet } from '../../api/RESTServer';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';

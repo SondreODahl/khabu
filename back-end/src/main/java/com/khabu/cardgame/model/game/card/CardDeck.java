@@ -15,7 +15,8 @@ public class CardDeck {
         shuffle();
     }
 
-    private void initializeCards() {
+    public void initializeCards() {
+        cards.clear();
         char[] faces = {'H', 'C', 'S', 'D'};
         for (int i = 0; i < DECK_SIZE; i++) {
             int val = i % 13;

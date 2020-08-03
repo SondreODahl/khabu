@@ -77,7 +77,6 @@ public class GameController {
                 endTurn(jsonMap, round);
                 break;
             case "CHECK_SELF_CARD":
-
             case "CHECK_OPPONENT_CARD":
             case "EXCHANGE_CARDS":
             case "CHECK_TWO_CARDS":
@@ -189,12 +188,12 @@ public class GameController {
     // ------------------------------
 
     // Action receiver defaults to sending an error in case of faulty behaviour
-    private void sendError(HashMap<String, Object> jsonMap) {
+    private void sendError(String playerId) {
         Map<String, String> output = new HashMap<>();
         // TODO: Fix a better errorMsg
         String errorMsg = "Something went wrong";
         String jsonResponse = JsonConverter.createJsonString(new ObjectMapper(), output, "ERROR", errorMsg);
-        simpMessagingTemplate.convertAndSend("/topic/round/actions", jsonResponse);
+        simpMessagingTemplate.convertAndSend("/topic/round/actions" + playerId, jsonResponse);
     }
 
     // TODO: Send response to everyone with playerid, cardindex and type:reveal
@@ -211,52 +210,102 @@ public class GameController {
         String jsonResponse = GameHandler.handleDrawFromDeck(jsonMap, round);
         String currentPlayerId = (String) jsonMap.get("currentPlayerId");
 
-        simpMessagingTemplate.convertAndSend("/topic/round/actions/" + currentPlayerId, jsonResponse);
-        jsonResponse = JsonConverter.createJsonString(new ObjectMapper(), new HashMap<>(),
-                "DECK");
-        simpMessagingTemplate.convertAndSend("/topic/round/actions", jsonResponse);
+        if (jsonResponse.equals("fail")) {
+            sendError(currentPlayerId);
+        } else {
+            simpMessagingTemplate.convertAndSend("/topic/round/actions/" + currentPlayerId, jsonResponse);
+            jsonResponse = JsonConverter.createJsonString(new ObjectMapper(), new HashMap<>(),
+                    "DECK");
+            simpMessagingTemplate.convertAndSend("/topic/round/actions", jsonResponse);
+        }
     }
 
     private void drawFromDisc(HashMap<String, Object> jsonMap, Round round) {
         String jsonResponse = GameHandler.handleDrawFromDiscard(jsonMap, round);
-        simpMessagingTemplate.convertAndSend("/topic/round/actions", jsonResponse);
+        String playerId = (String) jsonMap.get("currentPlayerId");
+        if (jsonResponse.equals("fail")) {
+            sendError(playerId);
+        } else {
+            simpMessagingTemplate.convertAndSend("/topic/round/actions", jsonResponse);
+        }
     }
 
     private void swapCard(HashMap<String, Object> jsonMap, Round round) {
         String jsonResponse = GameHandler.handleSwap(jsonMap, round);
-        simpMessagingTemplate.convertAndSend("/topic/round/actions", jsonResponse);
+        String playerId = (String) jsonMap.get("currentPlayerId");
+        if (jsonResponse.equals("fail")) {
+            sendError(playerId);
+        } else {
+            simpMessagingTemplate.convertAndSend("/topic/round/actions", jsonResponse);
+        }
     }
 
     private void discardCard(HashMap<String, Object> jsonMap, Round round) {
         String jsonResponse = GameHandler.handleDiscard(jsonMap, round);
-        simpMessagingTemplate.convertAndSend("/topic/round/actions", jsonResponse);
+        String playerId = (String) jsonMap.get("currentPlayerId");
+        if (jsonResponse.equals("fail")) {
+            sendError(playerId);
+        } else {
+            simpMessagingTemplate.convertAndSend("/topic/round/actions", jsonResponse);
+        }
     }
 
     private void endTurn(HashMap<String, Object> jsonMap, Round round) {
         String jsonResponse = GameHandler.handleEndTurn(jsonMap, round);
-        simpMessagingTemplate.convertAndSend("/topic/round/actions", jsonResponse);
+        String playerId = (String) jsonMap.get("currentPlayerId");
+        if (jsonResponse.equals("fail")) {
+            sendError(playerId);
+        } else {
+            simpMessagingTemplate.convertAndSend("/topic/round/actions", jsonResponse);
+            // If the round is over, send round ended data to clients
+            if (!round.getStarted()) {
+                jsonResponse = GameHandler.createEndGameResponse(round);
+                simpMessagingTemplate.convertAndSend("/topic/round/flow", jsonResponse);
+            }
+        }
 
     }
 
     private void callKhabu(HashMap<String, Object> jsonMap, Round round) {
         String jsonResponse = GameHandler.handleKhabuCall(jsonMap, round);
-        simpMessagingTemplate.convertAndSend("/topic/round/actions", jsonResponse);
+        String playerId = (String) jsonMap.get("currentPlayerId");
+        if (jsonResponse.equals("fail")) {
+            sendError(playerId);
+        } else {
+            simpMessagingTemplate.convertAndSend("/topic/round/actions", jsonResponse);
+        }
+
 
     }
 
     private void transferCard(HashMap<String, Object> jsonMap, Round round) {
         String jsonResponse = GameHandler.handleTransfer(jsonMap, round);
-        simpMessagingTemplate.convertAndSend("/topic/round/actions", jsonResponse);
+        String playerId = (String) jsonMap.get("transferringPlayerId");
+        if (jsonResponse.equals("fail")) {
+            sendError(playerId);
+        } else {
+            simpMessagingTemplate.convertAndSend("/topic/round/actions", jsonResponse);
+        }
     }
 
     private void putOther(HashMap<String, Object> jsonMap, Round round) {
         String jsonResponse = GameHandler.handlePutOther(jsonMap, round);
-        simpMessagingTemplate.convertAndSend("/topic/round/actions", jsonResponse);
+        String playerId = (String) jsonMap.get("puttingPlayerId");
+        if (jsonResponse.equals("fail")) {
+            sendError(playerId);
+        } else {
+            simpMessagingTemplate.convertAndSend("/topic/round/actions", jsonResponse);
+        }
     }
 
     private void putSelf(HashMap<String, Object> jsonMap, Round round) {
         String jsonResponse = GameHandler.handlePutSelf(jsonMap, round);
-        simpMessagingTemplate.convertAndSend("/topic/round/actions", jsonResponse);
+        String playerId = (String) jsonMap.get("puttingPlayerId");
+        if (jsonResponse.equals("fail")) {
+            sendError(playerId);
+        } else {
+            simpMessagingTemplate.convertAndSend("/topic/round/actions", jsonResponse);
+        }
     }
 
     private void checkSelfCard(HashMap<String, Object> jsonMap, Round round) {

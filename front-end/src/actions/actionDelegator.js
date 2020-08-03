@@ -1,4 +1,9 @@
-import { initializeRound, startRound, updatePlayersReady } from './roundActions';
+import {
+  endRound,
+  initializeRound,
+  startRound,
+  updatePlayersReady,
+} from './roundActions';
 import { ALL_PLAYERS_READY, BEGIN_GAME, START_ROUND } from './types';
 import {
   drawFromDeckAndRegisterCard,
@@ -6,10 +11,14 @@ import {
   revealCard,
 } from './cardActions';
 import {
+  playerCalledKhabu,
   playerDiscardedCard,
   playerEndedTurn,
+  playerPutCard,
   playerSwappedCard,
+  playerTransferredCard,
 } from './inGameActions';
+import { endTurn } from './turnActions';
 
 export const roundActionDelegator = (topic, body) => {
   const parsedJSON = JSON.parse(body);
@@ -24,6 +33,8 @@ export const roundActionDelegator = (topic, body) => {
     case 'BEGIN':
       const startingPlayer = parsedJSON.value;
       return startRound(startingPlayer);
+    case 'END':
+      return endRound(parsedJSON.players);
     default:
       alert(`RoundActionDelegator was called with ${body}`);
   }
@@ -33,6 +44,9 @@ export const privateActionsDelegator = (topic, body) => {
   const parsedJSON = JSON.parse(body);
   const type = parsedJSON.type;
   switch (type) {
+    case 'ERROR':
+      console.log(parsedJSON.value);
+      break;
     case 'REVEAL':
       const { status, playerId, id, value } = parsedJSON;
       if (status === 'FAIL') {
@@ -54,14 +68,28 @@ export const publicActionsDelegator = (topic, body) => {
       return playerDrewFromDeck();
     case 'DISCARD':
       return playerDiscardedCard(parsedJSON.value);
-    case 'SWAP':
+    case 'SWAP': {
       const { targetCardIndex, value } = parsedJSON;
       return playerSwappedCard(targetCardIndex - 1, value); // Server is 1-indexed
-    case 'END_TURN':
-      const { nextPlayer, roundOver } = parsedJSON;
-      const roundOverParsed = roundOver === 'true'; // Always receive strings from backend
-      return playerEndedTurn(nextPlayer, roundOverParsed);
+    }
+    case 'END_TURN': {
+      const { nextPlayer } = parsedJSON;
+      return endTurn(nextPlayer);
+    }
+    case 'PUT': {
+      const { agent, victim, victimCard, status, value } = parsedJSON;
+      return playerPutCard(agent, victim, victimCard - 1, status, value);
+    }
+    case 'TRANSFER': {
+      const { victim, victimCardIndex, agentCardIndex } = parsedJSON;
+      return playerTransferredCard(victim, victimCardIndex - 1, agentCardIndex - 1);
+    }
+    case 'KHABU': {
+      const { nextPlayer } = parsedJSON;
+      return playerCalledKhabu(nextPlayer);
+    }
     default:
       alert(`publicActionsDelegator was called with ${body}`);
+      break;
   }
 };

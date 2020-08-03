@@ -6,7 +6,7 @@ import useClient from '../api/useSTOMPClient';
 import Testing from './testing/Testing';
 import JoinGame from './pre-game/JoinGame';
 import StartPage from './pre-game/StartPage';
-import GamePage from './in-game/GamePage';
+import GamePage from './in-game/pages/GamePage';
 
 const App = (props) => {
   useClient();

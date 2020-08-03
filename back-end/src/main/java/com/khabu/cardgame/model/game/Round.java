@@ -89,8 +89,17 @@ public class Round {
         }
     }
 
+    public void resetPlayerHands() {
+        for (Player player : players) {
+            player.getCardHand().getCards().clear();
+        }
+    }
+
     public void beginRound() {
+        discardPile.reset();
+        cardDeck.initializeCards();
         resetMaps();
+        resetPlayerHands();
         dealCards();
         this.turn.setGameState(Gamestate.FIRST_TURN);
     }
@@ -267,5 +276,9 @@ public class Round {
 
     public void clearTemps() {
         effectPerformer.clearTempTargets();
+    }
+  
+    public Player getTransferTarget() {
+        return actionPerformer.getTemporaryTarget();
     }
 }

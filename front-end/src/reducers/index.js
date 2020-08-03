@@ -7,6 +7,7 @@ import apiReducer from './API/apiReducer';
 import playersReducer from './game/playersReducer';
 import turnReducer from './game/turnReducer';
 import gameStateReducer from './game/gameStateReducer';
+import scoresReducer from './game/scoresReducer';
 
 export default combineReducers({
   cards: cardReducer,
@@ -16,4 +17,5 @@ export default combineReducers({
   form: joinFormReducer,
   turn: turnReducer,
   gameState: gameStateReducer,
+  scores: scoresReducer,
 });

@@ -24,6 +24,10 @@ public class Turn {
         return this.khabuPlayer;
     }
 
+    public void resetKhabuPlayer() {
+        this.khabuPlayer = null;
+    }
+
     public void setKhabuPlayer(Player khabuPlayer) throws IllegalMoveException {
         checkPlayerForNull(khabuPlayer);
         if (this.khabuPlayer != null) {

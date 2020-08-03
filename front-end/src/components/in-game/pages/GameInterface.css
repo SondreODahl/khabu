@@ -1,0 +1,23 @@
+.button-row {
+    height: 4rem !important;
+}
+.game-button {
+    height: inherit !important;
+    display: flex !important;
+}
+
+.game-button.khabu {
+    justify-content: right;
+}
+
+.game-button.end-turn {
+    justify-content: left;
+}
+
+.game-button button {
+    width: 100px;
+}
+
+.opponent-air-to-deck {
+    height: 4rem;
+}
