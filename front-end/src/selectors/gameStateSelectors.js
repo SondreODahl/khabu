@@ -25,7 +25,11 @@ import {
 } from '../constants/gameMoves';
 import { selectDiscardPileLength } from './cardSelectors';
 import { selectYourId } from './playerSelectors';
-import { getEffectType } from './effectSelectors';
+import {
+  getCardEffectAction,
+  getCardEffectActionOpponent,
+  getEffectType,
+} from './effectSelectors';
 import {
   ACTIVATE_EFFECT,
   PLAYER_CHECK_OTHER,

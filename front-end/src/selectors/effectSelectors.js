@@ -1,4 +1,3 @@
-import { selectCurrentGameState } from './gameStateSelectors';
 import { DISCARD, USING_EFFECT } from '../constants/gameStates';
 import { createSelector } from 'reselect';
 import {
@@ -10,6 +9,7 @@ import {
 
 const selectEffectType = (state) => state.effect.effectType;
 const selectChosenCards = (state) => state.effect.chosenCards;
+const selectCurrentGameState = (state) => state.gameState.currentState;
 
 export const getEffectType = createSelector(selectEffectType, (type) => {
   if (type === null) return type;
