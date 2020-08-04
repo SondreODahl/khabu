@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
 import {
+  CHECK_OPPONENT,
   CHOOSE_CARD_FOR_EFFECT,
   DISCARD_CARD,
   EXCHANGE_CARDS,
@@ -11,7 +12,7 @@ const effectType = (state = null, { type, payload }) => {
     case DISCARD_CARD:
       return payload.value >= 7 ? payload.value : null; // If 7 or more, there is an effect
     case FINISH_EFFECT:
-      return false;
+      return null;
     default:
       return state;
   }
@@ -19,8 +20,8 @@ const effectType = (state = null, { type, payload }) => {
 
 const chosenCards = (
   state = {
-    cardOne: { cardId: null, victimId: null },
-    cardTwo: { cardId: null, victimId: null },
+    cardOne: null,
+    cardTwo: null,
   },
   { type, payload }
 ) => {
@@ -31,6 +32,10 @@ const chosenCards = (
         // Already chosen the first card
         return { ...state, cardTwo: { cardId, victimId } };
       return { ...state, cardOne: { cardId, victimId } };
+    case CHECK_OPPONENT: {
+      const { cardId } = payload;
+      return { ...state, cardOne: { cardId } };
+    }
     case EXCHANGE_CARDS:
     case FINISH_EFFECT:
       return { cardOne: null, cardTwo: null };

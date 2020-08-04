@@ -64,7 +64,7 @@ export const getDiscardPileAction = createSelector(
     if (yourTurn && state !== null) {
       if (state === CARD_DRAWN) return DISCARD_MOVE;
       else if (length !== 0 && state === DRAW) return DRAW_MOVE;
-      else if (state === DISCARD && effectType !== null) return ACTIVATE_EFFECT;
+      else if (effectType !== null && state !== USING_EFFECT) return ACTIVATE_EFFECT;
     }
     return null;
   }
