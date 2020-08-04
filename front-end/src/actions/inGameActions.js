@@ -58,10 +58,10 @@ export const playerPutCard = (agent, victim, victimCard, status, value) => (
   const cardValue = parseInt(value);
   const victimCardId = getState().cards[victim][victimCard];
   if (status === 'fail') {
-    const prevState = getState().gameState.currentState;
+    const nextState = getState().gameState.currentState;
     const DISC_PILE_TIMEOUT = 2000;
     setTimeout(() => {
-      dispatch(putReverse(agent, victim, victimCardId, victimCard, prevState)); // Reverse gameState and remove discardPile top deck
+      dispatch(putReverse(agent, victim, victimCardId, victimCard, nextState)); // Reverse gameState and remove discardPile top deck
       dispatch(forceDraw(agent));
     }, DISC_PILE_TIMEOUT);
   }
@@ -72,6 +72,6 @@ const putCard = (agent, victim, cardId, status, value) => {
   return { type: PUT_CARD, payload: { agent, victim, cardId, status, value } };
 };
 
-const putReverse = (agent, victim, cardId, index, prevState) => {
-  return { type: PUT_REVERSE, payload: { agent, victim, cardId, index, prevState } };
+const putReverse = (agent, victim, cardId, index, nextState) => {
+  return { type: PUT_REVERSE, payload: { agent, victim, cardId, index, nextState } };
 };

@@ -24,6 +24,7 @@ import {
   playerCheckedOpponent,
   playerChoseCard,
   playerExchangedCards,
+  playerFinishedEffect,
   revealOpponent,
 } from './effectActions';
 
@@ -110,7 +111,10 @@ export const publicActionsDelegator = (topic, body) => {
       const { targetPlayerId, targetCardIndex } = parsedJSON;
       return playerCheckedOpponent(targetPlayerId, targetCardIndex - 1);
     }
-    case 'EXCHANGE_CARDS':
+    case 'FINISH_EFFECT': {
+      const { swap } = parsedJSON;
+      return playerFinishedEffect(swap);
+    }
     default:
       alert(`publicActionsDelegator was called with ${body}`);
       break;
