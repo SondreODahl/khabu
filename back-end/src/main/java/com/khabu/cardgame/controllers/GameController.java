@@ -322,22 +322,7 @@ public class GameController {
 
 
     private void finishEffect(HashMap<String, Object> jsonMap, Round round) {
-        int currentPlayerId = Integer.parseInt((String) jsonMap.get("currentPlayerId"));
-        if (round.getTurn().getCurrentPlayer() != round.getPlayerById(currentPlayerId)) {
-            sendError(Integer.toString(currentPlayerId));
-        }
-        if (jsonMap.get("swap").equals("true")) {
-            exchangeCardsAfterChecking(jsonMap, round);
-        }
-        if (round.getTurn().gameStateEquals(Gamestate.KING_EFFECT)) {
-            Gamestate gameState = round.getTurn().getCurrentPuttingPlayer() == null ? Gamestate.FRENZY : Gamestate.PUT;
-            round.getTurn().setGameState(gameState);
-        }
-
-        List<String> keys = Arrays.asList("type", "swap");
-        List<String> values = Arrays.asList("FINISH_EFFECT", jsonMap.get("swap").toString());
-
-        String jsonResponse = JsonConverter.createJsonString(new ObjectMapper(), new HashMap<>(), keys, values);
+        String jsonResponse = GameEffectHandler.handleFinishEffect(jsonMap, round);
         simpMessagingTemplate.convertAndSend("/topic/round/actions", jsonResponse);
     }
 
@@ -471,17 +456,7 @@ public class GameController {
     }
 
 
-    private void exchangeCardsAfterChecking(HashMap<String, Object> jsonMap, Round round) {
-        try {
-            int currentPlayerId = Integer.parseInt((String) jsonMap.get("currentPlayerId"));
-            round.performEffect(round.getPlayerById(currentPlayerId), 0, Effect.EXCHANGE_AFTER_CHECKS);
 
-            // Clear variables set to handle effect in effectPerformer
-            round.clearTemps();
-        } catch (IllegalMoveException ime) {
-            ime.printStackTrace();
-        }
-    }
 
 
 
