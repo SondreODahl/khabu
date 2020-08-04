@@ -7,11 +7,9 @@ import com.khabu.cardgame.model.game.Game;
 import com.khabu.cardgame.model.game.GameRepository;
 import com.khabu.cardgame.model.game.Player;
 import com.khabu.cardgame.model.game.Round;
-import com.khabu.cardgame.model.game.action.Actions;
 import com.khabu.cardgame.model.game.action.Gamestate;
-import com.khabu.cardgame.model.game.card.Card;
 import com.khabu.cardgame.model.game.effect.Effect;
-import com.khabu.cardgame.util.GameHandler;
+import com.khabu.cardgame.gameutil.GameHandler;
 import com.khabu.cardgame.util.IllegalMoveException;
 import com.khabu.cardgame.util.JsonConverter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -436,6 +434,7 @@ public class GameController {
                     );
 
                     if (effect == Effect.EXCHANGE_CARDS) {
+                        round.clearTemps();
                         String jsonResponse = JsonConverter.createJsonString(
                                 new ObjectMapper(), new HashMap<>(), "EXCHANGE_CARDS"
                         );
@@ -482,15 +481,11 @@ public class GameController {
         try {
             int currentPlayerId = Integer.parseInt((String) jsonMap.get("currentPlayerId"));
             round.performEffect(round.getPlayerById(currentPlayerId), 0, Effect.EXCHANGE_AFTER_CHECKS);
+
+            // Clear variables set to handle effect in effectPerformer
+            round.clearTemps();
         } catch (IllegalMoveException ime) {
             ime.printStackTrace();
-        }
-
-        // Clear variables set to handle effect in effectPerformer
-        try {
-            round.clearTemps();
-        } catch (IllegalMoveException e) {
-            e.printStackTrace();
         }
     }
 
