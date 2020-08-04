@@ -2,6 +2,7 @@ package com.khabu.cardgame.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.khabu.cardgame.gameutil.GameEffectHandler;
 import com.khabu.cardgame.model.PlayerRepository;
 import com.khabu.cardgame.model.game.Game;
 import com.khabu.cardgame.model.game.GameRepository;
@@ -315,14 +316,7 @@ public class GameController {
     }
 
     private void activateEffect(HashMap<String, Object> jsonMap, Round round) {
-        int currentPlayerId = Integer.parseInt((String) jsonMap.get("currentPlayerId"));
-        try {
-            round.performEffect(round.getPlayerById(currentPlayerId), 0, Effect.ACTIVATE_EFFECT);
-        } catch (IllegalMoveException ime) {
-            ime.printStackTrace();
-        }
-
-        String jsonResponse = JsonConverter.createJsonString(new ObjectMapper(), new HashMap<>(), "ACTIVATE_EFFECT");
+        String jsonResponse = GameEffectHandler.handleActivateEffect(jsonMap, round);
         simpMessagingTemplate.convertAndSend("/topic/round/actions", jsonResponse);
     }
 
