@@ -416,9 +416,12 @@ public class GameController {
                 if (round.getTemporaryTargetOne() == null) {
                     round.setTemporaryTargetOne(round.getPlayerById(targetPlayerId));
                     round.setTemporaryTargetOneIndex(targetCardIndex);
+                    sendChooseOneResponse(targetPlayerId, targetCardIndex);
+
                 } else if (round.getTemporaryTargetTwo() == null) {
                     round.setTemporaryTargetTwo(round.getPlayerById(targetPlayerId));
                     round.setTemporaryTargetTwoIndex(targetCardIndex);
+                    sendChooseOneResponse(targetPlayerId, targetCardIndex);
 
                     // Get correct effect based on value of discarded card in current turn
                     int discValue = round.getEffectPerformerTopOfDiscardValue();
@@ -429,7 +432,30 @@ public class GameController {
                             round.getTemporaryTargetTwo(),
                             effect,
                             round.getTemporaryTargetIndexOne(),
-                            round.getTemporaryTargetIndexTwo());
+                            round.getTemporaryTargetIndexTwo()
+                    );
+
+                    if (effect == Effect.EXCHANGE_CARDS) {
+                        String jsonResponse = JsonConverter.createJsonString(
+                                new ObjectMapper(), new HashMap<>(), "EXCHANGE_CARDS"
+                        );
+                        simpMessagingTemplate.convertAndSend("/topic/round/actions", jsonResponse);
+                    } else {
+                        int victimOneValue = round.getTemporaryTargetOne().getCardHand().
+                                getCards().get(round.getTemporaryTargetIndexOne()).getValue();
+                        int victimTwoValue = round.getTemporaryTargetTwo().getCardHand().
+                                getCards().get(round.getTemporaryTargetIndexTwo()).getValue();
+                        List<String> keys = Arrays.asList("type", "victimOneValue", "victimTwoValue");
+                        List<String> values = Arrays.asList(
+                                "CHECK_TWO_CARDS", Integer.toString(victimOneValue), Integer.toString(victimTwoValue)
+                        );
+
+                        String jsonResponse = JsonConverter.createJsonString(new ObjectMapper(), new HashMap<>(), keys, values);
+                        simpMessagingTemplate.convertAndSend("/topic/round/actions", jsonResponse);
+
+                        jsonResponse = JsonConverter.createJsonString(new ObjectMapper(), new HashMap<>(), "CHECK_TWO_CARDS");
+                        simpMessagingTemplate.convertAndSend("/topic/round/actions", jsonResponse);
+                    }
                 }
             } catch (IllegalMoveException ime) {
                 ime.printStackTrace();
@@ -437,6 +463,18 @@ public class GameController {
         }
 
 
+    }
+
+    private void sendChooseOneResponse(int victimId, int targetCardIndex) {
+        // Create choose_one response
+        List<String> keys = Arrays.asList("type", "victim", "card");
+        List<String> values = Arrays.asList("CHOOSE_CARD_EFFECT",
+                Integer.toString(victimId), Integer.toString(targetCardIndex));
+
+        String jsonResponse = JsonConverter.createJsonString(new ObjectMapper(),
+                new HashMap<>(), keys, values);
+
+        simpMessagingTemplate.convertAndSend("/topic/round/actions", jsonResponse);
     }
 
 
