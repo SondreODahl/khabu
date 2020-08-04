@@ -22,14 +22,13 @@ class RoundTest {
     private Player player2;
     private final int DECK_SIZE = 52;
     private final int initialHandSize = 4;
-    private final int revealTime = 500;
 
     @BeforeEach
     void setUp() {
         player1 = new Player("Player 1", 1, "qweqasd");
         player2 = new Player("Player 2", 2, "asqweqweasd");
         round = Round.Constructor(
-                new Game("abc", 1), new Player[]{player1, player2}, initialHandSize, revealTime);
+                new Game("abc", 1), new Player[]{player1, player2}, initialHandSize, Game.REVEAL_TIME);
     }
 
     @Test

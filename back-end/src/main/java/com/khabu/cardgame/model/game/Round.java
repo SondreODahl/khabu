@@ -30,26 +30,24 @@ public class Round {
     private final Map<Player, Integer> scores = new HashMap<>();
 
     private final int INIT_HAND_SIZE;
-    private final int REVEAL_TIME;
 
 
-    private Round(Game game, Player[] players, int INIT_HAND_SIZE, int REVEAL_TIME) {
+    private Round(Game game, Player[] players, int INIT_HAND_SIZE) {
         validateHandSize(INIT_HAND_SIZE);
         this.INIT_HAND_SIZE = INIT_HAND_SIZE;
-        this.REVEAL_TIME = REVEAL_TIME;
         this.players = players;
         this.turn = new Turn(players);
         this.game = game;
         resetMaps();
     }
     public static Round Constructor(Game game, Player[] players, int INIT_HAND_SIZE, int REVEAL_TIME) { // TODO: Change this implementation
-        Round round = new Round(game, players, INIT_HAND_SIZE, REVEAL_TIME);
+        Round round = new Round(game, players, INIT_HAND_SIZE);
         round.actionPerformer = new ActionPerformer(round.turn, round.cardDeck, round.discardPile, round);
         round.effectPerformer = new EffectPerformer(round.turn, round.discardPile, round);
         return round;
     }
     public static Round DummyConstructor() { // TODO: Change?
-        return new Round(new Game("abc", 2), new Player[]{}, 4, 500);
+        return new Round(new Game("abc", 2), new Player[]{}, 4);
     }
 
     // ------------------------------ METHODS ------------------------------------------
