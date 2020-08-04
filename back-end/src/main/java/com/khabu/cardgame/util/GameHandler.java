@@ -107,7 +107,7 @@ public class GameHandler {
         try {
             round.performAction(round.getPlayerById(currentPlayerId), Actions.DISCARD);
             int cardValue = round.getDiscardPile().showTopCard().getValue();
-
+            round.setEffectPerformerDiscardPileValue(cardValue);
             // Create response
             return JsonConverter.createJsonString(new ObjectMapper(), new HashMap<>(),
                     "DISCARD", Integer.toString(cardValue));

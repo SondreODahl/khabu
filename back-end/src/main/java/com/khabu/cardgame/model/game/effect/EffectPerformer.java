@@ -14,14 +14,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EffectPerformer {
-    Turn turn;
-    Round round;
-    DiscardPile discardPile;
+    private Turn turn;
+    private Round round;
+    private DiscardPile discardPile;
+    private int topOfDiscardValue;
 
-    Player temporaryTargetOne;
-    Player temporaryTargetTwo;
-    int temporaryTargetIndexOne;
-    int temporaryTargetIndexTwo;
+    private Player temporaryTargetOne;
+    private Player temporaryTargetTwo;
+    private int temporaryTargetIndexOne;
+    private int temporaryTargetIndexTwo;
 
     public EffectPerformer(Turn turn, DiscardPile discardPile, Round round) {
         if (turn == null || discardPile == null || round == null)
@@ -40,7 +41,7 @@ public class EffectPerformer {
 
     public Card checkOwnCard(Player player, int index) throws IllegalMoveException {
         validateEffect(player, player, null, Effect.CHECK_SELF_CARD);
-        if (discardPile.showTopCard().getValue() == 7 || discardPile.showTopCard().getValue() == 8) {
+        if (this.topOfDiscardValue == 7 || this.topOfDiscardValue == 8) {
             Card checkedCard = player.getCard(index);
             setCorrectStateUponUseOfEffect();
             return checkedCard;
@@ -51,7 +52,7 @@ public class EffectPerformer {
 
     public Card checkOpponentCard(Player player, Player targetPlayer, int index) throws IllegalMoveException {
         validateEffect(player, targetPlayer, null, Effect.CHECK_OTHER_CARD);
-        if (discardPile.showTopCard().getValue() == 9 || discardPile.showTopCard().getValue() == 10) {
+        if ( this.topOfDiscardValue == 9 || this.topOfDiscardValue == 10) {
             Card checkedCard = targetPlayer.getCard(index);
             setCorrectStateUponUseOfEffect();
             return checkedCard;
@@ -65,7 +66,7 @@ public class EffectPerformer {
                               int targetOneIndex,
                               int targetTwoIndex) throws IllegalMoveException {
         validateEffect(attemptingPlayer, targetOne, targetTwo, Effect.EXCHANGE_CARDS);
-        if (discardPile.showTopCard().getValue() == 11 || discardPile.showTopCard().getValue() == 12) {
+        if (this.topOfDiscardValue == 11 || this.topOfDiscardValue == 12) {
             swapCards(targetOne, targetTwo, targetOneIndex, targetTwoIndex);
             // Update state
             setCorrectStateUponUseOfEffect();
@@ -79,9 +80,7 @@ public class EffectPerformer {
                                     int targetOneIndex,
                                     int targetTwoIndex) throws IllegalMoveException {
         validateEffect(attemptingPlayer, targetOne, targetTwo, Effect.CHECK_TWO_CARDS);
-        Card topDiscCard = discardPile.showTopCard();
-        if (topDiscCard.getValue() == 13 &&
-                (topDiscCard.getFace() == 'S'|| topDiscCard.getFace() == 'C')) {
+        if (this.topOfDiscardValue == 13) {
             List<Card> cardOutput = new ArrayList<>();
             cardOutput.add(targetOne.getCard(targetOneIndex));
             cardOutput.add(targetTwo.getCard(targetTwoIndex));
@@ -157,14 +156,26 @@ public class EffectPerformer {
         return temporaryTargetIndexTwo;
     }
 
-    public void setTemporaryTargetIndexTwo(int temporaryTargetIndexTwo) {
+    public void setTemporaryTargetIndexTwo(int temporaryTargetIndexTwo) throws IllegalMoveException {
+        if (this.temporaryTargetTwo.equals(this.temporaryTargetOne) &&
+        this.temporaryTargetIndexOne == temporaryTargetIndexTwo) {
+            throw new IllegalMoveException("You can't choose the same card from the same player");
+        }
         this.temporaryTargetIndexTwo = temporaryTargetIndexTwo;
     }
 
-    public void clearTempTargets() {
+    public void clearTempTargets() throws IllegalMoveException {
         setTemporaryTargetIndexTwo(0);
         setTemporaryTargetIndexOne(0);
         setTemporaryTargetOne(null);
         setTemporaryTargetTwo(null);
+    }
+
+    public int getTopOfDiscardValue() {
+        return topOfDiscardValue;
+    }
+
+    public void setTopOfDiscardValue(int topOfDiscardValue) {
+        this.topOfDiscardValue = topOfDiscardValue;
     }
 }

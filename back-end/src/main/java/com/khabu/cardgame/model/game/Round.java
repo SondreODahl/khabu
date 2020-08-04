@@ -186,6 +186,9 @@ public class Round {
             case EXCHANGE_AFTER_CHECKS:
                 effectPerformer.swapCheckedCardsFromKingEffect(current);
                 return true;
+            case ACTIVATE_EFFECT:
+                effectPerformer.activateEffect(current);
+                return true;
             default:
                 return false;
         }
@@ -274,11 +277,35 @@ public class Round {
         return effectPerformer.getTemporaryTargetIndexTwo();
     }
 
-    public void clearTemps() {
+    // EFFECT SETTERS TO HANDLE TEMP STATES FOR MULTI CARD EFFECTS
+    // TODO: Fix method set names to correspond to effectPerformer
+    public void setTemporaryTargetOne(Player temporaryTargetOne) {
+        effectPerformer.setTemporaryTargetOne(temporaryTargetOne);
+    }
+    public void setTemporaryTargetOneIndex(int index) {
+        effectPerformer.setTemporaryTargetIndexOne(index);
+    }
+    public void setTemporaryTargetTwo(Player temporaryTargetTwo) {
+        effectPerformer.setTemporaryTargetTwo(temporaryTargetTwo);
+    }
+    public void setTemporaryTargetTwoIndex(int index) throws IllegalMoveException {
+        effectPerformer.setTemporaryTargetIndexTwo(index);
+    }
+
+    public void clearTemps() throws IllegalMoveException {
         effectPerformer.clearTempTargets();
     }
   
     public Player getTransferTarget() {
         return actionPerformer.getTemporaryTarget();
+    }
+
+    // Set effectPerformer discardPileValue
+    public void setEffectPerformerDiscardPileValue(int value) {
+        effectPerformer.setTopOfDiscardValue(value);
+    }
+
+    public int getEffectPerformerTopOfDiscardValue() {
+        return effectPerformer.getTopOfDiscardValue();
     }
 }
