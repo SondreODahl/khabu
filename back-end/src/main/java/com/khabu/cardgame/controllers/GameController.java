@@ -343,7 +343,7 @@ public class GameController {
         }
 
         List<String> keys = Arrays.asList("type", "swap");
-        List<String> values = Arrays.asList("FINISH_EFFECT", (String) jsonMap.get("swap"));
+        List<String> values = Arrays.asList("FINISH_EFFECT", jsonMap.get("swap").toString());
 
         String jsonResponse = JsonConverter.createJsonString(new ObjectMapper(), new HashMap<>(), keys, values);
         simpMessagingTemplate.convertAndSend("/topic/round/actions", jsonResponse);
@@ -380,7 +380,7 @@ public class GameController {
         int currentPlayerId = Integer.parseInt((String) jsonMap.get("currentPlayerId"));
         int targetIndex = Integer.parseInt((String) jsonMap.get("targetCardIndex"));
         int targetPlayerId = Integer.parseInt((String) jsonMap.get("targetPlayerId"));
-        int targetCardValue = round.getPlayerById(currentPlayerId).getCard(targetIndex).getValue();
+        int targetCardValue = round.getPlayerById(targetPlayerId).getCard(targetIndex).getValue();
 
         try {
             round.performEffect(round.getPlayerById(currentPlayerId),
