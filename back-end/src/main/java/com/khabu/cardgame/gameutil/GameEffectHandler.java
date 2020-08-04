@@ -39,6 +39,30 @@ public class GameEffectHandler {
     }
 
 
+    public static String handlePrivateResponseCheckSelfCard(HashMap<String, Object> jsonMap, Round round) {
+        int currentPlayerId = Integer.parseInt((String) jsonMap.get("currentPlayerId"));
+        int targetIndex = Integer.parseInt((String) jsonMap.get("targetCardIndex"));
+        int targetCardValue = round.getPlayerById(currentPlayerId).getCard(targetIndex).getValue();
+
+        try {
+            round.performEffect(round.getPlayerById(currentPlayerId), targetIndex, Effect.CHECK_SELF_CARD);
+        } catch (IllegalMoveException ime) {
+            ime.printStackTrace();
+        }
+
+        // Create response
+        List<String> keys = Arrays.asList("type","playerId", "targetCardIndex", "value");
+        List<String> values = Arrays.asList("SELF_CHECK", Integer.toString(currentPlayerId), Integer.toString(targetIndex),
+                Integer.toString(targetCardValue));
+
+        return JsonConverter.createJsonString(new ObjectMapper(), new HashMap<>(), keys, values);
+    }
+
+    public static String handlePublicResponseCheckSelfCard(HashMap<String, Object> jsonMap) {
+        List<String> keys = Arrays.asList("type","targetCardIndex");
+        List<String> values = Arrays.asList("PLAYER_CHECK_SELF", (String) jsonMap.get("targetCardIndex"));
+        return JsonConverter.createJsonString(new ObjectMapper(), new HashMap<>(), keys, values);
+    }
 
     private static void exchangeCardsAfterChecking(HashMap<String, Object> jsonMap, Round round) {
         try {

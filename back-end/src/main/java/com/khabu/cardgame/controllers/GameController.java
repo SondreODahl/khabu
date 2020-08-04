@@ -327,28 +327,11 @@ public class GameController {
     }
 
     private void checkSelfCard(HashMap<String, Object> jsonMap, Round round) {
-        int currentPlayerId = Integer.parseInt((String) jsonMap.get("currentPlayerId"));
-        int targetIndex = Integer.parseInt((String) jsonMap.get("targetCardIndex"));
-        int targetCardValue = round.getPlayerById(currentPlayerId).getCard(targetIndex).getValue();
-
-        try {
-            round.performEffect(round.getPlayerById(currentPlayerId), targetIndex, Effect.CHECK_SELF_CARD);
-        } catch (IllegalMoveException ime) {
-            ime.printStackTrace();
-        }
-
-        // Create response
-        List<String> keys = Arrays.asList("type","playerId", "targetCardIndex", "value");
-        List<String> values = Arrays.asList("SELF_CHECK", Integer.toString(currentPlayerId), Integer.toString(targetIndex),
-                Integer.toString(targetCardValue));
-
-        String jsonResponse = JsonConverter.createJsonString(new ObjectMapper(), new HashMap<>(), keys, values);
-        simpMessagingTemplate.convertAndSend("/topic/round/actions/" + Integer.toString(currentPlayerId),
+        String currentPlayerId = (String) jsonMap.get("currentPlayerId");
+        String jsonResponse = GameEffectHandler.handlePrivateResponseCheckSelfCard(jsonMap, round);
+        simpMessagingTemplate.convertAndSend("/topic/round/actions/" + currentPlayerId,
                 jsonResponse);
-
-        keys = Arrays.asList("type","targetCardIndex");
-        values = Arrays.asList("PLAYER_CHECK_SELF", Integer.toString(targetIndex));
-        jsonResponse = JsonConverter.createJsonString(new ObjectMapper(), new HashMap<>(), keys, values);
+        jsonResponse = GameEffectHandler.handlePublicResponseCheckSelfCard(jsonMap);
         simpMessagingTemplate.convertAndSend("/topic/round/actions", jsonResponse);
     }
 
