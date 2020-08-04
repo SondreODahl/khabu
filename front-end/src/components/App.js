@@ -7,6 +7,7 @@ import Testing from './testing/Testing';
 import JoinGame from './pre-game/JoinGame';
 import StartPage from './pre-game/StartPage';
 import GamePage from './in-game/pages/GamePage';
+import RulesPage from './pre-game/RulesPage';
 
 const App = (props) => {
   useClient();
@@ -16,6 +17,7 @@ const App = (props) => {
       <Route path={'/test'} component={Testing} />
       <Route path={'/join'} component={JoinGame} />
       <Route path={'/game'} component={GamePage} />
+      <Route path={'/rules'} component={RulesPage} />
     </div>
   );
 };
