@@ -100,9 +100,7 @@ export const publicActionsDelegator = (topic, body) => {
       const { victim, card } = parsedJSON;
       return playerChoseCard(victim, card - 1);
     }
-    case 'EXCHANGE_CARDS': {
-      return playerExchangedCards();
-    }
+    case 'EXCHANGE_CARDS':
     default:
       alert(`publicActionsDelegator was called with ${body}`);
       break;
