@@ -362,7 +362,7 @@ public class GameController {
 
         // Create response
         List<String> keys = Arrays.asList("type","playerId", "targetCardIndex", "value");
-        List<String> values = Arrays.asList("SELF_CHECK", Integer.toString(currentPlayerId), Integer.toString(targetCardIndex),
+        List<String> values = Arrays.asList("SELF_CHECK", Integer.toString(currentPlayerId), Integer.toString(targetIndex),
                 Integer.toString(targetCardValue));
 
         String jsonResponse = JsonConverter.createJsonString(new ObjectMapper(), new HashMap<>(), keys, values);

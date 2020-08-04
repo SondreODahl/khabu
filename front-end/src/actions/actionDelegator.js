@@ -71,7 +71,7 @@ export const privateActionsDelegator = (topic, body) => {
     }
     case 'SELF_CHECK': {
       const { playerId, targetCardIndex, value } = parsedJSON;
-      return checkPlayerCard(playerId, targetCardIndex, value);
+      return checkPlayerCard(playerId, targetCardIndex - 1, value);
     }
     default:
       alert(`privateActionsDelegator was called with ${body}`);
