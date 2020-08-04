@@ -29,8 +29,14 @@ export const getIsUsingEffect = createSelector(
 export const getCardEffectAction = createSelector(
   getIsUsingEffect,
   getEffectType,
-  (isUsing, type) => {
-    if (isUsing && type !== PLAYER_CHECK_OTHER) return type;
+  selectChosenCards,
+  getIsYourTurn,
+  (isUsing, type, chosenCards, yourTurn) => {
+    if (isUsing && yourTurn && type !== PLAYER_CHECK_OTHER) {
+      if (type === PLAYER_CHECK_SELF && chosenCards.cardOne)
+        return FINISH_USING_EFFECT;
+      return type;
+    }
     return null;
   }
 );

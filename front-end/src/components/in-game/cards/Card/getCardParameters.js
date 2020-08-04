@@ -8,6 +8,7 @@ import {
   CHOOSE_CARD,
   FINISH_USING_EFFECT,
   PLAYER_CHECK_OTHER,
+  PLAYER_CHECK_SELF,
 } from '../../../../constants/effectMoves';
 
 export const getParameters = (possibleAction, props) => {
@@ -52,6 +53,11 @@ export const getParameters = (possibleAction, props) => {
           currentPlayerId: props.yourId,
           targetPlayerId: props.playerId,
         },
+      };
+    case PLAYER_CHECK_SELF:
+      return {
+        action: 'CHECK_SELF_CARD',
+        parameters: { currentPlayerId: props.yourId },
       };
     case FINISH_USING_EFFECT:
       return {
