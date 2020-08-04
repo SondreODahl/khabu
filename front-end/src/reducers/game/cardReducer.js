@@ -18,6 +18,7 @@ import {
   UPDATE_CARD,
   FORCE_DRAW,
   TRANSFER_CARD,
+  EXCHANGE_CARDS,
 } from '../../actions/types';
 import _ from 'lodash';
 import { addCardToIds } from '../../actions/cardActions';
@@ -88,6 +89,7 @@ const byPlayerId = (state = [], { type, payload }) => {
     }
     case PUT_CARD:
       return state.map((cardId) => (cardId === payload.cardId ? null : cardId)); // Insert null where the card previously was
+    case EXCHANGE_CARDS:
     case SWAP_CARDS:
       return state.map((card) =>
         card === payload.cardId ? payload.tempCardId : card
@@ -211,6 +213,19 @@ const cardHandsReducer = (state = getNewInitState(), action) => {
           action
         ),
         byId: byId(state.byId, action),
+      };
+    case EXCHANGE_CARDS:
+      const { cardOne, cardTwo } = action.payload;
+      return {
+        ...state,
+        [cardOne.victimId]: byPlayerId(state[cardOne.victimId], {
+          type: action.type,
+          payload: { cardId: cardOne.cardId, tempCardId: cardTwo.cardId },
+        }),
+        [cardTwo.victimId]: byPlayerId(state[cardTwo.victimId], {
+          type: action.type,
+          payload: { cardId: cardTwo.cardId, tempCardId: cardOne.cardId },
+        }),
       };
     case TRANSFER_CARD:
       const { victim, agent } = action.payload;

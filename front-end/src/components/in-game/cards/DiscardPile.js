@@ -7,6 +7,7 @@ import CardDisplay from './Card/CardDisplay';
 import DiscardPileImage from '../../../assets/images/discardpile_empty.png';
 import usePublishMove from './usePublishMove';
 import { DISCARD_MOVE } from '../../../constants/gameMoves';
+import { ACTIVATE_EFFECT } from '../../../constants/effectMoves';
 
 export default (props) => {
   const possibleAction = useSelector(getDiscardPileAction);
@@ -14,7 +15,8 @@ export default (props) => {
   const discardParams = { currentPlayerId: props.yourId };
   let action = null;
   if (possibleAction !== null) {
-    action = possibleAction === DISCARD_MOVE ? 'DISCARD' : null; // TODO: Replace null with DRAW_DISC
+    if (possibleAction === DISCARD_MOVE) action = 'DISCARD';
+    if (possibleAction === ACTIVATE_EFFECT) action = ACTIVATE_EFFECT;
   }
   const onClick = usePublishMove(action, discardParams);
   if (id === null || id === undefined) {

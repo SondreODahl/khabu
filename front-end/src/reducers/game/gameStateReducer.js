@@ -3,6 +3,7 @@ import {
   DISCARD_CARD,
   DRAW_FROM_DECK,
   END_TURN,
+  FINISH_EFFECT,
   PLAYER_CALLED_KHABU,
   PUT_CARD,
   PUT_REVERSE,
@@ -53,7 +54,8 @@ const gameState = (state = initialState, { type, payload }) => {
         return newState(PUT, true); // Cannot transfer to yourself
       return newState(TRANSFER, false); // Transfer to another player
     case PUT_REVERSE:
-      return newState(payload.prevState, true); // Put is always allowed if a failed put has been allowed to happened
+    case FINISH_EFFECT:
+      return newState(payload.nextState, true); // Put is always allowed if a failed put has been allowed to happened
     case TRANSFER_CARD:
       return newState(PUT, true);
     case SWAP_CARDS:
