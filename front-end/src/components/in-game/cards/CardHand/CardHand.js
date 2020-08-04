@@ -24,5 +24,5 @@ export default (props) => {
       );
     });
   };
-  return <div className={'ui five column grid'}>{renderCards()}</div>;
+  return <div className={'ui four column grid card-hand'}>{renderCards()}</div>;
 };

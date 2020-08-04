@@ -16,6 +16,7 @@
 
 .game-button button {
     width: 100px;
+    margin-top: 1rem !important;
 }
 
 .opponent-air-to-deck {

@@ -6,23 +6,26 @@ import DiscardPile from '../cards/DiscardPile';
 import React from 'react';
 import './GameInterface.css';
 import GameButtons from '../buttons/GameButtons';
+import ScoreDisplay from '../ScoreDisplay';
 
 export default (props) => {
   return (
     <div>
       <NameDisplay playerId={props.opponentId} />
+      <ScoreDisplay playerId={props.opponentId} />
       <CardHand playerId={props.opponentId} yourId={props.yourId} />
       <div className={'opponent-air-to-deck'} />
-      <div className={'ui three column grid'}>
+      <div className={'ui three column centered grid'}>
         <CardDeck yourId={props.yourId} />
         <DiscardPile yourId={props.yourId} />
         <TemporaryCard />
+        {props.children}
       </div>
       <div className={'ui container'}>
         <GameButtons playerId={props.yourId} />
-        {props.children}
       </div>
       <CardHand playerId={props.yourId} yourId={props.yourId} />
+      <ScoreDisplay playerId={props.yourId} />
       <NameDisplay playerId={props.yourId} />
     </div>
   );
