@@ -4,6 +4,7 @@ import {
   SWAP_MOVE,
   TRANSFER_MOVE,
 } from '../../../../constants/gameMoves';
+import { CHOOSE_CARD } from '../../../../constants/effectMoves';
 
 export const getParameters = (possibleAction, props) => {
   switch (possibleAction) {
@@ -31,6 +32,14 @@ export const getParameters = (possibleAction, props) => {
       return {
         action: 'TRANSFER',
         parameters: { transferringPlayerId: props.playerId },
+      };
+    case CHOOSE_CARD:
+      return {
+        action: 'CHOOSE_SINGLE_CARD',
+        parameters: {
+          currentPlayerId: props.yourId,
+          targetPlayerId: props.playerId,
+        },
       };
     case null: // NO POSSIBLE MOVE ON THE CARD
       return { action: null, parameters: null };
