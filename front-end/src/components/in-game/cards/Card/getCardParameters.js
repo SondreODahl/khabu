@@ -4,7 +4,11 @@ import {
   SWAP_MOVE,
   TRANSFER_MOVE,
 } from '../../../../constants/gameMoves';
-import { CHOOSE_CARD } from '../../../../constants/effectMoves';
+import {
+  CHOOSE_CARD,
+  FINISH_USING_EFFECT,
+  PLAYER_CHECK_OTHER,
+} from '../../../../constants/effectMoves';
 
 export const getParameters = (possibleAction, props) => {
   switch (possibleAction) {
@@ -39,6 +43,22 @@ export const getParameters = (possibleAction, props) => {
         parameters: {
           currentPlayerId: props.yourId,
           targetPlayerId: props.playerId,
+        },
+      };
+    case PLAYER_CHECK_OTHER:
+      return {
+        action: 'CHECK_OPPONENT_CARD',
+        parameters: {
+          currentPlayerId: props.yourId,
+          targetPlayerId: props.playerId,
+        },
+      };
+    case FINISH_USING_EFFECT:
+      return {
+        action: 'FINISH_EFFECT',
+        parameters: {
+          currentPlayerId: props.yourId,
+          swap: 'false',
         },
       };
     case null: // NO POSSIBLE MOVE ON THE CARD

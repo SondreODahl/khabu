@@ -4,9 +4,11 @@ import {
   CHECK_TWO_CARDS,
   CHOOSE_CARD,
   EXCHANGE_CARDS,
+  FINISH_USING_EFFECT,
   PLAYER_CHECK_OTHER,
   PLAYER_CHECK_SELF,
 } from '../constants/effectMoves';
+import { getAreYouCurrentPuttingPlayer } from './turnSelectors';
 
 const selectEffectType = (state) => state.effect.effectType;
 const selectChosenCards = (state) => state.effect.chosenCards;
@@ -36,8 +38,13 @@ export const getCardEffectAction = createSelector(
 export const getCardEffectActionOpponent = createSelector(
   getIsUsingEffect,
   getEffectType,
-  (isUsing, type) => {
-    if (isUsing && type !== PLAYER_CHECK_SELF) return type;
+  selectChosenCards,
+  (isUsing, type, chosenCards) => {
+    if (isUsing && type !== PLAYER_CHECK_SELF) {
+      if (type === PLAYER_CHECK_OTHER && chosenCards.cardOne)
+        return FINISH_USING_EFFECT;
+      return type;
+    }
     return null;
   }
 );
