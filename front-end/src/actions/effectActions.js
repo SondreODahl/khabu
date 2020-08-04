@@ -44,20 +44,16 @@ export const checkPlayerCard = (victim, victimCard, value) => (
   dispatch(checkCard(victim, cardId));
 };
 
-export const playerCheckedSelf = (cardIndex) => (dispatch, getState) => {
-  const targetPlayerId = getState().turn.currentPlayerTurn;
-  return playerCheckedOpponent(targetPlayerId, cardIndex);
-};
-
-export const playerCheckedOpponent = (targetPlayerId, cardIndex) => (
+export const playerCheckedCard = (targetPlayerId, cardIndex) => (
   dispatch,
   getState
 ) => {
-  const cardId = getState().cards[targetPlayerId][cardIndex];
   const currentPlayerId = getState().turn.currentPlayerTurn;
   const yourId = getState().players.yourId;
-  if (currentPlayerId === yourId) return;
-  dispatch(checkCard(targetPlayerId, cardId));
+  if (currentPlayerId === yourId) return; // You receive info on private channel if you are the current player
+  const target = targetPlayerId === undefined ? currentPlayerId : targetPlayerId; // if undefined, it is a check self. Else it is check other.
+  const cardId = getState().cards[target][cardIndex];
+  dispatch(checkCard(target, cardId));
   dispatch(toggleCardGlow(cardId, true));
 };
 

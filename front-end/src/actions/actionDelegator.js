@@ -27,6 +27,7 @@ import {
   playerFinishedEffect,
   checkPlayerCard,
   playerCheckedSelf,
+  playerCheckedCard,
 } from './effectActions';
 
 export const roundActionDelegator = (topic, body) => {
@@ -114,11 +115,11 @@ export const publicActionsDelegator = (topic, body) => {
     }
     case 'PLAYER_CHECK_OPPONENT': {
       const { targetPlayerId, targetCardIndex } = parsedJSON;
-      return playerCheckedOpponent(targetPlayerId, targetCardIndex - 1);
+      return playerCheckedCard(targetPlayerId, targetCardIndex - 1);
     }
     case 'PLAYER_CHECK_SELF': {
       const { targetCardIndex } = parsedJSON;
-      return playerCheckedSelf(targetCardIndex);
+      return playerCheckedCard(undefined, targetCardIndex - 1);
     }
     case 'FINISH_EFFECT': {
       const { swap } = parsedJSON;
