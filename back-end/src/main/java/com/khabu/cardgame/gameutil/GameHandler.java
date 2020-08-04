@@ -8,7 +8,6 @@ import com.khabu.cardgame.model.game.action.Actions;
 import com.khabu.cardgame.model.game.card.Card;
 import com.khabu.cardgame.util.IllegalMoveException;
 import com.khabu.cardgame.util.JsonConverter;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import java.util.*;
 

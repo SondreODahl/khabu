@@ -13,8 +13,6 @@ import com.khabu.cardgame.util.IllegalMoveException;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class Round {
 

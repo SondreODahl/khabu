@@ -2,7 +2,6 @@ package com.khabu.cardgame.gameutil;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.khabu.cardgame.model.game.Round;
-import com.khabu.cardgame.model.game.action.Gamestate;
 import com.khabu.cardgame.model.game.effect.Effect;
 import com.khabu.cardgame.util.IllegalMoveException;
 import com.khabu.cardgame.util.JsonConverter;

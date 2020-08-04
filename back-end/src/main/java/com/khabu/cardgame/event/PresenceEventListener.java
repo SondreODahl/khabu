@@ -1,7 +1,6 @@
 package com.khabu.cardgame.event;
 
 import com.khabu.cardgame.model.PlayerRepository;
-import com.khabu.cardgame.model.User;
 import com.khabu.cardgame.model.game.Game;
 import com.khabu.cardgame.model.game.GameRepository;
 import com.khabu.cardgame.model.game.Player;
@@ -10,9 +9,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.socket.messaging.SessionConnectEvent;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
-import org.springframework.web.socket.messaging.SessionUnsubscribeEvent;
 
 import java.util.Objects;
 
