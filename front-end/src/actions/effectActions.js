@@ -35,13 +35,18 @@ export const playerExchangedCards = () => (dispatch, getState) => {
   const { cardOne, cardTwo } = getState().effects.chosenCards;
 };
 
-export const revealOpponent = (victim, victimCard, value) => (
+export const checkPlayerCard = (victim, victimCard, value) => (
   dispatch,
   getState
 ) => {
   const cardId = getState().cards[victim][victimCard];
   dispatch(revealCard(victim, victimCard, value));
   dispatch(checkCard(victim, cardId));
+};
+
+export const playerCheckedSelf = (cardIndex) => (dispatch, getState) => {
+  const targetPlayerId = getState().turn.currentPlayerTurn;
+  return playerCheckedOpponent(targetPlayerId, cardIndex);
 };
 
 export const playerCheckedOpponent = (targetPlayerId, cardIndex) => (
