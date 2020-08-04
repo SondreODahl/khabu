@@ -1,6 +1,6 @@
 import {
   ACTIVATE_EFFECT,
-  CHECK_OPPONENT,
+  CHECK_CARD,
   CHOOSE_CARD_FOR_EFFECT,
   FINISH_EFFECT,
 } from './types';
@@ -15,8 +15,8 @@ export const chooseCardForEffect = (cardId, victimId) => {
   return { type: CHOOSE_CARD_FOR_EFFECT, payload: { cardId, victimId } };
 };
 
-export const checkOpponent = (victimId, cardId) => {
-  return { type: CHECK_OPPONENT, payload: { victimId, cardId } };
+export const checkCard = (victimId, cardId) => {
+  return { type: CHECK_CARD, payload: { victimId, cardId } };
 };
 
 export const finishEffect = (currentPuttingPlayer) => {
@@ -41,7 +41,7 @@ export const revealOpponent = (victim, victimCard, value) => (
 ) => {
   const cardId = getState().cards[victim][victimCard];
   dispatch(revealCard(victim, victimCard, value));
-  dispatch(checkOpponent(victim, cardId));
+  dispatch(checkCard(victim, cardId));
 };
 
 export const playerCheckedOpponent = (targetPlayerId, cardIndex) => (
@@ -52,7 +52,7 @@ export const playerCheckedOpponent = (targetPlayerId, cardIndex) => (
   const currentPlayerId = getState().turn.currentPlayerTurn;
   const yourId = getState().players.yourId;
   if (currentPlayerId === yourId) return;
-  dispatch(checkOpponent(targetPlayerId, cardId));
+  dispatch(checkCard(targetPlayerId, cardId));
   dispatch(toggleCardGlow(cardId, true));
 };
 

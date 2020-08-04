@@ -369,7 +369,7 @@ public class GameController {
         simpMessagingTemplate.convertAndSend("/topic/round/actions/" + Integer.toString(currentPlayerId),
                 jsonResponse);
 
-        keys = Arrays.asList("type","cardId");
+        keys = Arrays.asList("type","targetCardIndex");
         values = Arrays.asList("PLAYER_CHECK_SELF", Integer.toString(targetIndex));
         jsonResponse = JsonConverter.createJsonString(new ObjectMapper(), new HashMap<>(), keys, values);
         simpMessagingTemplate.convertAndSend("/topic/round/actions", jsonResponse);
