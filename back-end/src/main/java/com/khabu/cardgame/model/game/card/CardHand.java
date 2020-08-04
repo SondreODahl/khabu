@@ -68,12 +68,7 @@ public class CardHand {
     public int calculateHandScore() {
         int sum = 0;
         for (Card card : cards.values()) {
-            if ((card.getFace() == 'D' || card.getFace() == 'H')
-            && card.getValue() == 13) {
-                sum -= 1;
-            } else {
-                sum += (card.getValue());
-            }
+            sum += card.getValue();
         }
         return sum;
     }

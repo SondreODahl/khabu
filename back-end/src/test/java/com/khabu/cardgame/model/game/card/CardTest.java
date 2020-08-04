@@ -15,7 +15,7 @@ class CardTest {
     @Test
     public void getValue() {
         Card card = new Card(12, 'H');
-        assertEquals(13, card.getValue());
+        assertEquals(-1, card.getValue());
     }
 
     @Test
