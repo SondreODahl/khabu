@@ -337,30 +337,11 @@ public class GameController {
 
     // TODO: Separate method into private and public response
     private void checkOpponentCard(HashMap<String, Object> jsonMap, Round round) {
-        int currentPlayerId = Integer.parseInt((String) jsonMap.get("currentPlayerId"));
-        int targetIndex = Integer.parseInt((String) jsonMap.get("targetCardIndex"));
-        int targetPlayerId = Integer.parseInt((String) jsonMap.get("targetPlayerId"));
-        int targetCardValue = round.getPlayerById(targetPlayerId).getCard(targetIndex).getValue();
-
-        try {
-            round.performEffect(round.getPlayerById(currentPlayerId),
-                    round.getPlayerById(targetPlayerId), targetIndex, Effect.CHECK_OTHER_CARD);
-        } catch(IllegalMoveException ime) {
-            ime.printStackTrace();
-        }
-
-        List<String> keys = Arrays.asList("type","agent", "victim", "victimCard", "value");
-        List<String> values = Arrays.asList("OPPONENT_CHECK",Integer.toString(currentPlayerId),
-                Integer.toString(targetPlayerId), Integer.toString(targetIndex),
-                Integer.toString(targetCardValue));
-
-        String jsonResponse = JsonConverter.createJsonString(new ObjectMapper(), new HashMap<>(), keys, values);
-        simpMessagingTemplate.convertAndSend("/topic/round/actions/" + Integer.toString(currentPlayerId),
+        String currentPlayerId = (String) jsonMap.get("currentPlayerId");
+        String jsonResponse = GameEffectHandler.handlePrivateResponseCheckOpponentCard(jsonMap, round);
+        simpMessagingTemplate.convertAndSend("/topic/round/actions/" + currentPlayerId,
                 jsonResponse);
-
-        keys = Arrays.asList("type", "targetPlayerId","targetCardIndex");
-        values = Arrays.asList("PLAYER_CHECK_OPPONENT", Integer.toString(targetPlayerId), Integer.toString(targetIndex));
-        jsonResponse = JsonConverter.createJsonString(new ObjectMapper(), new HashMap<>(), keys, values);
+        jsonResponse = GameEffectHandler.handlePublicResponseCheckOpponentCard(jsonMap);
         simpMessagingTemplate.convertAndSend("/topic/round/actions", jsonResponse);
     }
 
