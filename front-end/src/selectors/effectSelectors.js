@@ -8,7 +8,7 @@ import {
   PLAYER_CHECK_OTHER,
   PLAYER_CHECK_SELF,
 } from '../constants/effectMoves';
-import { getAreYouCurrentPuttingPlayer } from './turnSelectors';
+import { getAreYouCurrentPuttingPlayer, getIsYourTurn } from './turnSelectors';
 
 const selectEffectType = (state) => state.effect.effectType;
 const selectChosenCards = (state) => state.effect.chosenCards;
@@ -39,8 +39,9 @@ export const getCardEffectActionOpponent = createSelector(
   getIsUsingEffect,
   getEffectType,
   selectChosenCards,
-  (isUsing, type, chosenCards) => {
-    if (isUsing && type !== PLAYER_CHECK_SELF) {
+  getIsYourTurn,
+  (isUsing, type, chosenCards, yourTurn) => {
+    if (isUsing && yourTurn && type !== PLAYER_CHECK_SELF) {
       if (type === PLAYER_CHECK_OTHER && chosenCards.cardOne)
         return FINISH_USING_EFFECT;
       return type;
