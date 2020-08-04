@@ -41,14 +41,14 @@ class EffectPerformerTest {
 
     @Test
     void checkingYourOwnCardReturnsTheRightCard() throws IllegalMoveException {
-        discardPile.put(new Card(7, 'S'));
+        effectPerformer.setTopOfDiscardValue(7);
         player1.addCardToSpecificIndex(spadesFour, 1);
         assertEquals(spadesFour, effectPerformer.checkOwnCard(player1, 1));
     }
 
     @Test
     void usingCheckOwnCardEffectUpdatesStateToFrenzy() throws IllegalMoveException {
-        discardPile.put(new Card(7, 'S'));
+        effectPerformer.setTopOfDiscardValue(7);
         setupHands();
         effectPerformer.checkOwnCard(player1, 1);
         assertEquals(Gamestate.FRENZY, turn.getGameState());
@@ -56,7 +56,7 @@ class EffectPerformerTest {
 
     @Test
     void usingCheckOpponentCardEffectUpdatesStateToFrenzy() throws IllegalMoveException {
-        discardPile.put(new Card(9, 'S'));
+        effectPerformer.setTopOfDiscardValue(9);
         setupHands();
         effectPerformer.checkOpponentCard(player1, player2, 1);
         assertEquals(Gamestate.FRENZY, turn.getGameState());
@@ -65,7 +65,7 @@ class EffectPerformerTest {
     @Test
     void usingExchangeCardEffectUpdatesStateToFrenzy() throws IllegalMoveException {
         setupHands();
-        discardPile.put(new Card(11, 'S'));
+        effectPerformer.setTopOfDiscardValue(11);
         effectPerformer.exchangeCards(player1, player1, player2,1, 1);
         assertEquals(Gamestate.FRENZY, turn.getGameState());
     }
@@ -73,14 +73,14 @@ class EffectPerformerTest {
     @Test
     void checkTwoCardsEffectUpdatesStateToKingEffect() throws IllegalMoveException {
         setupHands();
-        discardPile.put(new Card(12, 'S'));
+        effectPerformer.setTopOfDiscardValue(13);
         effectPerformer.checkTwoCards(player1, player1, player2, 1, 1);
         assertEquals(Gamestate.KING_EFFECT, turn.getGameState());
     }
 
     @Test
     void useCheckSelfCardCorrespondsToTopOfDiscardPile() {
-        discardPile.put(new Card(5, 'H'));
+        effectPerformer.setTopOfDiscardValue(3);
         setupHands();
         IllegalMoveException thrown = assertThrows(IllegalMoveException.class,
                 () -> effectPerformer.checkOwnCard(player1, 1),
@@ -92,7 +92,7 @@ class EffectPerformerTest {
 
     @Test
     void useCheckOpponentCardCorrespondsToTopOfDiscardPile() {
-        discardPile.put(new Card(5, 'H'));
+        effectPerformer.setTopOfDiscardValue(2);
         setupHands();
         IllegalMoveException thrown = assertThrows(IllegalMoveException.class,
                 () -> effectPerformer.checkOpponentCard(player1, player2, 1),
@@ -104,7 +104,7 @@ class EffectPerformerTest {
 
     @Test
     void useExchangeCardCorrespondsToTopOfDiscardPile() {
-        discardPile.put(new Card(5, 'H'));
+        effectPerformer.setTopOfDiscardValue(6);
         setupHands();
         IllegalMoveException thrown = assertThrows(IllegalMoveException.class,
                 () -> effectPerformer.checkOwnCard(player1, 1),
@@ -116,7 +116,7 @@ class EffectPerformerTest {
 
     @Test
     void useCheckTwoCardsCorrespondsToTopOfDiscardPile() {
-        discardPile.put(new Card(5, 'H'));
+        effectPerformer.setTopOfDiscardValue(9);
         setupHands();
         IllegalMoveException thrown = assertThrows(IllegalMoveException.class,
                 () -> effectPerformer.checkTwoCards(player1, player1, player2, 1, 1),
@@ -130,7 +130,7 @@ class EffectPerformerTest {
     @Test
     void checkingOpponentsCardReturnsTheRightCard() throws IllegalMoveException {
         player2.addCardToSpecificIndex(spadesFour, 4);
-        discardPile.put(new Card(9, 'S'));
+        effectPerformer.setTopOfDiscardValue(9);
         setupHands();
         assertEquals(spadesFour, effectPerformer.checkOpponentCard(player1, player2, 4));
     }
@@ -140,7 +140,7 @@ class EffectPerformerTest {
         Card cardToBeChecked = new Card(2, 'S');
         player1.addCard(cardToBeChecked);
         setupHands();
-        discardPile.put(new Card(10, 'S'));
+        effectPerformer.setTopOfDiscardValue(11);
         effectPerformer.exchangeCards(player1, player1, player2, 1, 2);
         assertEquals(cardToBeChecked, player2.getCard(2));
     }
@@ -149,7 +149,7 @@ class EffectPerformerTest {
     void cardIsNotInHandAfterExchangingCard() throws IllegalMoveException {
         Card cardToBeChecked = new Card(2, 'S');
         player1.addCard(cardToBeChecked);
-        discardPile.put(new Card(11, 'S'));
+        effectPerformer.setTopOfDiscardValue(11);
         setupHands();
         effectPerformer.exchangeCards(player1, player1, player2, 1, 2);
         assertEquals(0, player1.findCardIndexbyCard(cardToBeChecked));
