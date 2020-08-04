@@ -201,7 +201,7 @@ public class GameController {
         // TODO: Fix a better errorMsg
         String errorMsg = "Something went wrong";
         String jsonResponse = JsonConverter.createJsonString(new ObjectMapper(), output, "ERROR", errorMsg);
-        simpMessagingTemplate.convertAndSend("/topic/round/actions" + playerId, jsonResponse);
+        simpMessagingTemplate.convertAndSend("/topic/round/actions/" + playerId, jsonResponse);
     }
 
     // TODO: Send response to everyone with playerid, cardindex and type:reveal
@@ -398,7 +398,7 @@ public class GameController {
         simpMessagingTemplate.convertAndSend("/topic/round/actions/" + Integer.toString(currentPlayerId),
                 jsonResponse);
 
-        keys = Arrays.asList("type", "targetPlayerId","cardId");
+        keys = Arrays.asList("type", "targetPlayerId","targetCardIndex");
         values = Arrays.asList("PLAYER_CHECK_OPPONENT", Integer.toString(targetPlayerId), Integer.toString(targetIndex));
         jsonResponse = JsonConverter.createJsonString(new ObjectMapper(), new HashMap<>(), keys, values);
         simpMessagingTemplate.convertAndSend("/topic/round/actions", jsonResponse);
