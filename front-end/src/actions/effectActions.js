@@ -1,6 +1,6 @@
 import {
   ACTIVATE_EFFECT,
-  CHECK_OPPONENT,
+  CHECK_CARD,
   CHOOSE_CARD_FOR_EFFECT,
   FINISH_EFFECT,
 } from './types';
@@ -15,8 +15,8 @@ export const chooseCardForEffect = (cardId, victimId) => {
   return { type: CHOOSE_CARD_FOR_EFFECT, payload: { cardId, victimId } };
 };
 
-export const checkOpponent = (victimId, cardId) => {
-  return { type: CHECK_OPPONENT, payload: { victimId, cardId } };
+export const checkCard = (victimId, cardId) => {
+  return { type: CHECK_CARD, payload: { victimId, cardId } };
 };
 
 export const finishEffect = (currentPuttingPlayer) => {
@@ -35,24 +35,25 @@ export const playerExchangedCards = () => (dispatch, getState) => {
   const { cardOne, cardTwo } = getState().effects.chosenCards;
 };
 
-export const revealOpponent = (victim, victimCard, value) => (
+export const checkPlayerCard = (victim, victimCard, value) => (
   dispatch,
   getState
 ) => {
   const cardId = getState().cards[victim][victimCard];
   dispatch(revealCard(victim, victimCard, value));
-  dispatch(checkOpponent(victim, cardId));
+  dispatch(checkCard(victim, cardId));
 };
 
-export const playerCheckedOpponent = (targetPlayerId, cardIndex) => (
+export const playerCheckedCard = (targetPlayerId, cardIndex) => (
   dispatch,
   getState
 ) => {
-  const cardId = getState().cards[targetPlayerId][cardIndex];
   const currentPlayerId = getState().turn.currentPlayerTurn;
   const yourId = getState().players.yourId;
-  if (currentPlayerId === yourId) return;
-  dispatch(checkOpponent(targetPlayerId, cardId));
+  if (currentPlayerId === yourId) return; // You receive info on private channel if you are the current player
+  const target = targetPlayerId === undefined ? currentPlayerId : targetPlayerId; // if undefined, it is a check self. Else it is check other.
+  const cardId = getState().cards[target][cardIndex];
+  dispatch(checkCard(target, cardId));
   dispatch(toggleCardGlow(cardId, true));
 };
 

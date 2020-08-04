@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import {
-  CHECK_OPPONENT,
+  CHECK_CARD,
   CHOOSE_CARD_FOR_EFFECT,
   DISCARD_CARD,
   EXCHANGE_CARDS,
@@ -32,7 +32,7 @@ const chosenCards = (
         // Already chosen the first card
         return { ...state, cardTwo: { cardId, victimId } };
       return { ...state, cardOne: { cardId, victimId } };
-    case CHECK_OPPONENT: {
+    case CHECK_CARD: {
       const { cardId } = payload;
       return { ...state, cardOne: { cardId } };
     }

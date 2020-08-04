@@ -61,7 +61,7 @@ export const UPDATE_SCORES = 'UPDATE_SCORES';
 
 // ----------------------- Effects --------------------------
 export const ACTIVATE_EFFECT = 'ACTIVATE_EFFECT';
-export const CHECK_OPPONENT = 'CHECK_OPPONENT';
+export const CHECK_CARD = 'CHECK_CARD';
 export const CHOOSE_CARD_FOR_EFFECT = 'CHOOSE_CARD_FOR_EFFECT';
 export const EXCHANGE_CARDS = 'EXCHANGE_CARDS';
 export const FINISH_EFFECT = 'FINISH_EFFECT';

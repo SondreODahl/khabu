@@ -25,7 +25,9 @@ import {
   playerChoseCard,
   playerExchangedCards,
   playerFinishedEffect,
-  revealOpponent,
+  checkPlayerCard,
+  playerCheckedSelf,
+  playerCheckedCard,
 } from './effectActions';
 
 export const roundActionDelegator = (topic, body) => {
@@ -65,7 +67,11 @@ export const privateActionsDelegator = (topic, body) => {
       return drawFromDeckAndRegisterCard(parsedJSON.value);
     case 'OPPONENT_CHECK': {
       const { victim, victimCard, value } = parsedJSON;
-      return revealOpponent(victim, victimCard - 1, value);
+      return checkPlayerCard(victim, victimCard - 1, value);
+    }
+    case 'SELF_CHECK': {
+      const { playerId, targetCardIndex, value } = parsedJSON;
+      return checkPlayerCard(playerId, targetCardIndex - 1, value);
     }
     default:
       alert(`privateActionsDelegator was called with ${body}`);
@@ -109,7 +115,11 @@ export const publicActionsDelegator = (topic, body) => {
     }
     case 'PLAYER_CHECK_OPPONENT': {
       const { targetPlayerId, targetCardIndex } = parsedJSON;
-      return playerCheckedOpponent(targetPlayerId, targetCardIndex - 1);
+      return playerCheckedCard(targetPlayerId, targetCardIndex - 1);
+    }
+    case 'PLAYER_CHECK_SELF': {
+      const { targetCardIndex } = parsedJSON;
+      return playerCheckedCard(undefined, targetCardIndex - 1);
     }
     case 'FINISH_EFFECT': {
       const { swap } = parsedJSON;
