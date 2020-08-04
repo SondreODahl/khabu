@@ -279,16 +279,13 @@ public class Round {
 
     // EFFECT SETTERS TO HANDLE TEMP STATES FOR MULTI CARD EFFECTS
     // TODO: Fix method set names to correspond to effectPerformer
-    public void setTemporaryTargetOne(Player temporaryTargetOne) {
-        effectPerformer.setTemporaryTargetOne(temporaryTargetOne);
-    }
-    public void setTemporaryTargetOneIndex(int index) {
+    public void setTempVariablesOne(Player tempTargetOne, int index) {
+        effectPerformer.setTemporaryTargetOne(tempTargetOne);
         effectPerformer.setTemporaryTargetIndexOne(index);
     }
-    public void setTemporaryTargetTwo(Player temporaryTargetTwo) {
-        effectPerformer.setTemporaryTargetTwo(temporaryTargetTwo);
-    }
-    public void setTemporaryTargetTwoIndex(int index) throws IllegalMoveException {
+
+    public void setTempVariablesTwo(Player tempTargetTwo, int index) throws IllegalMoveException {
+        effectPerformer.setTemporaryTargetTwo(tempTargetTwo);
         effectPerformer.setTemporaryTargetIndexTwo(index);
     }
 

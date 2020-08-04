@@ -101,7 +101,6 @@ public class GameEffectHandler {
         try {
             int currentPlayerId = Integer.parseInt((String) jsonMap.get("currentPlayerId"));
             round.performEffect(round.getPlayerById(currentPlayerId), 0, Effect.EXCHANGE_AFTER_CHECKS);
-            // TODO: ALSO CLEAR TEMPS ON NORMAL EXCHANGE CARD
             // Clear variables set to handle effect in effectPerformer
             round.clearTemps();
         } catch (IllegalMoveException ime) {
