@@ -3,6 +3,12 @@
     width: 120px !important;
     padding: 0 !important;
 }
+.grid.card-hand {
+    margin-top: 0 !important;
+    margin-right: 8rem !important;
+    margin-left: 8rem !important;
+}
+
 .grid {
     margin: 0 !important;
 }

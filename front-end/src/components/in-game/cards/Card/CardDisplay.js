@@ -2,7 +2,7 @@ import React from 'react';
 import './CardGlow.css';
 
 export default (props) => (
-  <div>
+  <div className={'card-display'}>
     <img
       className={props.name}
       src={props.image}
