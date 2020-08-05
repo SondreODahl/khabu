@@ -3,10 +3,8 @@ package com.khabu.cardgame.model.game.effect;
 import com.khabu.cardgame.model.game.Player;
 import com.khabu.cardgame.model.game.Round;
 import com.khabu.cardgame.model.game.Turn;
-import com.khabu.cardgame.model.game.action.ActionValidator;
 import com.khabu.cardgame.model.game.action.Gamestate;
 import com.khabu.cardgame.model.game.card.Card;
-import com.khabu.cardgame.model.game.card.CardDeck;
 import com.khabu.cardgame.model.game.card.DiscardPile;
 import com.khabu.cardgame.util.IllegalMoveException;
 

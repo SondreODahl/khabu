@@ -1,4 +1,4 @@
-package com.khabu.cardgame.util;
+package com.khabu.cardgame.gameutil;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -6,7 +6,8 @@ import com.khabu.cardgame.model.game.Player;
 import com.khabu.cardgame.model.game.Round;
 import com.khabu.cardgame.model.game.action.Actions;
 import com.khabu.cardgame.model.game.card.Card;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
+import com.khabu.cardgame.util.IllegalMoveException;
+import com.khabu.cardgame.util.JsonConverter;
 
 import java.util.*;
 
