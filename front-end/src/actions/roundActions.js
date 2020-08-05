@@ -48,7 +48,7 @@ export const endRound = (playersInfo) => (dispatch, getState) => {
     let backEndIndex = 0;
     for (let i = 0; i < playerHand.length; i++) {
       const cardId = playerHand[i];
-      if (playerHand[cardId] === null) continue;
+      if (cardId === null) continue;
       const cardValue = playersInfo[playerId].cards[backEndIndex];
       backEndIndex++;
       cards[cardId] = { value: cardValue, glow: false };
