@@ -44,7 +44,8 @@ export const endRound = (playersInfo) => (dispatch, getState) => {
   const scores = {};
   Object.keys(playersInfo).forEach((playerId) => {
     const playerHand = getState().cards[playerId];
-    scores[playerId] = playersInfo[playerId].score;
+    const prevScore = getState().scores[playerId];
+    scores[playerId] = playersInfo[playerId].score + prevScore;
     let backEndIndex = 0;
     for (let i = 0; i < playerHand.length; i++) {
       const cardId = playerHand[i];
