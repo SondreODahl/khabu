@@ -10,6 +10,11 @@ export default (props) => {
   const image = require(`../../../../assets/images/${imageValue}.png`);
   const name = glow ? 'glow' : '';
   return (
-    <CardDisplay image={image} value={value} onClick={props.onClick} name={name} />
+    <CardDisplay
+      image={image}
+      value={value}
+      onClick={props.onClick}
+      name={`card ${name}`}
+    />
   );
 };
