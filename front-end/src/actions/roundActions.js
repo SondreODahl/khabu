@@ -45,9 +45,12 @@ export const endRound = (playersInfo) => (dispatch, getState) => {
   Object.keys(playersInfo).forEach((playerId) => {
     const playerHand = getState().cards[playerId];
     scores[playerId] = playersInfo[playerId].score;
+    let backEndIndex = 0;
     for (let i = 0; i < playerHand.length; i++) {
       const cardId = playerHand[i];
-      const cardValue = playersInfo[playerId].cards[i];
+      if (playerHand[cardId] === null) continue;
+      const cardValue = playersInfo[playerId].cards[backEndIndex];
+      backEndIndex++;
       cards[cardId] = { value: cardValue, glow: false };
     }
   });
