@@ -8,7 +8,7 @@ To build and deploy our application we set up an AWS Codepipeline and use Elasti
 ### External Libraries
 
 #### Front-end
-- [StompJs library](https://github.com/stomp-js/stompjs) Stomp protocol communication with back-end. 
+- [StompJs](https://github.com/stomp-js/stompjs) Stomp protocol communication with back-end. 
 - [Axios](https://github.com/axios/axios). REST communication with back-end.
 - [React Hook Form](https://react-hook-form.com/). Handles the form input when joining a game. 
 - [reselect](https://github.com/reduxjs/reselect) and [re-reselect](https://github.com/toomuchdesign/re-reselect). To achieve efficient Redux state retrieval.
