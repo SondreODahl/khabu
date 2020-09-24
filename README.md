@@ -3,12 +3,17 @@ A digitalized version of the card game Khabu. You can find the rules [here](http
 
 ## Technologies
 The game is made with React Redux and Spring Boot. To handle real-time interactions we use the WebSocket protocol with Stomp.
-To build and deploy our application we set up an AWS Codepipeline and used Elastic Beanstalk to deploy. 
+To build and deploy our application we set up an AWS Codepipeline and use Elastic Beanstalk to deploy. 
 
 ### External Libraries
 
 #### Front-end
-To communicate with the back-end via the Stomp protocol, we utilize the [StompJs library](https://github.com/stomp-js/stompjs). For REST-communication, we use [Axios](https://github.com/axios/axios). [React Hook Form](https://react-hook-form.com/) handles the form input when joining a game. In order to achieve efficient state retrieval, we use both [reselect](https://github.com/reduxjs/reselect) and [re-reselect](https://github.com/toomuchdesign/re-reselect). [Redux-Thunk](https://github.com/reduxjs/redux-thunk) allows us to access state in our action creators. We also use [React Router](https://reactrouter.com/) to differentiate pages in our SPA. 
+- [StompJs library](https://github.com/stomp-js/stompjs) Communication with the back-end via the Stomp protocol.
+- [Axios](https://github.com/axios/axios). REST-communication with back-end.
+- [React Hook Form](https://react-hook-form.com/). Handles the form input when joining a game. 
+- [reselect](https://github.com/reduxjs/reselect) and [re-reselect](https://github.com/toomuchdesign/re-reselect). To achieve efficient Redux state retrieval.
+- [Redux-Thunk](https://github.com/reduxjs/redux-thunk). Allows us to access state in our action creators.
+- [React Router](https://reactrouter.com/). To differentiate pages in our SPA. 
 
 
 
