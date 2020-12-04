@@ -23,7 +23,7 @@ export default () => {
     dispatch(
       retrievePlayers({
         yourId: '0',
-        playerIds: { '0': 'Humlesnurr' },
+        playerIds: { 0: 'Humlesnurr' },
       })
     );
     dispatch(initializeRound(1, 4));

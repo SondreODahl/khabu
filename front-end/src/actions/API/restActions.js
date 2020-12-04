@@ -6,4 +6,3 @@ export const setData = (data) => {
     payload: data,
   };
 };
-
