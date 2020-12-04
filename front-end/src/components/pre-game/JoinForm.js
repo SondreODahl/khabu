@@ -1,9 +1,7 @@
-import React, { useCallback, useEffect } from 'react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
-import { useDispatch, useSelector } from 'react-redux';
-import { useRESTPostUserName } from '../../api/RESTServer';
-import { formError, formSubmit, formValid } from '../../actions';
-import { RESET_FORM } from '../../actions/types';
+import { useDispatch } from 'react-redux';
+import { formSubmit } from '../../actions';
 
 export default (props) => {
   const { register, errors, handleSubmit } = useForm({

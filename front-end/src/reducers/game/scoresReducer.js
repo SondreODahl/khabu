@@ -1,4 +1,3 @@
-import { combineReducers } from 'redux';
 import {
   PLAYER_JOIN_GAME,
   UPDATE_PLAYERS_INFO,

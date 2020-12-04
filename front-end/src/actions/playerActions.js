@@ -1,5 +1,4 @@
 import { BEGIN_GAME, PLAYER_JOIN_GAME, UPDATE_PLAYERS_INFO } from './types';
-import { initializeRound } from './roundActions';
 
 export const retrievePlayers = (response) => {
   const yourId = response.yourId;

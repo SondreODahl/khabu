@@ -1,6 +1,5 @@
 import { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addSubMessage } from '../actions';
 import { selectClient } from '../selectors';
 
 export default (destination, actionFunction, onSubFunc = () => {}) => {

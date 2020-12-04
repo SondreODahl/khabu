@@ -1,7 +1,5 @@
 import {
   BEGIN_GAME,
-  FORM_SUBMIT,
-  FORM_VALID,
   PLAYER_JOIN_GAME,
   UPDATE_PLAYERS_INFO,
 } from '../../actions/types';

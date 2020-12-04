@@ -1,5 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
-import usePublish from '../../../api/usePublish';
+import React, { useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import { getCanDrawCard } from '../../../selectors';
 import RedCardBack from '../../../assets/images/purple_back.png';

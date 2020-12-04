@@ -1,5 +1,4 @@
 import { createSelector } from 'reselect';
-import createCachedSelector from 're-reselect';
 export * from './cardSelectors';
 export * from './playerSelectors';
 export * from './turnSelectors';

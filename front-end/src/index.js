@@ -7,7 +7,6 @@ import { applyMiddleware } from 'redux';
 import App from './components/App';
 import reducers from './reducers';
 import { BrowserRouter, Route } from 'react-router-dom';
-import Testing from './components/testing/Testing';
 import thunk from 'redux-thunk';
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

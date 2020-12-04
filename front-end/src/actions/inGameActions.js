@@ -1,26 +1,11 @@
+import { PLAYER_CALLED_KHABU, PUT_CARD, PUT_REVERSE } from './types';
 import {
-  DISCARD_CARD,
-  END_TURN,
-  PLAYER_CALLED_KHABU,
-  PUT_CARD,
-  PUT_REVERSE,
-  SWAP_CARDS,
-} from './types';
-import {
-  addCardToHand,
-  addCardToIds,
-  addNewCardToIds,
   cardGlow,
   discardCard,
-  getHighestId,
   forceDraw,
-  removeCardFromHand,
   swapCards,
-  updateCard,
   transferCard,
 } from './cardActions';
-import { endTurn } from './turnActions';
-import { roundEnd } from './roundActions';
 
 export const playerCalledKhabu = (nextPlayerId) => (dispatch, getState) => {
   const playerId = getState().turn.currentPlayerTurn;

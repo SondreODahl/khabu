@@ -2,7 +2,6 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import ReadyUpButton from '../buttons/ReadyUpButton';
 import { roundStates } from '../../../reducers/game/roundReducer';
-import CardHand from '../cards/CardHand/CardHand';
 import useSubscribe from '../../../api/useSubscribe';
 import usePublish from '../../../api/usePublish';
 import { playerJoinedGame } from '../../../actions/playerActions';

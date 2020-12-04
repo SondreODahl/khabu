@@ -1,7 +1,6 @@
 import usePublishMove from '../cards/usePublishMove';
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { getCanEndTurn } from '../../../selectors';
 
 export default (props) => {
   const publishButtonMove = usePublishMove(props.action, {

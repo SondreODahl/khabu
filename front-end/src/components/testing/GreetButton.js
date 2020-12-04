@@ -2,11 +2,10 @@ import React from 'react';
 import usePublish from '../../api/usePublish';
 import useSubscribe from '../../api/useSubscribe';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { addSubMessage } from '../../actions';
 import { retrievePlayers } from '../../actions/playerActions';
 
-export default (props) => {
+export default () => {
   useSubscribe('/topic/greeting', addSubMessage, undefined);
   const message = useSelector((state) => state.api.subscriptions['/topic/greeting']);
   const greetPublish = usePublish({
