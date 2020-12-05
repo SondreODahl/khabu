@@ -47,7 +47,7 @@ const currentPlayerTurn = (state = null, { type, payload }) => {
 };
 
 export default combineReducers({
-  currentPlayerTurn,
   currentPuttingPlayer,
   khabuPlayer,
+  currentPlayerTurn,
 });

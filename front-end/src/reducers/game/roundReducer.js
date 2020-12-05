@@ -1,11 +1,12 @@
 import {
   ALL_PLAYERS_READY,
   BEGIN_GAME,
+  PLAYER_READY,
   ROUND_END,
   SHOW_CARD,
   START_ROUND,
+  UPDATE_PLAYERS_READY,
 } from '../../actions/types';
-import readyReducer from './readyReducer';
 import { combineReducers } from 'redux';
 
 export const roundStates = {
@@ -31,7 +32,7 @@ const currentState = (state = roundStates.WAITING_FOR_PLAYERS, { type }) => {
   }
 };
 
-const playerRevealedCards = (state = 0, { type, payload }) => {
+const playerRevealedCards = (state = 0, { type }) => {
   switch (type) {
     case SHOW_CARD:
       return state.playerRevealedCards++;
@@ -47,9 +48,26 @@ const roundRevealTime = (state = null, { type, payload }) => {
   return state;
 };
 
+const ready = (
+  state = { playerReady: false, totalReady: 0 },
+  { type, payload }
+) => {
+  switch (type) {
+    case PLAYER_READY:
+      const playerReady = !state.playerReady;
+      return { ...state, playerReady };
+    case UPDATE_PLAYERS_READY:
+      return { ...state, totalReady: payload };
+    case START_ROUND:
+      return { playerReady: false, totalReady: 0 };
+    default:
+      return state;
+  }
+};
+
 export default combineReducers({
   currentState,
   playerRevealedCards,
-  ready: readyReducer,
+  ready,
   roundRevealTime,
 });

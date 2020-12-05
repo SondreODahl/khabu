@@ -39,7 +39,6 @@ export const updatePlayersReady = (playersReady) => {
 };
 
 export const endRound = (playersInfo) => (dispatch, getState) => {
-  console.log(playersInfo);
   const cards = {};
   const scores = {};
   Object.keys(playersInfo).forEach((playerId) => {

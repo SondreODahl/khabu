@@ -4,7 +4,7 @@ import {
   UPDATE_SCORES,
 } from '../../actions/types';
 
-export default (state = {}, { type, payload }) => {
+const scoresReducer = (state = {}, { type, payload }) => {
   switch (type) {
     case UPDATE_SCORES:
       return { ...state, ...payload.scores };
@@ -21,3 +21,5 @@ export default (state = {}, { type, payload }) => {
       return state;
   }
 };
+
+export default scoresReducer;

@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { setClient, setClientConnected } from '../actions';
 import { useEffect } from 'react';
 
-export default () => {
+const useSTOMPClient = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     const client = new Client({
@@ -33,3 +33,5 @@ export default () => {
     dispatch(setClient(client)); // Update client. Realistically only happens once
   }, [dispatch]);
 };
+
+export default useSTOMPClient;

@@ -7,7 +7,7 @@ export const selectAllPlayers = (state) => state.players.allPlayers;
 export const selectOpponentId = createSelector(
   selectYourId,
   selectAllPlayers,
-  (yourId, allPlayers) => allPlayers.filter((ids) => ids !== yourId).pop()
+  (yourId, allPlayers) => allPlayers.filter((ids) => ids !== yourId).pop() // Does not scale with multiple players
 );
 
 export const selectPlayerNameById = createCachedSelector(

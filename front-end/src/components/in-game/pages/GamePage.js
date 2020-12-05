@@ -27,20 +27,16 @@ export default () => {
     body: yourId,
   });
   useSubscribe('/topic/game/flow', playerJoinedGame, publishUserName);
-  useSubscribe('/topic/round/flow', roundActionDelegator, undefined);
-  useSubscribe(`/topic/round/actions/${yourId}`, privateActionsDelegator, undefined);
-  useSubscribe('/topic/round/actions', publicActionsDelegator, undefined);
+  useSubscribe('/topic/round/flow', roundActionDelegator);
+  useSubscribe(`/topic/round/actions/${yourId}`, privateActionsDelegator);
+  useSubscribe('/topic/round/actions', publicActionsDelegator);
 
   const determineRender = () => {
     switch (roundState) {
       case roundStates.WAITING_FOR_PLAYERS:
         return <WaitingPage />;
       case roundStates.NOT_STARTED:
-        return (
-          <div>
-            <ReadyUpButton yourId={yourId} />
-          </div>
-        );
+        return <ReadyUpButton yourId={yourId} />;
       case roundStates.INITIALIZING:
       case roundStates.STARTED:
         return <GameInterface yourId={yourId} opponentId={opponentId} />;

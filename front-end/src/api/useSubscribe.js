@@ -2,7 +2,7 @@ import { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectClient } from '../selectors';
 
-export default (destination, actionFunction, onSubFunc = () => {}) => {
+const useSubscribe = (destination, actionFunction, onSubFunc = () => {}) => {
   const dispatch = useDispatch();
   const { client, connected } = useSelector(selectClient);
 
@@ -11,7 +11,6 @@ export default (destination, actionFunction, onSubFunc = () => {}) => {
     const sub = client.subscribe(destination, ({ body }) => {
       // Below happens every time message is received
       console.log(body);
-      console.log(sub);
       dispatch(actionFunction(destination, body));
     });
     onSubFunc();
@@ -33,3 +32,5 @@ export default (destination, actionFunction, onSubFunc = () => {}) => {
     }
   }, [connected, subscribe, unsubscribe]);
 };
+
+export default useSubscribe;

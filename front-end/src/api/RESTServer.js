@@ -12,6 +12,5 @@ export const useRESTGet = () => {
   const getRESTData = (url) => {
     axiosREST.get(url).then((data) => dispatch(setData(data)));
   };
-
   return { getRESTData };
 };

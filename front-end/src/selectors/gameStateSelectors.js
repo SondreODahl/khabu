@@ -32,8 +32,6 @@ import {
 } from './effectSelectors';
 import {
   ACTIVATE_EFFECT,
-  PLAYER_CHECK_OTHER,
-  PLAYER_CHECK_SELF,
 } from '../constants/effectMoves';
 
 const selectProps = (_, props) => props;

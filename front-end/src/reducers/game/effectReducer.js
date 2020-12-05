@@ -9,8 +9,10 @@ import {
 
 const effectType = (state = null, { type, payload }) => {
   switch (type) {
-    case DISCARD_CARD:
-      return payload.value >= 7 ? payload.value : null; // If 7 or more, there is an effect
+    case DISCARD_CARD: {
+      const effectCriteria = 7;
+      return payload.value >= effectCriteria ? payload.value : null;
+    }
     case FINISH_EFFECT:
       return null;
     default:
