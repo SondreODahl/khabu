@@ -30,9 +30,7 @@ import {
   getCardEffectActionOpponent,
   getEffectType,
 } from './effectSelectors';
-import {
-  ACTIVATE_EFFECT,
-} from '../constants/effectMoves';
+import { ACTIVATE_EFFECT } from '../constants/effectMoves';
 
 const selectProps = (_, props) => props;
 export const selectCurrentGameState = (state) => state.gameState.currentState;

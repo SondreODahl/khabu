@@ -48,10 +48,7 @@ const roundRevealTime = (state = null, { type, payload }) => {
   return state;
 };
 
-const ready = (
-  state = { playerReady: false, totalReady: 0 },
-  { type, payload }
-) => {
+const ready = (state = { playerReady: false, totalReady: 0 }, { type, payload }) => {
   switch (type) {
     case PLAYER_READY:
       const playerReady = !state.playerReady;
