@@ -56,7 +56,7 @@ const getCanYouPut = createSelector(
     putAllowed && (currentPuttingPlayer === null || currentPuttingPlayer === yourId)
 );
 
-const getCanYouDrawCard = createSelector(
+export const getCanYouDrawCard = createSelector(
   selectCurrentGameState,
   getIsYourTurn,
   (gameState, yourTurn) => {
