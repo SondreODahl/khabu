@@ -32,10 +32,23 @@ import {
 } from './effectSelectors';
 import { ACTIVATE_EFFECT } from '../constants/effectMoves';
 
+/*
+  Internal selectors:
+  getCanYouPut - Used to determine whether you are allowed to put in current state. 
+  getCanYouDrawCard - Currently unusued?
+
+  External selectors:
+  getDiscardPileAction - Used by DiscPile to determine what clicking on it does
+  getCardAction - Used by CardWrapper to determine the action of each player card.
+  getCardActionOpponent - Used by CardWrapper to determine the action of each opponent card.
+  getCanEndTurn - Used by end turn button. Will enable/disable ending the current turn.
+  getCanCallKhabu - Used by khabu button. Will enable/disable calling khabu.
+*/ 
+
 const selectProps = (_, props) => props;
 export const selectCurrentGameState = (state) => state.gameState.currentState;
 const selectPutAllowed = (state) => state.gameState.putAllowed;
-export const getCanPut = createSelector(
+const getCanYouPut = createSelector(
   selectPutAllowed,
   selectCurrentPuttingPlayer,
   selectYourId,
@@ -43,7 +56,7 @@ export const getCanPut = createSelector(
     putAllowed && (currentPuttingPlayer === null || currentPuttingPlayer === yourId)
 );
 
-export const getCanDrawCard = createSelector(
+const getCanYouDrawCard = createSelector(
   selectCurrentGameState,
   getIsYourTurn,
   (gameState, yourTurn) => {
@@ -67,9 +80,10 @@ export const getDiscardPileAction = createSelector(
   }
 );
 
+// TODO: Should this be moved to cardHand and not cardWrapper? Cached selector?
 export const getCardAction = createSelector(
   selectCurrentGameState,
-  getCanPut,
+  getCanYouPut,
   getAreYouCurrentPuttingPlayer,
   getIsYourTurn,
   getCardEffectAction,
@@ -83,8 +97,9 @@ export const getCardAction = createSelector(
   }
 );
 
+// TODO: Should this be moved to cardHand and not cardWrapper? Cached selector?
 export const getCardActionOpponent = createSelector(
-  getCanPut,
+  getCanYouPut,
   getCardEffectActionOpponent,
   (canPut, effect) => (canPut ? PUT_MOVE : effect) // Effect is null if no effect is possible
 );
