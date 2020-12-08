@@ -1,9 +1,17 @@
+import { combineReducers } from 'redux';
 import {
   BEGIN_GAME,
   PLAYER_JOIN_GAME,
   UPDATE_PLAYERS_INFO,
 } from '../../actions/types';
-import { combineReducers } from 'redux';
+
+/* 
+  State of all players in a game lobby. Ids are currently stored as strings. TODO: Make ints.
+  byId - Each player accessed by their Id. Contains their names.
+  allPlayers - Array of all playerIds.
+  playerCapacity - How many players can be in one game. Currently 2.
+  yourId - Your Id. 
+*/
 
 const byId = (state = {}, { type, payload }) => {
   switch (type) {
@@ -21,12 +29,10 @@ const allPlayers = (state = [], { type, payload }) => {
   switch (type) {
     case UPDATE_PLAYERS_INFO:
       const listOfIds = Object.keys(payload.playerIds);
-      return state.concat(listOfIds);
+      return listOfIds;
     case PLAYER_JOIN_GAME:
       const playerId = payload.playerId;
-      if (state.includes(payload.playerId))
-        // In case it was you who broadcast message
-        return state;
+      if (state.includes(playerId)) return state; // In case it was you who broadcast message
       return [...state, playerId]; // Else, received from another player. Add to list
     default:
       return state;

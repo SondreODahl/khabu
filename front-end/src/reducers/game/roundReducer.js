@@ -9,12 +9,16 @@ import {
 } from '../../actions/types';
 import { combineReducers } from 'redux';
 
+/*
+
+*/
+
 export const roundStates = {
-  WAITING_FOR_PLAYERS: 'WAITING_FOR_PLAYERS',
-  NOT_STARTED: 'NOT_STARTED',
-  INITIALIZING: 'INITIALIZING',
-  STARTED: 'STARTED',
-  OVER: 'OVER',
+  WAITING_FOR_PLAYERS: 'WAITING_FOR_PLAYERS', // Before there are 2 players in the lobby
+  NOT_STARTED: 'NOT_STARTED', // When not everyone has readied up
+  REVEAL: 'REVEAL', // Reveal period for players before game begins
+  STARTED: 'STARTED', // Right after reveal period
+  OVER: 'OVER', 
 };
 
 const currentState = (state = roundStates.WAITING_FOR_PLAYERS, { type }) => {
@@ -22,7 +26,7 @@ const currentState = (state = roundStates.WAITING_FOR_PLAYERS, { type }) => {
     case BEGIN_GAME:
       return roundStates.NOT_STARTED;
     case ALL_PLAYERS_READY:
-      return roundStates.INITIALIZING;
+      return roundStates.REVEAL;
     case START_ROUND:
       return roundStates.STARTED;
     case ROUND_END:
@@ -32,6 +36,7 @@ const currentState = (state = roundStates.WAITING_FOR_PLAYERS, { type }) => {
   }
 };
 
+// Used for the REVEAL state. Tracks how many cards player has checked.
 const playerRevealedCards = (state = 0, { type }) => {
   switch (type) {
     case SHOW_CARD:
@@ -48,6 +53,7 @@ const roundRevealTime = (state = null, { type, payload }) => {
   return state;
 };
 
+// Whether you have readied up, and how many in total have readied up
 const ready = (state = { playerReady: false, totalReady: 0 }, { type, payload }) => {
   switch (type) {
     case PLAYER_READY:

@@ -37,7 +37,7 @@ export default () => {
         return <WaitingPage />;
       case roundStates.NOT_STARTED:
         return <ReadyUpButton yourId={yourId} />;
-      case roundStates.INITIALIZING:
+      case roundStates.REVEAL:
       case roundStates.STARTED:
         return <GameInterface yourId={yourId} opponentId={opponentId} />;
       case roundStates.OVER:

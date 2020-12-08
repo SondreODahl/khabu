@@ -23,6 +23,12 @@ import {
 import _ from 'lodash';
 import { addCardToIds } from '../../actions/cardActions';
 
+/* 
+  All state related to cards. Cards are accessed either by their Id (direct object) or
+  by the playerId (). 
+*/
+
+
 const byId = (state = {}, { type, payload }) => {
   switch (type) {
     case ADD_CARD:
