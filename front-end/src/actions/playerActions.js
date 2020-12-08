@@ -1,10 +1,10 @@
-import { BEGIN_GAME, PLAYER_JOIN_GAME, UPDATE_PLAYERS_INFO } from './types';
+import { BEGIN_GAME, PLAYER_JOIN_GAME, GET_PLAYERS_INFO } from './types';
 
 export const retrievePlayers = (response) => {
   const yourId = response.yourId;
   const playerIds = response.playerIds;
   return {
-    type: UPDATE_PLAYERS_INFO,
+    type: GET_PLAYERS_INFO,
     payload: { yourId, playerIds },
   };
 };

@@ -2,7 +2,7 @@ import { combineReducers } from 'redux';
 import {
   BEGIN_GAME,
   PLAYER_JOIN_GAME,
-  UPDATE_PLAYERS_INFO,
+  GET_PLAYERS_INFO,
 } from '../../actions/types';
 
 /* 
@@ -15,7 +15,7 @@ import {
 
 const byId = (state = {}, { type, payload }) => {
   switch (type) {
-    case UPDATE_PLAYERS_INFO:
+    case GET_PLAYERS_INFO:
       return { ...state, ...payload.playerIds };
     case PLAYER_JOIN_GAME:
       const playerId = payload.playerId;
@@ -27,7 +27,7 @@ const byId = (state = {}, { type, payload }) => {
 
 const allPlayers = (state = [], { type, payload }) => {
   switch (type) {
-    case UPDATE_PLAYERS_INFO:
+    case GET_PLAYERS_INFO:
       const listOfIds = Object.keys(payload.playerIds);
       return listOfIds;
     case PLAYER_JOIN_GAME:
@@ -45,7 +45,7 @@ const playerCapacity = (state = null, { type, payload }) => {
 };
 
 const yourId = (state = null, { type, payload }) => {
-  if (type === UPDATE_PLAYERS_INFO) return payload.yourId;
+  if (type === GET_PLAYERS_INFO) return payload.yourId;
   else return state;
 };
 

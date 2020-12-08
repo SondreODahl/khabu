@@ -1,6 +1,6 @@
 import {
   PLAYER_JOIN_GAME,
-  UPDATE_PLAYERS_INFO,
+  GET_PLAYERS_INFO,
   UPDATE_SCORES,
 } from '../../actions/types';
 
@@ -9,7 +9,7 @@ const scoresReducer = (state = {}, { type, payload }) => {
   switch (type) {
     case UPDATE_SCORES: // Receives the scores formatted
       return { ...state, ...payload.scores };
-    case UPDATE_PLAYERS_INFO: // Necessary for when you join a game that already contains players
+    case GET_PLAYERS_INFO: // Necessary for when you join a game that already contains players
       const newState = {};
       for (let id of Object.keys(payload.playerIds)) {
         newState[id] = 0;

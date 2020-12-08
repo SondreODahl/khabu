@@ -20,7 +20,7 @@ export const PLAYER_READY = 'READY';
 export const UPDATE_PLAYERS_READY = 'UPDATE_PLAYERS_READY';
 
 // -------------------- players -----------------------------
-export const UPDATE_PLAYERS_INFO = 'UPDATE_PLAYERS_INFO';
+export const GET_PLAYERS_INFO = 'GET_PLAYERS_INFO';
 export const PLAYER_JOIN_GAME = 'PLAYER_JOIN_GAME';
 
 // ------------------ Round ------------------------------
