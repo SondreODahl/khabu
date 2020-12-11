@@ -16,7 +16,7 @@ export const playerJoinedGame = (topic, json) => (dispatch, getState) => {
   if (capacityReached) {
     const capacity = getState().players.allPlayers.length;
     dispatch({
-      type: PLAYER_JOIN_GAME,
+      type: PLAYER_JOIN_GAME, // Action each time a player joins. Broadcast by them.
       payload: { playerId, playerName },
     });
     dispatch({ type: BEGIN_GAME, payload: capacity });

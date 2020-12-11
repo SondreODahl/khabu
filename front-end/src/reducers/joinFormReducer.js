@@ -1,5 +1,7 @@
 import { FORM_VALID, FORM_SUBMIT, FORM_ERROR, RESET_FORM } from '../actions/types';
 
+// Form used for submitting username. Keeps track of the state the form is in. 
+// Does not store the form values.
 export default (state = {}, { type, payload }) => {
   switch (type) {
     case FORM_SUBMIT:

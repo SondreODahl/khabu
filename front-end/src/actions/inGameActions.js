@@ -58,5 +58,5 @@ const putCard = (agent, victim, cardId, status, value) => {
 };
 
 const putReverse = (agent, victim, cardId, index, nextState) => {
-  return { type: PUT_REVERSE, payload: { agent, victim, cardId, index, nextState } };
+  return { type: PUT_REVERSE, payload: { agent, victim, cardId, value: null, index, nextState } };
 };

@@ -7,9 +7,14 @@ import {
   START_ROUND,
 } from '../../actions/types';
 
-/* Turn state. Keeps track of whose turn it is, and who is the putting/khabu player in that turn. */
+/* 
+  Turn state. Keeps track of whose turn it is, and who is the putting/khabu player in that turn. 
+  currentPuttingPlayer - playerId who put during this turn. Else null.
+  khabuPlayer - playerId who called khabu this round. Else null.
+  currentPlayer - playerId who is current player.
+*/
 
-// The playerId who put during this turn. Will only update on first successful put and then the end of turn.
+// Will only update on first successful put and then the end of turn.
 const currentPuttingPlayer = (state = null, { type, payload }) => {
   switch (type) {
     case PUT_CARD:
@@ -24,7 +29,7 @@ const currentPuttingPlayer = (state = null, { type, payload }) => {
   }
 };
 
-// The playerId who called khabu this round. Will only update on first khabu-call or round end.
+// Will only update on first khabu-call or round end.
 const khabuPlayer = (state = null, { type, payload }) => {
   switch (type) {
     case PLAYER_CALLED_KHABU:
@@ -36,7 +41,6 @@ const khabuPlayer = (state = null, { type, payload }) => {
   }
 };
 
-// The playerId who is the current player.
 const currentPlayerTurn = (state = null, { type, payload }) => {
   switch (type) {
     case START_ROUND:

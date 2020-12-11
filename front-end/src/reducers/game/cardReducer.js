@@ -1,58 +1,45 @@
+import _ from 'lodash';
+import { addCardToIds } from '../../actions/cardActions';
 import {
   ADD_CARD,
   ADD_CARD_TO_HAND,
   ALL_PLAYERS_READY,
+  CARD_GLOW,
+  DISCARD_CARD,
   DRAW_CARD_DISCARD,
+  DRAW_FROM_DECK,
+  EXCHANGE_CARDS,
+  FORCE_DRAW,
+  HIDE_HAND,
   PUT_CARD,
+  PUT_REVERSE,
   REMOVE_CARD,
   REMOVE_CARD_FROM_HAND,
-  HIDE_HAND,
   ROUND_END,
-  SHOW_CARD,
-  START_ROUND,
-  DISCARD_CARD,
-  DRAW_FROM_DECK,
   SWAP_CARDS,
-  CARD_GLOW,
-  PUT_REVERSE,
-  UPDATE_CARD,
-  FORCE_DRAW,
   TRANSFER_CARD,
-  EXCHANGE_CARDS,
+  UPDATE_CARD,
 } from '../../actions/types';
-import _ from 'lodash';
-import { addCardToIds } from '../../actions/cardActions';
 
 /* 
-  All state related to cards. Cards are accessed either by their Id (direct object) or
-  by the playerId (). 
+  All state related to cards. Cards are accessed either by their Id (direct object). 
+  All cards in a players hand is accessed by their playerId (array of Ids). 
+  byId - Each cardId as key and their value and whether they glow or not as value.
+  byplayerId - All cardIds in a player's hand. 
+  discardPile - All cardIds currently in the discard pile.
+  temporaryCard - cardId of the card that was drawn and not yet chosen what to do with.
 */
-
 
 const byId = (state = {}, { type, payload }) => {
   switch (type) {
     case ADD_CARD:
-    case UPDATE_CARD:
     case DISCARD_CARD:
-    case PUT_CARD: {
-      const { cardId, value } = payload; // Value should always be null on ADD_CARD
-      return { ...state, [cardId]: { value, glow: false } };
-    }
     case FORCE_DRAW:
-    case PUT_REVERSE: {
-      const { cardId } = payload;
-      return { ...state, [cardId]: { value: null, glow: false } };
-    }
-    case REMOVE_CARD:
-      return _.omit(state, payload.cardId.toString());
-    case SWAP_CARDS: {
-      // TODO: REFACTOR LATER
-      const { cardId, tempCardId } = payload;
-      return {
-        ...state,
-        [cardId]: { value: payload.value, glow: false },
-        [tempCardId]: { value: null, glow: false },
-      };
+    case PUT_REVERSE:
+    case PUT_CARD:
+    case UPDATE_CARD: {
+      const { cardId, value } = payload; // Value should always be null on ADD_CARD/FORCE_DRAW/PUT_REVERSE
+      return { ...state, [cardId]: { value, glow: false } }; // TODO: Refactor glow
     }
     case CARD_GLOW: {
       const { cardId, glow } = payload;
@@ -62,8 +49,19 @@ const byId = (state = {}, { type, payload }) => {
         [cardId]: { value, glow },
       };
     }
+    case REMOVE_CARD:
+      return _.omit(state, payload.cardId.toString());
     case ROUND_END: {
       return { ...state, ...payload.cards };
+    }
+    case SWAP_CARDS: {
+      // TODO: REFACTOR LATER
+      const { cardId, tempCardId } = payload;
+      return {
+        ...state,
+        [cardId]: { value: payload.value, glow: false },
+        [tempCardId]: { value: null, glow: false },
+      };
     }
     default:
       return state;

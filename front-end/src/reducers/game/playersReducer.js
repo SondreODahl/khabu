@@ -16,7 +16,7 @@ import {
 const byId = (state = {}, { type, payload }) => {
   switch (type) {
     case GET_PLAYERS_INFO:
-      return { ...state, ...payload.playerIds };
+      return payload.playerIds; // Contains Id - Username pairs
     case PLAYER_JOIN_GAME:
       const playerId = payload.playerId;
       return { ...state, [playerId]: payload.playerName };

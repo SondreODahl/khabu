@@ -9,8 +9,6 @@ import {
   PUT_REVERSE,
   ROUND_END,
   START_ROUND,
-  SUCCESSFUL_PUT_OTHER,
-  SUCCESSFUL_PUT_SELF,
   SWAP_CARDS,
   SWAP_WITH_DISC,
   TRANSFER_CARD,
@@ -27,13 +25,14 @@ import {
   USING_EFFECT,
 } from '../../constants/gameStates';
 
-const initialState = {
-  currentState: null,
-  putAllowed: false,
-};
-
+// Helper method to reduce bloat in main reducer
 const newState = (currentState, putAllowed) => {
   return { currentState, putAllowed };
+};
+
+const initialState = {
+  currentState: null, // Uses gameStates in constants folder
+  putAllowed: false,
 };
 
 const gameState = (state = initialState, { type, payload }) => {
@@ -46,12 +45,8 @@ const gameState = (state = initialState, { type, payload }) => {
     case DRAW_FROM_DECK:
       return newState(CARD_DRAWN, false);
     case PUT_CARD:
-      if (payload.status === 'fail')
-        // You should move into put_fail stat e
-        return newState(PUT_FAIL, false);
-      if (payload.agent === payload.victim)
-        // This means that it is a put-self case
-        return newState(PUT, true); // Cannot transfer to yourself
+      if (payload.status === 'fail') return newState(PUT_FAIL, false);
+      if (payload.agent === payload.victim) return newState(PUT, true); // A put-self case. Cannot transfer to yourself.
       return newState(TRANSFER, false); // Transfer to another player
     case PUT_REVERSE:
     case FINISH_EFFECT:

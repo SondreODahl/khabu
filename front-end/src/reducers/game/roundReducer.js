@@ -10,7 +10,12 @@ import {
 import { combineReducers } from 'redux';
 
 /*
-
+  All state related to the current round. 
+  roundState (obj) - Constants for each possible state.
+  currentState - The current state of the round. 
+  playerRevealedCards - Used for the REVEAL state. Tracks how many cards player has checked.
+  roundRevealTime - How much time the players have to see their cards before game begins.
+  ready - Whether you have readied up, and how many in total have readied up
 */
 
 export const roundStates = {
@@ -36,7 +41,6 @@ const currentState = (state = roundStates.WAITING_FOR_PLAYERS, { type }) => {
   }
 };
 
-// Used for the REVEAL state. Tracks how many cards player has checked.
 const playerRevealedCards = (state = 0, { type }) => {
   switch (type) {
     case SHOW_CARD:
@@ -53,7 +57,6 @@ const roundRevealTime = (state = null, { type, payload }) => {
   return state;
 };
 
-// Whether you have readied up, and how many in total have readied up
 const ready = (state = { playerReady: false, totalReady: 0 }, { type, payload }) => {
   switch (type) {
     case PLAYER_READY:
