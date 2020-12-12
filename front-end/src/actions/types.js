@@ -1,7 +1,3 @@
-// -------------- For REST --------------------
-export const GET_DATA = 'GET_DATA';
-export const POST_DATA = 'POST_DATA';
-
 // --------------- Forms -----------------------
 export const FORM_SUBMIT = 'FORM_SUBMIT';
 export const FORM_VALID = 'FORM_VALID';
@@ -52,7 +48,7 @@ export const SUCCESSFUL_PUT_SELF = 'SUCCESSFUL_PUT_SELF';
 export const SUCCESSFUL_PUT_OTHER = 'SUCCESSFUL_PUT_OTHER';
 export const TRANSFER_CARD = 'TRANSFER_CARD';
 export const SWAP_CARDS = 'SWAP_CARDS';
-export const PUT_REVERzSE = 'PUT_REVERSE';
+export const PUT_REVERSE = 'PUT_REVERSE';
 export const SWAP_WITH_DISC = 'SWAP_WITH_DISC';
 export const DISCARD_CARD = 'DISCARD_CARD';
 
