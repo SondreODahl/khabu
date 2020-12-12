@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import GreetButton from './GreetButton';
 import ReadyUpButton from '../in-game/buttons/ReadyUpButton';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -15,7 +14,6 @@ export default () => {
       <div className={'ui hidden divider'} />
       <div className={'ui two column relaxed grid'}>
         <div className={'column'}>
-          <GreetButton />
         </div>
         <div className={'column'}>
           <ReadyUpButton />
