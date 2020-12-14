@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { formSubmit } from '../../actions';
 
-export default (props) => {
+const JoinForm = (props) => {
   const { register, errors, handleSubmit } = useForm({
     criteriaMode: 'all',
     reValidateMode: 'onSubmit',
@@ -65,3 +65,5 @@ export default (props) => {
     </div>
   );
 };
+
+export default JoinForm;

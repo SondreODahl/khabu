@@ -1,8 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+
 import KhabuLogo from '../../assets/images/khabu-logo.png';
 
-export default () => {
+const StartPage = () => {
   return (
     <div className={'ui grid'}>
       <div className={'centered row khabu-logo'}>
@@ -25,3 +26,5 @@ export default () => {
     </div>
   );
 };
+
+export default StartPage;

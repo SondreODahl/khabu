@@ -1,13 +1,14 @@
 import React, { useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+
 import { formError, formValid } from '../../actions';
-import { axiosREST } from '../../api/RESTServer';
+import { axiosConfig } from '../../api/axiosConfig';
 import JoinForm from './JoinForm';
 import { RESET_FORM } from '../../actions/types';
 import { selectFormAttributes } from '../../selectors';
 
-export default (props) => {
+const JoinGamePage = (props) => {
   const history = useHistory();
   const dispatch = useDispatch();
   const { formData, error, submitted, validForm } = useSelector(
@@ -19,7 +20,7 @@ export default (props) => {
       const post = async (url, data) => {
         console.log('Run now');
         try {
-          const response = await axiosREST.post(url, data);
+          const response = await axiosConfig.post(url, data);
           console.log(response.data);
           if (response.data.status.statusCodeValue === 201)
             dispatch(formValid(response.data));
@@ -52,3 +53,5 @@ export default (props) => {
     </div>
   );
 };
+
+export default JoinGamePage;
