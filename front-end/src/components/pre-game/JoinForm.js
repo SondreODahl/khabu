@@ -1,7 +1,7 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import { formSubmit, submitForm } from '../../actions';
+import { submitForm } from '../../actions';
 import { useHistory } from 'react-router-dom';
 import JoinFormErrorMessage from './JoinFormErrorMessage';
 
@@ -26,8 +26,8 @@ const JoinForm = (props) => {
           <input name={'username'} type={'text'} ref={register(formConditions)} />
           <input type={'submit'} className={'ui teal button'} value={'Submit'} />
         </div>
-        <JoinFormErrorMessage formError={props.formError} errors={errors} />
       </form>
+      <JoinFormErrorMessage formError={props.formError} errors={errors} />
     </div>
   );
 };

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import HomeButton from './HomeButton';
 
 import './RulesPage.css';
 
@@ -9,9 +10,7 @@ import './RulesPage.css';
 
 export default (props) => (
   <div>
-    <Link to={'/'}>
-      <button className={'ui blue button'}>Home</button>
-    </Link>
+    <HomeButton />
     <div className={'ui hidden divider'} />
     <div class="page-body">
       <h3 id="24becfa5-9df3-4026-a7e2-38006549970e" class="">
