@@ -1,0 +1,43 @@
+.start-page {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.khabu-main-logo { /* Image on main page */
+    width: 40%;
+    height: 100%;
+}
+
+.khabu-header-text {
+    margin-bottom: 1em;
+}
+
+/* Button container stylings */
+.button-container {
+    display: flex;
+    justify-content: center;
+    width: inhert;
+    height: inherit;
+}
+
+.button-container a {
+    margin: 0.2em;
+    width: 5em;
+    height: 3em;
+}
+
+.button-container button {
+    border-radius: 0.6em;
+    border-width: 0;
+    background-color: rgb(0, 181, 173);
+    color: #ffffff;
+    width: 100%;
+    height: 100%;
+}
+
+.button-container button:hover {
+    background-color: #009c95;
+    cursor: pointer;
+}
+

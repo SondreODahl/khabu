@@ -1,6 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+
 import './RulesPage.css';
+
+/*
+  THIS PAGE IS IMPORTED FROM NOTION. NOT WRITTEN EXPLICITLY BY US. 
+*/
 
 export default (props) => (
   <div>

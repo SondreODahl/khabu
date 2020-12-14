@@ -2,25 +2,20 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import KhabuLogo from '../../assets/images/khabu-logo.png';
+import './StartPage.css';
 
+// Purely rendering component. Shows the initial page you are greeted with.
 const StartPage = () => {
   return (
-    <div className={'ui grid'}>
-      <div className={'centered row khabu-logo'}>
-        <img
-          src={KhabuLogo}
-          alt={'Khabu logo'}
-          style={{ width: '40%', height: '100%' }}
-        />
-      </div>
-      <div className={'two column centered row'}>
-        <h1>Khabu</h1>
-        <br />
+    <div className={'start-page'}>
+      <img className={'khabu-main-logo'} src={KhabuLogo} alt={'Khabu logo'} />
+      <h1 className={'khabu-header-text'}>Khabu</h1>
+      <div className={'button-container'}>
         <Link to={'/join'}>
-          <button className={'ui teal large button'}>Join</button>
+          <button className={'join-button'}>Join</button>
         </Link>
         <Link to={'/rules'}>
-          <button className={'ui teal large button'}>Rules</button>
+          <button className={'rules-button'}>Rules</button>
         </Link>
       </div>
     </div>

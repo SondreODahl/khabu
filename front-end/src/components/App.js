@@ -11,7 +11,10 @@ import RulesPage from './pre-game/RulesPage';
 const App = () => {
   useClient();
   return (
-    <div className={'ui centered container'}>
+    <div
+      className={'app'}
+      style={{ marginRight: '20%', marginLeft: '20%', height: '100vh' }}
+    >
       <Route path={'/'} exact component={StartPage} />
       <Route path={'/test'} component={Testing} />
       <Route path={'/join'} component={JoinGamePage} />
