@@ -2,6 +2,10 @@ import { useSelector } from 'react-redux';
 import { selectClient } from '../selectors';
 import { useCallback } from 'react';
 
+/*
+  Hook used to publish messages to a specific destination.
+  Parameters consists of a destination and a body. 
+*/
 const usePublish = (parameters) => {
   const { client, connected } = useSelector(selectClient);
   if (!parameters.destination || !parameters.body) {

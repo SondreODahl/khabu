@@ -4,6 +4,10 @@ import { useDispatch } from 'react-redux';
 import { setClient, setClientConnected } from '../actions';
 import { useEffect } from 'react';
 
+/*
+  Hook used to activate the stompJs client and configure it.
+  Will send the client to the redux state. Should only be called once.
+*/
 const useSTOMPClient = () => {
   const dispatch = useDispatch();
   useEffect(() => {
