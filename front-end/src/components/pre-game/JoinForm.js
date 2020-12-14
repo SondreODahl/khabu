@@ -1,7 +1,9 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import { formSubmit } from '../../actions';
+import { formSubmit, submitForm } from '../../actions';
+import { useHistory } from 'react-router-dom';
+import JoinFormErrorMessage from './JoinFormErrorMessage';
 
 const JoinForm = (props) => {
   const { register, errors, handleSubmit } = useForm({
@@ -9,10 +11,11 @@ const JoinForm = (props) => {
     reValidateMode: 'onSubmit',
   });
   const dispatch = useDispatch();
+  const history = useHistory(); // Used for passing down to the thunk
 
   const onSubmit = (data) => {
     // Username will be validated. Not certain that it has been already taken though
-    dispatch(formSubmit(data.username));
+    dispatch(submitForm(data.username, history));
   };
 
   return (
@@ -20,50 +23,29 @@ const JoinForm = (props) => {
       <form onSubmit={handleSubmit(onSubmit)} className={'ui error form'}>
         <h3>Enter username:</h3>
         <div className={'ui action input '}>
-          <input
-            name={'username'}
-            type={'text'}
-            ref={register({
-              required: { value: true, message: 'You must input a username' },
-              minLength: {
-                value: 5,
-                message: 'Username must be minimum 5 characters',
-              },
-              maxLength: {
-                value: 20,
-                message: 'Username must be maximum 20 characters',
-              },
-              pattern: {
-                value: /^[A-Za-z0-9]+$/,
-                message: 'Username must be only letters/numbers',
-              },
-            })}
-          />
+          <input name={'username'} type={'text'} ref={register(formConditions)} />
           <input type={'submit'} className={'ui teal button'} value={'Submit'} />
         </div>
-        <br />
-        {(errors.username || props.formError) && (
-          <div className={'ui error message compact'}>
-            <ul className={'list'}>
-              {errors?.username && errors?.username?.types?.pattern && (
-                <li>Username must be only letters and numbers</li>
-              )}
-              {errors?.username && errors?.username?.types?.maxLength && (
-                <li>Username must be maximum 20 characters</li>
-              )}
-              {errors?.username && errors?.username?.types?.minLength && (
-                <li>Username must be minimum 5 characters</li>
-              )}
-              {errors?.username && errors?.username?.types?.required && (
-                <li>Username must be minimum 5 characters</li>
-              )}
-              {props.formError && <li>{props.formError}</li>}
-            </ul>
-          </div>
-        )}
+        <JoinFormErrorMessage formError={props.formError} errors={errors} />
       </form>
     </div>
   );
+};
+
+const formConditions = {
+  required: { value: true, message: 'You must input a username' },
+  minLength: {
+    value: 5,
+    message: 'Username must be minimum 5 characters',
+  },
+  maxLength: {
+    value: 20,
+    message: 'Username must be maximum 20 characters',
+  },
+  pattern: {
+    value: /^[A-Za-z0-9]+$/,
+    message: 'Username must be only letters/numbers',
+  },
 };
 
 export default JoinForm;
