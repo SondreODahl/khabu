@@ -1,6 +1,5 @@
-import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { Router, Route, Link, BrowserRouter } from 'react-router-dom';
+import React from 'react';
+import { Route } from 'react-router-dom';
 
 import useClient from '../api/useSTOMPClient';
 import Testing from './testing/Testing';
@@ -9,7 +8,7 @@ import StartPage from './pre-game/StartPage';
 import GamePage from './in-game/pages/GamePage';
 import RulesPage from './pre-game/RulesPage';
 
-const App = (props) => {
+const App = () => {
   useClient();
   return (
     <div className={'ui centered container'}>

@@ -1,52 +1,47 @@
+import _ from 'lodash';
+import { addCardToIds } from '../../actions/cardActions';
 import {
   ADD_CARD,
   ADD_CARD_TO_HAND,
   ALL_PLAYERS_READY,
+  CARD_GLOW,
+  DISCARD_CARD,
   DRAW_CARD_DISCARD,
+  DRAW_FROM_DECK,
+  EXCHANGE_CARDS,
+  FORCE_DRAW,
+  HIDE_HAND,
   PUT_CARD,
+  PUT_REVERSE,
   REMOVE_CARD,
   REMOVE_CARD_FROM_HAND,
-  HIDE_HAND,
   ROUND_END,
-  SHOW_CARD,
-  START_ROUND,
-  DISCARD_CARD,
-  DRAW_FROM_DECK,
   SWAP_CARDS,
-  CARD_GLOW,
-  PUT_REVERSE,
-  UPDATE_CARD,
-  FORCE_DRAW,
   TRANSFER_CARD,
-  EXCHANGE_CARDS,
+  UPDATE_CARD,
 } from '../../actions/types';
-import _ from 'lodash';
-import { addCardToIds } from '../../actions/cardActions';
+
+/* 
+  All state related to cards. Cards are accessed either by their Id (direct object). 
+  All cards in a players hand is accessed by their playerId (array of Ids). 
+  To achieve state based on playerId, a custom reducer is used instead of combineReducers. See the
+  bottom of the file for it. 
+  byId - Each cardId as key and their value and whether they glow or not as value.
+  byplayerId - All cardIds in a player's hand. 
+  discardPile - All cardIds currently in the discard pile.
+  temporaryCard - cardId of the card that was drawn and not yet chosen what to do with.
+*/
 
 const byId = (state = {}, { type, payload }) => {
   switch (type) {
     case ADD_CARD:
-    case UPDATE_CARD:
     case DISCARD_CARD:
-    case PUT_CARD: {
-      const { cardId, value } = payload; // Value should always be null on ADD_CARD
-      return { ...state, [cardId]: { value, glow: false } };
-    }
     case FORCE_DRAW:
-    case PUT_REVERSE: {
-      const { cardId } = payload;
-      return { ...state, [cardId]: { value: null, glow: false } };
-    }
-    case REMOVE_CARD:
-      return _.omit(state, payload.cardId.toString());
-    case SWAP_CARDS: {
-      // TODO: REFACTOR LATER
-      const { cardId, tempCardId } = payload;
-      return {
-        ...state,
-        [cardId]: { value: payload.value, glow: false },
-        [tempCardId]: { value: null, glow: false },
-      };
+    case PUT_REVERSE:
+    case PUT_CARD:
+    case UPDATE_CARD: {
+      const { cardId, value } = payload; // Value should always be null on ADD_CARD/FORCE_DRAW/PUT_REVERSE
+      return { ...state, [cardId]: { value, glow: false } }; // TODO: Refactor glow
     }
     case CARD_GLOW: {
       const { cardId, glow } = payload;
@@ -56,8 +51,19 @@ const byId = (state = {}, { type, payload }) => {
         [cardId]: { value, glow },
       };
     }
+    case REMOVE_CARD:
+      return _.omit(state, payload.cardId.toString());
     case ROUND_END: {
       return { ...state, ...payload.cards };
+    }
+    case SWAP_CARDS: {
+      // TODO: REFACTOR LATER
+      const { cardId, tempCardId } = payload;
+      return {
+        ...state,
+        [cardId]: { value: payload.value, glow: false },
+        [tempCardId]: { value: null, glow: false },
+      };
     }
     default:
       return state;
@@ -66,16 +72,23 @@ const byId = (state = {}, { type, payload }) => {
 
 const byPlayerId = (state = [], { type, payload }) => {
   switch (type) {
+    case EXCHANGE_CARDS:
+    case SWAP_CARDS:
+      return state.map((card) =>
+        card === payload.cardId ? payload.tempCardId : card
+      ); // Replace the card with the temp
+    case FORCE_DRAW: {
+      const indexOfNull = state.indexOf(null); // Find first empty card. -1 if hand is full
+      const index = indexOfNull === -1 ? state.length : indexOfNull;
+      return [...state.slice(0, index), payload.cardId, ...state.slice(index + 1)]; // Want to replace the null value. Therefore + 1
+    }
+    case PUT_CARD:
+      return state.map((cardId) => (cardId === payload.cardId ? null : cardId)); // Insert null where the card previously was
     case PUT_REVERSE: {
       const newState = state.slice();
       const { index, cardId } = payload;
       newState[index] = cardId;
       return newState;
-    }
-    case FORCE_DRAW: {
-      const indexOfNull = state.indexOf(null); // Find first empty card. -1 if hand is full
-      const index = indexOfNull === -1 ? state.length : indexOfNull;
-      return [...state.slice(0, index), payload.cardId, ...state.slice(index + 1)]; // Want to replace the null value. Therefore + 1
     }
     case TRANSFER_CARD: {
       const { victimCardIndex, cardId } = payload;
@@ -87,13 +100,6 @@ const byPlayerId = (state = [], { type, payload }) => {
         ...state.slice(victimCardIndex + 1),
       ]; // Want to replace the null value. Therefore + 1
     }
-    case PUT_CARD:
-      return state.map((cardId) => (cardId === payload.cardId ? null : cardId)); // Insert null where the card previously was
-    case EXCHANGE_CARDS:
-    case SWAP_CARDS:
-      return state.map((card) =>
-        card === payload.cardId ? payload.tempCardId : card
-      ); // Replace the card with the temp
     default:
       return state;
   }
@@ -101,15 +107,15 @@ const byPlayerId = (state = [], { type, payload }) => {
 
 const discardPile = (state = [], { type, payload }) => {
   switch (type) {
-    case PUT_CARD:
-      return [...state, payload.cardId];
-    case PUT_REVERSE:
-      return [...state.slice(0, -1)]; // Remove the top card that failed
     case DISCARD_CARD:
     case SWAP_CARDS:
       return [...state, payload.cardId];
     case DRAW_CARD_DISCARD:
       return state.filter((cardId) => cardId !== payload.cardId);
+    case PUT_CARD:
+      return [...state, payload.cardId];
+    case PUT_REVERSE:
+      return [...state.slice(0, -1)]; // Remove the top card that failed
     default:
       return state;
   }
@@ -127,30 +133,10 @@ const temporaryCard = (state = null, { type, payload }) => {
   }
 };
 
-// Helper methods
+// ----------------------------- Helper methods -----------------------------
 
-const resetHand = (state, playerId) => {
-  for (let i = 0; i < state[playerId].length; i++) {
-    state.byId[state[playerId][i]] = { value: null, glow: false };
-  }
-  return { ...state };
-};
-
-const initializeHands = (state, action) => {
-  // HELPER METHOD
-  let cardId = 0;
-  for (let id of action.payload.playerIds) {
-    state[id] = byPlayerId(undefined, action);
-    for (let i = 0; i < action.payload.startingHandSize; i++) {
-      state[id][i] = cardId;
-      state.byId = byId(state.byId, addCardToIds(cardId, null));
-      cardId++;
-    }
-  }
-};
-
+// Generates the inital reducer states for each state type except byPlayerId
 const getNewInitState = () => {
-  // HELPER METHOD
   return {
     byId: byId(undefined, {}),
     discardPile: discardPile(undefined, {}),
@@ -158,14 +144,33 @@ const getNewInitState = () => {
   };
 };
 
+// Generates a certain amount of cardIds for each playerHand
+const initializeHands = (state, action) => {
+  let cardId = 0;
+  for (let playerId of action.payload.playerIds) {
+    state[playerId] = byPlayerId(undefined, action);
+    for (let i = 0; i < action.payload.startingHandSize; i++) {
+      state[playerId][i] = cardId;
+      state.byId = byId(state.byId, addCardToIds(cardId, null));
+      cardId++;
+    }
+  }
+};
+
+const hidePlayerHand = (state, playerId) => {
+  for (let i = 0; i < state[playerId].length; i++) {
+    state.byId[state[playerId][i]] = { value: null, glow: false };
+  }
+  return { ...state };
+};
+
+// ------------------------ Custom main reducer -------------------------------
+
+// Used instead of combineReducers. Will look at the action type and send the relevant state to 
+// the relevant reducer functions. Used to achieve playerId keys and also to resetState easily. 
+// TODO: Consider going back to combineReducers. Should be done after testing is done. 
 const cardHandsReducer = (state = getNewInitState(), action) => {
   switch (action.type) {
-    case ALL_PLAYERS_READY:
-      const reset_state = getNewInitState();
-      initializeHands(reset_state, action);
-      return reset_state;
-    case HIDE_HAND:
-      return resetHand(state, action.payload.playerId);
     case ADD_CARD:
     case REMOVE_CARD:
     case CARD_GLOW:
@@ -174,46 +179,24 @@ const cardHandsReducer = (state = getNewInitState(), action) => {
       return { ...state, byId: byId(state.byId, action) };
     case ADD_CARD_TO_HAND:
     case REMOVE_CARD_FROM_HAND: {
-      const playerId = action.payload.playerId;
+      const { playerId } = action.payload;
       return { ...state, [playerId]: byPlayerId(state[playerId], action) };
     }
-    case DRAW_FROM_DECK:
-      return { ...state, temporaryCard: temporaryCard(state.temporaryCard, action) };
-    case PUT_CARD:
-    case PUT_REVERSE: {
-      const victim = action.payload.victim;
-      return {
-        ...state,
-        discardPile: discardPile(state.discardPile, action),
-        [victim]: byPlayerId(state[victim], action),
-        byId: byId(state.byId, action),
-      };
-    }
-    case FORCE_DRAW:
-      const playerId = action.payload.playerId;
-      return {
-        ...state,
-        byId: byId(state.byId, action),
-        [playerId]: byPlayerId(state[playerId], action),
-      };
+    case ALL_PLAYERS_READY:
+      const resetState = getNewInitState();
+      initializeHands(resetState, action); // Method will mutate resetState
+      return resetState;
     case DISCARD_CARD:
       return {
         ...state,
+        byId: byId(state.byId, action),
         discardPile: discardPile(state.discardPile, action),
         temporaryCard: temporaryCard(state.temporaryCard, action),
-        byId: byId(state.byId, action),
       };
-    case SWAP_CARDS:
-      return {
-        ...state,
-        discardPile: discardPile(state.discardPile, action),
-        temporaryCard: temporaryCard(state.temporaryCard, action),
-        [action.payload.playerId]: byPlayerId(
-          state[action.payload.playerId],
-          action
-        ),
-        byId: byId(state.byId, action),
-      };
+    case DRAW_CARD_DISCARD:
+      return { ...state, discardPile: discardPile(state.discardPile, action) };
+    case DRAW_FROM_DECK:
+      return { ...state, temporaryCard: temporaryCard(state.temporaryCard, action) };
     case EXCHANGE_CARDS:
       const { cardOne, cardTwo } = action.payload;
       return {
@@ -227,15 +210,44 @@ const cardHandsReducer = (state = getNewInitState(), action) => {
           payload: { cardId: cardTwo.cardId, tempCardId: cardOne.cardId },
         }),
       };
-    case TRANSFER_CARD:
+    case FORCE_DRAW: {
+      const { playerId } = action.payload;
+      return {
+        ...state,
+        byId: byId(state.byId, action),
+        [playerId]: byPlayerId(state[playerId], action),
+      };
+    }
+    case HIDE_HAND:
+      return hidePlayerHand(state, action.payload.playerId);
+    case PUT_CARD:
+    case PUT_REVERSE: {
+      const { victim } = action.payload;
+      return {
+        ...state,
+        byId: byId(state.byId, action),
+        discardPile: discardPile(state.discardPile, action),
+        [victim]: byPlayerId(state[victim], action),
+      };
+    }
+    case SWAP_CARDS: {
+      const { playerId } = action.payload;
+      return {
+        ...state,
+        byId: byId(state.byId, action),
+        discardPile: discardPile(state.discardPile, action),
+        temporaryCard: temporaryCard(state.temporaryCard, action),
+        [playerId]: byPlayerId(state[playerId], action),
+      };
+    }
+    case TRANSFER_CARD: {
       const { victim, agent } = action.payload;
       return {
         ...state,
-        [victim]: byPlayerId(state[victim], action),
         [agent]: byPlayerId(state[agent], action),
+        [victim]: byPlayerId(state[victim], action),
       };
-    case DRAW_CARD_DISCARD:
-      return { ...state, discardPile: discardPile(state.discardPile, action) };
+    }
     default:
       return state;
   }

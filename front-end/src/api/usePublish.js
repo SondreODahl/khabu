@@ -2,7 +2,7 @@ import { useSelector } from 'react-redux';
 import { selectClient } from '../selectors';
 import { useCallback } from 'react';
 
-export default (parameters) => {
+const usePublish = (parameters) => {
   const { client, connected } = useSelector(selectClient);
   if (!parameters.destination || !parameters.body) {
     console.warn('Publish is missing destination or body');
@@ -14,3 +14,4 @@ export default (parameters) => {
   ]);
   return connected ? returnFunc : failedFunc;
 };
+export default usePublish;

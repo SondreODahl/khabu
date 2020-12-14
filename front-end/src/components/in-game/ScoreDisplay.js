@@ -1,5 +1,4 @@
 import { useSelector } from 'react-redux';
-import { getIsPlayersTurn, selectPlayerNameById } from '../../selectors';
 import { selectPlayerScore } from '../../selectors/scoresSelectors';
 import React from 'react';
 

@@ -1,14 +1,11 @@
-import { DISCARD, USING_EFFECT } from '../constants/gameStates';
 import { createSelector } from 'reselect';
 import {
-  CHECK_TWO_CARDS,
-  CHOOSE_CARD,
-  EXCHANGE_CARDS,
   FINISH_USING_EFFECT,
   PLAYER_CHECK_OTHER,
   PLAYER_CHECK_SELF,
 } from '../constants/effectMoves';
-import { getAreYouCurrentPuttingPlayer, getIsYourTurn } from './turnSelectors';
+import { USING_EFFECT } from '../constants/gameStates';
+import { getIsYourTurn } from './turnSelectors';
 
 const selectEffectType = (state) => state.effect.effectType;
 const selectChosenCards = (state) => state.effect.chosenCards;

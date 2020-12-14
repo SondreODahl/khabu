@@ -17,6 +17,7 @@ export const getDiscardPileTopCardId = createSelector(
   }
 );
 
+// Gets card by their id and determines whether they glow or not
 export const selectCardGlow = createCachedSelector(
   selectCardValueById,
   (card) => card.glow
@@ -32,6 +33,7 @@ export const selectCardHand = createCachedSelector(
   (hand) => hand
 )((state, props) => props.playerId);
 
+// Gets corresponding server Id for a cardId. ServerId is based on index. TODO: Coordinate Id
 export const getServerIdForCard = createCachedSelector(
   selectCardHandByPlayerId,
   selectProps,

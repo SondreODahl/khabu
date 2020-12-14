@@ -1,13 +1,8 @@
 import { useSelector } from 'react-redux';
-import React, { useCallback } from 'react';
-import {
-  getCardAction,
-  getCardActionOpponent,
-  selectCardHand,
-} from '../../../../selectors';
+import React from 'react';
+import { selectCardHand } from '../../../../selectors';
 import './CardHand.css';
 import CardWrapper from '../Card/CardWrapper';
-import { getParameters } from '../Card/getCardParameters';
 
 export default (props) => {
   const cards = useSelector((state) => selectCardHand(state, props));

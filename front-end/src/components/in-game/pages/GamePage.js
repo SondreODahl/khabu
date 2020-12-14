@@ -2,7 +2,6 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import ReadyUpButton from '../buttons/ReadyUpButton';
 import { roundStates } from '../../../reducers/game/roundReducer';
-import CardHand from '../cards/CardHand/CardHand';
 import useSubscribe from '../../../api/useSubscribe';
 import usePublish from '../../../api/usePublish';
 import { playerJoinedGame } from '../../../actions/playerActions';
@@ -28,21 +27,17 @@ export default () => {
     body: yourId,
   });
   useSubscribe('/topic/game/flow', playerJoinedGame, publishUserName);
-  useSubscribe('/topic/round/flow', roundActionDelegator, undefined);
-  useSubscribe(`/topic/round/actions/${yourId}`, privateActionsDelegator, undefined);
-  useSubscribe('/topic/round/actions', publicActionsDelegator, undefined);
+  useSubscribe('/topic/round/flow', roundActionDelegator);
+  useSubscribe(`/topic/round/actions/${yourId}`, privateActionsDelegator);
+  useSubscribe('/topic/round/actions', publicActionsDelegator);
 
   const determineRender = () => {
     switch (roundState) {
       case roundStates.WAITING_FOR_PLAYERS:
         return <WaitingPage />;
       case roundStates.NOT_STARTED:
-        return (
-          <div>
-            <ReadyUpButton yourId={yourId} />
-          </div>
-        );
-      case roundStates.INITIALIZING:
+        return <ReadyUpButton yourId={yourId} />;
+      case roundStates.REVEAL:
       case roundStates.STARTED:
         return <GameInterface yourId={yourId} opponentId={opponentId} />;
       case roundStates.OVER:

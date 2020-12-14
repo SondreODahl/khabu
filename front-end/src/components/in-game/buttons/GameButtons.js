@@ -1,5 +1,3 @@
-import usePublishMove from '../cards/usePublishMove';
-import { useSelector } from 'react-redux';
 import { getCanCallKhabu, getCanEndTurn } from '../../../selectors';
 import GameButton from './GameButton';
 import React from 'react';

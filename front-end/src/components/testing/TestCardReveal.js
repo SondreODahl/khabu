@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { selectCard, selectCardHand } from '../../selectors';
+import { selectCardHand } from '../../selectors';
 import React, { useEffect } from 'react';
 import { retrievePlayers } from '../../actions/playerActions';
 import { initializeRound, startRound } from '../../actions';
@@ -10,7 +10,6 @@ import {
   privateActionsDelegator,
   publicActionsDelegator,
 } from '../../actions/actionDelegator';
-import DiscardPile from '../in-game/cards/DiscardPile';
 import TestDiscardPile from './TestDiscardPile';
 import NameDisplay from '../in-game/NameDisplay';
 
@@ -23,7 +22,7 @@ export default () => {
     dispatch(
       retrievePlayers({
         yourId: '0',
-        playerIds: { '0': 'Humlesnurr' },
+        playerIds: { 0: 'Humlesnurr' },
       })
     );
     dispatch(initializeRound(1, 4));

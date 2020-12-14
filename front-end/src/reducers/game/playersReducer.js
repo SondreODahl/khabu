@@ -1,16 +1,22 @@
+import { combineReducers } from 'redux';
 import {
   BEGIN_GAME,
-  FORM_SUBMIT,
-  FORM_VALID,
   PLAYER_JOIN_GAME,
-  UPDATE_PLAYERS_INFO,
+  GET_PLAYERS_INFO,
 } from '../../actions/types';
-import { combineReducers } from 'redux';
+
+/* 
+  State of all players in a game lobby. Ids are currently stored as strings. TODO: Make ints.
+  byId - Each player accessed by their Id. Contains their names.
+  allPlayers - Array of all playerIds.
+  playerCapacity - How many players can be in one game. Currently 2.
+  yourId - Your playerId. 
+*/
 
 const byId = (state = {}, { type, payload }) => {
   switch (type) {
-    case UPDATE_PLAYERS_INFO:
-      return { ...state, ...payload.playerIds };
+    case GET_PLAYERS_INFO:
+      return payload.playerIds; // Contains Id - Username pairs
     case PLAYER_JOIN_GAME:
       const playerId = payload.playerId;
       return { ...state, [playerId]: payload.playerName };
@@ -21,14 +27,12 @@ const byId = (state = {}, { type, payload }) => {
 
 const allPlayers = (state = [], { type, payload }) => {
   switch (type) {
-    case UPDATE_PLAYERS_INFO:
+    case GET_PLAYERS_INFO:
       const listOfIds = Object.keys(payload.playerIds);
-      return state.concat(listOfIds);
+      return listOfIds;
     case PLAYER_JOIN_GAME:
       const playerId = payload.playerId;
-      if (state.includes(payload.playerId))
-        // In case it was you who broadcast message
-        return state;
+      if (state.includes(playerId)) return state; // In case it was you who broadcast message
       return [...state, playerId]; // Else, received from another player. Add to list
     default:
       return state;
@@ -41,13 +45,13 @@ const playerCapacity = (state = null, { type, payload }) => {
 };
 
 const yourId = (state = null, { type, payload }) => {
-  if (type === UPDATE_PLAYERS_INFO) return payload.yourId;
+  if (type === GET_PLAYERS_INFO) return payload.yourId;
   else return state;
 };
 
 export default combineReducers({
   byId,
   allPlayers,
-  yourId,
   playerCapacity,
+  yourId,
 });

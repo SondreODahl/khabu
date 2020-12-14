@@ -1,11 +1,10 @@
 import React, { useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { formError, formSubmit, formValid, joinSubmit } from '../../actions';
-import { axiosREST, useRESTPostUserName } from '../../api/RESTServer';
+import { formError, formValid } from '../../actions';
+import { axiosREST } from '../../api/RESTServer';
 import JoinForm from './JoinForm';
-import { FORM_ERROR, RESET_FORM } from '../../actions/types';
+import { RESET_FORM } from '../../actions/types';
 import { selectFormAttributes } from '../../selectors';
 
 export default (props) => {

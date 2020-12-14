@@ -1,20 +1,11 @@
-import React, { useEffect, useMemo } from 'react';
-import GreetButton from './GreetButton';
+import React, { useEffect } from 'react';
 import ReadyUpButton from '../in-game/buttons/ReadyUpButton';
-import { useRESTGet } from '../../api/RESTServer';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import TestCardReveal from './TestCardReveal';
 
-export default (props) => {
+export default () => {
   const url = '/api/hello';
-  const { getRESTData } = useRESTGet();
-  const data = useSelector((state) => state.api.get_data);
-
-  useEffect(() => {
-    getRESTData(url);
-  }, [getRESTData]);
-
   return (
     <div>
       <Link to={'/'}>
@@ -23,8 +14,6 @@ export default (props) => {
       <div className={'ui hidden divider'} />
       <div className={'ui two column relaxed grid'}>
         <div className={'column'}>
-          <GreetButton />
-          {data}
         </div>
         <div className={'column'}>
           <ReadyUpButton />

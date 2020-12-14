@@ -2,7 +2,6 @@ import { useSelector } from 'react-redux';
 import { getIsPlayersTurn, selectPlayerNameById } from '../../selectors';
 import React from 'react';
 import './NameDisplay.css';
-import { selectPlayerScore } from '../../selectors/scoresSelectors';
 
 export default (props) => {
   const isActive = useSelector((state) => getIsPlayersTurn(state, props));
