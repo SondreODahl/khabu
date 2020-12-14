@@ -37,11 +37,15 @@ const initialState = {
 
 const gameState = (state = initialState, { type, payload }) => {
   switch (type) {
-    case START_ROUND:
-      return newState(FIRST_TURN, false);
-    case PLAYER_CALLED_KHABU:
+    case ACTIVATE_EFFECT:
+      return newState(USING_EFFECT, false);
+    case DISCARD_CARD:
+      return newState(DISCARD, true);
     case END_TURN:
       return newState(DRAW, false);
+    case FINISH_EFFECT:
+      return newState(payload.nextState, true); // Put is always allowed if a failed put has been allowed to happened
+    case PLAYER_CALLED_KHABU:
     case DRAW_FROM_DECK:
       return newState(CARD_DRAWN, false);
     case PUT_CARD:
@@ -49,19 +53,15 @@ const gameState = (state = initialState, { type, payload }) => {
       if (payload.agent === payload.victim) return newState(PUT, true); // A put-self case. Cannot transfer to yourself.
       return newState(TRANSFER, false); // Transfer to another player
     case PUT_REVERSE:
-    case FINISH_EFFECT:
-      return newState(payload.nextState, true); // Put is always allowed if a failed put has been allowed to happened
-    case TRANSFER_CARD:
-      return newState(PUT, true);
+    case ROUND_END:
+      return initialState;
+    case START_ROUND:
+      return newState(FIRST_TURN, false);
     case SWAP_CARDS:
     case SWAP_WITH_DISC:
       return newState(FRENZY, true);
-    case DISCARD_CARD:
-      return newState(DISCARD, true);
-    case ACTIVATE_EFFECT:
-      return newState(USING_EFFECT, false);
-    case ROUND_END:
-      return initialState;
+    case TRANSFER_CARD:
+      return newState(PUT, true);
     default:
       return state;
   }

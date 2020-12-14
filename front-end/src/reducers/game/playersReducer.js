@@ -10,7 +10,7 @@ import {
   byId - Each player accessed by their Id. Contains their names.
   allPlayers - Array of all playerIds.
   playerCapacity - How many players can be in one game. Currently 2.
-  yourId - Your Id. 
+  yourId - Your playerId. 
 */
 
 const byId = (state = {}, { type, payload }) => {
@@ -52,6 +52,6 @@ const yourId = (state = null, { type, payload }) => {
 export default combineReducers({
   byId,
   allPlayers,
-  yourId,
   playerCapacity,
+  yourId,
 });
