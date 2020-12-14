@@ -24,6 +24,8 @@ import {
 /* 
   All state related to cards. Cards are accessed either by their Id (direct object). 
   All cards in a players hand is accessed by their playerId (array of Ids). 
+  To achieve state based on playerId, a custom reducer is used instead of combineReducers. See the
+  bottom of the file for it. 
   byId - Each cardId as key and their value and whether they glow or not as value.
   byplayerId - All cardIds in a player's hand. 
   discardPile - All cardIds currently in the discard pile.
@@ -133,6 +135,7 @@ const temporaryCard = (state = null, { type, payload }) => {
 
 // ----------------------------- Helper methods -----------------------------
 
+// Generates the inital reducer states for each state type except byPlayerId
 const getNewInitState = () => {
   return {
     byId: byId(undefined, {}),
@@ -141,19 +144,20 @@ const getNewInitState = () => {
   };
 };
 
+// Generates a certain amount of cardIds for each playerHand
 const initializeHands = (state, action) => {
   let cardId = 0;
-  for (let id of action.payload.playerIds) {
-    state[id] = byPlayerId(undefined, action);
+  for (let playerId of action.payload.playerIds) {
+    state[playerId] = byPlayerId(undefined, action);
     for (let i = 0; i < action.payload.startingHandSize; i++) {
-      state[id][i] = cardId;
+      state[playerId][i] = cardId;
       state.byId = byId(state.byId, addCardToIds(cardId, null));
       cardId++;
     }
   }
 };
 
-const resetHand = (state, playerId) => {
+const hidePlayerHand = (state, playerId) => {
   for (let i = 0; i < state[playerId].length; i++) {
     state.byId[state[playerId][i]] = { value: null, glow: false };
   }
@@ -161,6 +165,10 @@ const resetHand = (state, playerId) => {
 };
 
 // ------------------------ Custom main reducer -------------------------------
+
+// Used instead of combineReducers. Will look at the action type and send the relevant state to 
+// the relevant reducer functions. Used to achieve playerId keys and also to resetState easily. 
+// TODO: Consider going back to combineReducers. Should be done after testing is done. 
 const cardHandsReducer = (state = getNewInitState(), action) => {
   switch (action.type) {
     case ADD_CARD:
@@ -171,19 +179,19 @@ const cardHandsReducer = (state = getNewInitState(), action) => {
       return { ...state, byId: byId(state.byId, action) };
     case ADD_CARD_TO_HAND:
     case REMOVE_CARD_FROM_HAND: {
-      const playerId = action.payload.playerId;
+      const { playerId } = action.payload;
       return { ...state, [playerId]: byPlayerId(state[playerId], action) };
     }
     case ALL_PLAYERS_READY:
-      const reset_state = getNewInitState();
-      initializeHands(reset_state, action);
-      return reset_state;
+      const resetState = getNewInitState();
+      initializeHands(resetState, action); // Method will mutate resetState
+      return resetState;
     case DISCARD_CARD:
       return {
         ...state,
+        byId: byId(state.byId, action),
         discardPile: discardPile(state.discardPile, action),
         temporaryCard: temporaryCard(state.temporaryCard, action),
-        byId: byId(state.byId, action),
       };
     case DRAW_CARD_DISCARD:
       return { ...state, discardPile: discardPile(state.discardPile, action) };
@@ -202,43 +210,44 @@ const cardHandsReducer = (state = getNewInitState(), action) => {
           payload: { cardId: cardTwo.cardId, tempCardId: cardOne.cardId },
         }),
       };
-    case FORCE_DRAW:
-      const playerId = action.payload.playerId;
+    case FORCE_DRAW: {
+      const { playerId } = action.payload;
       return {
         ...state,
         byId: byId(state.byId, action),
         [playerId]: byPlayerId(state[playerId], action),
       };
+    }
     case HIDE_HAND:
-      return resetHand(state, action.payload.playerId);
+      return hidePlayerHand(state, action.payload.playerId);
     case PUT_CARD:
     case PUT_REVERSE: {
-      const victim = action.payload.victim;
+      const { victim } = action.payload;
       return {
         ...state,
+        byId: byId(state.byId, action),
         discardPile: discardPile(state.discardPile, action),
         [victim]: byPlayerId(state[victim], action),
-        byId: byId(state.byId, action),
       };
     }
-    case SWAP_CARDS:
+    case SWAP_CARDS: {
+      const { playerId } = action.payload;
       return {
         ...state,
+        byId: byId(state.byId, action),
         discardPile: discardPile(state.discardPile, action),
         temporaryCard: temporaryCard(state.temporaryCard, action),
-        [action.payload.playerId]: byPlayerId(
-          state[action.payload.playerId],
-          action
-        ),
-        byId: byId(state.byId, action),
+        [playerId]: byPlayerId(state[playerId], action),
       };
-    case TRANSFER_CARD:
+    }
+    case TRANSFER_CARD: {
       const { victim, agent } = action.payload;
       return {
         ...state,
-        [victim]: byPlayerId(state[victim], action),
         [agent]: byPlayerId(state[agent], action),
+        [victim]: byPlayerId(state[victim], action),
       };
+    }
     default:
       return state;
   }
