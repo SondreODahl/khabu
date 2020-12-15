@@ -5,6 +5,10 @@ import { submitForm } from '../../../../actions';
 import { useHistory } from 'react-router-dom';
 import JoinFormErrorMessage from './JoinFormErrorMessage';
 
+/*
+  Form for writing in a username and validating it. Will pass errors to child component.
+  Uses react-hook-form to validate and store errors. 
+*/
 const JoinForm = (props) => {
   const { register, errors, handleSubmit } = useForm({
     criteriaMode: 'all',

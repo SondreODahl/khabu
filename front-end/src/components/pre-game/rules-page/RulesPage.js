@@ -7,7 +7,7 @@ import './RulesPage.css';
   THIS PAGE IS IMPORTED FROM NOTION. NOT WRITTEN EXPLICITLY BY US. 
 */
 
-export default () => (
+const RulesPage = () => (
   <div>
     <HomeButton />
     <div className={'ui hidden divider'} />
@@ -239,3 +239,5 @@ export default () => (
     </div>
   </div>
 );
+
+export default RulesPage;

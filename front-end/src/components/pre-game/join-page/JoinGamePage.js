@@ -7,7 +7,7 @@ import { selectFormAttributes } from '../../../selectors';
 import HomeButton from '../home-button/HomeButton';
 
 // Page for joining a game with a username
-const JoinGamePage = (props) => {
+const JoinGamePage = () => {
   const dispatch = useDispatch();
   const { error } = useSelector(selectFormAttributes);
 
