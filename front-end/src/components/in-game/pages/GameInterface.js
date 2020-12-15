@@ -8,7 +8,7 @@ import './GameInterface.css';
 import GameButtons from '../buttons/GameButtons';
 import ScoreDisplay from '../ScoreDisplay';
 
-export default (props) => {
+const GameInterface = (props) => {
   return (
     <div>
       <NameDisplay playerId={props.opponentId} />
@@ -30,3 +30,5 @@ export default (props) => {
     </div>
   );
 };
+
+export default GameInterface;

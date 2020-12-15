@@ -3,7 +3,7 @@ import { getIsPlayersTurn, selectPlayerNameById } from '../../selectors';
 import React from 'react';
 import './NameDisplay.css';
 
-export default (props) => {
+const NameDisplay = (props) => {
   const isActive = useSelector((state) => getIsPlayersTurn(state, props));
   const className = isActive ? 'glow' : '';
   const userName = useSelector((state) => selectPlayerNameById(state, props));
@@ -13,3 +13,5 @@ export default (props) => {
     </div>
   );
 };
+
+export default NameDisplay;

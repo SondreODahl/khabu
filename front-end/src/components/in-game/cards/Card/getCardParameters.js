@@ -11,7 +11,7 @@ import {
   PLAYER_CHECK_SELF,
 } from '../../../../constants/effectMoves';
 
-export const getParameters = (possibleAction, props) => {
+const getCardParameters = (possibleAction, props) => {
   switch (possibleAction) {
     case SWAP_MOVE:
       return { action: 'SWAP', parameters: { currentPlayerId: props.playerId } };
@@ -73,3 +73,5 @@ export const getParameters = (possibleAction, props) => {
       alert(`Error in getCardAction. Returned ${possibleAction}`);
   }
 };
+
+export default getCardParameters;

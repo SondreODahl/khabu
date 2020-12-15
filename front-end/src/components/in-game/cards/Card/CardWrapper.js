@@ -8,13 +8,13 @@ import {
   selectCard,
 } from '../../../../selectors';
 import usePublishMove from '../usePublishMove';
-import { getParameters } from './getCardParameters';
+import getCardParameters from './getCardParameters';
 
-export default (props) => {
+const CardWrapper = (props) => {
   const actionSelector =
     props.playerId === props.yourId ? getCardAction : getCardActionOpponent;
   const possibleAction = useSelector((state) => actionSelector(state));
-  const getParametersMemoized = useCallback(getParameters, [possibleAction, props]);
+  const getParametersMemoized = useCallback(getCardParameters, [possibleAction, props]);
   const { action, parameters } = getParametersMemoized(possibleAction, props);
   const IdInCardHand = useSelector((state) => getServerIdForCard(state, props));
   const publishMove = usePublishMove(action, {
@@ -28,3 +28,5 @@ export default (props) => {
     </div>
   );
 };
+
+export default CardWrapper;

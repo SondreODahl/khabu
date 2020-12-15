@@ -18,7 +18,7 @@ import {
 import GameInterface from './GameInterface';
 import WaitingPage from './WaitingPage';
 
-export default () => {
+const GamePage = () => {
   const yourId = useSelector(selectYourId);
   const opponentId = useSelector(selectOpponentId);
   const roundState = useSelector(selectRoundState);
@@ -53,3 +53,5 @@ export default () => {
 
   return <div>{determineRender()}</div>;
 };
+
+export default GamePage;

@@ -3,7 +3,7 @@ import React from 'react';
 import { selectCard } from '../../../selectors';
 import { useSelector } from 'react-redux';
 
-export default () => {
+const TemporaryCard = () => {
   const cardId = useSelector((state) => state.cards.temporaryCard);
   if (cardId === undefined || cardId === null) {
     // Hasn't been set yet
@@ -15,3 +15,5 @@ export default () => {
     </div>
   );
 };
+
+export default TemporaryCard;

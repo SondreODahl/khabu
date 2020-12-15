@@ -1,7 +1,7 @@
 import React from 'react';
 import './CardGlow.css';
 
-export default (props) => (
+const CardDisplay = (props) => (
   <div className={'card-display'}>
     <img
       className={props.name}
@@ -11,3 +11,5 @@ export default (props) => (
     />
   </div>
 );
+
+export default CardDisplay;

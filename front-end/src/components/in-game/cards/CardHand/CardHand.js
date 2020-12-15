@@ -4,7 +4,7 @@ import { selectCardHand } from '../../../../selectors';
 import './CardHand.css';
 import CardWrapper from '../Card/CardWrapper';
 
-export default (props) => {
+const CardHand = (props) => {
   const cards = useSelector((state) => selectCardHand(state, props));
   const renderCards = () => {
     return cards.map((id) => {
@@ -21,3 +21,5 @@ export default (props) => {
   };
   return <div className={'ui four column grid card-hand'}>{renderCards()}</div>;
 };
+
+export default CardHand;

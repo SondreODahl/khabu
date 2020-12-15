@@ -1,6 +1,6 @@
 import usePublish from '../../../api/usePublish';
 
-export default (action, parameters) => {
+const usePublishMove = (action, parameters) => {
   const json = JSON.stringify({ action, ...parameters });
   const publish = usePublish({
     destination: '/app/round/actions',
@@ -9,3 +9,5 @@ export default (action, parameters) => {
   if (action === null) return null;
   return publish;
 };
+
+export default usePublishMove;

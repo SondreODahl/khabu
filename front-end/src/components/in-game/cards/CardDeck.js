@@ -4,7 +4,7 @@ import { getCanYouDrawCard } from '../../../selectors';
 import RedCardBack from '../../../assets/images/purple_back.png';
 import usePublishMove from './usePublishMove';
 
-export default (props) => {
+const CardDeck = (props) => {
   const playerCanDraw = useSelector(getCanYouDrawCard);
   const publishDraw = usePublishMove('DRAW_FROM_DECK', {
     currentPlayerId: props.yourId,
@@ -28,3 +28,5 @@ export default (props) => {
     </div>
   );
 };
+
+export default CardDeck;

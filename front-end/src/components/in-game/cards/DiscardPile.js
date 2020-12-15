@@ -9,7 +9,7 @@ import usePublishMove from './usePublishMove';
 import { DISCARD_MOVE } from '../../../constants/gameMoves';
 import { ACTIVATE_EFFECT } from '../../../constants/effectMoves';
 
-export default (props) => {
+const DiscardPile = (props) => {
   const possibleAction = useSelector(getDiscardPileAction);
   const id = useSelector(getDiscardPileTopCardId);
   const discardParams = { currentPlayerId: props.yourId };
@@ -37,3 +37,5 @@ export default (props) => {
     );
   }
 };
+
+export default DiscardPile;

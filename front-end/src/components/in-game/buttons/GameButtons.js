@@ -2,7 +2,7 @@ import { getCanCallKhabu, getCanEndTurn } from '../../../selectors';
 import GameButton from './GameButton';
 import React from 'react';
 
-export default (props) => (
+const GameButtons = (props) => (
   <div className={'ui grid'}>
     <div className={'two column centered row button-row'}>
       <div className={'column'}>
@@ -24,3 +24,5 @@ export default (props) => (
     </div>
   </div>
 );
+
+export default GameButtons;

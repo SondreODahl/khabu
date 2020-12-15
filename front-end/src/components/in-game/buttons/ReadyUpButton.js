@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { toggleReady } from '../../../actions';
 import { selectReady } from '../../../selectors';
 
-export default (props) => {
+const ReadyUpButton = (props) => {
   const dispatch = useDispatch();
   const { playerReady, totalReady } = useSelector(selectReady);
   const publishToggleReady = usePublish({
@@ -28,3 +28,5 @@ export default (props) => {
     </div>
   );
 };
+
+export default ReadyUpButton;

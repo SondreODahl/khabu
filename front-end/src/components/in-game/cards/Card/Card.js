@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { selectCardGlow } from '../../../../selectors';
 import CardDisplay from './CardDisplay';
 
-export default (props) => {
+const Card = (props) => {
   const value = useSelector((state) => props.selector(state, props));
   const glow = useSelector((state) => selectCardGlow(state, props));
   const imageValue = value === null ? 'red_back' : value;
@@ -18,3 +18,5 @@ export default (props) => {
     />
   );
 };
+
+export default Card;

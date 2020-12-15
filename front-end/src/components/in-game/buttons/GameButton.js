@@ -2,7 +2,7 @@ import usePublishMove from '../cards/usePublishMove';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-export default (props) => {
+const GameButton = (props) => {
   const publishButtonMove = usePublishMove(props.action, {
     currentPlayerId: props.playerId,
   });
@@ -21,3 +21,5 @@ export default (props) => {
     </div>
   );
 };
+
+export default GameButton;
