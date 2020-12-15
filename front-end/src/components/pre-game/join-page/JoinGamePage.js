@@ -1,11 +1,10 @@
 import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
-import JoinForm from './JoinForm';
-import { RESET_FORM } from '../../actions/types';
-import { selectFormAttributes } from '../../selectors';
-import HomeButton from './HomeButton';
+import JoinForm from './join-form/JoinForm';
+import { RESET_FORM } from '../../../actions/types';
+import { selectFormAttributes } from '../../../selectors';
+import HomeButton from '../home-button/HomeButton';
 
 // Page for joining a game with a username
 const JoinGamePage = (props) => {

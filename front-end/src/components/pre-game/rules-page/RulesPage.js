@@ -1,6 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import HomeButton from './HomeButton';
+import HomeButton from '../home-button/HomeButton';
 
 import './RulesPage.css';
 
@@ -8,7 +7,7 @@ import './RulesPage.css';
   THIS PAGE IS IMPORTED FROM NOTION. NOT WRITTEN EXPLICITLY BY US. 
 */
 
-export default (props) => (
+export default () => (
   <div>
     <HomeButton />
     <div className={'ui hidden divider'} />

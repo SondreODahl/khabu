@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import KhabuLogo from '../../assets/images/khabu-logo.png';
+import KhabuLogo from '../../../assets/images/khabu-logo.png';
 import './StartPage.css';
 
 // Purely rendering component. Shows the initial page you are greeted with.

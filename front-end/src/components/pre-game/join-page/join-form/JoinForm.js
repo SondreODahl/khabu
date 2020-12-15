@@ -1,7 +1,7 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import { submitForm } from '../../actions';
+import { submitForm } from '../../../../actions';
 import { useHistory } from 'react-router-dom';
 import JoinFormErrorMessage from './JoinFormErrorMessage';
 
