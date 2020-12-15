@@ -1,3 +1,4 @@
+// The possible moves from an effect. Activate effect and finish always occur. 
 export const ACTIVATE_EFFECT = 'ACTIVATE_EFFECT';
 export const CHOOSE_CARD = 'CHOOSE_CARD';
 export const FINISH_USING_EFFECT = 'FINISH_USING_EFFECT';
