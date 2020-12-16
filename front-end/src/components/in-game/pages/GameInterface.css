@@ -1,7 +1,3 @@
-body {
-    overflow-y: hidden;
-}
-
 .game-interface {
     height: 100vh !important;
 }
