@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+
 import ReadyUpButton from '../buttons/ReadyUpButton';
 import { roundStates } from '../../../reducers/game/roundReducer';
 import useSubscribe from '../../../api/useSubscribe';
@@ -17,7 +18,10 @@ import {
 } from '../../../selectors';
 import GameInterface from './GameInterface';
 import WaitingPage from './WaitingPage';
+import GamePageError from './GamePageError';
 
+// Main component for handling a game of khabu. Cycles between states and renders the correct components
+// Also subscribes to the relevant channels. Is loaded upon submitting a username.
 const GamePage = () => {
   const yourId = useSelector(selectYourId);
   const opponentId = useSelector(selectOpponentId);
@@ -25,7 +29,7 @@ const GamePage = () => {
   const publishUserName = usePublish({
     destination: '/app/game/flow',
     body: yourId,
-  });
+  }); // Will publish the username to everyone when subscribed
   useSubscribe('/topic/game/flow', playerJoinedGame, publishUserName);
   useSubscribe('/topic/round/flow', roundActionDelegator);
   useSubscribe(`/topic/round/actions/${yourId}`, privateActionsDelegator);
@@ -47,11 +51,11 @@ const GamePage = () => {
           </GameInterface>
         );
       default:
-        return <div>Error. Something has gone terribly wrong with Round State</div>;
+        return <GamePageError />;
     }
   };
 
-  return <div>{determineRender()}</div>;
+  return determineRender();
 };
 
 export default GamePage;
