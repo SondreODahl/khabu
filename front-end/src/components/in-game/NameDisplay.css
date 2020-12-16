@@ -1,9 +1,9 @@
-.user-display {
+.username-text {
     display: table;
     margin: 0 auto;
 }
 
-.user-display.glow {
+.username-text.glow {
     text-shadow: 0 0 5px #fff,
     0 0 10px #fff,
     0 0 10px #d900ff,

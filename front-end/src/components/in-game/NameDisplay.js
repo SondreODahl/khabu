@@ -3,13 +3,14 @@ import { getIsPlayersTurn, selectPlayerNameById } from '../../selectors';
 import React from 'react';
 import './NameDisplay.css';
 
+// Receives an Id and displays the name and whether it's their turn
 const NameDisplay = (props) => {
   const isActive = useSelector((state) => getIsPlayersTurn(state, props));
-  const className = isActive ? 'glow' : '';
   const userName = useSelector((state) => selectPlayerNameById(state, props));
+  const className = isActive ? 'glow' : ''; // Glows when user's turn
   return (
-    <div>
-      <h2 className={`ui centered user-display ${className}`}>{userName}</h2>
+    <div className={'name-display'}>
+      <h2 className={`username-text ${className}`}>{userName}</h2>
     </div>
   );
 };
