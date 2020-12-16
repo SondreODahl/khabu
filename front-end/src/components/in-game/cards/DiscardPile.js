@@ -31,7 +31,7 @@ const DiscardPile = (props) => {
     );
   } else {
     return (
-      <div>
+      <div className={'discard-pile'}>
         <Card selector={selectCard} id={id} onClick={onClick} />
       </div>
     );

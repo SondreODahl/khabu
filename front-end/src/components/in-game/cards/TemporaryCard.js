@@ -10,7 +10,7 @@ const TemporaryCard = () => {
     return null;
   }
   return (
-    <div>
+    <div className={'temporary-card'}>
       <Card selector={selectCard} onClick={null} id={cardId} />
     </div>
   );

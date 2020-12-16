@@ -18,7 +18,7 @@ const CardDeck = (props) => {
   }, [playerCanDraw]);
 
   return (
-    <div>
+    <div className={'card-deck'}>
       <img
         src={RedCardBack}
         alt={'Drawing Deck'}

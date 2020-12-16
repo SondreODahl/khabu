@@ -1,3 +1,31 @@
+body {
+    overflow-y: hidden;
+}
+
+.game-interface {
+    height: 100vh !important;
+}
+
+.deck-area {
+    display: flex;
+    justify-content: center;
+}
+
+.card-deck {
+    padding-left: 1em;
+    padding-right: 1em;
+}
+
+.temporary-card {
+    padding-left: 1em;
+    padding-right: 1em;
+}
+
+.discard-pile {
+    padding-left: 1em;
+    padding-right: 1em;
+}
+
 .button-row {
     height: 4rem !important;
     padding: 0 !important;
@@ -18,8 +46,4 @@
 .game-button button {
     width: 100px;
     margin-top: 1rem !important;
-}
-
-.opponent-air-to-deck {
-    height: 4rem;
 }
