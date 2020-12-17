@@ -1,15 +1,9 @@
 import React from 'react';
-import './CardGlow.css';
+import './CardDisplay.css';
 
-const CardDisplay = (props) => (
-  <div className={'card-display'}>
-    <img
-      className={props.name}
-      src={props.image}
-      alt={props.value}
-      onClick={props.onClick}
-    />
-  </div>
+// Pure function component for displaying values.
+const CardDisplay = ({ name, image, value, onClick }) => (
+  <img className={`card-display ${name}`} src={image} alt={value} onClick={onClick} />
 );
 
 export default CardDisplay;
