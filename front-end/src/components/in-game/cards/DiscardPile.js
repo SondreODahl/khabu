@@ -27,9 +27,10 @@ const DiscardPile = (props) => {
       // No card discarded
       return (
         <CardDisplay
+          image={DiscardPileImage}
+          name={'discard-pile-empty'}
           onClick={publishDiscard}
           value={'Discard Pile'}
-          image={DiscardPileImage}
         />
       );
     }

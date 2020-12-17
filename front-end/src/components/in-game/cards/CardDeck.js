@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { getCanYouDrawCard } from '../../../selectors';
 import RedCardBack from '../../../assets/images/purple_back.png';
 import usePublishMove from './usePublishMove';
+import CardDisplay from './Card/CardDisplay';
 
 // The drawing deck in the middle.
 const CardDeck = (props) => {
@@ -17,15 +18,12 @@ const CardDeck = (props) => {
   }, [playerCanDraw]);
 
   return (
-    <div className={'card-deck'}>
-      {/* TODO: Make images not pixels */}
-      <img
-        src={RedCardBack}
-        alt={'Drawing Deck'}
-        style={{ width: '120px', height: '200px' }} 
-        onClick={drawCard}
-      />
-    </div>
+    <CardDisplay
+      image={RedCardBack}
+      name={'card-deck'}
+      value={'Card Deck'}
+      onClick={drawCard}
+    />
   );
 };
 
