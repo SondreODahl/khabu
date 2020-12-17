@@ -16,6 +16,5 @@
 
 .empty-card {
     width: 7em;
-    margin-left: auto !important;
-    margin-right: auto !important;
+    margin: 0.5em 1em 0.5em 1em;
 }

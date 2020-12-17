@@ -1,6 +1,7 @@
 import Card from './Card';
 import React, { useCallback } from 'react';
 import { useSelector } from 'react-redux';
+
 import {
   getCardAction,
   getCardActionOpponent,
@@ -10,6 +11,7 @@ import {
 import usePublishMove from '../usePublishMove';
 import getCardParameters from './getCardParameters';
 
+// Wrapper component for Card component. Determines the onClick action.
 const CardWrapper = (props) => {
   const actionSelector =
     props.playerId === props.yourId ? getCardAction : getCardActionOpponent;
@@ -17,12 +19,13 @@ const CardWrapper = (props) => {
   const getParametersMemoized = useCallback(getCardParameters, [
     possibleAction,
     props,
-  ]);
+  ]); // This should not change too often. Only on giving cards.
+  console.log(possibleAction);
   const { action, parameters } = getParametersMemoized(possibleAction, props);
-  const IdInCardHand = useSelector((state) => getServerIdForCard(state, props));
+  const serverCardIndex = useSelector((state) => getServerIdForCard(state, props)); 
   const publishMove = usePublishMove(action, {
     ...parameters,
-    targetCardIndex: IdInCardHand.toString(),
+    targetCardIndex: serverCardIndex.toString(),
   });
   return <Card id={props.id} onClick={publishMove} selector={selectCard} />;
 };
