@@ -2,14 +2,20 @@
     display: flex;
     justify-content: flex-start;
     flex-wrap: wrap;
-    margin-top: 3rem;
     margin-right: 8rem;
     margin-left: 8rem;
 }
 
+.your-hand {
+    margin-top: 2rem;
+}
+
+.opponent-hand {
+    margin-bottom: 2rem;
+}
+
 .empty-card {
-    width: 120px;
-    height: 200px;
+    width: 7em;
     margin-left: auto !important;
     margin-right: auto !important;
 }

@@ -1,16 +1,15 @@
-.card.glow{
-    -webkit-box-shadow: 0px 0px 30px 10px rgba(255,0,0,1);
-    -moz-box-shadow: 0px 0px 30px 10px rgba(255,0,0,1);
-    box-shadow: 0px 0px 30px 10px rgba(255,0,0,1);
+.card.glow {
+  -webkit-box-shadow: 0px 0px 30px 10px rgba(255, 0, 0, 1);
+  -moz-box-shadow: 0px 0px 30px 10px rgba(255, 0, 0, 1);
+  box-shadow: 0px 0px 30px 10px rgba(255, 0, 0, 1);
 }
 
 .card-display {
-    text-align: center;
+  text-align: center;
 }
 
 .card-display {
-    width: 7em;
-    height: auto;
-    margin-left: 1em;
-    margin-right: 1em;
+  width: 7em;
+  height: auto;
+  margin: 0.5em 1em 0.5em 1em;
 }

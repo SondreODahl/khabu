@@ -7,21 +7,6 @@
     justify-content: center;
 }
 
-.card-deck {
-    padding-left: 1em;
-    padding-right: 1em;
-}
-
-.temporary-card {
-    padding-left: 1em;
-    padding-right: 1em;
-}
-
-.discard-pile {
-    padding-left: 1em;
-    padding-right: 1em;
-}
-
 .button-row {
     height: 4rem !important;
     padding: 0 !important;

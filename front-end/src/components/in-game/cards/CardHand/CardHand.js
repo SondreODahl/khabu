@@ -7,6 +7,8 @@ import CardWrapper from '../Card/CardWrapper';
 // The cardhand for both the player and the opponent.
 const CardHand = (props) => {
   const cards = useSelector((state) => selectCardHand(state, props));
+  const yourHand = props.playerId === props.yourId;
+  const className = yourHand ? 'your-hand' : 'opponent-hand';
   const mapFunction = (id) => {
     if (id === null) return <div className={'empty-card'}>{null}</div>;
     return (
@@ -19,10 +21,10 @@ const CardHand = (props) => {
     );
   };
   const renderCards = () => {
-    if (props.playerId === props.yourId) return cards.map(mapFunction);
+    if (yourHand) return cards.map(mapFunction);
     return cards.reverse().map(mapFunction); // Cards should be in reverse order for the other player
   };
-  return <div className={'card-hand'}>{renderCards()}</div>;
+  return <div className={`card-hand ${className}`}>{renderCards()}</div>;
 };
 
 export default CardHand;
