@@ -1,14 +1,15 @@
-.grid.card-hand {
-    margin-top: 0 !important;
-    margin-right: 8rem !important;
-    margin-left: 8rem !important;
+.card-hand {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    margin-top: 3rem;
+    margin-right: 8rem;
+    margin-left: 8rem;
 }
 
-.grid {
-    margin: 0 !important;
-}
-
-.column {
-    padding-left: 0 !important;
-    padding-right: 0 !important;
+.empty-card {
+    width: 120px;
+    height: 200px;
+    margin-left: auto !important;
+    margin-right: auto !important;
 }
