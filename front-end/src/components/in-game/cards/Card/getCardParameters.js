@@ -11,67 +11,56 @@ import {
   PLAYER_CHECK_SELF,
 } from '../../../../constants/effectMoves';
 
+const actionDictionary = {
+  CHOOSE_CARD: 'CHOOSE_SINGLE_CARD',
+  FINISH_USING_EFFECT: 'FINISH_EFFECT',
+  PLAYER_CHECK_OTHER: 'CHECK_OPPONENT_CARD',
+  PLAYER_CHECK_SELF: 'CHECK_SELF_CARD',
+  REVEAL_MOVE: 'REVEAL',
+  SWAP_MOVE: 'SWAP',
+  TRANSFER_MOVE: 'TRANSFER',
+};
+
+// Helper method to determine what parameters should be passed with usePublishMove
 const getCardParameters = (possibleAction, props) => {
+  let parameters;
   switch (possibleAction) {
-    case SWAP_MOVE:
-      return { action: 'SWAP', parameters: { currentPlayerId: props.playerId } };
-    case REVEAL_MOVE:
-      return { action: 'REVEAL', parameters: { playerId: props.playerId } }; // TODO: Change to currentPlayerId
-    case PUT_MOVE:
-      if (props.playerId !== props.yourId)
-        return {
-          action: 'PUT_OTHER',
-          parameters: {
-            puttingPlayerId: props.yourId,
-            targetPlayerId: props.playerId,
-          },
-        };
-      else
-        return {
-          action: 'PUT_SELF',
-          parameters: {
-            puttingPlayerId: props.playerId,
-          },
-        };
-    case TRANSFER_MOVE:
-      return {
-        action: 'TRANSFER',
-        parameters: { transferringPlayerId: props.playerId },
-      };
     case CHOOSE_CARD:
-      return {
-        action: 'CHOOSE_SINGLE_CARD',
-        parameters: {
-          currentPlayerId: props.yourId,
-          targetPlayerId: props.playerId,
-        },
-      };
     case PLAYER_CHECK_OTHER:
-      return {
-        action: 'CHECK_OPPONENT_CARD',
-        parameters: {
-          currentPlayerId: props.yourId,
-          targetPlayerId: props.playerId,
-        },
-      };
     case PLAYER_CHECK_SELF:
-      return {
-        action: 'CHECK_SELF_CARD',
-        parameters: { currentPlayerId: props.yourId },
+    case SWAP_MOVE:
+      parameters = {
+        currentPlayerId: props.yourId,
+        targetPlayerId: props.playerId, // targetPlayerId is not always used
       };
+      break;
     case FINISH_USING_EFFECT:
-      return {
-        action: 'FINISH_EFFECT',
-        parameters: {
-          currentPlayerId: props.yourId,
-          swap: 'false',
-        },
+      parameters = {
+        currentPlayerId: props.yourId,
+        swap: 'false', // TODO: Implement
       };
+      break;
+    case REVEAL_MOVE:
+      parameters = { playerId: props.playerId }; // semantic variable choice. Since there is no currentPLayer
+      break;
+    case PUT_MOVE:
+      parameters = {
+        puttingPlayerId: props.yourId, // puttingPlayer isn't necessarily currentPLayer
+        targetPlayerId: props.playerId,
+      };
+      if (props.playerId !== props.yourId)
+        return { action: 'PUT_OTHER', parameters };
+      else return { action: 'PUT_SELF', parameters };
+    case TRANSFER_MOVE:
+      parameters = { transferringPlayerId: props.playerId };
+      break;
     case null: // NO POSSIBLE MOVE ON THE CARD
       return { action: null, parameters: null };
     default:
       alert(`Error in getCardAction. Returned ${possibleAction}`);
+      return;
   }
+  return { action: actionDictionary[possibleAction], parameters };
 };
 
 export default getCardParameters;
