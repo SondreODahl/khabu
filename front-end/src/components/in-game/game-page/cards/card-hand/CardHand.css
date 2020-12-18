@@ -1,0 +1,20 @@
+.card-hand {
+    display: grid;
+    grid-template-columns: repeat(4, 8rem);
+    justify-content: center;
+    margin-right: 8rem;
+    margin-left: 8rem;
+}
+
+.your-hand {
+    margin-top: 2rem;
+}
+
+.opponent-hand {
+    margin-bottom: 2rem;
+}
+
+.empty-card {
+    width: 7em;
+    margin: 0.5em 1em 0.5em 1em;
+}

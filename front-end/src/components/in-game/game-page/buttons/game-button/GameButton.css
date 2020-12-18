@@ -1,0 +1,8 @@
+.game-button {
+  width: 7.5rem;
+  margin: 0.5rem;
+}
+
+.game-button button {
+    width: inherit;
+}

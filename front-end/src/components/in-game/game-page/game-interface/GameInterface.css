@@ -1,0 +1,13 @@
+.game-interface {
+    height: 100vh !important;
+}
+
+.deck-area {
+    display: flex;
+    justify-content: center;
+}
+
+.button-row {
+    height: 4rem !important;
+    padding: 0 !important;
+}
