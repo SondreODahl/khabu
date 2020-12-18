@@ -1,7 +1,7 @@
 .card-hand {
-    display: flex;
-    justify-content: flex-start;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(4, 8rem);
+    justify-content: center;
     margin-right: 8rem;
     margin-left: 8rem;
 }

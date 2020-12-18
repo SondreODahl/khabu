@@ -36,7 +36,7 @@ const DiscardPile = (props) => {
     }
     return <Card selector={selectCard} id={topCardId} onClick={publishDiscard} />;
   };
-  return <div className={'discard-pile'}>{determineRender()}</div>;
+  return determineRender();
 };
 
 export default DiscardPile;
