@@ -1,8 +1,26 @@
-.username-text {
-    display: table;
-    margin: 0 auto;
+/* Contains both the username and the score */
+.name-display {
+    display: flex;
+    position: relative;
+    justify-content: center;
+    flex-direction: row;
+    align-items: center;
+    margin: 1rem 8rem 1rem 8rem;
 }
 
+/* Positions the score to the complete right of the parent flexbox */
+.score-display {
+    margin-top: auto !important;
+    margin-bottom: auto !important;
+    position: absolute;
+    right: 0;
+}
+
+.username-text {
+    margin: auto !important;
+}
+
+/* Glow for when it's the user's turn */
 .username-text.glow {
     text-shadow: 0 0 5px #fff,
     0 0 10px #fff,

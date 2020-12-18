@@ -16,7 +16,6 @@ const GameInterface = (props) => {
     <div className={'game-interface'}>
       <div className={'opponent-area'}>
         <NameDisplay playerId={props.opponentId} />
-        <ScoreDisplay playerId={props.opponentId} />
         <CardHand playerId={props.opponentId} yourId={props.yourId} />
       </div>
       <div className={'deck-area'}>
@@ -28,7 +27,6 @@ const GameInterface = (props) => {
       <div className={'player-area'}>
         <GameButtons playerId={props.yourId} />
         <CardHand playerId={props.yourId} yourId={props.yourId} />
-        <ScoreDisplay playerId={props.yourId} />
         <NameDisplay playerId={props.yourId} />
       </div>
     </div>
