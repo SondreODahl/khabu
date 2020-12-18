@@ -1,27 +1,22 @@
-import { getCanCallKhabu, getCanEndTurn } from '../../../selectors';
-import GameButton from './GameButton';
 import React from 'react';
+import { getCanCallKhabu, getCanEndTurn } from '../../../selectors';
+import GameButton, { GameButtonTypes } from './GameButton';
+import {CALL_KHABU_MOVE, END_TURN_MOVE } from '../../../constants/gameMoves';
+import './GameButtons.css';
 
+// Component containg the player's action buttons during the game
 const GameButtons = (props) => (
-  <div className={'ui grid'}>
-    <div className={'two column centered row button-row'}>
-      <div className={'column'}>
+  <div className={'game-buttons'}>
         <GameButton
-          action={'CALL_KHABU'}
-          playerId={props.playerId}
+          action={CALL_KHABU_MOVE}
           selector={getCanCallKhabu}
-          type={'khabu'}
+          type={GameButtonTypes.khabu}
         />
-      </div>
-      <div className={'column'}>
         <GameButton
-          action={'END_TURN'}
-          playerId={props.playerId}
+          action={END_TURN_MOVE}
           selector={getCanEndTurn}
-          type={'end-turn'}
+          type={GameButtonTypes.end_turn}
         />
-      </div>
-    </div>
   </div>
 );
 

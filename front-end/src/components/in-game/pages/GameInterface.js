@@ -22,7 +22,7 @@ const GameInterface = (props) => {
         <CardDeck yourId={props.yourId} />
         <DiscardPile yourId={props.yourId} />
         <TemporaryCard />
-        {props.readyUp && <ReadyUpButton yourId={props.yourId} />}
+        {props.readyUp && <ReadyUpButton />}
       </div>
       <div className={'player-area'}>
         <GameButtons playerId={props.yourId} />
