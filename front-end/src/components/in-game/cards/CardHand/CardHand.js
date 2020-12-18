@@ -1,13 +1,14 @@
 import { useSelector } from 'react-redux';
 import React from 'react';
-import { selectCardHand } from '../../../../selectors';
+import { selectCardHand, selectYourId } from '../../../../selectors';
 import './CardHand.css';
 import CardWrapper from '../Card/CardWrapper';
 
 // The cardhand for both the player and the opponent.
 const CardHand = (props) => {
   const cards = useSelector((state) => selectCardHand(state, props));
-  const yourHand = props.playerId === props.yourId;
+  const yourId = useSelector(selectYourId);
+  const yourHand = props.playerId === yourId;
   const className = yourHand ? 'your-hand' : 'opponent-hand';
   const mapFunction = (id) => {
     if (id === null) return <div className={'empty-card'}>{null}</div>;

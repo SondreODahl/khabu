@@ -5,7 +5,7 @@ import {CALL_KHABU_MOVE, END_TURN_MOVE } from '../../../constants/gameMoves';
 import './GameButtons.css';
 
 // Component containg the player's action buttons during the game
-const GameButtons = (props) => (
+const GameButtons = () => (
   <div className={'game-buttons'}>
         <GameButton
           action={CALL_KHABU_MOVE}

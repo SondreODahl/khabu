@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Card from './Card/Card';
-import { getDiscardPileTopCardId, selectCard } from '../../../selectors';
+import { getDiscardPileTopCardId, selectCard, selectYourId } from '../../../selectors';
 import { useSelector } from 'react-redux';
 import { getDiscardPileAction } from '../../../selectors';
 import CardDisplay from './Card/CardDisplay';
@@ -12,7 +12,7 @@ import { ACTIVATE_EFFECT } from '../../../constants/effectMoves';
 
 // Deck pile of the cards discarded or put. Is next to the drawing pile.
 // The action performed when clicking on the pile will vary with what state the game is in.
-const DiscardPile = (props) => {
+const DiscardPile = () => {
   const possibleAction = useSelector(getDiscardPileAction);
   const topCardId = useSelector(getDiscardPileTopCardId);
   let action = null;
@@ -20,7 +20,8 @@ const DiscardPile = (props) => {
     if (possibleAction === DISCARD_MOVE) action = 'DISCARD'; // TODO: Find out why this is implemented this way
     if (possibleAction === ACTIVATE_EFFECT) action = ACTIVATE_EFFECT;
   }
-  const publishDiscard = usePublishMove(action, { currentPlayerId: props.yourId });
+  const yourId = useSelector(selectYourId);
+  const publishDiscard = usePublishMove(action, { currentPlayerId: yourId });
 
   const determineRender = () => {
     if (topCardId === null || topCardId === undefined) {
