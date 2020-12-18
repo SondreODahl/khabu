@@ -4,7 +4,7 @@ import { Route } from 'react-router-dom';
 import useClient from '../api/useSTOMPClient';
 import JoinGamePage from './pre-game/join-page/JoinGamePage';
 import StartPage from './pre-game/start-page/StartPage';
-import GamePage from './in-game/pages/GamePage';
+import GamePage from './in-game/game-page/GamePage';
 import RulesPage from './pre-game/rules-page/RulesPage';
 
 const App = () => {

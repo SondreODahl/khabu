@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { getIsPlayersTurn, selectPlayerNameById } from '../../selectors';
+import { getIsPlayersTurn, selectPlayerNameById } from '../../../../selectors';
 import React from 'react';
 import './NameDisplay.css';
 import ScoreDisplay from './ScoreDisplay';

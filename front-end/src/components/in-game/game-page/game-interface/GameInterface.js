@@ -1,12 +1,12 @@
-import NameDisplay from '../NameDisplay';
-import CardHand from '../cards/CardHand/CardHand';
-import CardDeck from '../cards/CardDeck';
+import NameDisplay from '../user-display/NameDisplay';
+import CardHand from '../cards/card-hand/CardHand';
+import CardDeck from '../cards/deck/CardDeck';
 import ReadyUpButton from '../buttons/ReadyUpButton';
-import TemporaryCard from '../cards/TemporaryCard';
-import DiscardPile from '../cards/DiscardPile';
+import TemporaryCard from '../cards/temporary-card/TemporaryCard';
+import DiscardPile from '../cards/pile/DiscardPile';
 import React from 'react';
 import './GameInterface.css';
-import GameButtons from '../buttons/GameButtons';
+import GameButtons from '../buttons/game-buttons/GameButtons';
 
 // Renders the game board for two players.
 const GameInterface = (props) => {

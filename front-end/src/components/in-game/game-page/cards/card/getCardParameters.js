@@ -3,13 +3,13 @@ import {
   REVEAL_MOVE,
   SWAP_MOVE,
   TRANSFER_MOVE,
-} from '../../../../constants/gameMoves';
+} from '../../../../../constants/gameMoves';
 import {
   CHOOSE_CARD,
   FINISH_USING_EFFECT,
   PLAYER_CHECK_OTHER,
   PLAYER_CHECK_SELF,
-} from '../../../../constants/effectMoves';
+} from '../../../../../constants/effectMoves';
 
 const actionDictionary = {
   CHOOSE_CARD: 'CHOOSE_SINGLE_CARD',

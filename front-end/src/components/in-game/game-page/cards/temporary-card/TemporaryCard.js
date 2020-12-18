@@ -1,6 +1,6 @@
-import Card from './Card/Card';
+import Card from '../card/Card';
 import React from 'react';
-import { selectCard } from '../../../selectors';
+import { selectCard } from '../../../../../selectors';
 import { useSelector } from 'react-redux';
 
 // The card shown when drawing from the deck. Is undefined/null when there is no card

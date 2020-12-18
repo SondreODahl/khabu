@@ -1,4 +1,4 @@
-import usePublish from '../../../api/usePublish';
+import usePublish from '../../../../api/usePublish';
 
 // usePublish wrapper-hook to publish a move to everyone. Takes in the action to be performed
 // and the necessary parameters the server requires. Returns a function. 

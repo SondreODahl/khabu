@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { selectPlayerScore } from '../../selectors/scoresSelectors';
+import { selectPlayerScore } from '../../../../selectors/scoresSelectors';
 import React from 'react';
 
 // Simple component for displaying a user's accumulated score

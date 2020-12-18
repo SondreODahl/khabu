@@ -1,7 +1,7 @@
 import React from 'react';
-import { getCanCallKhabu, getCanEndTurn } from '../../../selectors';
-import GameButton, { GameButtonTypes } from './GameButton';
-import {CALL_KHABU_MOVE, END_TURN_MOVE } from '../../../constants/gameMoves';
+import { getCanCallKhabu, getCanEndTurn } from '../../../../../selectors';
+import GameButton, { GameButtonTypes } from '../game-button/GameButton';
+import {CALL_KHABU_MOVE, END_TURN_MOVE } from '../../../../../constants/gameMoves';
 import './GameButtons.css';
 
 // Component containg the player's action buttons during the game

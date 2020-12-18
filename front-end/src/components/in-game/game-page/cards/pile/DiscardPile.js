@@ -1,14 +1,18 @@
 import React from 'react';
 
-import Card from './Card/Card';
-import { getDiscardPileTopCardId, selectCard, selectYourId } from '../../../selectors';
+import Card from '../card/Card';
+import {
+  getDiscardPileTopCardId,
+  selectCard,
+  selectYourId,
+  getDiscardPileAction,
+} from '../../../../../selectors';
 import { useSelector } from 'react-redux';
-import { getDiscardPileAction } from '../../../selectors';
-import CardDisplay from './Card/CardDisplay';
-import DiscardPileImage from '../../../assets/images/discardpile_empty.png';
-import usePublishMove from './usePublishMove';
-import { DISCARD_MOVE } from '../../../constants/gameMoves';
-import { ACTIVATE_EFFECT } from '../../../constants/effectMoves';
+import CardDisplay from '../card/CardDisplay';
+import DiscardPileImage from '../../../../../assets/images/discardpile_empty.png';
+import usePublishMove from '../usePublishMove';
+import { DISCARD_MOVE } from '../../../../../constants/gameMoves';
+import { ACTIVATE_EFFECT } from '../../../../../constants/effectMoves';
 
 // Deck pile of the cards discarded or put. Is next to the drawing pile.
 // The action performed when clicking on the pile will vary with what state the game is in.

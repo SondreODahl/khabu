@@ -7,7 +7,7 @@ import {
   getCardActionOpponent,
   getServerIdForCard,
   selectCard,
-} from '../../../../selectors';
+} from '../../../../../selectors';
 import usePublishMove from '../usePublishMove';
 import getCardParameters from './getCardParameters';
 
@@ -20,7 +20,7 @@ const CardWrapper = (props) => {
     possibleAction,
     props,
   ]); // This should not change too often. Only on giving cards.
-  console.log(possibleAction);
+  console.log(`${possibleAction} possibleAction`);
   const { action, parameters } = getParametersMemoized(possibleAction, props);
   const serverCardIndex = useSelector((state) => getServerIdForCard(state, props)); 
   const publishMove = usePublishMove(action, {

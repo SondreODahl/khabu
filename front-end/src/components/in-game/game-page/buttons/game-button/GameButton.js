@@ -1,7 +1,8 @@
-import usePublishMove from '../cards/usePublishMove';
+import usePublishMove from '../../cards/usePublishMove';
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { selectYourId } from '../../../selectors';
+import { selectYourId } from '../../../../../selectors';
+import './GameButton';
 
 export const GameButtonTypes = {
   khabu: 'khabu',

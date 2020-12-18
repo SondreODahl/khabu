@@ -1,8 +1,8 @@
 import { useSelector } from 'react-redux';
 import React from 'react';
-import { selectCardHand, selectYourId } from '../../../../selectors';
+import { selectCardHand, selectYourId } from '../../../../../selectors';
 import './CardHand.css';
-import CardWrapper from '../Card/CardWrapper';
+import CardWrapper from '../card/CardWrapper';
 
 // The cardhand for both the player and the opponent.
 const CardHand = (props) => {
@@ -15,7 +15,7 @@ const CardHand = (props) => {
     return (
       <CardWrapper
         playerId={props.playerId}
-        yourId={props.yourId}
+        yourId={yourId}
         id={id}
         key={id}
       />
