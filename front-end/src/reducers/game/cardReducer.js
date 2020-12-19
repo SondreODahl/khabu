@@ -57,12 +57,13 @@ const byId = (state = {}, { type, payload }) => {
       return { ...state, ...payload.cards };
     }
     case SWAP_CARDS: {
-      // TODO: REFACTOR LATER
       const { cardId, tempCardId } = payload;
+      const cardIdGlow = state[cardId].glow;
+      const tempCardIdGlow = state[tempCardId].glow;
       return {
         ...state,
-        [cardId]: { value: payload.value, glow: false },
-        [tempCardId]: { value: null, glow: false },
+        [cardId]: { value: payload.value, glow: cardIdGlow },
+        [tempCardId]: { value: null, glow: tempCardIdGlow },
       };
     }
     default:
@@ -166,9 +167,9 @@ const hidePlayerHand = (state, playerId) => {
 
 // ------------------------ Custom main reducer -------------------------------
 
-// Used instead of combineReducers. Will look at the action type and send the relevant state to 
-// the relevant reducer functions. Used to achieve playerId keys and also to resetState easily. 
-// TODO: Consider going back to combineReducers. Should be done after testing is done. 
+// Used instead of combineReducers. Will look at the action type and send the relevant state to
+// the relevant reducer functions. Used to achieve playerId keys and also to resetState easily.
+// TODO: Consider going back to combineReducers. Should be done after testing is done.
 const cardHandsReducer = (state = getNewInitState(), action) => {
   switch (action.type) {
     case ADD_CARD:

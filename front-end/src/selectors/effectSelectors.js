@@ -1,5 +1,7 @@
 import { createSelector } from 'reselect';
+import { CHOOSE_CARD_FOR_EFFECT } from '../actions/types';
 import {
+  CHOOSE_CARD,
   FINISH_USING_EFFECT,
   PLAYER_CHECK_OTHER,
   PLAYER_CHECK_SELF,
@@ -15,7 +17,7 @@ export const getEffectType = createSelector(selectEffectType, (type) => {
   if (type === null) return type;
   if (type < 9) return PLAYER_CHECK_SELF;
   if (type < 11) return PLAYER_CHECK_OTHER;
-  return type <= 13 ? null : null; // Replace with CHOOSE_CARD
+  return type < 13 ? CHOOSE_CARD : null; // Replace with CHOOSE_CARD
 });
 
 export const getIsUsingEffect = createSelector(

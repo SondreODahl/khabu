@@ -2,6 +2,7 @@ import {
   ACTIVATE_EFFECT,
   CHECK_CARD,
   CHOOSE_CARD_FOR_EFFECT,
+  EXCHANGE_CARDS,
   FINISH_EFFECT,
 } from './types';
 import { revealCard, toggleCardGlow, updateCard } from './cardActions';
@@ -10,7 +11,7 @@ import { FRENZY, PUT } from '../constants/gameStates';
 /*
   Actions related to the use of card effects.
   playerChoseCard - Chooses a card to use with an effect. Adds a glow to the card.
-  playerExchangedCards - Not implemented
+  playerExchangedCards - Swaps the two cards that were previously chosen by playerChoseCard.
   checkPlayerCard - Private check. Reveals value of a card.
   playerCheckedCard - Public check. Glows the card that was chosen.
   playerFinishedEffect - Either hides a card or stops its glow. Returns to previous gamestate.
@@ -30,9 +31,13 @@ export const checkCard = (victimId, cardId) => {
   return { type: CHECK_CARD, payload: { victimId, cardId } };
 };
 
+const exchangeCards = (cardOne, cardTwo) => {
+  return { type: EXCHANGE_CARDS, payload: { cardOne, cardTwo } };
+};
+
 export const finishEffect = (currentPuttingPlayer) => {
-  const nextState = currentPuttingPlayer ? PUT : FRENZY; // Checks whether someone has put 
-  return { type: FINISH_EFFECT, payload: {nextState} };
+  const nextState = currentPuttingPlayer ? PUT : FRENZY; // Checks whether someone has put
+  return { type: FINISH_EFFECT, payload: { nextState } };
 };
 
 // ---------------------------- Main actions ----------------------------
@@ -44,8 +49,13 @@ export const playerChoseCard = (victimId, cardIndex) => (dispatch, getState) => 
 };
 
 export const playerExchangedCards = () => (dispatch, getState) => {
-  const { cardOne, cardTwo } = getState().effects.chosenCards;
-  // TODO: Implement
+  const { cardOne, cardTwo } = getState().effect.chosenCards;
+  dispatch(exchangeCards(cardOne, cardTwo));
+  setTimeout(() => {
+    dispatch(toggleCardGlow(cardOne.cardId, false));
+    dispatch(toggleCardGlow(cardTwo.cardId, false));
+  }, 1000); // Automatically untoggles
+  dispatch(finishEffect());
 };
 
 // Private check
@@ -78,9 +88,9 @@ export const playerFinishedEffect = (swap) => (dispatch, getState) => {
   const cardOneId = getState().effect.chosenCards.cardOne.cardId;
   const currentPuttingPlayer = getState().turn.currentPuttingPlayer;
   if (currentPlayerId === yourId) {
-    dispatch(updateCard(cardOneId, null)); // Only need to hide if you are current player. Else, you will not know the value regardless. 
+    dispatch(updateCard(cardOneId, null)); // Only need to hide if you are current player. Else, you will not know the value regardless.
   } else {
-    dispatch(toggleCardGlow(cardOneId, false)); // Should later on toggle both cards. 
+    dispatch(toggleCardGlow(cardOneId, false)); // Should later on toggle both cards.
   }
   if (swap) {
     // TODO: Implement

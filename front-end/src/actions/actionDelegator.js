@@ -23,6 +23,7 @@ import {
   playerFinishedEffect,
   checkPlayerCard,
   playerCheckedCard,
+  playerExchangedCards,
 } from './effectActions';
 
 /*
@@ -121,6 +122,13 @@ export const publicActionsDelegator = (topic, body) => {
       const { victim, card } = parsedJSON;
       return playerChoseCard(victim, card - 1);
     }
+    case 'FINISH_EFFECT': {
+      const { swap } = parsedJSON;
+      return playerFinishedEffect(swap);
+    }
+    case 'EXCHANGE_CARDS': {
+      return playerExchangedCards();
+    }
     case 'PLAYER_CHECK_OPPONENT': {
       const { targetPlayerId, targetCardIndex } = parsedJSON;
       return playerCheckedCard(targetPlayerId, targetCardIndex - 1);
@@ -128,10 +136,6 @@ export const publicActionsDelegator = (topic, body) => {
     case 'PLAYER_CHECK_SELF': {
       const { targetCardIndex } = parsedJSON;
       return playerCheckedCard(undefined, targetCardIndex - 1);
-    }
-    case 'FINISH_EFFECT': {
-      const { swap } = parsedJSON;
-      return playerFinishedEffect(swap);
     }
     default:
       alert(`publicActionsDelegator was called with ${body}`);
