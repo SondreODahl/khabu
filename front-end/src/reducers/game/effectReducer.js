@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import {
   CHECK_CARD,
-  CHOOSE_CARD_FOR_EFFECT,
+  CHOOSE_CARD_EFFECT,
   DISCARD_CARD,
   EXCHANGE_CARDS,
   FINISH_EFFECT,
@@ -21,7 +21,7 @@ const initChosenCardsState = {
 const chosenCards = (state = initChosenCardsState, { type, payload }) => {
   switch (type) {
     case CHECK_CARD:
-    case CHOOSE_CARD_FOR_EFFECT:
+    case CHOOSE_CARD_EFFECT:
       const { cardId, victimId } = payload;
       if (state.cardOne)
         // Already chosen the first card

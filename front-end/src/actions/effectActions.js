@@ -1,7 +1,7 @@
 import {
   ACTIVATE_EFFECT,
   CHECK_CARD,
-  CHOOSE_CARD_FOR_EFFECT,
+  CHOOSE_CARD_EFFECT,
   EXCHANGE_CARDS,
   FINISH_EFFECT,
 } from './types';
@@ -24,7 +24,7 @@ export const activateEffect = () => {
 };
 
 export const chooseCardForEffect = (cardId, victimId) => {
-  return { type: CHOOSE_CARD_FOR_EFFECT, payload: { cardId, victimId } };
+  return { type: CHOOSE_CARD_EFFECT, payload: { cardId, victimId } };
 };
 
 export const checkCard = (victimId, cardId) => {

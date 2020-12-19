@@ -1,7 +1,6 @@
 import { createSelector } from 'reselect';
-import { CHOOSE_CARD_FOR_EFFECT } from '../actions/types';
 import {
-  CHOOSE_CARD,
+  CHOOSE_SINGLE_CARD,
   FINISH_USING_EFFECT,
   PLAYER_CHECK_OTHER,
   PLAYER_CHECK_SELF,
@@ -15,9 +14,9 @@ const selectCurrentGameState = (state) => state.gameState.currentState;
 
 export const getEffectType = createSelector(selectEffectType, (type) => {
   if (type === null) return type;
-  if (type < 9) return PLAYER_CHECK_SELF;
-  if (type < 11) return PLAYER_CHECK_OTHER;
-  return type < 13 ? CHOOSE_CARD : null; // Replace with CHOOSE_CARD
+  if (type < 9) return PLAYER_CHECK_SELF; // 7 or 8 
+  if (type < 11) return PLAYER_CHECK_OTHER; // 9 or 10
+  return type < 13 ? CHOOSE_SINGLE_CARD : null;  // Knight or Queen / King
 });
 
 export const getIsUsingEffect = createSelector(
