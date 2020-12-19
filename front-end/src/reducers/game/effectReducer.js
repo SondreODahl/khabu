@@ -27,11 +27,6 @@ const chosenCards = (state = initChosenCardsState, { type, payload }) => {
         // Already chosen the first card
         return { ...state, cardTwo: { cardId, victimId } };
       return { ...state, cardOne: { cardId, victimId } };
-    /* case CHECK_CARD: { THINK THIS PART CAN BE REMOVED BUT NOT ENTIRELY SURE
-       const { cardId } = payload;
-       return { ...state, cardOne: { cardId } };
-     } */
-    case EXCHANGE_CARDS:
     case FINISH_EFFECT:
       return { ...initChosenCardsState };
     default:

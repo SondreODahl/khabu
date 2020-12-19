@@ -55,7 +55,8 @@ export const playerExchangedCards = () => (dispatch, getState) => {
     dispatch(toggleCardGlow(cardOne.cardId, false));
     dispatch(toggleCardGlow(cardTwo.cardId, false));
   }, 1000); // Automatically untoggles
-  dispatch(finishEffect());
+  const currentPuttingPlayer = getState().turn.currentPuttingPlayer;
+  dispatch(finishEffect(currentPuttingPlayer));
 };
 
 // Private check
@@ -86,14 +87,14 @@ export const playerFinishedEffect = (swap) => (dispatch, getState) => {
   const currentPlayerId = getState().turn.currentPlayerTurn;
   const yourId = getState().players.yourId;
   const cardOneId = getState().effect.chosenCards.cardOne.cardId;
-  const currentPuttingPlayer = getState().turn.currentPuttingPlayer;
   if (currentPlayerId === yourId) {
     dispatch(updateCard(cardOneId, null)); // Only need to hide if you are current player. Else, you will not know the value regardless.
   } else {
-    dispatch(toggleCardGlow(cardOneId, false)); // Should later on toggle both cards.
+    dispatch(toggleCardGlow(cardOneId, false));
   }
   if (swap) {
     // TODO: Implement
   }
+  const currentPuttingPlayer = getState().turn.currentPuttingPlayer;
   dispatch(finishEffect(currentPuttingPlayer));
 };
