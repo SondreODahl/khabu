@@ -17,13 +17,17 @@ const GameInterface = (props) => {
         <CardHand playerId={props.opponentId} />
       </div>
       <div className={'deck-area'}>
-        <CardDeck />
-        <DiscardPile />
-        <TemporaryCard />
-        {props.readyUp && <ReadyUpButton />}
+        <div className={'deck-area-cards'}>
+          <CardDeck />
+          <DiscardPile />
+          <TemporaryCard />
+        </div>
+        <div className={'deck-area-buttons'}>
+          {props.readyUp && <ReadyUpButton />}
+          <GameButtons />
+        </div>
       </div>
       <div className={'player-area'}>
-        <GameButtons />
         <CardHand playerId={props.yourId} />
         <NameDisplay playerId={props.yourId} />
       </div>

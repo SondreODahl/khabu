@@ -1,13 +1,29 @@
 .game-interface {
-    height: 100vh !important;
+  height: 100vh !important;
 }
 
 .deck-area {
-    display: flex;
-    justify-content: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.deck-area-cards {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+/* Since card-displays are auto, must ensure that these cards dont grow massively */
+.deck-area-cards .card-display {
+    height: 11rem;
 }
 
 .button-row {
-    height: 4rem !important;
-    padding: 0 !important;
+  height: auto !important;
+  padding: 0 !important;
+}
+
+.player-area {
+  height: 33vh;
 }
