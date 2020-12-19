@@ -23,7 +23,9 @@ const CardHand = (props) => {
   };
   const renderCards = () => {
     if (yourHand) return cards.map(mapFunction);
-    return cards.reverse().map(mapFunction); // Cards should be in reverse order for the other player
+    // Cards should be in reverse order for the other player
+    // reverse() method mutates original array, it must therefore be copied first
+    return cards.slice().reverse().map(mapFunction);
   };
   return <div className={`card-hand ${className}`}>{renderCards()}</div>;
 };
