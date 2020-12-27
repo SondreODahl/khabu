@@ -1,5 +1,5 @@
 import React from 'react';
-import SwapModal from '../SwapModal';
+import SwapModal from './SwapModal';
 import DeckArea from './DeckArea';
 import { useSelector } from 'react-redux';
 import { shouldModalRender } from '../../../../selectors';

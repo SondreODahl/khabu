@@ -6,6 +6,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  height: 30%;
 }
 
 .deck-area-cards {
@@ -25,5 +26,5 @@
 }
 
 .player-area {
-  height: 33vh;
+  height: 30%;
 }
