@@ -15,6 +15,7 @@ import { FRENZY, PUT } from '../constants/gameStates';
   checkPlayerCard - Private check. Reveals value of a card.
   playerCheckedCard - Public check. Glows the card that was chosen.
   playerFinishedEffect - Either hides a card or stops its glow. Returns to previous gamestate.
+  undoCardReveal - Hides the value or toggles a glow for the cards revealed by an effect
 */
 
 // ------------------------- Basic Actions -----------------------------
@@ -91,23 +92,30 @@ export const revealChosenCards = (victimOneValue, victimTwoValue) => (
   dispatch(updateCard(victimTwoId, victimTwoValue));
 };
 
-const undoSingleCardReveal = () => (dispatch, getState) => {
+
+export const playerFinishedEffect = (swap) => (dispatch, getState) => {
+  const currentEffect = getState().effect.effectType;
+  const cardRevealEffects = ['7', '8', '9', '10', '13']; // TODO: Refactor card values to be integers
+  if (cardRevealEffects.includes(currentEffect))
+  dispatch(undoCardReveal(currentEffect));
+  if (swap) dispatch(playerExchangedCards());
+  const currentPuttingPlayer = getState().turn.currentPuttingPlayer;
+  dispatch(finishEffect(currentPuttingPlayer));
+};
+
+const undoCardReveal = (currentEffect) => (dispatch, getState) => {
   const currentPlayerId = getState().turn.currentPlayerTurn;
   const yourId = getState().players.yourId;
   const cardOneId = getState().effect.chosenCards.cardOne.cardId;
   if (currentPlayerId === yourId) {
     // Only need to hide if you are current player. Else, you will not know the value regardless.
     dispatch(updateCard(cardOneId, null));
+    if (currentEffect === '13') {
+      // Then two cards have been revealed. ExchangeCards will undo glows but not hide value.
+      const cardTwoId = getState().effect.chosenCards.cardTwo.cardId;
+      dispatch(updateCard(cardTwoId, null));
+    }
   } else {
     dispatch(toggleCardGlow(cardOneId, false));
   }
-};
-
-export const playerFinishedEffect = (swap) => (dispatch, getState) => {
-  const currentEffect = getState().effect.effectType;
-  if (7 <= currentEffect <= 10) dispatch(undoSingleCardReveal());
-  // TODO: Change magic numbers
-  else if (swap) dispatch(playerExchangedCards());
-  const currentPuttingPlayer = getState().turn.currentPuttingPlayer;
-  dispatch(finishEffect(currentPuttingPlayer));
 };
