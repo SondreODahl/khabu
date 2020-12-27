@@ -129,7 +129,7 @@ export const publicActionsDelegator = (topic, body) => {
       return playerChoseCard(victim, card - 1);
     }
     case 'FINISH_EFFECT': {
-      const { swap } = parsedJSON;
+      const swap  = parsedJSON.swap === "true"; // Sent as string from backend
       return playerFinishedEffect(swap);
     }
     case 'EXCHANGE_CARDS': {
