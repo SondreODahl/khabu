@@ -5,7 +5,7 @@ import {
   EXCHANGE_CARDS,
   FINISH_EFFECT,
 } from './types';
-import { revealCard, toggleCardGlow, updateCard } from './cardActions';
+import { revealCard, swapCards, toggleCardGlow, updateCard } from './cardActions';
 import { FRENZY, PUT } from '../constants/gameStates';
 
 /*
@@ -83,17 +83,27 @@ export const playerCheckedCard = (targetPlayerId, cardIndex) => (
   dispatch(toggleCardGlow(cardId, true));
 };
 
+export const revealChosenCards = (victimOneValue, victimTwoValue) => (
+  dispatch,
+  getState
+) => {
+  const victimOneId = getState().effect.chosenCards.cardOne.cardId;
+  const victimTwoId = getState().effect.chosenCards.cardTwo.cardId;
+  dispatch(updateCard(victimOneId, victimOneValue));
+  dispatch(updateCard(victimTwoId, victimTwoValue));
+};
+
 export const playerFinishedEffect = (swap) => (dispatch, getState) => {
   const currentPlayerId = getState().turn.currentPlayerTurn;
   const yourId = getState().players.yourId;
   const cardOneId = getState().effect.chosenCards.cardOne.cardId;
   if (currentPlayerId === yourId) {
     dispatch(updateCard(cardOneId, null)); // Only need to hide if you are current player. Else, you will not know the value regardless.
-  } else {
+  } else { // TODO: Change structure
     dispatch(toggleCardGlow(cardOneId, false));
   }
   if (swap) {
-    // TODO: Implement
+    return playerExchangedCards();
   }
   const currentPuttingPlayer = getState().turn.currentPuttingPlayer;
   dispatch(finishEffect(currentPuttingPlayer));
