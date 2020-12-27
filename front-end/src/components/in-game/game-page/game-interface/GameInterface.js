@@ -7,6 +7,7 @@ import DiscardPile from '../cards/pile/DiscardPile';
 import React from 'react';
 import './GameInterface.css';
 import GameButtons from '../buttons/game-buttons/GameButtons';
+import SwapModal from '../SwapModal';
 
 // Renders the game board for two players.
 const GameInterface = (props) => {
@@ -21,6 +22,7 @@ const GameInterface = (props) => {
           <CardDeck />
           <DiscardPile />
           <TemporaryCard />
+          <SwapModal />
         </div>
         <div className={'deck-area-buttons'}>
           {props.readyUp && <ReadyUpButton />}
