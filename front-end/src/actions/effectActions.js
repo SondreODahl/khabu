@@ -55,8 +55,6 @@ export const playerExchangedCards = () => (dispatch, getState) => {
     dispatch(toggleCardGlow(cardOne.cardId, false));
     dispatch(toggleCardGlow(cardTwo.cardId, false));
   }, 1000); // Automatically untoggles
-  const currentPuttingPlayer = getState().turn.currentPuttingPlayer;
-  dispatch(finishEffect(currentPuttingPlayer));
 };
 
 // Private check
@@ -93,18 +91,22 @@ export const revealChosenCards = (victimOneValue, victimTwoValue) => (
   dispatch(updateCard(victimTwoId, victimTwoValue));
 };
 
-export const playerFinishedEffect = (swap) => (dispatch, getState) => {
+const undoSingleCardReveal = () => {
   const currentPlayerId = getState().turn.currentPlayerTurn;
   const yourId = getState().players.yourId;
   const cardOneId = getState().effect.chosenCards.cardOne.cardId;
   if (currentPlayerId === yourId) {
-    dispatch(updateCard(cardOneId, null)); // Only need to hide if you are current player. Else, you will not know the value regardless.
-  } else { // TODO: Change structure
+    // Only need to hide if you are current player. Else, you will not know the value regardless.
+    dispatch(updateCard(cardOneId, null));
+  } else {
     dispatch(toggleCardGlow(cardOneId, false));
   }
-  if (swap) {
-    return playerExchangedCards();
-  }
+};
+
+export const playerFinishedEffect = (swap) => (dispatch, getState) => {
+  const currentEffect = getState().effect.effectType;
+  if (7 <= currentEffect <= 10) dispatch(undoSingleCardReveal()); // TODO: Change magic numbers
+  else if (swap) dispatch(playerExchangedCards());
   const currentPuttingPlayer = getState().turn.currentPuttingPlayer;
   dispatch(finishEffect(currentPuttingPlayer));
 };
