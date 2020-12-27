@@ -91,7 +91,7 @@ export const revealChosenCards = (victimOneValue, victimTwoValue) => (
   dispatch(updateCard(victimTwoId, victimTwoValue));
 };
 
-const undoSingleCardReveal = () => {
+const undoSingleCardReveal = () => (dispatch, getState) => {
   const currentPlayerId = getState().turn.currentPlayerTurn;
   const yourId = getState().players.yourId;
   const cardOneId = getState().effect.chosenCards.cardOne.cardId;
@@ -105,7 +105,8 @@ const undoSingleCardReveal = () => {
 
 export const playerFinishedEffect = (swap) => (dispatch, getState) => {
   const currentEffect = getState().effect.effectType;
-  if (7 <= currentEffect <= 10) dispatch(undoSingleCardReveal()); // TODO: Change magic numbers
+  if (7 <= currentEffect <= 10) dispatch(undoSingleCardReveal());
+  // TODO: Change magic numbers
   else if (swap) dispatch(playerExchangedCards());
   const currentPuttingPlayer = getState().turn.currentPuttingPlayer;
   dispatch(finishEffect(currentPuttingPlayer));

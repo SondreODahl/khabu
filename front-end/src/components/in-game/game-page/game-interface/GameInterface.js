@@ -2,7 +2,7 @@ import NameDisplay from '../user-display/NameDisplay';
 import CardHand from '../cards/card-hand/CardHand';
 import React from 'react';
 import './GameInterface.css';
-import { DeckAreaDecider } from './DeckArea';
+import DeckAreaDecider from './DeckAreaDecider';
 
 // Renders the game board for two players.
 const GameInterface = (props) => {
