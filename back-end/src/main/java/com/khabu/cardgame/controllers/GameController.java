@@ -382,8 +382,6 @@ public class GameController {
                     } else {
                         String jsonResponse = createCheckTwoCardsResponse(round);
                         simpMessagingTemplate.convertAndSend("/topic/round/actions/" + currentPlayerId, jsonResponse);
-                        jsonResponse = JsonConverter.createJsonString(new ObjectMapper(), new HashMap<>(), "CHECK_TWO_CARDS");
-                        simpMessagingTemplate.convertAndSend("/topic/round/actions", jsonResponse);
                     }
                 }
             } catch (IllegalMoveException ime) {

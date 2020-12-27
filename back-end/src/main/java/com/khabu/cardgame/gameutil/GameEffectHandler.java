@@ -33,7 +33,7 @@ public class GameEffectHandler {
         }
         // Create response
         List<String> keys = Arrays.asList("type", "swap");
-        List<String> values = Arrays.asList("FINISH_EFFECT", (String) jsonMap.get("swap"));
+        List<String> values = Arrays.asList("FINISH_EFFECT", jsonMap.get("swap").toString());
 
         return JsonConverter.createJsonString(new ObjectMapper(), new HashMap<>(), keys, values);
     }
