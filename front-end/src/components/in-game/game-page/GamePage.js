@@ -43,12 +43,12 @@ const GamePage = () => {
         return <ReadyUpButton yourId={yourId} />;
       case roundStates.REVEAL:
       case roundStates.STARTED:
-        return <GameInterface yourId={yourId} opponentId={opponentId} />;
+        return (
+          <GameInterface yourId={yourId} opponentId={opponentId} roundOver={false} />
+        );
       case roundStates.OVER:
         return (
-          <GameInterface yourId={yourId} opponentId={opponentId}>
-            <ReadyUpButton yourId={yourId} />
-          </GameInterface>
+          <GameInterface yourId={yourId} opponentId={opponentId} roundOver={true} />
         );
       default:
         return <GamePageError />;
