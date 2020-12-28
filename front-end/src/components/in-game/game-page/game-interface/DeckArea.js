@@ -7,7 +7,7 @@ import GameButtons from '../buttons/game-buttons/GameButtons';
 
 // Visual component. Renders the middle area of the deck when normal gameplay is used.
 const DeckArea = (props) => (
-  <div className={'deck-area'}>
+  <>
     <div className={'deck-area-cards'}>
       <CardDeck />
       <DiscardPile />
@@ -17,7 +17,7 @@ const DeckArea = (props) => (
       {props.readyUp && <ReadyUpButton />}
       <GameButtons />
     </div>
-  </div>
+  </>
 );
 
 export default DeckArea;
