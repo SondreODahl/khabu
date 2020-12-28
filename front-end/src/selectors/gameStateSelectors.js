@@ -24,7 +24,10 @@ import {
   TRANSFER_MOVE,
 } from '../constants/gameMoves';
 import { selectDiscardPileLength } from './cardSelectors';
-import { selectYourId } from './playerSelectors';
+import {
+  selectYourId,
+  selectOpponentId,
+} from './playerSelectors';
 import {
   getCardEffectAction,
   getCardEffectActionOpponent,
@@ -43,17 +46,18 @@ import { ACTIVATE_EFFECT } from '../constants/effectMoves';
   getCardActionOpponent - Used by CardWrapper to determine the action of each opponent card.
   getCanEndTurn - Used by end turn button. Will enable/disable ending the current turn.
   getCanCallKhabu - Used by khabu button. Will enable/disable calling khabu.
-*/ 
+*/
 
 const selectProps = (_, props) => props;
 export const selectCurrentGameState = (state) => state.gameState.currentState;
 const selectPutAllowed = (state) => state.gameState.putAllowed;
 const getCanYouPut = createSelector(
-  selectPutAllowed,
   selectCurrentPuttingPlayer,
+  selectPutAllowed,
+  selectKhabuPlayer,
   selectYourId,
-  (putAllowed, currentPuttingPlayer, yourId) =>
-    putAllowed && (currentPuttingPlayer === null || currentPuttingPlayer === yourId)
+  (currentPuttingPlayer, putAllowed, khabuPlayer, yourId) =>
+    putAllowed && (currentPuttingPlayer === null && yourId !== khabuPlayer || currentPuttingPlayer === yourId)
 );
 
 export const getCanYouDrawCard = createSelector(
@@ -101,7 +105,11 @@ export const getCardAction = createSelector(
 export const getCardActionOpponent = createSelector(
   getCanYouPut,
   getCardEffectActionOpponent,
-  (canPut, effect) => (canPut ? PUT_MOVE : effect) // Effect is null if no effect is possible
+  selectKhabuPlayer,
+  selectOpponentId,
+  (canPut, effect, khabuPlayer, opponent) =>
+    // Effect is null if no effect is possible or if opponent is khabuplayer
+    khabuPlayer !== opponent ? (canPut ? PUT_MOVE : effect) : null
 );
 
 export const getCanEndTurn = createSelector(
