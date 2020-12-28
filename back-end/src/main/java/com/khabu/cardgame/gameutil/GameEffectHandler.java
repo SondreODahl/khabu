@@ -10,6 +10,7 @@ import com.khabu.cardgame.util.JsonConverter;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+
 // Handles all game logic related to effects
 // Each public method should return a String containing the correct response for the client(s)
 public class GameEffectHandler {
@@ -29,12 +30,18 @@ public class GameEffectHandler {
         if (round.getTurn().getCurrentPlayer() != round.getPlayerById(currentPlayerId)) {
             return "fail";
         }
+        // Swap can only equal true on king effect
         if (jsonMap.get("swap").equals("true")) {
             exchangeCardsAfterChecking(jsonMap, round);
         }
         // King effect is in use, but player does not want to swap cards ->
         else if (round.getTurn().gameStateEquals(Gamestate.KING_EFFECT)) {
             round.getEffectPerformer().setCorrectStateUponUseOfEffect();
+            try {
+                round.clearTemps();
+            } catch (IllegalMoveException ime) {
+                ime.printStackTrace();
+            }
         }
         // Create response
         List<String> keys = Arrays.asList("type", "swap");
@@ -42,7 +49,6 @@ public class GameEffectHandler {
 
         return JsonConverter.createJsonString(new ObjectMapper(), new HashMap<>(), keys, values);
     }
-
 
     public static String handlePrivateResponseCheckSelfCard(HashMap<String, Object> jsonMap, Round round) {
         int currentPlayerId = Integer.parseInt((String) jsonMap.get("currentPlayerId"));
@@ -56,15 +62,15 @@ public class GameEffectHandler {
         }
 
         // Create response
-        List<String> keys = Arrays.asList("type","playerId", "targetCardIndex", "value");
-        List<String> values = Arrays.asList("SELF_CHECK", Integer.toString(currentPlayerId), Integer.toString(targetIndex),
-                Integer.toString(targetCardValue));
+        List<String> keys = Arrays.asList("type", "playerId", "targetCardIndex", "value");
+        List<String> values = Arrays.asList("SELF_CHECK", Integer.toString(currentPlayerId),
+                Integer.toString(targetIndex), Integer.toString(targetCardValue));
 
         return JsonConverter.createJsonString(new ObjectMapper(), new HashMap<>(), keys, values);
     }
 
     public static String handlePublicResponseCheckSelfCard(HashMap<String, Object> jsonMap) {
-        List<String> keys = Arrays.asList("type","targetCardIndex");
+        List<String> keys = Arrays.asList("type", "targetCardIndex");
         List<String> values = Arrays.asList("PLAYER_CHECK_SELF", (String) jsonMap.get("targetCardIndex"));
         return JsonConverter.createJsonString(new ObjectMapper(), new HashMap<>(), keys, values);
     }
@@ -76,30 +82,25 @@ public class GameEffectHandler {
         int targetCardValue = round.getPlayerById(targetPlayerId).getCard(targetIndex).getValue();
 
         try {
-            round.performEffect(round.getPlayerById(currentPlayerId),
-                    round.getPlayerById(targetPlayerId), targetIndex, Effect.CHECK_OTHER_CARD);
-        } catch(IllegalMoveException ime) {
+            round.performEffect(round.getPlayerById(currentPlayerId), round.getPlayerById(targetPlayerId), targetIndex,
+                    Effect.CHECK_OTHER_CARD);
+        } catch (IllegalMoveException ime) {
             ime.printStackTrace();
         }
 
-        List<String> keys = Arrays.asList("type","agent", "victim", "victimCard", "value");
-        List<String> values = Arrays.asList("OPPONENT_CHECK",Integer.toString(currentPlayerId),
-                Integer.toString(targetPlayerId), Integer.toString(targetIndex),
-                Integer.toString(targetCardValue));
+        List<String> keys = Arrays.asList("type", "agent", "victim", "victimCard", "value");
+        List<String> values = Arrays.asList("OPPONENT_CHECK", Integer.toString(currentPlayerId),
+                Integer.toString(targetPlayerId), Integer.toString(targetIndex), Integer.toString(targetCardValue));
 
         return JsonConverter.createJsonString(new ObjectMapper(), new HashMap<>(), keys, values);
     }
 
     public static String handlePublicResponseCheckOpponentCard(HashMap<String, Object> jsonMap) {
-        List<String> keys = Arrays.asList("type", "targetPlayerId","targetCardIndex");
-        List<String> values = Arrays.asList("PLAYER_CHECK_OPPONENT",
-                (String) jsonMap.get("targetPlayerId"),
+        List<String> keys = Arrays.asList("type", "targetPlayerId", "targetCardIndex");
+        List<String> values = Arrays.asList("PLAYER_CHECK_OPPONENT", (String) jsonMap.get("targetPlayerId"),
                 (String) jsonMap.get("targetCardIndex"));
         return JsonConverter.createJsonString(new ObjectMapper(), new HashMap<>(), keys, values);
     }
-
-
-
 
     private static void exchangeCardsAfterChecking(HashMap<String, Object> jsonMap, Round round) {
         try {
