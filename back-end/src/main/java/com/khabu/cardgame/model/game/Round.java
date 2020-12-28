@@ -301,4 +301,8 @@ public class Round {
     public int getEffectPerformerTopOfDiscardValue() {
         return effectPerformer.getTopOfDiscardValue();
     }
+
+    public EffectPerformer getEffectPerformer() {
+        return effectPerformer;
+    }
 }

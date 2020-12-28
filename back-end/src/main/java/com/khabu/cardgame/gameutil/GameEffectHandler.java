@@ -2,6 +2,7 @@ package com.khabu.cardgame.gameutil;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.khabu.cardgame.model.game.Round;
+import com.khabu.cardgame.model.game.action.Gamestate;
 import com.khabu.cardgame.model.game.effect.Effect;
 import com.khabu.cardgame.util.IllegalMoveException;
 import com.khabu.cardgame.util.JsonConverter;
@@ -30,6 +31,10 @@ public class GameEffectHandler {
         }
         if (jsonMap.get("swap").equals("true")) {
             exchangeCardsAfterChecking(jsonMap, round);
+        }
+        // King effect is in use, but player does not want to swap cards ->
+        else if (round.getTurn().gameStateEquals(Gamestate.KING_EFFECT)) {
+            round.getEffectPerformer().setCorrectStateUponUseOfEffect();
         }
         // Create response
         List<String> keys = Arrays.asList("type", "swap");

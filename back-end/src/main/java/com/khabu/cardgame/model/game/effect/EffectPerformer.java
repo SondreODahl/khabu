@@ -118,7 +118,7 @@ public class EffectPerformer {
         targetTwo.addCardToSpecificIndex(targetOneCard, targetTwoIndex);
     }
 
-    private void setCorrectStateUponUseOfEffect() {
+    public void setCorrectStateUponUseOfEffect() {
         if (turn.getCurrentPuttingPlayer() == null) {
             turn.setGameState(Gamestate.FRENZY);
         } else {
