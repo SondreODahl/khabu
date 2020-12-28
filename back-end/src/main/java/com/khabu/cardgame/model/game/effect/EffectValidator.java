@@ -37,7 +37,6 @@ public class EffectValidator {
 
     private static boolean isValidExchange(Player attemptingPlayer, Player targetOne, Player targetTwo, Effect effect, Turn turn) {
         return isPlayerCurrentPlayer(attemptingPlayer, turn) &&
-                !(targetOne.equals(targetTwo)) &&
                 turn.gameStateEquals(Gamestate.USE_EFFECT);
     }
 
