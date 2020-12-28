@@ -5,17 +5,19 @@ import './GameInterface.css';
 import DeckAreaDecider from './DeckAreaDecider';
 
 // Renders the game board for two players.
-const GameInterface = (props) => {
+const GameInterface = ({ opponentId, readyUp, roundOver, yourId }) => {
   return (
     <div className={'game-interface'}>
       <div className={'opponent-area'}>
-        <NameDisplay playerId={props.opponentId} />
-        <CardHand playerId={props.opponentId} />
+        <NameDisplay playerId={opponentId} />
+        <CardHand playerId={opponentId} />
       </div>
-      <DeckAreaDecider readyUp={props.readyUp} />
+      <div className={'deck-area'}>
+        <DeckAreaDecider readyUp={readyUp} roundOver={roundOver} />
+      </div>
       <div className={'player-area'}>
-        <CardHand playerId={props.yourId} />
-        <NameDisplay playerId={props.yourId} />
+        <CardHand playerId={yourId} />
+        <NameDisplay playerId={yourId} />
       </div>
     </div>
   );
