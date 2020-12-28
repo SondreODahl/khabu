@@ -51,8 +51,8 @@ class EffectValidatorTest {
     }
 
     @Test
-    void exchangingCardsInSameHandReturnsFalse() {
-        assertFalse(EffectValidator.isValidEffectUseInCurrentState(player, player, player, Effect.EXCHANGE_CARDS, turn));
+    void exchangingCardsInSameHandReturnsTrue() {
+        assertTrue(EffectValidator.isValidEffectUseInCurrentState(player, player, player, Effect.EXCHANGE_CARDS, turn));
     }
 
     @Test
