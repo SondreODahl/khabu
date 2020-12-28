@@ -56,6 +56,8 @@ export const playerExchangedCards = () => (dispatch, getState) => {
     dispatch(toggleCardGlow(cardOne.cardId, false));
     dispatch(toggleCardGlow(cardTwo.cardId, false));
   }, 1000); // Automatically untoggles
+  const currentPuttingPlayer = getState().turn.currentPuttingPlayer;
+  dispatch(finishEffect(currentPuttingPlayer));
 };
 
 // Private check
@@ -92,12 +94,11 @@ export const revealChosenCards = (victimOneValue, victimTwoValue) => (
   dispatch(updateCard(victimTwoId, victimTwoValue));
 };
 
-
 export const playerFinishedEffect = (swap) => (dispatch, getState) => {
   const currentEffect = getState().effect.effectType;
   const cardRevealEffects = ['7', '8', '9', '10', '13']; // TODO: Refactor card values to be integers
   if (cardRevealEffects.includes(currentEffect))
-  dispatch(undoCardReveal(currentEffect));
+    dispatch(undoCardReveal(currentEffect));
   if (swap) dispatch(playerExchangedCards());
   const currentPuttingPlayer = getState().turn.currentPuttingPlayer;
   dispatch(finishEffect(currentPuttingPlayer));
@@ -110,12 +111,13 @@ const undoCardReveal = (currentEffect) => (dispatch, getState) => {
   if (currentPlayerId === yourId) {
     // Only need to hide if you are current player. Else, you will not know the value regardless.
     dispatch(updateCard(cardOneId, null));
-    if (currentEffect === '13') {
-      // Then two cards have been revealed. ExchangeCards will undo glows but not hide value.
-      const cardTwoId = getState().effect.chosenCards.cardTwo.cardId;
-      dispatch(updateCard(cardTwoId, null));
-    }
   } else {
     dispatch(toggleCardGlow(cardOneId, false));
+  }
+  if (currentEffect === '13') {
+    // Then two cards have been revealed. ExchangeCards will undo glows but not hide value.
+    const cardTwoId = getState().effect.chosenCards.cardTwo.cardId;
+    dispatch(updateCard(cardTwoId, null)); // If you are currentPlayer
+    dispatch(toggleCardGlow(cardTwoId, false)); // If you are not currentPlayer
   }
 };
