@@ -1,0 +1,21 @@
+.swap-modal {
+    height: 30%;
+    margin: auto;
+    position: relative;
+    text-align: center;
+}
+
+.swap-modal p {
+    padding: 2rem;
+    position: relative;
+    top: 20%;
+    font-size: medium;
+}
+
+.swap-modal button {
+    display: inline-block;
+    width: 7rem;
+    position: relative;
+    top: 30%;
+}
+

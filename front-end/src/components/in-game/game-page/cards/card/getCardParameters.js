@@ -5,14 +5,14 @@ import {
   TRANSFER_MOVE,
 } from '../../../../../constants/gameMoves';
 import {
-  CHOOSE_CARD,
+  CHOOSE_SINGLE_CARD,
   FINISH_USING_EFFECT,
   PLAYER_CHECK_OTHER,
   PLAYER_CHECK_SELF,
 } from '../../../../../constants/effectMoves';
 
 const actionDictionary = {
-  CHOOSE_CARD: 'CHOOSE_SINGLE_CARD',
+  CHOOSE_SINGLE_CARD: 'CHOOSE_SINGLE_CARD',
   FINISH_USING_EFFECT: 'FINISH_EFFECT',
   PLAYER_CHECK_OTHER: 'CHECK_OPPONENT_CARD',
   PLAYER_CHECK_SELF: 'CHECK_SELF_CARD',
@@ -25,7 +25,7 @@ const actionDictionary = {
 const getCardParameters = (possibleAction, props) => {
   let parameters;
   switch (possibleAction) {
-    case CHOOSE_CARD:
+    case CHOOSE_SINGLE_CARD:
     case PLAYER_CHECK_OTHER:
     case PLAYER_CHECK_SELF:
     case SWAP_MOVE:

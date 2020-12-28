@@ -26,6 +26,8 @@ front-end/build
 /front-end/yarn-debug.log*
 /front-end/yarn-error.log*
 
+/front-end/jsconfig.json
+/front-end/.env
 
 # back-end
 /back-end/target

@@ -23,6 +23,8 @@ import {
   playerFinishedEffect,
   checkPlayerCard,
   playerCheckedCard,
+  playerExchangedCards,
+  revealChosenCards,
 } from './effectActions';
 
 /*
@@ -73,9 +75,14 @@ export const privateActionsDelegator = (topic, body) => {
       } else return revealCard(playerId, id - 1, value); // Id is 1-indexed in back-end..
     case 'CARD_DRAWN_DECK':
       return drawFromDeckAndRegisterCard(parsedJSON.value);
+    case 'CHECK_TWO_CARDS': {
+      // Received from king effect
+      const { victimOneValue, victimTwoValue } = parsedJSON;
+      return revealChosenCards(victimOneValue, victimTwoValue);
+    }
     case 'OPPONENT_CHECK': {
       const { victim, victimCard, value } = parsedJSON;
-      return checkPlayerCard(victim, victimCard - 1, value); 
+      return checkPlayerCard(victim, victimCard - 1, value);
     }
     case 'SELF_CHECK': {
       const { playerId, targetCardIndex, value } = parsedJSON;
@@ -121,6 +128,13 @@ export const publicActionsDelegator = (topic, body) => {
       const { victim, card } = parsedJSON;
       return playerChoseCard(victim, card - 1);
     }
+    case 'FINISH_EFFECT': {
+      const swap  = parsedJSON.swap === "true"; // Sent as string from backend
+      return playerFinishedEffect(swap);
+    }
+    case 'EXCHANGE_CARDS': {
+      return playerExchangedCards();
+    }
     case 'PLAYER_CHECK_OPPONENT': {
       const { targetPlayerId, targetCardIndex } = parsedJSON;
       return playerCheckedCard(targetPlayerId, targetCardIndex - 1);
@@ -128,10 +142,6 @@ export const publicActionsDelegator = (topic, body) => {
     case 'PLAYER_CHECK_SELF': {
       const { targetCardIndex } = parsedJSON;
       return playerCheckedCard(undefined, targetCardIndex - 1);
-    }
-    case 'FINISH_EFFECT': {
-      const { swap } = parsedJSON;
-      return playerFinishedEffect(swap);
     }
     default:
       alert(`publicActionsDelegator was called with ${body}`);
