@@ -13,7 +13,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
-// TODO: FIX NULL POINTERS
 class EffectPerformerTest {
 
     EffectPerformer effectPerformer;
@@ -42,15 +41,15 @@ class EffectPerformerTest {
     @Test
     void checkingYourOwnCardReturnsTheRightCard() throws IllegalMoveException {
         effectPerformer.setTopOfDiscardValue(7);
-        player1.addCardToSpecificIndex(spadesFour, 1);
-        assertEquals(spadesFour, effectPerformer.checkOwnCard(player1, 1));
+        player1.addCardToSpecificIndex(spadesFour, 0);
+        assertEquals(spadesFour, effectPerformer.checkOwnCard(player1, 0));
     }
 
     @Test
     void usingCheckOwnCardEffectUpdatesStateToFrenzy() throws IllegalMoveException {
         effectPerformer.setTopOfDiscardValue(7);
         setupHands();
-        effectPerformer.checkOwnCard(player1, 1);
+        effectPerformer.checkOwnCard(player1, 0);
         assertEquals(Gamestate.FRENZY, turn.getGameState());
     }
 
@@ -58,7 +57,7 @@ class EffectPerformerTest {
     void usingCheckOpponentCardEffectUpdatesStateToFrenzy() throws IllegalMoveException {
         effectPerformer.setTopOfDiscardValue(9);
         setupHands();
-        effectPerformer.checkOpponentCard(player1, player2, 1);
+        effectPerformer.checkOpponentCard(player1, player2, 0);
         assertEquals(Gamestate.FRENZY, turn.getGameState());
     }
 
@@ -66,7 +65,7 @@ class EffectPerformerTest {
     void usingExchangeCardEffectUpdatesStateToFrenzy() throws IllegalMoveException {
         setupHands();
         effectPerformer.setTopOfDiscardValue(11);
-        effectPerformer.exchangeCards(player1, player1, player2,1, 1);
+        effectPerformer.exchangeCards(player1, player1, player2,0, 0);
         assertEquals(Gamestate.FRENZY, turn.getGameState());
     }
 
@@ -74,7 +73,7 @@ class EffectPerformerTest {
     void checkTwoCardsEffectUpdatesStateToKingEffect() throws IllegalMoveException {
         setupHands();
         effectPerformer.setTopOfDiscardValue(13);
-        effectPerformer.checkTwoCards(player1, player1, player2, 1, 1);
+        effectPerformer.checkTwoCards(player1, player1, player2, 0, 0);
         assertEquals(Gamestate.KING_EFFECT, turn.getGameState());
     }
 
@@ -83,7 +82,7 @@ class EffectPerformerTest {
         effectPerformer.setTopOfDiscardValue(3);
         setupHands();
         IllegalMoveException thrown = assertThrows(IllegalMoveException.class,
-                () -> effectPerformer.checkOwnCard(player1, 1),
+                () -> effectPerformer.checkOwnCard(player1, 0),
                 "Expected card value to be 7 or 8, but it wasn't"
         );
 
@@ -95,7 +94,7 @@ class EffectPerformerTest {
         effectPerformer.setTopOfDiscardValue(2);
         setupHands();
         IllegalMoveException thrown = assertThrows(IllegalMoveException.class,
-                () -> effectPerformer.checkOpponentCard(player1, player2, 1),
+                () -> effectPerformer.checkOpponentCard(player1, player2, 0),
                 "Expected card value to be 9 or 10, but it wasn't"
         );
 
@@ -107,7 +106,7 @@ class EffectPerformerTest {
         effectPerformer.setTopOfDiscardValue(6);
         setupHands();
         IllegalMoveException thrown = assertThrows(IllegalMoveException.class,
-                () -> effectPerformer.checkOwnCard(player1, 1),
+                () -> effectPerformer.checkOwnCard(player1, 0),
                 "Expected card value to be 11 or 12, but it wasn't"
         );
 
@@ -119,7 +118,7 @@ class EffectPerformerTest {
         effectPerformer.setTopOfDiscardValue(9);
         setupHands();
         IllegalMoveException thrown = assertThrows(IllegalMoveException.class,
-                () -> effectPerformer.checkTwoCards(player1, player1, player2, 1, 1),
+                () -> effectPerformer.checkTwoCards(player1, player1, player2, 0, 0),
                 "Expected card to be a black king, but it wasn't"
         );
 
@@ -141,8 +140,8 @@ class EffectPerformerTest {
         player1.addCard(cardToBeChecked);
         setupHands();
         effectPerformer.setTopOfDiscardValue(11);
-        effectPerformer.exchangeCards(player1, player1, player2, 1, 2);
-        assertEquals(cardToBeChecked, player2.getCard(2));
+        effectPerformer.exchangeCards(player1, player1, player2, 0, 1);
+        assertEquals(cardToBeChecked, player2.getCard(1));
     }
 
     @Test
@@ -151,7 +150,7 @@ class EffectPerformerTest {
         player1.addCard(cardToBeChecked);
         effectPerformer.setTopOfDiscardValue(11);
         setupHands();
-        effectPerformer.exchangeCards(player1, player1, player2, 1, 2);
+        effectPerformer.exchangeCards(player1, player1, player2, 0, 1);
         assertEquals(0, player1.findCardIndexbyCard(cardToBeChecked));
     }
 
