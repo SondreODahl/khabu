@@ -72,7 +72,7 @@ export const privateActionsDelegator = (topic, body) => {
       if (status === 'FAIL') {
         alert('You have already shown enough cards');
         break;
-      } else return revealCard(playerId, id - 1, value); // Id is 1-indexed in back-end..
+      } else return revealCard(playerId, id, value);
     case 'CARD_DRAWN_DECK':
       return drawFromDeckAndRegisterCard(parsedJSON.value);
     case 'CHECK_TWO_CARDS': {
@@ -82,11 +82,11 @@ export const privateActionsDelegator = (topic, body) => {
     }
     case 'OPPONENT_CHECK': {
       const { victim, victimCard, value } = parsedJSON;
-      return checkPlayerCard(victim, victimCard - 1, value);
+      return checkPlayerCard(victim, victimCard, value);
     }
     case 'SELF_CHECK': {
       const { playerId, targetCardIndex, value } = parsedJSON;
-      return checkPlayerCard(playerId, targetCardIndex - 1, value);
+      return checkPlayerCard(playerId, targetCardIndex, value);
     }
     default:
       alert(`privateActionsDelegator was called with ${body}`);
@@ -103,7 +103,7 @@ export const publicActionsDelegator = (topic, body) => {
       return playerDiscardedCard(parsedJSON.value);
     case 'SWAP': {
       const { targetCardIndex, value } = parsedJSON;
-      return playerSwappedCard(targetCardIndex - 1, value); // Server is 1-indexed
+      return playerSwappedCard(targetCardIndex, value); 
     }
     case 'END_TURN': {
       const { nextPlayer } = parsedJSON;
@@ -111,11 +111,11 @@ export const publicActionsDelegator = (topic, body) => {
     }
     case 'PUT': {
       const { agent, victim, victimCard, status, value } = parsedJSON;
-      return playerPutCard(agent, victim, victimCard - 1, status, value);
+      return playerPutCard(agent, victim, victimCard, status, value);
     }
     case 'TRANSFER': {
       const { victim, victimCardIndex, agentCardIndex } = parsedJSON;
-      return playerTransferredCard(victim, victimCardIndex - 1, agentCardIndex - 1);
+      return playerTransferredCard(victim, victimCardIndex, agentCardIndex);
     }
     case 'KHABU': {
       const { nextPlayer } = parsedJSON;
@@ -126,7 +126,7 @@ export const publicActionsDelegator = (topic, body) => {
     }
     case 'CHOOSE_CARD_EFFECT': {
       const { victim, card } = parsedJSON;
-      return playerChoseCard(victim, card - 1);
+      return playerChoseCard(victim, card);
     }
     case 'FINISH_EFFECT': {
       const swap  = parsedJSON.swap === "true"; // Sent as string from backend
@@ -137,7 +137,7 @@ export const publicActionsDelegator = (topic, body) => {
     }
     case 'PLAYER_CHECK_OPPONENT': {
       const { targetPlayerId, targetCardIndex } = parsedJSON;
-      return playerCheckedCard(targetPlayerId, targetCardIndex - 1);
+      return playerCheckedCard(targetPlayerId, targetCardIndex);
     }
     case 'PLAYER_CHECK_SELF': {
       const { targetCardIndex } = parsedJSON;
