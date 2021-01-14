@@ -34,10 +34,10 @@ class PlayerTest {
     @Test
     void removeCard() {
         player.addCard(testCard);
-        player.removeCard(1);
+        player.removeCard(0);
         assertFalse(player.hasCard(testCard));
         try {
-            player.removeCard(0);
+            player.removeCard(-1);
             fail();
         }
         catch (IllegalArgumentException ignored) {}

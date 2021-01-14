@@ -21,8 +21,8 @@ class ActionPerformerTest {
     Player player2;
     DiscardPile discardPile;
     CardDeck cardDeck;
-    final int firstCardId = 1;
-    final int secondCardId = 2;
+    final int firstCardId = 0;
+    final int secondCardId = 1;
 
 
     @BeforeEach
@@ -90,7 +90,7 @@ class ActionPerformerTest {
     void WrongCardOnDiscardPileResultsInDrawingExtraCard() throws IllegalMoveException {
         setupState(Gamestate.FRENZY, player1);
         player1.addCard(new Card(2, 'H'));
-        actionPerformer.putSelf(player1, 1);
+        actionPerformer.putSelf(player1, 0);
         assertEquals(2, player1.getHandSize());
     }
 

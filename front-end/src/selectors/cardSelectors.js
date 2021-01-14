@@ -33,12 +33,11 @@ export const selectCardHand = createCachedSelector(
   (hand) => hand
 )((state, props) => props.playerId);
 
-// Gets corresponding server Id for a cardId. ServerId is based on index. TODO: Coordinate Id
+// Gets corresponding server Id for a cardId. ServerId is based on index.
 export const getServerIdForCard = createCachedSelector(
   selectCardHandByPlayerId,
   selectProps,
   (hand, props) => {
-    return hand.indexOf(props.id) + 1; // Important! Looks for index of id, not the card value
-    // Server Id is 1-indexed
+    return hand.indexOf(props.id); // Important! Looks for index of id, not the card value
   }
 )((state, props) => props.id);
