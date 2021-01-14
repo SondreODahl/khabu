@@ -42,27 +42,14 @@ public class CardHand {
     }
 
     private int findSmallestAvailableIndex() {
-        if (cards.size() == 0) return 1;
+        if (cards.size() == 0 || cards.firstKey() > 0) return 0;
         for (int i = 0; i <= cards.lastKey(); i++) {
             Integer firstKeyAfterI = cards.higherKey(i);
             if (firstKeyAfterI == null || firstKeyAfterI != i+1) {
                 return i+1;
             }
         }
-        return cards.size()+1;
-//        List<Integer> keys = new ArrayList<>(cards.keySet());
-//        // Empty map means that the smallest index is 1
-//        if (cards.size() == 0) return 1;
-//        // Find the smallest index if it is not 2
-//        int lastEntry = cards.lastKey();
-//        int highestId = keys.get(keys.size()-1);
-//        for (int i = 2; i <= highestId; i++) {
-//            if (keys.get(i) - keys.get(i-1) > 1) {
-//                return keys.get(i-1)+1;
-//            }
-//        }
-//        // Increases largest current key by 1
-//        return cards.size()+1;
+        return cards.size();
     }
 
     public int calculateHandScore() {
