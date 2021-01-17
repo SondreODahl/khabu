@@ -4,6 +4,7 @@ import {
   PLAYER_JOIN_GAME,
   GET_PLAYERS_INFO,
   PLAYER_DISCONNECTED,
+  PLAYER_RECONNECTED,
 } from '../../actions/types';
 
 /* 
@@ -44,6 +45,8 @@ const disconnectedPlayers = (state = [], {type, payload}) => {
   switch (type) {
     case PLAYER_DISCONNECTED:
       return [...state, payload.playerId];
+    case PLAYER_RECONNECTED:
+      return state.filter(playerId => playerId !== payload.playerId); // Remove playerId from disconnected players
     default: return state;
   }
 }
@@ -61,6 +64,7 @@ const yourId = (state = null, { type, payload }) => {
 export default combineReducers({
   byId,
   allPlayers,
+  disconnectedPlayers,
   playerCapacity,
   yourId,
 });

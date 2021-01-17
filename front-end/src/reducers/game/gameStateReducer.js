@@ -27,6 +27,12 @@ import {
   WAIT_FOR_RECONNECT,
 } from '../../constants/gameStates';
 
+// Helper object to remember previous state
+const prevStateHolder = {
+  currentState: null,
+  putAllowed: false,
+} 
+
 // Helper method to reduce bloat in main reducer
 const newState = (currentState, putAllowed) => {
   return { currentState, putAllowed };
@@ -52,7 +58,12 @@ const gameState = (state = initialState, { type, payload }) => {
     case PUT_REVERSE:
       return newState(payload.nextState, true); // Put is always allowed if a failed put has been allowed to happened
     case PLAYER_DISCONNECTED:
+      prevStateHolder.currentState = state.currentState;
+      prevStateHolder.putAllowed = state.putAllowed;
       return newState(WAIT_FOR_RECONNECT, false);
+    case PLAYER_RECONNECTED:
+      const { currentState, putAllowed } = prevStateHolder;
+      return newState(currentState, putAllowed);
     case PUT_CARD:
       if (payload.status === 'fail') return newState(PUT_FAIL, false);
       if (payload.agent === payload.victim) return newState(PUT, true); // A put-self case. Cannot transfer to yourself.

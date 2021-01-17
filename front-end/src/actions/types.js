@@ -17,7 +17,9 @@ export const UPDATE_PLAYERS_READY = 'UPDATE_PLAYERS_READY';
 
 // -------------------- players -----------------------------
 export const GET_PLAYERS_INFO = 'GET_PLAYERS_INFO';
+export const PLAYER_DISCONNECTED = 'PLAYER_DISCONNECTED';
 export const PLAYER_JOIN_GAME = 'PLAYER_JOIN_GAME';
+export const PLAYER_RECONNECTED = 'PLAYER_RECONNECTED';
 
 // ------------------ Round ------------------------------
 export const ALL_PLAYERS_READY = 'ALL_PLAYERS_READY';
@@ -45,7 +47,6 @@ export const END_TURN = 'END_TURN';
 export const DISCARD_CARD = 'DISCARD_CARD';
 export const DRAW_FROM_DECK = 'DRAW_FROM_DECK';
 export const PLAYER_CALLED_KHABU = 'PLAYER_CALLED_KHABU';
-export const PLAYER_DISCONNECTED = 'PLAYER_DISCONNECTED';
 export const PUT_REVERSE = 'PUT_REVERSE';
 export const SUCCESSFUL_PUT_OTHER = 'SUCCESSFUL_PUT_OTHER';
 export const SUCCESSFUL_PUT_SELF = 'SUCCESSFUL_PUT_SELF';
