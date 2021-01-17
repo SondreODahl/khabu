@@ -4,22 +4,21 @@ import java.util.*;
 
 public class Game {
     private String roomId;
-    private Player[] players;
-    private int playersAdded = 0;
-    static private final int NUM_OF_PLAYERS = 2;
+    private ArrayList<Player> players;
     private final int INIT_STARTING_HAND = 4;
     public static int REVEAL_TIME = 7*1000;
-    private final Map<Player, Integer> playerTotalScores = new HashMap<>();;
+    public static int NUM_OF_PLAYERS = 2;
+    private final Map<Player, Integer> playerTotalScores = new HashMap<>();
     private Round currentRound;
 
-    public Game(String roomId, int numOfPlayers) {
+    public Game(String roomId) {
         this.roomId = roomId;
-        this.players = new Player[numOfPlayers];
+        this.players = new ArrayList<>();
     }
 
-    public Game(String roomId, int NUM_OF_PLAYERS, int REVEAL_TIME) {
+    public Game(String roomId, int REVEAL_TIME) {
         this.roomId = roomId;
-        this.players = new Player[NUM_OF_PLAYERS];
+        this.players = new ArrayList<>();
         Game.REVEAL_TIME = REVEAL_TIME;
     }
 
@@ -43,32 +42,23 @@ public class Game {
     public void addPlayer(Player player) {
         if (player == null)
             throw new IllegalArgumentException("Player cannot be null");
-        if (playersAdded == NUM_OF_PLAYERS)
+        if (players.size() == NUM_OF_PLAYERS)
             throw new IllegalStateException("Added maximum amount of players");
         playerTotalScores.put(player, 0);
-        players[playersAdded] = player;
-        playersAdded++;
+        players.add(player);
     }
 
     public void removePlayer(Player player) {
-        List<Player> players = new ArrayList<>(Arrays.asList(this.players));
         players.remove(player);
-        this.players = players.toArray(new Player[0]);
-        // TODO: Possible to do with streams?
-        // Arrays.stream(players).filter(p -> !p.equals(player))
     }
 
 
-    public Player[] getPlayers() {
+    public ArrayList<Player> getPlayers() {
         return players;
     }
 
     public Player getPlayer(int index) {
-        return players[index-1];
-    }
-
-    public static int getNumOfPlayers() {
-        return NUM_OF_PLAYERS;
+        return players.get(index);
     }
 
     public int getINIT_STARTING_HAND() {
@@ -77,9 +67,5 @@ public class Game {
 
     public Round getRound() {
         return currentRound;
-    }
-
-    public int getPlayersAdded() {
-        return playersAdded;
     }
 }

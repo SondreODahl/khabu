@@ -11,6 +11,8 @@ import com.khabu.cardgame.model.game.effect.Effect;
 import com.khabu.cardgame.model.game.effect.EffectPerformer;
 import com.khabu.cardgame.util.IllegalMoveException;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,7 +24,7 @@ public class Round {
     private ActionPerformer actionPerformer;
     private EffectPerformer effectPerformer;
     private final Game game;
-    private final Player[] players;
+    private final ArrayList<Player> players;
 
     private boolean roundStarted;
     private final Map<Player, Boolean> playersReady = new HashMap<>();
@@ -32,7 +34,7 @@ public class Round {
     private final int INIT_HAND_SIZE;
 
 
-    private Round(Game game, Player[] players, int INIT_HAND_SIZE) {
+    private Round(Game game, ArrayList<Player> players, int INIT_HAND_SIZE) {
         validateHandSize(INIT_HAND_SIZE);
         this.INIT_HAND_SIZE = INIT_HAND_SIZE;
         this.players = players;
@@ -40,14 +42,14 @@ public class Round {
         this.game = game;
         resetMaps();
     }
-    public static Round Constructor(Game game, Player[] players, int INIT_HAND_SIZE, int REVEAL_TIME) { // TODO: Change this implementation
+    public static Round Constructor(Game game, ArrayList<Player> players, int INIT_HAND_SIZE, int REVEAL_TIME) { // TODO: Change this implementation
         Round round = new Round(game, players, INIT_HAND_SIZE);
         round.actionPerformer = new ActionPerformer(round.turn, round.cardDeck, round.discardPile, round);
         round.effectPerformer = new EffectPerformer(round.turn, round.discardPile, round);
         return round;
     }
     public static Round DummyConstructor() { // TODO: Change?
-        return new Round(new Game("abc", 2), new Player[]{}, 4);
+        return new Round(new Game("abc", 2), new ArrayList<Player>(){}, 4);
     }
 
     // ------------------------------ METHODS ------------------------------------------
@@ -242,8 +244,8 @@ public class Round {
         return discardPile;
     }
 
-    public Player[] getPlayers() {
-        return this.players.clone();
+    public ArrayList<Player> getPlayers() {
+        return new ArrayList<>(Arrays.asList((Player[]) this.players.clone()));
     }
 
     public boolean getStarted() {
@@ -255,7 +257,7 @@ public class Round {
     }
 
     public Player getPlayerById(int id) {
-        return this.players[id-1];
+        return this.players.get(id);
     }
 
     // EFFECT GETTERS USED TO REDUCE LENGTH OF MESSAGES BETWEEN SERVER AND CLIENT

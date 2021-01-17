@@ -3,20 +3,22 @@ package com.khabu.cardgame.model.game;
 import com.khabu.cardgame.model.game.action.Gamestate;
 import com.khabu.cardgame.util.IllegalMoveException;
 
+import java.util.ArrayList;
+
 public class Turn {
     private Player currentPuttingPlayer;
-    private Player[] players;
+    private ArrayList<Player> players;
     private int currentPlayer;
     private Gamestate gameState;
     private Player khabuPlayer;
 
-    public Turn(Player[] players) {
+    public Turn(ArrayList<Player> players) {
         this.players = players;
         currentPlayer = 0; // TODO: Randomize starting player
     }
 
     public void nextPlayer() {
-        currentPlayer = (currentPlayer + 1) % players.length;
+        currentPlayer = (currentPlayer + 1) % players.size();
         currentPuttingPlayer = null;
     }
 
@@ -37,12 +39,12 @@ public class Turn {
     }
 
     public Player getCurrentPlayer() {
-        return players[currentPlayer];
+        return players.get(currentPlayer);
     }
 
     public void setCurrentPlayer(Player newCurrentPlayer) {
-        for (int i = 0; i < players.length; i++) {
-            if (players[i] == newCurrentPlayer) {
+        for (int i = 0; i < players.size(); i++) {
+            if (players.get(i) == newCurrentPlayer) {
                 this.currentPlayer = i;
                 return;
             }
