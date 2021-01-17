@@ -2,7 +2,7 @@ export * from './formActions';
 export * from './API/clientActions';
 export * from './roundActions';
 export * from './turnActions';
-export * from './delegators/actionDelegator';
+export * from './delegators';
 export * from './cardActions';
 export * from './effectActions';
 export * from './inGameActions';
