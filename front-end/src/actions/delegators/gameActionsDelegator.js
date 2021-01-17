@@ -1,4 +1,4 @@
-import { playerJoinedGame } from '../../actions/playerActions';
+import { playerDisconnected, playerJoinedGame } from '../../actions/playerActions';
 
 const gameActionsDelegator = (topic, body) => {
   const parsedJSON = JSON.parse(body);
@@ -7,6 +7,8 @@ const gameActionsDelegator = (topic, body) => {
     case 'PLAYERS_INFO':
     case 'PLAYER_RECONNECT':
     case 'PLAYER_DISCONNECT':
+        const { playerId: disconnectedPlayerId } = parsedJSON;
+        return playerDisconnected(disconnectedPlayerId);
     default:
       const { playerId, playerName } = parsedJSON;
       const capacityReached = parsedJSON.capacityReached === 'true'; // BACKEND SENDS STRING VALUES

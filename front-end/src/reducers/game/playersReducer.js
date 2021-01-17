@@ -3,6 +3,7 @@ import {
   BEGIN_GAME,
   PLAYER_JOIN_GAME,
   GET_PLAYERS_INFO,
+  PLAYER_DISCONNECTED,
 } from '../../actions/types';
 
 /* 
@@ -38,6 +39,14 @@ const allPlayers = (state = [], { type, payload }) => {
       return state;
   }
 };
+
+const disconnectedPlayers = (state = [], {type, payload}) => {
+  switch (type) {
+    case PLAYER_DISCONNECTED:
+      return [...state, payload.playerId];
+    default: return state;
+  }
+}
 
 const playerCapacity = (state = null, { type, payload }) => {
   if (type === BEGIN_GAME) return payload;

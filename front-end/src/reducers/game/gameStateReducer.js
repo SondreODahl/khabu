@@ -5,6 +5,7 @@ import {
   END_TURN,
   FINISH_EFFECT,
   PLAYER_CALLED_KHABU,
+  PLAYER_DISCONNECTED,
   PUT_CARD,
   PUT_REVERSE,
   ROUND_END,
@@ -23,6 +24,7 @@ import {
   PUT_FAIL,
   TRANSFER,
   USING_EFFECT,
+  WAIT_FOR_RECONNECT,
 } from '../../constants/gameStates';
 
 // Helper method to reduce bloat in main reducer
@@ -49,6 +51,8 @@ const gameState = (state = initialState, { type, payload }) => {
     case FINISH_EFFECT:
     case PUT_REVERSE:
       return newState(payload.nextState, true); // Put is always allowed if a failed put has been allowed to happened
+    case PLAYER_DISCONNECTED:
+      return newState(WAIT_FOR_RECONNECT, false);
     case PUT_CARD:
       if (payload.status === 'fail') return newState(PUT_FAIL, false);
       if (payload.agent === payload.victim) return newState(PUT, true); // A put-self case. Cannot transfer to yourself.

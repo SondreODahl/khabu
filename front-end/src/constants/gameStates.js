@@ -21,3 +21,4 @@ export const PUT = 'PUT';
 export const PUT_FAIL = 'PUT_FAIL';
 export const TRANSFER = 'TRANSFER';
 export const USING_EFFECT = 'USING_EFFECT';
+export const WAIT_FOR_RECONNECT = 'WAIT_FOR_RECONNECT';
