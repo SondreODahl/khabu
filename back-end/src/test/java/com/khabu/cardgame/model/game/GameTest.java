@@ -5,6 +5,8 @@ import com.khabu.cardgame.util.IllegalMoveException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -18,7 +20,7 @@ class GameTest {
     void setUp() {
         player1 = new Player("1", 1, "werwer");
         player2 = new Player("2", 2, "aqwea");
-        game = new Game("My-room-id", 2, 10);
+        game = new Game("My-room-id", 10);
     }
 
     @Test
@@ -56,7 +58,7 @@ class GameTest {
         game.getRound().performAction(player1, Actions.CALL_KHABU);
         game.getRound().performAction(player2, Actions.DRAW_FROM_DECK);
         game.getRound().performAction(player2, Actions.DISCARD);
-        Player[] players = game.getPlayers();
+        ArrayList<Player> players = game.getPlayers();
         for (Player player : game.getPlayers()) {
             assertEquals(0, game.getTotalScore(player));
         }

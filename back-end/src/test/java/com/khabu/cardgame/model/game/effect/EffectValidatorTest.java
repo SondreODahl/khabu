@@ -6,6 +6,9 @@ import com.khabu.cardgame.model.game.action.Gamestate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class EffectValidatorTest {
@@ -18,7 +21,7 @@ class EffectValidatorTest {
     public void setup() {
         player = new Player("Sandy", 1, "James");
         opponent = new Player("Tim", 2, "asdqwe");
-        Player[] players = new Player[]{player, opponent};
+        ArrayList<Player> players = new ArrayList<>(Arrays.asList(player, opponent));
         turn = new Turn(players);
         turn.setGameState(Gamestate.USE_EFFECT);
         turn.setCurrentPlayer(player);
