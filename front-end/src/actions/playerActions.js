@@ -1,4 +1,10 @@
-import { BEGIN_GAME, PLAYER_JOIN_GAME, GET_PLAYERS_INFO, PLAYER_DISCONNECTED, PLAYER_RECONNECTED } from './types';
+import {
+  BEGIN_GAME,
+  PLAYER_JOIN_GAME,
+  GET_PLAYERS_INFO,
+  PLAYER_DISCONNECTED,
+  PLAYER_RECONNECTED,
+} from './types';
 
 // Called upon joining the game. Stores info about playerIds
 export const retrievePlayers = (response) => {
@@ -15,11 +21,14 @@ export const playerDisconnected = (playerId) => {
   return {
     type: PLAYER_DISCONNECTED,
     payload: { playerId },
-  }
+  };
 };
 
 // For players that join after you. Function is a thunk because it needs state from another part of store.
-export const playerJoinedGame = (playerId, playerName, capacityReached) => (dispatch, getState) => {
+export const playerJoinedGame = (playerId, playerName, capacityReached) => (
+  dispatch,
+  getState
+) => {
   dispatch({
     type: PLAYER_JOIN_GAME, // Action each time a player joins. Broadcast by them.
     payload: { playerId, playerName },
@@ -34,5 +43,5 @@ export const playerReconnected = (playerId) => {
   return {
     type: PLAYER_RECONNECTED,
     payload: { playerId },
-  }
-}
+  };
+};
