@@ -1,19 +1,19 @@
-import { playerDrewFromDeck } from './cardActions';
+import { playerDrewFromDeck } from '../cardActions';
 import {
   playerCalledKhabu,
   playerDiscardedCard,
   playerPutCard,
   playerSwappedCard,
   playerTransferredCard,
-} from './inGameActions';
-import { endTurn } from './turnActions';
+} from '../inGameActions';
+import { endTurn } from '../turnActions';
 import {
   activateEffect,
   playerChoseCard,
   playerFinishedEffect,
   playerCheckedCard,
   playerExchangedCards,
-} from './effectActions';
+} from '../effectActions';
 /*   public -  Messages everyone receives during gameplay.
             Types: DECK / DISCARD / SWAP / END_TURN / PUT / TRANSFER / KHABU / ACTIVATE_EFFECT / 
             CHOOSE_CARD_EFFECT / PLAYER_CHECK_OPPONENT / PLAYER_CHECK_SELF / FINISH_EFFECT

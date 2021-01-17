@@ -3,7 +3,7 @@ import {
   initializeRound,
   startRound,
   updatePlayersReady,
-} from './roundActions';
+} from '../roundActions';
 
 /*
     round  -  Messages related to the flow of a round.

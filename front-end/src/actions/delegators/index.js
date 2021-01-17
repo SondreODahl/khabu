@@ -1,6 +1,6 @@
-import { roundActionDelegator } from './roundActionDelegator';
-import { privateActionsDelegator } from './privateActionsDelegator';
-import { publicActionsDelegator } from './publicActionsDelegator';
+export * from './privateActionsDelegator';
+export * from './publicActionsDelegator';
+export * from './roundActionDelegator';
 
 /*
   Action delegators for each subscription path related to the game flow.
@@ -15,7 +15,4 @@ import { publicActionsDelegator } from './publicActionsDelegator';
             CHOOSE_CARD_EFFECT / PLAYER_CHECK_OPPONENT / PLAYER_CHECK_SELF / FINISH_EFFECT
 */
 
-export * from privateActionsDelegator;
-export * from publicActionsDelegator;
-export * from roundActionDelegator;
 

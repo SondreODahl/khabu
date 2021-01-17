@@ -1,11 +1,11 @@
 import {
   drawFromDeckAndRegisterCard,
   revealCard,
-} from './cardActions';
+} from '../cardActions';
 import {
   checkPlayerCard,
   revealChosenCards,
-} from './effectActions';
+} from '../effectActions';
 /*
     private - Messages only you receive during gameplay. 
             Types: ERROR / REVEAL / CARD_DRAWN / OPPONENT_CHECK / SELF_CHECK
