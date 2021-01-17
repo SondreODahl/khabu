@@ -1,6 +1,6 @@
 export * from './privateActionsDelegator';
 export * from './publicActionsDelegator';
-export * from './roundActionDelegator';
+export * from './roundActionsDelegator';
 
 /*
   Action delegators for each subscription path related to the game flow.

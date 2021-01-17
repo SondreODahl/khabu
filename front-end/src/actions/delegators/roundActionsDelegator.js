@@ -10,7 +10,7 @@ import {
         Types: READY / INITIALIZE / BEGIN / END
 */
 
-export const roundActionDelegator = (topic, body) => {
+export const roundsActionDelegator = (topic, body) => {
   const parsedJSON = JSON.parse(body);
   const type = parsedJSON.type;
   switch (type) {

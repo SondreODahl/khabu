@@ -9,7 +9,7 @@ import { playerJoinedGame } from '../../../actions/playerActions';
 import {
   privateActionsDelegator,
   publicActionsDelegator,
-  roundActionDelegator,
+  roundsActionDelegator,
 } from '../../../actions/delegators';
 import {
   selectOpponentId,
@@ -32,7 +32,7 @@ const GamePage = () => {
     body: yourId,
   }); // Will publish the username to everyone when subscribed
   useSubscribe('/topic/game/flow', gameActionsDelegator, publishUserName);
-  useSubscribe('/topic/round/flow', roundActionDelegator);
+  useSubscribe('/topic/round/flow', roundsActionDelegator);
   useSubscribe(`/topic/round/actions/${yourId}`, privateActionsDelegator);
   useSubscribe('/topic/round/actions', publicActionsDelegator);
 
