@@ -5,11 +5,13 @@ import java.util.*;
 public class Game {
     private String roomId;
     private ArrayList<Player> players;
+    private ArrayList<Player> connectedPlayers;
     private final int INIT_STARTING_HAND = 4;
     public static int REVEAL_TIME = 7*1000;
     public static int NUM_OF_PLAYERS = 2;
     private final Map<Player, Integer> playerTotalScores = new HashMap<>();
     private Round currentRound;
+    private boolean gameInitialized = false;
 
     public Game(String roomId) {
         this.roomId = roomId;
@@ -19,10 +21,12 @@ public class Game {
     public Game(String roomId, int REVEAL_TIME) {
         this.roomId = roomId;
         this.players = new ArrayList<>();
+        this.connectedPlayers = new ArrayList<>();
         Game.REVEAL_TIME = REVEAL_TIME;
     }
 
     public void beginGame() {
+        setGameInitialized();
         this.currentRound = Round.Constructor(this, players, INIT_STARTING_HAND, REVEAL_TIME);
     }
 
@@ -67,5 +71,25 @@ public class Game {
 
     public Round getRound() {
         return currentRound;
+    }
+
+    private void setGameInitialized() {
+        this.gameInitialized = true;
+    }
+
+    public boolean isGameInitialized() {
+        return gameInitialized;
+    }
+
+    public int getConnectedPlayersSize() {
+        return connectedPlayers.size();
+    }
+
+    public void removeConnectedPlayer(Player player) {
+        connectedPlayers.remove(player);
+    }
+
+    public void addConnectedPlayer(Player player) {
+        connectedPlayers.add(player);
     }
 }

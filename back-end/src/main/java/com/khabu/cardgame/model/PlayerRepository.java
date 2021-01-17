@@ -8,25 +8,28 @@ import java.util.Map;
 
 @Component
 public class PlayerRepository {
-    private Map<Integer, Player> players = new HashMap<>();
-    public static int PLAYER_ID_COUNT = 1;
+    private Map<String, Player> players = new HashMap<>();
 
-    public void addPlayer(int id, Player player) {
-        players.put(id, player);
+    public void addPlayer(String sessionId, Player player) {
+        players.put(sessionId, player);
     }
 
-    public void removePlayer(int id) {
-        players.remove(id);
+    public void removePlayer(String sessionId) {
+        players.remove(sessionId);
     }
 
-    public Map<Integer, Player> getPlayers() {
+    public Player getPlayer(String sessionId) {
+        return players.get(sessionId);
+    }
+
+    public Map<String, Player> getPlayers() {
         return players;
     }
 
     public Map<Object, String> getPlayerNamesAndIds() {
         Map<Object, String> output = new HashMap<>();
-        for (int id:players.keySet()) {
-            output.put(Integer.toString(id), players.get(id).getName());
+        for (String sessionId:players.keySet()) {
+            output.put(players.get(sessionId).getPlayerId(), players.get(sessionId).getName());
         }
         return output;
     }

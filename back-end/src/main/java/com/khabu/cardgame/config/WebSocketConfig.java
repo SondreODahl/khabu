@@ -5,11 +5,22 @@ import com.khabu.cardgame.websocketutil.CustomHandshakeHandler;
 import com.khabu.cardgame.websocketutil.HttpHandshakeInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.server.ServerHttpRequest;
+import org.springframework.http.server.ServerHttpResponse;
+import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
+import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
+import org.springframework.web.socket.server.HandshakeInterceptor;
 import org.springframework.web.socket.server.standard.ServletServerContainerFactoryBean;
+import org.springframework.web.util.WebUtils;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.Map;
 
 // Sets up websocket endpoint on /ws.
 // /topic is used for all channels that broadcast to all users
@@ -19,12 +30,11 @@ import org.springframework.web.socket.server.standard.ServletServerContainerFact
 @Configuration
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer{
+    // TODO: Add custom handshake handlers and interceptors
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/ws").addInterceptors(new HttpHandshakeInterceptor())
-                .setHandshakeHandler(new CustomHandshakeHandler()).setAllowedOrigins("*");
-        registry.addEndpoint("/ws").addInterceptors(new HttpHandshakeInterceptor())
-                .setHandshakeHandler(new CustomHandshakeHandler()).setAllowedOrigins("*").withSockJS();
+        registry.addEndpoint("/ws").addInterceptors(new HttpHandShakeInterceptor()).setAllowedOrigins("*");
+        registry.addEndpoint("/ws").setAllowedOrigins("*").withSockJS();
     }
 
     @Override
@@ -39,5 +49,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer{
         container.setMaxSessionIdleTimeout(900000L);
         return container;
     }
+
 
 }
