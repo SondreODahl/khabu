@@ -4,11 +4,14 @@ import com.khabu.cardgame.util.IllegalMoveException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class TurnTest {
 
-    Player[] players = {new Player("player1", 1, "qweasd"), new Player("player", 2, "qweasd")};
+    ArrayList<Player> players = new ArrayList<>(Arrays.asList(new Player("player1", 1, "qweasd"), new Player("player", 2, "qweasd")));
     private Turn turn;
 
     @BeforeEach
@@ -18,13 +21,13 @@ class TurnTest {
 
     @Test
     void NextTurnLoop() {
-        turn.setCurrentPlayer(players[0]);
+        turn.setCurrentPlayer(players.get(0));
         turn.nextPlayer();
         Player currentPlayer = turn.getCurrentPlayer();
-        assertEquals(players[1], currentPlayer);
+        assertEquals(players.get(1), currentPlayer);
         turn.nextPlayer();
         currentPlayer = turn.getCurrentPlayer();
-        assertEquals(players[0], currentPlayer);
+        assertEquals(players.get(0), currentPlayer);
     }
 
     @Test
@@ -38,8 +41,8 @@ class TurnTest {
 
     @Test
     void GetCurrentPlayer() {
-        turn.setCurrentPlayer(players[1]);
-        assertEquals(players[1], turn.getCurrentPlayer());
+        turn.setCurrentPlayer(players.get(1));
+        assertEquals(players.get(1), turn.getCurrentPlayer());
     }
 
     @Test
@@ -49,9 +52,9 @@ class TurnTest {
 
     @Test
     void SettingKhabuPlayerTwice() throws IllegalMoveException {
-        turn.setKhabuPlayer(players[0]);
+        turn.setKhabuPlayer(players.get(0));
         try {
-            turn.setKhabuPlayer(players[0]);
+            turn.setKhabuPlayer(players.get(0));
             fail();
         } catch (IllegalMoveException ignored) {
         }
@@ -59,8 +62,8 @@ class TurnTest {
 
     @Test
     void CurrentPuttingPlayerResetOnNextTurn() {
-        turn.setCurrentPuttingPlayer(players[0]);
-        assertEquals(players[0], turn.getCurrentPuttingPlayer());
+        turn.setCurrentPuttingPlayer(players.get(0));
+        assertEquals(players.get(0), turn.getCurrentPuttingPlayer());
         turn.nextPlayer();
         assertNull(turn.getCurrentPuttingPlayer());
     }

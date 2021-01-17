@@ -12,6 +12,9 @@ import com.khabu.cardgame.util.IllegalMoveException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import static org.junit.jupiter.api.Assertions.*;
 class EffectPerformerTest {
 
@@ -27,7 +30,7 @@ class EffectPerformerTest {
     void setUp() {
         player1 = new Player("Player1", 1, "asdasd");
         player2 = new Player("Player2", 1, "awqesaq");
-        Player[] players = new Player[]{player1, player2};
+        ArrayList<Player> players = new ArrayList<>(Arrays.asList(player1, player2));
         turn = new Turn(players);
         discardPile = new DiscardPile();
         effectPerformer = new EffectPerformer(turn, discardPile, Round.DummyConstructor());

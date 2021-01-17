@@ -7,10 +7,14 @@ import java.util.List;
 
 @Component
 public class GameRepository {
-    List<Game> games = new ArrayList<>();
+    private List<Game> games = new ArrayList<>();
 
     public void addGame(Game game) {
         games.add(game);
+    }
+
+    public void removeGame(Game game) {
+        games.remove(game);
     }
 
     public List<Game> getGames() {

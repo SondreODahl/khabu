@@ -7,6 +7,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class ActionValidatorTest {
@@ -20,7 +23,7 @@ class ActionValidatorTest {
     public void setup() {
         player = new Player("Sandy", 1, "James");
         opponent = new Player("Tim", 2, "asdqwe");
-        Player[] players = new Player[]{player, opponent};
+        ArrayList<Player> players = new ArrayList<>(Arrays.asList(player, opponent));
         turn = new Turn(players);
     }
 

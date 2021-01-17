@@ -111,7 +111,7 @@ public class GameController {
                 jsonOutput);
 
         // Start game if all players ready
-        if (game.getRound().getPlayersReady() == Game.getNumOfPlayers()) {
+        if (game.getRound().getPlayersReady() == Game.NUM_OF_PLAYERS) {
             output.clear();
             // Populate output with correct data
             output.put("type", "INITIALIZE");
@@ -144,12 +144,12 @@ public class GameController {
       
         // Add player to game and update player sessionId
         String sessionId = Objects.requireNonNull(headerAccessor.getSessionAttributes()).get("sessionId").toString();
-        Player joiningPlayer = playerRepository.getPlayers().get(playerId);
+        Player joiningPlayer = playerRepository.getPlayers().get(sessionId);
         joiningPlayer.setSessionId(sessionId);
         headerAccessor.setSessionId(sessionId);
         game.addPlayer(joiningPlayer);
 
-        String capacityReached = game.getPlayersAdded() == Game.getNumOfPlayers() ? "true" : "false";
+        String capacityReached = game.getPlayers().size() == Game.NUM_OF_PLAYERS ? "true" : "false";
         if (capacityReached.equals("true")) {
             game.beginGame();
         }
