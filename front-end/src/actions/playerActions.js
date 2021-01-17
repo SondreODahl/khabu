@@ -11,10 +11,7 @@ export const retrievePlayers = (response) => {
 };
 
 // For players that join after you. Function is a thunk because it needs state from another part of store.
-export const playerJoinedGame = (topic, json) => (dispatch, getState) => {
-  const parsedJSON = JSON.parse(json);
-  const { playerId, playerName } = parsedJSON;
-  const capacityReached = parsedJSON.capacityReached === 'true'; // BACKEND SENDS STRING VALUES
+export const playerJoinedGame = (playerId, playerName, capacityReached) => (dispatch, getState) => {
   dispatch({
     type: PLAYER_JOIN_GAME, // Action each time a player joins. Broadcast by them.
     payload: { playerId, playerName },
