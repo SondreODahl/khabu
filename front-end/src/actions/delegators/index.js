@@ -13,6 +13,8 @@ export * from './roundActionDelegator';
   public -  Messages everyone receives during gameplay.
             Types: DECK / DISCARD / SWAP / END_TURN / PUT / TRANSFER / KHABU / ACTIVATE_EFFECT / 
             CHOOSE_CARD_EFFECT / PLAYER_CHECK_OPPONENT / PLAYER_CHECK_SELF / FINISH_EFFECT
+  game   -  Messages received related to the flow of an entire game, regardless of row.
+            Types: PLAYERS_INFO / PLAYER_DISCONNECT / PLAYER_RECONNECT
 */
 
 

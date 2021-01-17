@@ -19,6 +19,7 @@ import {
 import GameInterface from './game-interface/GameInterface';
 import WaitingPage from '../waiting-page/WaitingPage';
 import GamePageError from './GamePageError';
+import gameActionsDelegator from '../../../actions/delegators/gameActionsDelegator';
 
 // Main component for handling a game of khabu. Cycles between states and renders the correct components
 // Also subscribes to the relevant channels. Is loaded upon submitting a username.
@@ -30,7 +31,7 @@ const GamePage = () => {
     destination: '/app/game/flow',
     body: yourId,
   }); // Will publish the username to everyone when subscribed
-  useSubscribe('/topic/game/flow', playerJoinedGame, publishUserName);
+  useSubscribe('/topic/game/flow', gameActionsDelegator, publishUserName);
   useSubscribe('/topic/round/flow', roundActionDelegator);
   useSubscribe(`/topic/round/actions/${yourId}`, privateActionsDelegator);
   useSubscribe('/topic/round/actions', publicActionsDelegator);
