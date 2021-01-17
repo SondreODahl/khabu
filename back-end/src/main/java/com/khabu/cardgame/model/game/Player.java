@@ -5,7 +5,7 @@ import com.khabu.cardgame.model.game.card.CardHand;
 
 public class Player {
     private String name;
-    String sessionId;
+    private String sessionId;
     private int playerId;
     private CardHand cardHand;
     private boolean ready = false;
