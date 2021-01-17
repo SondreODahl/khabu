@@ -1,6 +1,6 @@
-import { roundActionDelegator } from './delegators/roundActionDelegator';
-import { privateActionsDelegator } from './delegators/privateActionsDelegator';
-import { publicActionsDelegator } from './delegators/publicActionsDelegator';
+import { roundActionDelegator } from './roundActionDelegator';
+import { privateActionsDelegator } from './privateActionsDelegator';
+import { publicActionsDelegator } from './publicActionsDelegator';
 
 /*
   Action delegators for each subscription path related to the game flow.

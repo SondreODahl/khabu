@@ -10,7 +10,7 @@ import {
   privateActionsDelegator,
   publicActionsDelegator,
   roundActionDelegator,
-} from '../../../actions/actionDelegator';
+} from '../../../actions/delegators/actionDelegator';
 import {
   selectOpponentId,
   selectRoundState,
