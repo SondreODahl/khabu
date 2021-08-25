@@ -31,6 +31,6 @@ jobs:
       with:
         app-name: khabu
         slot-name: Production
-        publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_436DB01B376843C1A5BF43F8EB2CCC75 }}
+        publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_603C5C06647B4029BA61349208DF4B11 }}
         package: ${{ github.workspace }}/target/*.jar
 
