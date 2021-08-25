@@ -7,6 +7,9 @@ on:
   push:
     branches:
       - master
+  pull_request:
+    branches:
+      - master
 
 jobs:
   build-and-deploy:
@@ -22,10 +25,38 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: '8'
-
-    - name: Build with Maven
-      run: mvn clean install
-
+        
+    - name: Add node and maven
+      run: |
+        echo "Updating with apt..."
+        apt update -y
+        echo "Installing Node 12..."
+        curl -sL https://deb.nodesource.com/setup_12.x | bash -
+        apt install -y nodejs
+        echo "Installing Yarn..."
+        curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+        echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+        apt install --no-install-recommends yarn
+        echo "Installing maven..."
+        apt install -y maven
+        
+    - name: Install front-end dependencies
+      run: |
+        echo "Installing dependencies..."
+        cd front-end
+        yarn
+        
+    - name: Build maven
+      run: |
+        echo "Testing..."
+        ls
+        yarn test --watchAll=false --passWithNoTests # NB NEED TO HAVE WATCHALL
+        echo "Building..."
+        yarn build
+        cd ../back-end
+        echo "Running Mvn clean install"
+        mvn clean install
+        
     - name: Run Azure webapp deploy action using publish profile credentials
       uses: azure/webapps-deploy@v2
       with:
