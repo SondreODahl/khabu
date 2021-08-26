@@ -15,10 +15,10 @@ RUN apk add nodejs && \
     apk add yarn && \
     apk add maven
 COPY ./front-end/package.json /usr/src/khabu/front-end/
+WORKDIR /usr/src/khabu/front-end
 RUN yarn
 
 COPY . /usr/src/khabu
-WORKDIR /usr/src/khabu/front-end
 RUN yarn build
 
 WORKDIR /usr/src/khabu/back-end
