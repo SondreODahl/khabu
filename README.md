@@ -1,9 +1,10 @@
 # Khabu
-A digitalized version of the card game Khabu. You can find the rules [here](http://khabu.eu-north-1.elasticbeanstalk.com/rules)
+A digitalized version of the card game Khabu. You can find the rules [here](https://khabu.azurewebsites.net)
 
 ## Technologies
 The game is made with React Redux and Spring Boot. To handle real-time interactions we use the WebSocket protocol with Stomp.
-To build and deploy our application we set up an AWS Codepipeline and use Elastic Beanstalk to deploy. 
+~~To build and deploy our application we set up an AWS Codepipeline and use Elastic Beanstalk to deploy.~~
+The application is now hosted on Azure App Service instead via a custom Docker container
 
 ### External Libraries
 
