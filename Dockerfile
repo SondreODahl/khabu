@@ -1,18 +1,25 @@
 FROM openjdk:8-jdk-alpine
-EXPOSE 8080 3000
+EXPOSE 8080 2222
 
-RUN apk update && apk upgrade 
+ENV SSH_PASSWD "root:Docker!"
+RUN apk update && apk upgrade && \
+    apk add dialog && \
+    apk add --no-cache openssh-server && \
+    apk add openrc && \
+    echo "$SSH_PASSWD" | chpasswd
+COPY sshd_config /etc/ssh/
+COPY init.sh /usr/local/bin/
+RUN chmod u+x /usr/local/bin/init.sh
+
 RUN apk add nodejs && \
     apk add yarn && \
     apk add maven
 
 COPY . /usr/src/khabu
-
 WORKDIR /usr/src/khabu/front-end
-RUN yarn && yarn build
+RUN yarn build
 
 WORKDIR /usr/src/khabu/back-end
 RUN mvn clean install
-RUN ls
 
-ENTRYPOINT ["java","-jar","/usr/src/khabu/back-end/target/cardgame-0.0.1-SNAPSHOT.jar"]
+ENTRYPOINT [ "init.sh" ]
