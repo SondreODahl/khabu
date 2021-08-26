@@ -16,6 +16,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Check out code
+      uses: actions/checkout@v2
     - uses: azure/docker-login@v1
       with:
         login-server: khabu.azurecr.io
@@ -23,7 +25,6 @@ jobs:
         password: ${{ secrets.REGISTRY_PASSWORD }}
 
     - run: |
-        ls  
         docker build . -t khabu.azurecr.io/khabu:latest
         docker push khabu.azurecr.io/khabu:latest
 
