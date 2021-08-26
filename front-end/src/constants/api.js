@@ -7,8 +7,8 @@ const dev = {
 
 const prod = {
   url: {
-    API_URL: 'http://khabu.eu-north-1.elasticbeanstalk.com',
-    WEB_SOCKET_URL: 'ws://khabu.eu-north-1.elasticbeanstalk.com/ws',
+    API_URL: 'https://khabu.azurewebsites.net',
+    WEB_SOCKET_URL: 'wss://khabu.azurewebsites.net/ws',
   },
 };
 
