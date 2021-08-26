@@ -1,6 +1,5 @@
 package com.khabu.cardgame.controllers;
 
-
 import com.khabu.cardgame.model.PlayerRepository;
 import com.khabu.cardgame.model.game.Game;
 import com.khabu.cardgame.model.game.GameRepository;
@@ -18,7 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
-
 @RestController
 public class ApiController {
 
@@ -32,12 +30,12 @@ public class ApiController {
         this.gameRepository = gameRepository;
     }
 
-    @RequestMapping(value="/api/hello", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/api/hello", method = RequestMethod.GET, produces = "application/json")
     public String hello() {
         return "Hei på deg T, logg inn på Oracle her :)";
     }
 
-    @RequestMapping(value="/api/player", method=RequestMethod.POST)
+    @RequestMapping(value="/api/player", method=RequestMethod.POST, produces = "application/json")
     public Map<String, Object> createPlayer(@RequestBody Map<String, Object> player, HttpServletRequest req) {
         Map<String, Object> response = new HashMap<>();
 
