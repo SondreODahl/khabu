@@ -23,7 +23,7 @@ jobs:
         password: ${{ secrets.REGISTRY_PASSWORD }}
 
     - run: |
-        docker build . -t khabu.azurecr.io/khabu:${{ github.sha }}
+        docker build ./../.. -t khabu.azurecr.io/khabu:${{ github.sha }}
         docker push khabu.azurecr.io/khabu:${{ github.sha }}
 
 
