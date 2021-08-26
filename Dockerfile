@@ -11,12 +11,12 @@ COPY sshd_config /etc/ssh/
 COPY init.sh /usr/local/bin/
 RUN chmod u+x /usr/local/bin/init.sh
 
-RUN apk add nodejs && \
+RUN apk add --update nodejs && \
     apk add yarn && \
     apk add maven
 COPY ./front-end/package.json /usr/src/khabu/front-end/
 WORKDIR /usr/src/khabu/front-end
-RUN yarn
+RUN yarn --ignore-engines
 
 COPY . /usr/src/khabu
 RUN yarn build
